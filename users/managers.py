@@ -5,6 +5,7 @@ class CustomAccountManager(BaseUserManager):
     def create_user(self,email,password):
         user=self.model(email=email,password=password)
         user.set_password(password)
+        user.is_active = True
         user.is_staff=False
         user.is_superuser=False
         user.save(using=self._db)

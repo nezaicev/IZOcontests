@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Position(models.Model):
-    name = models.CharField('Должность', max_length=50, blank=False)
+    name = models.CharField('Должность', max_length=50, blank=True)
 
     def __str__(self):
         return self.name
@@ -34,9 +34,10 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['password']
     is_staff=models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
     email = models.EmailField(_('email'), unique=True)
     fio = models.CharField('ФИО', max_length=30, blank=True)
-    position = models.ForeignKey(Position, on_delete=models.PROTECT, null=True)
+    position = models.ForeignKey(Position, on_delete=models.PROTECT, null=True,blank=True)
     birth_date = models.DateField(null=True,blank=True)
     school = models.CharField('Образовательная организация', max_length=150, blank=True)
     region = models.ForeignKey(Region, on_delete=models.PROTECT, null=True,blank=True)
