@@ -50,7 +50,7 @@ class Status(models.Model):
 
 
 class Age(models.Model):
-    name = models.CharField('Возрастная категория', max_length=15)
+    name = models.CharField('Возрастная категория', max_length=15, blank=True)
     
     class Meta:
         verbose_name = 'Возрастная катеогия'

@@ -11,7 +11,7 @@ from contests import utils
 # Create your models here.
 
 class Nomination(models.Model):
-    name = models.CharField('Номинация', max_length=10)
+    name = models.CharField('Номинация', max_length=100)
 
     class Meta:
         verbose_name = 'Номинация'
@@ -61,16 +61,16 @@ class BaseContest(models.Model):
     teacher = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     fio = models.CharField('ФИО участника', max_length=40)
     school = models.CharField('Образовательная организация', max_length=150)
-    city = models.CharField('Город', max_length=101)
+    city = models.CharField('Город', max_length=101, blank=True)
     year_contest = models.CharField('Год проведения', max_length=20,
                                     default=utils.generate_year())
     status = models.ForeignKey(Status, verbose_name='Статус',
-                               on_delete=models.PROTECT, null=True)
+                               on_delete=models.PROTECT, null=True, blank=True)
     region = models.ForeignKey(Region, verbose_name='Регион',
                                on_delete=models.PROTECT, null=True)
     date_reg = models.DateTimeField(auto_now=True, blank=True)
     district = models.ForeignKey(District, verbose_name='Округ',
-                                 on_delete=models.PROTECT, null=True)
+                                 on_delete=models.PROTECT, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.pk:

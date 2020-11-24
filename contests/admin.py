@@ -5,8 +5,7 @@ from django.forms import ModelForm
 # Register your models here.
 
 
-class ArtakiadaAdmin(admin.ModelAdmin):
-    name = 'artakiada'
+class BaseAdmin(admin.ModelAdmin):
     form = ModelForm
     list_display = ('fio','reg_number', 'school',
                     'region', 'district', 'teacher','status')
@@ -25,12 +24,12 @@ class ArtakiadaAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.groups.filter(name='Manager').exists():
-            return super(ArtakiadaAdmin, self).get_queryset(request)
+            return super(BaseAdmin, self).get_queryset(request)
         else:
             exclude=list(self.exclude)
             exclude.append('status')
             self.exclude=exclude
-            qs = super(ArtakiadaAdmin, self).get_queryset(request)
+            qs = super(BaseAdmin, self).get_queryset(request)
             return qs.filter(teacher=request.user)
 
     def save_model(self, request, obj, form, change):
@@ -50,6 +49,11 @@ class ArtakiadaAdmin(admin.ModelAdmin):
         js = ['https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js',
               'https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/js/jquery.suggestions.min.js',
               '/static/dadata/js/organizations.js']
+
+
+class ArtakiadaAdmin(BaseAdmin):
+    name = 'artakiada'
+
 
 
 class StatusAdmin(admin.ModelAdmin):
