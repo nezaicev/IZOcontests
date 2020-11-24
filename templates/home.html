@@ -1,14 +1,45 @@
+
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-  Hi {{ user.email }}!
-  <p><a href="{% url 'logout' %}">Log Out</a></p>
-  <p><a href="{% url 'password_reset' %}">Reset Password</a></p>
-{% else %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">Log In</a>
-{% endif %}
+
+	<div class="card col-2 float-right ">
+    <div class="card-body">
+      {% if user.is_authenticated %}
+        {{ user.email }}
+				<span><a href="{% url 'logout' %}">Выход</a></span>
+				<span><a href="{% url 'password_reset' %}">Изменить пароль</a></span>
+				<span><a href="{% url 'admin:index' %}">Личный кабинет</a></span>
+			{% else %}
+ 				 <span>Вы не авторизированы</span>
+ 				 <a href="{% url 'login' %}">Вход</a>
+					<a href="{% url 'signup' %}">Регистрация</a>
+			{% endif %}
+    </div>
+  </div>
+	<div class="album py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+              <img src="{% static "site/img/artakiada.jpg" %}" class="card-img-top">
+              <div class="card-body align-content-center">
+                <h4>Артакиада</h4>
+                <p class="card-text">Конкурс про искусство</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                  </div>
+                  <small class="text-muted">9 mins</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 {% endblock %}

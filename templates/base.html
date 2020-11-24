@@ -1,13 +1,72 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <title>{% block title %}Django Auth Tutorial{% endblock %}</title>
+	<meta charset="UTF-8">
+	<title>{% block title %}{% endblock %}</title>
+	<link rel="stylesheet" href="{% static "" %}">
+	<link rel="stylesheet" href="{% static "site/css/bootstrap.css" %}">
+	<link rel="stylesheet" href="{% static "dadata/css/suggestions.min.css" %}">
+	<link rel="stylesheet" href="{% static "dadata/css/mycss.css" %}">
+	<link rel="stylesheet" href="{% static "site/css/mycss.css" %}">
 </head>
-<body>
-  <main>
-    {% block content %}
-    {% endblock %}
-  </main>
+<header>
+
+	<div class="bg-light collapse" id="navbarHeader" style="">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-8 col-md-7 py-4">
+					<h5 class="text-dark">Информация</h5>
+					<p class="text-muted">Для доступа в личный кабинет, необходимо пройти
+						регистрацию.</p>
+				</div>
+				<div class="col-sm-4 offset-md-1 py-4">
+					<h5 class="text-dark">Личный кабинет</h5>
+					<ul class="list-unstyled">
+						{% if user.is_authenticated %}
+							<p>{{ user.email }}</p>
+							<li><a href="{% url 'logout' %}" class="text-dark">Выход</a></li>
+							<li><a href="{% url 'password_reset' %}" class="text-dark">Сброс
+								пароля</a></li>
+						{% else %}
+							<li><a href="{% url 'login' %}" class="text-dark">Вход</a></li>
+							<li><a href="{% url 'signup' %}"
+										 class="text-dark">Регистрация</a></li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="navbar navbar-light bg-light shadow-sm">
+		<div class="container d-flex justify-content-between">
+			<a href="#" class="navbar-brand d-flex align-items-center">
+				<img src="{% static "site/img/Brand.svg" %}"
+						 style=";margin-left:-126px;margin-top:-22px;margin-bottom:-22px; width: 60px;">
+			</a>
+			<h3 class="align-content-center">Конкурсы</h3>
+			<button class="navbar-toggler collapsed" type="button"
+							data-toggle="collapse" data-target="#navbarHeader"
+							aria-controls="navbarHeader" aria-expanded="false"
+							aria-label="Toggle navigation">
+				<span class="">Меню</span>
+			</button>
+		</div>
+	</div>
+
+</header>
+{% block content %}
+
+{% endblock content %}
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/js/jquery.suggestions.min.js"></script>
+<script src="{% static 'site/js/bootstrap.bundle.js' %}"></script>
+<script src="{% static 'site/js/myfunctions.js' %}"></script>
+<script src="{% static 'dadata/js/organizations.js' %}"></script>
+<script src="{% static 'dadata/js/city.js' %}"></script>
+
 </body>
 </html>

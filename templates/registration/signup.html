@@ -1,12 +1,108 @@
 {% extends 'base.html' %}
 
-{% block title %}Sign Up{% endblock %}
+{% block title %}Регистрация{% endblock %}
 
 {% block content %}
-  <h2>Sign up</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign Up</button>
-  </form>
+	<div class="container mb-5">
+		<div class="mb-3 mt-3">
+			<h2>Регистрация</h2>
+		</div>
+		{% if form.errors %}
+			<div class="alert alert-danger" role="alert">
+				{{ form.errors }}
+			</div>
+		{% endif %}
+		<div class="alert alert-light col-4"> Пройдя регистрацию, вы получите
+			доступ к личному кабинету
+		</div>
+		<form method="post">
+			{% csrf_token %}
+			<div class="col-4 mb-3">
+				<div class="input-group  ">
+					<label class="input-group-text">{{ form.status.label }}</label>
+					{{ form.status }}
+				</div>
+			</div>
+			<div class="col-4 mb-3">
+				<div class="input-group ">
+					<label class="input-group-text">{{ form.email.label }}</label>
+					{{ form.email }}
+				</div>
+			</div>
+			<div class="col-4 mb-3">
+				<div class="input-group ">
+					<label class="input-group-text">{{ form.password1.label }}</label>
+					{{ form.password1 }}
+				</div>
+			</div>
+			<div class="col-5 mb-3">
+				<div class="input-group ">
+					<label class="input-group-text">{{ form.password2.label }}</label>
+					{{ form.password2 }}
+				</div>
+			</div>
+			<div class="col-6 md-3">
+				<div class="input-group ">
+					<span class="input-group-text">{{ form.fio.label }}</span>
+					{{ form.fio }}
+				</div>
+			</div>
+			<div class="col-6 md-3 mt-3">
+				<div class="input-group ">
+					<span class="input-group-text">{{ form.region.label }}</span>
+					{{ form.region }}
+				</div>
+			</div>
+			<div class="col-6 md-3 mt-3" id="{{ form.district.name }}">
+				<div class="input-group ">
+					<span class="input-group-text">{{ form.district.label }}</span>
+					{{ form.district }}
+				</div>
+			</div>
+			<div class="col-6 md-3 mt-3" id="{{ form.city.name }}">
+				<div class="input-group ">
+					<span class="input-group-text">{{ form.city.label }}</span>
+					{{ form.city }}
+				</div>
+			</div>
+
+			<div class="col-6 mb-4 mt-3">
+				<div class="input-group ">
+					<span class="input-group-text">{{ form.school.label }}</span>
+					{{ form.school }}
+				</div>
+			</div>
+			<div id="additional_info" class="col-6 mb-3 mt-6">
+				<h5> Дополнительная информация (только для педагогов)</h5>
+
+				<div class="col-6 mb-4 mt-3">
+					<div class="input-group ">
+						<span class="input-group-text">{{ form.phone.label }}</span>
+						{{ form.phone }}
+					</div>
+				</div>
+				<div class="col-7 mb-4 ">
+					<div class="input-group ">
+						<span class="input-group-text">{{ form.age.label }}</span>
+						{{ form.age }}
+					</div>
+				</div>
+				<div class="col-9 mb-4 mt-3">
+					<div class="input-group ">
+						<span class="input-group-text">{{ form.position.label }}</span>
+						{{ form.position }}
+					</div>
+				</div>
+
+
+			</div>
+			<div class="text-right col-8">
+				<button class="btn btn-outline-primary mb-3 " type="submit">Отправить
+				</button>
+			</div>
+		</form>
+	</div>
+
+
 {% endblock %}
+
