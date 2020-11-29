@@ -1,8 +1,14 @@
-  window.onload = function () {
-        var additional_info = document.getElementById('additional_info');
-        additional_info.style.display='none';
-        console.log('test');
-      };
+  // window.onload = function () {
+  //       var additional_info = document.getElementById('additional_info');
+  //       additional_info.style.display='none';
+  //       console.log('test')
+  //     };
+ document.addEventListener("DOMContentLoaded", () => {
+     var region = document.getElementById('id_region');
+     var status = document.getElementById('id_status');
+     regionChanged(region);
+     hideAdditionalInfo(status);
+  });
 
       function regionChanged(obj) {
           var district = document.getElementById('district');

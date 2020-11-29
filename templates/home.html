@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 {% load static %}
 
@@ -7,39 +6,48 @@
 {% block content %}
 
 	<div class="card col-2 float-right ">
-    <div class="card-body">
-      {% if user.is_authenticated %}
-        {{ user.email }}
+		<div class="card-body">
+			{% if user.is_authenticated %}
+				{{ user.email }}
 				<span><a href="{% url 'logout' %}">Выход</a></span>
 				<span><a href="{% url 'password_reset' %}">Изменить пароль</a></span>
 				<span><a href="{% url 'admin:index' %}">Личный кабинет</a></span>
 			{% else %}
- 				 <span>Вы не авторизированы</span>
- 				 <a href="{% url 'login' %}">Вход</a>
-					<a href="{% url 'signup' %}">Регистрация</a>
+				<span>Вы не авторизированы</span>
+				<a href="{% url 'login' %}">Вход</a>
+				<a href="{% url 'signup' %}">Регистрация</a>
 			{% endif %}
-    </div>
-  </div>
+		</div>
+
+	</div>
 	<div class="album py-5">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-              <img src="{% static "site/img/artakiada.jpg" %}" class="card-img-top">
-              <div class="card-body align-content-center">
-                <h4>Артакиада</h4>
-                <p class="card-text">Конкурс про искусство</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                  </div>
-                  <small class="text-muted">9 mins</small>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+		<div class="container">
+			<div class="row">
+				{% for contest in object_list %}
+				<div class="col-md-4">
+					<div class="card mb-4 shadow-sm">
+						<img src="{{ contest.logo.url}}"
+								 class="card-img-top">
+						<div class="card-body align-content-center">
+							<h5>{{contest.name}}</h5>
+							<p class="card-text">{{ contest.content|safe }}</p>
+							<div class="d-flex justify-content-between align-items-center">
+								<div class="btn-group">
+									<button type="button"
+													class="btn btn-sm btn-outline-secondary">View
+									</button>
+									<button type="button"
+													class="btn btn-sm btn-outline-secondary">Edit
+									</button>
+								</div>
+								<small class="text-muted">9 mins</small>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+
+			</div>
+		</div>
+	</div>
 {% endblock %}
