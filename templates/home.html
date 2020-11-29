@@ -24,24 +24,25 @@
 		<div class="container">
 			<div class="row">
 				{% for contest in object_list %}
+{#					<div class="card mr-3 mb-3" style="width: 18rem;">#}
+{#						<img src="{{ contest.logo.url}}" class="card-img-top" alt="...">#}
+{#						<div class="card-body">#}
+{#							<h5>{{contest.name}}</h5>#}
+{#								<hr>#}
+{#							<p class="card-text">#}
+{#								{{ contest.content|safe }}#}
+{#							</p>#}
+{#						</div>#}
+{#					</div>#}
 				<div class="col-md-4">
 					<div class="card mb-4 shadow-sm">
 						<img src="{{ contest.logo.url}}"
 								 class="card-img-top">
 						<div class="card-body align-content-center">
 							<h5>{{contest.name}}</h5>
+							<hr>
 							<p class="card-text">{{ contest.content|safe }}</p>
-							<div class="d-flex justify-content-between align-items-center">
-								<div class="btn-group">
-									<button type="button"
-													class="btn btn-sm btn-outline-secondary">View
-									</button>
-									<button type="button"
-													class="btn btn-sm btn-outline-secondary">Edit
-									</button>
-								</div>
-								<small class="text-muted">9 mins</small>
-							</div>
+
 						</div>
 					</div>
 				</div>

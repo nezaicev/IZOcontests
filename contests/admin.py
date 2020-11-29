@@ -1,5 +1,6 @@
 import os
 from django.contrib import admin
+from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from contests.models import Artakiada, Status, Material, Level, Nomination, \
     Age, Theme, NRusheva
 from django.contrib.auth.models import Group, Permission
@@ -17,7 +18,29 @@ class BaseAdmin(admin.ModelAdmin):
     form = ModelForm
     list_display = ('fio', 'reg_number', 'school',
                     'region', 'district', 'teacher', 'status')
+    actions = ['export_list_info']
     exclude = ('reg_number', 'teacher', 'barcode')
+
+    def export_list_info(self, request, queryset):
+        meta = self.model._meta
+        reg_number = queryset[0].reg_number
+        file_location = None
+        try:
+            file_location = os.path.join(settings.MEDIA_ROOT, 'pdf', self.name, f'{reg_number}.pdf')
+            if os.path.exists(file_location) and os.path.getsize(file_location) > 0:
+                response = FileResponse(open(file_location, 'rb'))
+                return response
+            else:
+                utils.generate_barcode(queryset[0].reg_number)
+                utils.generate_pdf(queryset[0].get_parm_for_pdf(), queryset[0].name, queryset[0].alias, queryset[0].reg_number)
+                response = FileResponse(open(file_location, 'rb'))
+                return response
+
+        except:
+            self.message_user(request, "{} не найден".format(file_location))
+            return HttpResponseRedirect(request.get_full_path())
+
+    export_list_info.short_description = 'Скачать регистрационный лист участника'
 
     def get_list_display(self, request):
         if request.user.is_superuser:
