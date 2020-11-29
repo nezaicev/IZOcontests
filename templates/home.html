@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+	<div class="card col-2 float-right ">
+		<div class="card-body">
+			{% if user.is_authenticated %}
+				{{ user.email }}
+				<span><a href="{% url 'logout' %}">Выход</a></span>
+				<span><a href="{% url 'password_reset' %}">Изменить пароль</a></span>
+				<span><a href="{% url 'admin:index' %}">Личный кабинет</a></span>
+			{% else %}
+				<span>Вы не авторизированы</span>
+				<a href="{% url 'login' %}">Вход</a>
+				<a href="{% url 'signup' %}">Регистрация</a>
+			{% endif %}
+		</div>
+
+	</div>
+	<div class="album py-5">
+		<div class="container">
+			<div class="row">
+				{% for contest in object_list %}
+{#					<div class="card mr-3 mb-3" style="width: 18rem;">#}
+{#						<img src="{{ contest.logo.url}}" class="card-img-top" alt="...">#}
+{#						<div class="card-body">#}
+{#							<h5>{{contest.name}}</h5>#}
+{#								<hr>#}
+{#							<p class="card-text">#}
+{#								{{ contest.content|safe }}#}
+{#							</p>#}
+{#						</div>#}
+{#					</div>#}
+				<div class="col-md-4">
+					<div class="card mb-4 shadow-sm">
+						<img src="{{ contest.logo.url}}"
+								 class="card-img-top">
+						<div class="card-body align-content-center">
+							<h5>{{contest.name}}</h5>
+							<hr>
+							<p class="card-text">{{ contest.content|safe }}</p>
+
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+
+			</div>
+		</div>
+	</div>
+{% endblock %}

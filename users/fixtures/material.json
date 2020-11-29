@@ -1,0 +1,821 @@
+[
+ {
+      "model": "contests.material",
+      "pk": "1",
+      "fields": {
+        "name": "Аппликация, бумага, гуашь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "2",
+      "fields": {
+        "name": "Батик"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "3",
+      "fields": {
+        "name": "Бумага, акварель"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "4",
+      "fields": {
+        "name": "Бумага, акварель, белила"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "5",
+      "fields": {
+        "name": "Бумага, акварель, белила, гелевая ручка"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "6",
+      "fields": {
+        "name": "Бумага, акварель, гелевая ручка"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "7",
+      "fields": {
+        "name": "Бумага, акварель, карандаш"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "8",
+      "fields": {
+        "name": "Бумага, акварель, пастель"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "9",
+      "fields": {
+        "name": "Бумага, акварель, роллер"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "10",
+      "fields": {
+        "name": "Бумага, акварель, тушь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "11",
+      "fields": {
+        "name": "Бумага, акварель, тушь, перо"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "12",
+      "fields": {
+        "name": "Бумага, акварель, тушь, цветные карандаши"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "13",
+      "fields": {
+        "name": "Бумага, акварель, фломастер"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "14",
+      "fields": {
+        "name": "Бумага, акварель, цветные карандаши"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "15",
+      "fields": {
+        "name": "Бумага, акрил"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "16",
+      "fields": {
+        "name": "Бумага, белила"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "17",
+      "fields": {
+        "name": "Бумага, восковые мелки"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "18",
+      "fields": {
+        "name": "Бумага, гелевая ручка"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "19",
+      "fields": {
+        "name": "Бумага, гелевая ручка, белила"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "20",
+      "fields": {
+        "name": "Бумага, гелевая ручка, маркер"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "21",
+      "fields": {
+        "name": "Бумага, гелевая ручка, фломастер"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "22",
+      "fields": {
+        "name": "Бумага, гелиевая ручка"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "23",
+      "fields": {
+        "name": "Бумага, гелиевая ручка, тушь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "24",
+      "fields": {
+        "name": "Бумага, граттаж"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "25",
+      "fields": {
+        "name": "Бумага, гуашь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "26",
+      "fields": {
+        "name": "Бумага, гуашь, акварель"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "27",
+      "fields": {
+        "name": "Бумага, гуашь, акварель, тушь, карандаш"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "28",
+      "fields": {
+        "name": "Бумага, гуашь, аппликация"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "29",
+      "fields": {
+        "name": "Бумага, гуашь, гелевая ручка"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "30",
+      "fields": {
+        "name": "Бумага, гуашь, карандаш"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "31",
+      "fields": {
+        "name": "Бумага, гуашь, масляная пасель"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "32",
+      "fields": {
+        "name": "Бумага, гуашь, мел"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "33",
+      "fields": {
+        "name": "Бумага, гуашь, пастель"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "34",
+      "fields": {
+        "name": "Бумага, гуашь, тушь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "35",
+      "fields": {
+        "name": "Бумага, гуашь, фломастер"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "36",
+      "fields": {
+        "name": "Бумага, гуашь, цветные карандаши"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "37",
+      "fields": {
+        "name": "Бумага, карандаш"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "38",
+      "fields": {
+        "name": "Бумага, карандаш, белила)Бумага, карандаш, гелевая ручка"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "39",
+      "fields": {
+        "name": "Бумага, малянная пастель"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "40",
+      "fields": {
+        "name": "Бумага, маркер"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "41",
+      "fields": {
+        "name": "Бумага, масляная пастель"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "42",
+      "fields": {
+        "name": "Бумага, масляная пастель, акварель"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "43",
+      "fields": {
+        "name": "Бумага, масляная пастель, гелевая ручка"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "44",
+      "fields": {
+        "name": "Бумага, пастель"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "45",
+      "fields": {
+        "name": "Бумага, пастель, аппликация"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "46",
+      "fields": {
+        "name": "Бумага, пастель, белила"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "47",
+      "fields": {
+        "name": "Бумага, пастель, гелевая ручка"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "48",
+      "fields": {
+        "name": "Бумага, пастель, карандаш"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "49",
+      "fields": {
+        "name": "Бумага, пастель, маркер"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "50",
+      "fields": {
+        "name": "Бумага, пастель, тушь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "51",
+      "fields": {
+        "name": "Бумага, пастель, фломастер"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "52",
+      "fields": {
+        "name": "Бумага, пастель, цветные карандаши"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "53",
+      "fields": {
+        "name": "Бумага, роллер, цветные карандаши"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "54",
+      "fields": {
+        "name": "Бумага, сангина"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "55",
+      "fields": {
+        "name": "Бумага, сангина, уголь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "56",
+      "fields": {
+        "name": "Бумага, сангина, уголь, белила"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "57",
+      "fields": {
+        "name": "Бумага, смешанная техника"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "58",
+      "fields": {
+        "name": "Бумага, соус, уголь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "59",
+      "fields": {
+        "name": "Бумага, темпера"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "60",
+      "fields": {
+        "name": "Бумага, тушь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "61",
+      "fields": {
+        "name": "Бумага, тушь, белила"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "62",
+      "fields": {
+        "name": "Бумага, тушь, карандаш"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "63",
+      "fields": {
+        "name": "Бумага, тушь, перо"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "64",
+      "fields": {
+        "name": "Бумага, тушь, фломастер"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "65",
+      "fields": {
+        "name": "Бумага, тушь, цветные карандаши"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "66",
+      "fields": {
+        "name": "Бумага, уголь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "67",
+      "fields": {
+        "name": "Бумага, уголь, карандаш"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "68",
+      "fields": {
+        "name": "Бумага, фломастер"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "69",
+      "fields": {
+        "name": "Бумага, фломастер, белила"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "70",
+      "fields": {
+        "name": "Бумага, фломастер, восковые мелки"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "71",
+      "fields": {
+        "name": "Бумага, фломастер, карандаш"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "72",
+      "fields": {
+        "name": "Бумага, фломастер, масляная пастель"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "73",
+      "fields": {
+        "name": "Бумага, фломастер, цветные карандаши"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "74",
+      "fields": {
+        "name": "Бумага, цветные карандаши"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "75",
+      "fields": {
+        "name": "Бумага, цветные карандаши, гелевая ручка"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "76",
+      "fields": {
+        "name": "Бумага, цветные мелки"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "77",
+      "fields": {
+        "name": "Бумага, цветные мелки, флома"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "1",
+      "fields": {
+        "name": "Бумага,масляная пастель"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "78",
+      "fields": {
+        "name": "Вышивка в технике изонить"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "79",
+      "fields": {
+        "name": "Гравюра"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "80",
+      "fields": {
+        "name": "Граттаж"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "81",
+      "fields": {
+        "name": "Гуашь, тушь, фломастер, аппликация"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "82",
+      "fields": {
+        "name": "Диотипия"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "83",
+      "fields": {
+        "name": "Картон, гуашь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "84",
+      "fields": {
+        "name": "Картон, масло"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "85",
+      "fields": {
+        "name": "Картон, пластилин"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "86",
+      "fields": {
+        "name": "Коллаж, смешанная техника"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "87",
+      "fields": {
+        "name": "Линогравюра"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "88",
+      "fields": {
+        "name": "Масло"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "89",
+      "fields": {
+        "name": "Масляная пастель"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "90",
+      "fields": {
+        "name": "Пластилин"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "91",
+      "fields": {
+        "name": "Рельефная композиция из бумаги"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "92",
+      "fields": {
+        "name": "Росписная глина"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "93",
+      "fields": {
+        "name": "Смешанная техника"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "94",
+      "fields": {
+        "name": "Тонированная бумага, белая гуашь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "95",
+      "fields": {
+        "name": "Тонированная бумага, гелиевая ручка"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "96",
+      "fields": {
+        "name": "Тонированная бумага, гуашь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "97",
+      "fields": {
+        "name": "Тонированная бумага, пастель"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "98",
+      "fields": {
+        "name": "Тонированная бумага, смешанная техника"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "99",
+      "fields": {
+        "name": "Тонированная бумага, тушь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "100",
+      "fields": {
+        "name": "Тонированная бумага, уголь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "101",
+      "fields": {
+        "name": "Тонированная бумага, цветные мелки"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "102",
+      "fields": {
+        "name": "Холст, картон, масло"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "103",
+      "fields": {
+        "name": "Холст, масло"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "104",
+      "fields": {
+        "name": "Цветная бумага, (коллаж)"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "105",
+      "fields": {
+        "name": "Цветная бумага, аппликация"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "106",
+      "fields": {
+        "name": "Цветная бумага, гуашь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "107",
+      "fields": {
+        "name": "Цветная бумага, гуашь, аппликация"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "108",
+      "fields": {
+        "name": "Цветная бумага, гуашь, гелевая ручка"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "109",
+      "fields": {
+        "name": "Цветная бумага, гуашь, тушь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "110",
+      "fields": {
+        "name": "Цветная бумага, гуашь, фломастер, аппликация"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "111",
+      "fields": {
+        "name": "Цветная бумага, картон, гуашь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "112",
+      "fields": {
+        "name": "Цветная бумага, пастель, аппликация"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "113",
+      "fields": {
+        "name": "Цветная бумага, тушь"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "114",
+      "fields": {
+        "name": "Цветная бумага, тушь, гуашь, аппликация"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "115",
+      "fields": {
+        "name": "Цветная бумага, фломастер"
+      }
+    },
+    {
+      "model": "contests.material",
+      "pk": "116",
+      "fields": {
+        "name": "Цветная бумага, фломастер, аппликаци"
+      }
+    }
+ ]

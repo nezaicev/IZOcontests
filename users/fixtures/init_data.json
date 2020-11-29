@@ -1,0 +1,30 @@
+[
+  {
+    "model": "users.region",
+    "pk": 1,
+    "fields": {
+      "name": "Москва"
+    }
+  },
+  {
+    "model": "users.region",
+    "pk": 2,
+    "fields": {
+      "name": "Удмуртская республика"
+    }
+  },
+   {
+    "model": "users.status",
+    "pk": 1,
+    "fields": {
+      "name": "Педагог"
+    }
+  },
+  {
+    "model": "users.status",
+    "pk": 2,
+    "fields": {
+      "name": "Представитель участника"
+    }
+  }
+]
