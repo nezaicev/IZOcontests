@@ -130,45 +130,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-<<<<<<< HEAD
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-BARCODE_MEDIA_ROOT = os.path.join(BASE_DIR, 'media/barcode/')
-=======
 STATIC_URL = os.getenv('STATIC_URL','/static/')
 STATICFILES_DIRS = [
     os.getenv('STATICFILES_DIRS',os.path.join(BASE_DIR, 'static')),
 ]
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 
 MEDIA_URL = os.getenv('MEDIA_URL','/media/')
 MEDIA_ROOT = os.getenv('MRDIA_ROOT',os.path.join(BASE_DIR, 'media'))
 BARCODE_MEDIA_ROOT = os.getenv('BARCODE_URL',os.path.join(BASE_DIR, 'media/barcode/'))
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 20621440
->>>>>>> 8c1a0d6bd8e8c63b3deb97ee2c3153db264ce7b0
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-<<<<<<< HEAD
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
 
-SELECTEL_STORAGES = {
-    'default': {
-        'USERNAME': '49761_Contests',
-        'PASSWORD': 'mo7B7#c{N`',
-        'CONTAINER': 'Contests',
-    },
-    'yet_another_storage': 'selectel://xxxx_user:p455w0rd2@another-container',
-=======
 EMAIL_BACKEND = os.getenv("EMAIL_BACKEND","django.core.mail.backends.filebased.EmailBackend")
 EMAIL_HOST=os.getenv('EMAIL_HOST')
 EMAIL_HOST_PASSWORD=os.getenv('EMAIL_PASSWORD')
@@ -191,16 +168,11 @@ SELECTEL_STORAGES = {
         'PASSWORD': os.getenv("PASSWORD_SELECTEL"),
         'CONTAINER': os.getenv("CONTAINER_SELECTEL"),
     },
->>>>>>> 8c1a0d6bd8e8c63b3deb97ee2c3153db264ce7b0
+
 }
 
 DEFAULT_FILE_STORAGE = 'django_selectel_storage.storage.SelectelStorage'
 
-<<<<<<< HEAD
-
-CKEDITOR_BROWSE_SHOW_DIRS=True
-CKEDITOR_UPLOAD_PATH = "uploads/"
-=======
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
 CELERY_ACCEPT_CONTENT = ['application/json']
@@ -210,7 +182,6 @@ CELERY_TASK_SERIALIZER = 'json'
 
 CKEDITOR_BROWSE_SHOW_DIRS=True
 CKEDITOR_UPLOAD_PATH = os.getenv("CE_UPLOAD_PATH","uploads/")
->>>>>>> 8c1a0d6bd8e8c63b3deb97ee2c3153db264ce7b0
 CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 CKEDITOR_CONFIGS = {
     'default': {
