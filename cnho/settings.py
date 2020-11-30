@@ -87,8 +87,8 @@ WSGI_APPLICATION = 'cnho.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('DB_ENGINE','django.db.backends.sqlite3'),
-        'NAME': os.getenv('DB_NAME',BASE_DIR / 'db.sqlite3'),
+        'ENGINE': os.getenv('DB_ENGINE_','django.db.backends.sqlite3'),
+        'NAME': os.getenv('DB_NAME_',BASE_DIR / 'db.sqlite3'),
     }
 }
 
