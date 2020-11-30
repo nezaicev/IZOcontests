@@ -8,14 +8,25 @@
 	<div class="card col-2 float-right ">
 		<div class="card-body">
 			{% if user.is_authenticated %}
+<<<<<<< HEAD
 				{{ user.email }}
 				<span><a href="{% url 'logout' %}">Выход</a></span>
+=======
+				<p>{{ user.email }}</p>
+				<span><a href="{% url 'logout' %}"class='mr-1'>Выход</a></span>
+>>>>>>> 8c1a0d6bd8e8c63b3deb97ee2c3153db264ce7b0
 				<span><a href="{% url 'password_reset' %}">Изменить пароль</a></span>
 				<span><a href="{% url 'admin:index' %}">Личный кабинет</a></span>
 			{% else %}
 				<span>Вы не авторизированы</span>
+<<<<<<< HEAD
 				<a href="{% url 'login' %}">Вход</a>
 				<a href="{% url 'signup' %}">Регистрация</a>
+=======
+				<a href="{% url 'login' %} " class='mr-3'>Вход</a>
+				<a href="{% url 'signup' %}">Регистрация</a>
+				<p><a href="{% url 'password_reset' %}">Сброс пароля</a></p>
+>>>>>>> 8c1a0d6bd8e8c63b3deb97ee2c3153db264ce7b0
 			{% endif %}
 		</div>
 

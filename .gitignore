@@ -1,4 +1,13 @@
+**/__pycache__
+*/__pycache__
 db.sqlite3
+<<<<<<< HEAD
 *.pyc
 *__pycache__*
+=======
+.env
+*.pyc
+*.pyo
+media/
+>>>>>>> 8c1a0d6bd8e8c63b3deb97ee2c3153db264ce7b0
 

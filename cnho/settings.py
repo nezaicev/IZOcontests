@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
+from environs import Env
+from dotenv import load_dotenv
+load_dotenv()
+env = Env()
+env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '1r=i)i$it-nlqn85)0dku$$^(&q%d^v8g8@z@@=3_jbz%-8z73'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG",True)
 
 ALLOWED_HOSTS = []
 
@@ -82,8 +87,8 @@ WSGI_APPLICATION = 'cnho.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.getenv('DB_ENGINE_','django.db.backends.sqlite3'),
+        'NAME': os.getenv('DB_NAME_',BASE_DIR / 'db.sqlite3'),
     }
 }
 
@@ -125,6 +130,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+<<<<<<< HEAD
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
@@ -134,10 +140,24 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 BARCODE_MEDIA_ROOT = os.path.join(BASE_DIR, 'media/barcode/')
+=======
+STATIC_URL = os.getenv('STATIC_URL','/static/')
+STATICFILES_DIRS = [
+    os.getenv('STATICFILES_DIRS',os.path.join(BASE_DIR, 'static')),
+]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = os.getenv('MEDIA_URL','/media/')
+MEDIA_ROOT = os.getenv('MRDIA_ROOT',os.path.join(BASE_DIR, 'media'))
+BARCODE_MEDIA_ROOT = os.getenv('BARCODE_URL',os.path.join(BASE_DIR, 'media/barcode/'))
+
+FILE_UPLOAD_MAX_MEMORY_SIZE = 20621440
+>>>>>>> 8c1a0d6bd8e8c63b3deb97ee2c3153db264ce7b0
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
+<<<<<<< HEAD
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
 
@@ -148,13 +168,49 @@ SELECTEL_STORAGES = {
         'CONTAINER': 'Contests',
     },
     'yet_another_storage': 'selectel://xxxx_user:p455w0rd2@another-container',
+=======
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND","django.core.mail.backends.filebased.EmailBackend")
+EMAIL_HOST=os.getenv('EMAIL_HOST')
+EMAIL_HOST_PASSWORD=os.getenv('EMAIL_PASSWORD')
+EMAIL_HOST_USER=os.getenv('EMAIL_USER')
+EMAIL_PORT=os.getenv("EMAIL_PORT",587)
+EMAIL_USE_TLS=True
+DEFAULT_FROM_EMAIL=os.getenv('EMAIL_FROM','webmaster@localhost')
+EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
+
+EMAIL_CONTEST = {
+    'host': os.getenv('EMAIL_HOST'),
+    'from_contest':os.getenv('EMAIL_FROM'),
+    'port': 587,
+    'use_tls': True
+}
+
+SELECTEL_STORAGES = {
+    'default': {
+        'USERNAME': os.getenv("USERNAME_SELECTEL"),
+        'PASSWORD': os.getenv("PASSWORD_SELECTEL"),
+        'CONTAINER': os.getenv("CONTAINER_SELECTEL"),
+    },
+>>>>>>> 8c1a0d6bd8e8c63b3deb97ee2c3153db264ce7b0
 }
 
 DEFAULT_FILE_STORAGE = 'django_selectel_storage.storage.SelectelStorage'
 
+<<<<<<< HEAD
 
 CKEDITOR_BROWSE_SHOW_DIRS=True
 CKEDITOR_UPLOAD_PATH = "uploads/"
+=======
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+
+
+CKEDITOR_BROWSE_SHOW_DIRS=True
+CKEDITOR_UPLOAD_PATH = os.getenv("CE_UPLOAD_PATH","uploads/")
+>>>>>>> 8c1a0d6bd8e8c63b3deb97ee2c3153db264ce7b0
 CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 CKEDITOR_CONFIGS = {
     'default': {
