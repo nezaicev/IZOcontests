@@ -13,13 +13,13 @@ import os
 from pathlib import Path
 from environs import Env
 from dotenv import load_dotenv
+
 load_dotenv()
 env = Env()
 env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -28,10 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool("DEBUG",True)
+DEBUG = env.bool("DEBUG", True)
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -46,7 +45,6 @@ INSTALLED_APPS = [
     'contests.apps.ContestsConfig',
     'ckeditor',
     'ckeditor_uploader',
-
 
 ]
 
@@ -81,17 +79,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'cnho.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('DB_ENGINE_','django.db.backends.sqlite3'),
-        'NAME': os.getenv('DB_NAME_',BASE_DIR / 'db.sqlite3'),
+        'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': os.getenv('DB_NAME', BASE_DIR / 'db.sqlite3'),
+        'USER': os.getenv('DB_NAME', ''),
+        'PASSWORD': os.getenv('DB_PASSWORD', ''),
+        'HOST': os.getenv('DB_HOST', ''),
+        'PORT': os.getenv('DB_PORT',''),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL='users.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -126,38 +126,37 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = os.getenv('STATIC_URL','/static/')
+STATIC_URL = os.getenv('STATIC_URL', '/static/')
 STATICFILES_DIRS = [
-    os.getenv('STATICFILES_DIRS',os.path.join(BASE_DIR, 'static')),
+    os.getenv('STATICFILES_DIRS', os.path.join(BASE_DIR, 'static')),
 ]
 
-
-MEDIA_URL = os.getenv('MEDIA_URL','/media/')
-MEDIA_ROOT = os.getenv('MRDIA_ROOT',os.path.join(BASE_DIR, 'media'))
-BARCODE_MEDIA_ROOT = os.getenv('BARCODE_URL',os.path.join(BASE_DIR, 'media/barcode/'))
+MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
+MEDIA_ROOT = os.getenv('MRDIA_ROOT', os.path.join(BASE_DIR, 'media'))
+BARCODE_MEDIA_ROOT = os.getenv('BARCODE_URL',
+                               os.path.join(BASE_DIR, 'media/barcode/'))
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 20621440
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-
-EMAIL_BACKEND = os.getenv("EMAIL_BACKEND","django.core.mail.backends.filebased.EmailBackend")
-EMAIL_HOST=os.getenv('EMAIL_HOST')
-EMAIL_HOST_PASSWORD=os.getenv('EMAIL_PASSWORD')
-EMAIL_HOST_USER=os.getenv('EMAIL_USER')
-EMAIL_PORT=os.getenv("EMAIL_PORT",587)
-EMAIL_USE_TLS=True
-DEFAULT_FROM_EMAIL=os.getenv('EMAIL_FROM','webmaster@localhost')
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND",
+                          "django.core.mail.backends.filebased.EmailBackend")
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
+EMAIL_HOST_USER = os.getenv('EMAIL_USER')
+EMAIL_PORT = os.getenv("EMAIL_PORT", 587)
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = os.getenv('EMAIL_FROM', 'webmaster@localhost')
 EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
 
 EMAIL_CONTEST = {
     'host': os.getenv('EMAIL_HOST'),
-    'from_contest':os.getenv('EMAIL_FROM'),
+    'from_contest': os.getenv('EMAIL_FROM'),
     'port': 587,
     'use_tls': True
 }
@@ -179,9 +178,8 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 
-
-CKEDITOR_BROWSE_SHOW_DIRS=True
-CKEDITOR_UPLOAD_PATH = os.getenv("CE_UPLOAD_PATH","uploads/")
+CKEDITOR_BROWSE_SHOW_DIRS = True
+CKEDITOR_UPLOAD_PATH = os.getenv("CE_UPLOAD_PATH", "uploads/")
 CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 CKEDITOR_CONFIGS = {
     'default': {
@@ -191,24 +189,35 @@ CKEDITOR_CONFIGS = {
             ['Source', '-', 'Bold', 'Italic']
         ],
         'toolbar_YourCustomToolbarConfig': [
-            {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
-            {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
-            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+            {'name': 'document',
+             'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print',
+                       '-', 'Templates']},
+            {'name': 'clipboard',
+             'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord',
+                       '-', 'Undo', 'Redo']},
+            {'name': 'editing',
+             'items': ['Find', 'Replace', '-', 'SelectAll']},
             {'name': 'forms',
-             'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
+             'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea',
+                       'Select', 'Button', 'ImageButton',
                        'HiddenField']},
             '/',
             {'name': 'basicstyles',
-             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript',
+                       'Superscript', '-', 'RemoveFormat']},
             {'name': 'paragraph',
-             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
-                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
+             'items': ['NumberedList', 'BulletedList', '-', 'Outdent',
+                       'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+                       'JustifyLeft', 'JustifyCenter', 'JustifyRight',
+                       'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
                        'Language']},
             {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
             {'name': 'insert',
-             'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+             'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley',
+                       'SpecialChar', 'PageBreak', 'Iframe']},
             '/',
-            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'styles',
+             'items': ['Styles', 'Format', 'Font', 'FontSize']},
             {'name': 'colors', 'items': ['TextColor', 'BGColor']},
             {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
             {'name': 'about', 'items': ['About']},
@@ -220,7 +229,8 @@ CKEDITOR_CONFIGS = {
 
             ]},
         ],
-        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+        'toolbar': 'YourCustomToolbarConfig',
+        # put selected toolbar config here
         # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
         # 'height': 291,
         # 'width': '100%',
@@ -230,14 +240,14 @@ CKEDITOR_CONFIGS = {
         # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
         'tabSpaces': 4,
         'extraPlugins': ','.join([
-            'uploadimage', # the upload image feature
+            'uploadimage',  # the upload image feature
             # your extra plugins here
             'div',
             'autolink',
             'autoembed',
             'embedsemantic',
             'autogrow',
-            #'devtools',
+            # 'devtools',
             'widget',
             'lineutils',
             'clipboard',
