@@ -145,7 +145,13 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = 20621440
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND","django.core.mail.backends.filebased.EmailBackend")
+EMAIL_HOST=os.getenv('EMAIL_HOST')
+EMAIL_HOST_PASSWORD=os.getenv('EMAIL_PASSWORD')
+EMAIL_HOST_USER=os.getenv('EMAIL_USER')
+EMAIL_PORT=os.getenv("EMAIL_PORT",587)
+EMAIL_USE_TLS=True
+DEFAULT_FROM_EMAIL=os.getenv('EMAIL_FROM','webmaster@localhost')
 EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
 
 EMAIL_CONTEST = {
