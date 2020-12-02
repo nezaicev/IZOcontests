@@ -156,6 +156,7 @@ class PathAndRename(object):
 
 
 class Artakiada(BaseContest):
+    back_email='artakiada@mioo.ru'
     fields = (
     'year_contest', 'reg_number', 'fio','fio_teacher', 'school', 'level', 'region', 'city',
     'district', 'nomination', 'material',)
@@ -180,6 +181,7 @@ class Artakiada(BaseContest):
 
 
 class NRusheva(BaseContest):
+    back_email = 'nrusheva@mioo.ru'
     fields = (
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school', 'level',
         'age','region', 'city','district', 'theme', 'material','author_name',

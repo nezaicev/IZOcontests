@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", True)
 
-ALLOWED_HOSTS = ['konkurs.shkola-nemenskogo.ru']
+ALLOWED_HOSTS = [os.getenv('HOST_NAME','127.0.0.1')]
 
 # Application definition
 
@@ -131,7 +131,7 @@ USE_TZ = True
 
 STATIC_URL = os.getenv('STATIC_URL', '/static/')
 STATICFILES_DIRS = [
-    os.getenv('STATICFILES_DIRS', os.path.join(BASE_DIR, 'static')),
+   os.getenv('STATICFILES_DIRS', os.path.join(BASE_DIR, 'static')),
 ]
 
 #STATIC_ROOT=os.getenv('STATIC_ROOT',os.path.join(BASE_DIR,'static'))
@@ -174,8 +174,8 @@ SELECTEL_STORAGES = {
 
 DEFAULT_FILE_STORAGE = 'django_selectel_storage.storage.SelectelStorage'
 
-CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
-CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL",'redis://127.0.0.1:6379')
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND",'redis://127.0.0.1:6379')
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
