@@ -13,7 +13,7 @@ class CustomUserAdmin(UserAdmin):
     list_display = ('email', 'fio')
     list_filter = ('email',)
     fieldsets = (
-        (None, {'fields': ('email', 'fio', 'region', 'status','school','city','position','phone','age')}),
+        (None, {'fields': ('email', 'fio', 'region', 'status','district','school','city','position','phone','age')}),
         ('Permissions',
          {'fields': ('is_staff', 'is_active', 'groups', 'user_permissions')}),
     )
