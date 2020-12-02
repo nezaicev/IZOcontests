@@ -19,6 +19,7 @@ from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
 from django.conf import settings
 from contests.views import PageContestView
+from contests.models import Message
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,7 +27,7 @@ urlpatterns = [
     path('users/', include('django.contrib.auth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     # path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('', PageContestView.as_view(template_name='home.html'),
+    path('', PageContestView.as_view(template_name='home.html',extra_context={'messages':Message.objects.all()}),
          name='home')
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

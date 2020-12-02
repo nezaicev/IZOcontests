@@ -7,7 +7,7 @@ from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm
 from django.conf import settings
 from contests.forms import PageContestsFrom
-from contests.models import PageContest
+from contests.models import PageContest, Message
 from contests import utils
 from contests import tasks
 
@@ -141,12 +141,17 @@ class PageContestAdmin(admin.ModelAdmin):
     form = PageContestsFrom
 
 
+class MessageAdmin(admin.ModelAdmin):
+    model = Message
+    list_display = ['name']
+
 admin.site.register(PageContest, PageContestAdmin)
 admin.site.register(Nomination, NominationAdmin)
 admin.site.register(Artakiada, ArtakiadaAdmin)
 admin.site.register(NRusheva, NRushevaAdmin)
-admin.site.register(Status, StatusAdmin)
 admin.site.register(Material, MaterialAdmin)
+admin.site.register(Message, MessageAdmin)
+admin.site.register(Status, StatusAdmin)
 admin.site.register(Level, LevelAdmin)
-admin.site.register(Age, AgeAdmin)
 admin.site.register(Theme, ThemeAdmin)
+admin.site.register(Age, AgeAdmin)

@@ -234,3 +234,15 @@ class PageContest(models.Model):
     class Meta:
         verbose_name = 'Страница конкурса'
         verbose_name_plural = 'Страницы конкурсов'
+
+
+class Message(models.Model):
+    name=models.CharField(verbose_name='Заголовок',blank=True, max_length=100)
+    content=RichTextField(verbose_name='Контент')
+
+    def __str__(self):
+        return str(self.name)
+
+    class Meta:
+        verbose_name = 'Сообщение'
+        verbose_name_plural = 'Сообщения'
