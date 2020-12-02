@@ -56,7 +56,7 @@ class Level(models.Model):
 
 
 class Material(models.Model):
-    name = models.CharField('Материал', max_length=50)
+    name = models.CharField('Материал', max_length=100)
 
     class Meta:
         verbose_name = 'Материал'
