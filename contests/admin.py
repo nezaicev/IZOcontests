@@ -9,6 +9,7 @@ from django.conf import settings
 from contests.forms import PageContestsFrom
 from contests.models import PageContest
 from contests import utils
+from contests import tasks
 
 
 # Register your models here.
@@ -78,6 +79,8 @@ class BaseAdmin(admin.ModelAdmin):
             else:
                 utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
                                    obj.alias, obj.reg_number)
+            tasks.simple_send_mail.delay(obj.pk,obj.__class__.__name__,"Заявка на конкурс")
+
 
     def get_changeform_initial_data(self, request):
         return {'city': request.user.city,
