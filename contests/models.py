@@ -83,9 +83,10 @@ class BaseContest(models.Model):
     reg_number = models.CharField(max_length=20, blank=False, null=False,
                                   unique=True,
                                   verbose_name='Регистрационный номер')
-    barcode=models.CharField(verbose_name='Штрих-код',max_length=15,blank=False,null=False)
+    barcode = models.CharField(verbose_name='Штрих-код', max_length=15,
+                               blank=False, null=False)
     teacher = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    fio = models.CharField('Участник', max_length=40)
+    fio = models.CharField('Участник', max_length=300)
     fio_teacher = models.CharField('ФИО педагога', max_length=40)
     school = models.CharField('Образовательная организация', max_length=150)
     city = models.CharField('Город', max_length=101, blank=True)
@@ -104,7 +105,7 @@ class BaseContest(models.Model):
         if not self.pk:
             self.reg_number = str(int(time.time())) + str(
                 CustomUser.objects.get(email=self.teacher).id)
-            self.barcode=self.reg_number[6:]
+            self.barcode = self.reg_number[6:]
         super(BaseContest, self).save(*args, **kwargs)
 
     class Meta:
@@ -156,10 +157,11 @@ class PathAndRename(object):
 
 
 class Artakiada(BaseContest):
-    back_email='artakiada@mioo.ru'
+    back_email = 'artakiada@mioo.ru'
     fields = (
-    'year_contest', 'reg_number', 'fio','fio_teacher', 'school', 'level', 'region', 'city',
-    'district', 'nomination', 'material',)
+        'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school', 'level',
+        'region', 'city',
+        'district', 'nomination', 'material',)
     full_name = 'АРТакиада "Изображение и слово"'
     name = ('Конкурс', 'АРТакиада "Изображение и слово"')
     alias = 'artakiada'
@@ -184,19 +186,20 @@ class NRusheva(BaseContest):
     back_email = 'nrusheva@mioo.ru'
     fields = (
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school', 'level',
-        'age','region', 'city','district', 'theme', 'material','author_name',
-        'format','description'
+        'age', 'region', 'city', 'district', 'theme', 'material',
+        'author_name',
+        'format', 'description'
     )
     full_name = 'Конкурс им. Нади Рушевой'
     name = ('Конкурс', 'Конкурс им. Нади Рушевой')
     alias = 'nrusheva'
 
     theme = models.ForeignKey(Theme, verbose_name='Тема',
-                                   on_delete=models.SET_NULL, null=True)
+                              on_delete=models.SET_NULL, null=True)
     level = models.ForeignKey(Level, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True)
     age = models.ForeignKey(Age, verbose_name='Возраст',
-                              on_delete=models.SET_NULL, null=True)
+                            on_delete=models.SET_NULL, null=True)
 
     image = models.ImageField(upload_to=PathAndRename('nrusheva/'),
                               max_length=100, verbose_name='Изображение')
@@ -204,7 +207,8 @@ class NRusheva(BaseContest):
                                  on_delete=models.SET_NULL, null=True)
     author_name = models.CharField(max_length=50, blank=False,
                                    verbose_name='Авторское название')
-    format = models.CharField(max_length=2, choices=(('A1','A1'),('A2','A2'),('A3','A3')), blank=False,
+    format = models.CharField(max_length=2, choices=(
+    ('A1', 'A1'), ('A2', 'A2'), ('A3', 'A3')), blank=False,
                               verbose_name='Формат работы')
     description = models.TextField(max_length=500, blank=False,
                                    verbose_name='Аннотация')
@@ -219,6 +223,50 @@ class NRusheva(BaseContest):
 
 class Mymoskvichi(BaseContest):
     full_name = 'Конкурс мультимедиа "Мы Москвичи"'
+    name = ('Конкурс', 'Конкурс мультимедиа Мы Москвичи')
+    alias = 'mymoskvichi'
+    back_email = 'mymoskvichi@mioo.ru'
+    fields = (
+        'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school',
+        'region', 'city', 'district'
+    )
+
+    def __str__(self):
+        return str(self.reg_number)
+
+    class Meta:
+        verbose_name = 'Конкурс Мы Москвичи'
+        verbose_name_plural = 'Конкурс Мы Москвичи'
+
+    def generate_list_participants(self,fios=None):
+        if fios==None:
+            fios = ''
+            participants = list(
+                Participant.objects.filter(participants_id=self.pk).values_list(
+                    'fio', flat=True))
+            for participant in participants:
+                if participant != participants[-1]:
+                    fios += participant + ', '
+                else:
+                    fios += participant
+            return fios
+
+
+
+
+class Participant(models.Model):
+    fio = models.CharField(max_length=50, verbose_name='ФИО')
+    participants = models.ForeignKey(Mymoskvichi, verbose_name='Участники',
+                                     on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.fio)
+
+    class Meta:
+        verbose_name = 'Участник'
+        verbose_name_plural = 'Участники'
+
+
 
 
 class PageContest(models.Model):
@@ -237,8 +285,9 @@ class PageContest(models.Model):
 
 
 class Message(models.Model):
-    name=models.CharField(verbose_name='Заголовок',blank=True, max_length=100)
-    content=RichTextField(verbose_name='Контент')
+    name = models.CharField(verbose_name='Заголовок', blank=True,
+                            max_length=100)
+    content = RichTextField(verbose_name='Контент')
 
     def __str__(self):
         return str(self.name)

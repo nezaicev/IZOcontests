@@ -11,6 +11,15 @@ from contests.models import Artakiada
 @shared_task
 def simple_send_mail(id,class_name,subject):
     obj=getattr(models, class_name).objects.get(id=id)
+    if not os.path.exists(os.path.join(settings.BARCODE_MEDIA_ROOT,
+                                       '{}.png'.format(
+                                           obj.reg_number))):
+        utils.generate_barcode(obj.reg_number)
+        utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
+                           obj.alias, obj.reg_number)
+    else:
+        utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
+                           obj.alias, obj.reg_number)
     message_template='email/letters/contest_registration.html'
     from_email=settings.DEFAULT_FROM_EMAIL
     list_emails = [obj.teacher.email]
