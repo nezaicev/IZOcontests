@@ -94,6 +94,8 @@ def generate_pdf(list, contest_name, alias, reg_number):
         pagesize=A4)
     c.setFont('Yandex', 20)
     c.drawString(20, 810, contest_name)
+    if not os.path.exists(os.path.join(settings.BARCODE_MEDIA_ROOT,'{}.png'.format(reg_number))):
+        generate_barcode(reg_number)
     c.drawImage(os.path.join(settings.BARCODE_MEDIA_ROOT, f'{reg_number}.png'),
                 340, 715)
 

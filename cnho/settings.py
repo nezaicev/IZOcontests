@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'contests.apps.ContestsConfig',
     'ckeditor',
     'ckeditor_uploader',
+    'multiselectfield',
 
 ]
 

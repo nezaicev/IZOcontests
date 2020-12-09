@@ -11,4 +11,3 @@ class PageContestsFrom(forms.ModelForm):
     class Meta:
         fields = ('name', 'logo','content')
         model = PageContest
-

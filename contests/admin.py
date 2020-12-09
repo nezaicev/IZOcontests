@@ -27,13 +27,17 @@ class BaseAdmin(admin.ModelAdmin):
         reg_number = queryset[0].reg_number
         file_location = None
         try:
-            file_location = os.path.join(settings.MEDIA_ROOT, 'pdf', self.name, f'{reg_number}.pdf')
-            if os.path.exists(file_location) and os.path.getsize(file_location) > 0:
+            file_location = os.path.join(settings.MEDIA_ROOT, 'pdf', self.name,
+                                         f'{reg_number}.pdf')
+            if os.path.exists(file_location) and os.path.getsize(
+                    file_location) > 0:
                 response = FileResponse(open(file_location, 'rb'))
                 return response
             else:
                 utils.generate_barcode(queryset[0].reg_number)
-                utils.generate_pdf(queryset[0].get_parm_for_pdf(), queryset[0].name, queryset[0].alias, queryset[0].reg_number)
+                utils.generate_pdf(queryset[0].get_parm_for_pdf(),
+                                   queryset[0].name, queryset[0].alias,
+                                   queryset[0].reg_number)
                 response = FileResponse(open(file_location, 'rb'))
                 return response
 
@@ -65,24 +69,10 @@ class BaseAdmin(admin.ModelAdmin):
             qs = super(BaseAdmin, self).get_queryset(request)
             return qs.filter(teacher=request.user)
 
-
     def save_model(self, request, obj, form, change):
         if not obj.pk:
             obj.teacher = request.user
         super().save_model(request, obj, form, change)
-        if obj.pk:
-            # if not os.path.exists(os.path.join(settings.BARCODE_MEDIA_ROOT,
-            #                                    '{}.png'.format(
-            #                                        obj.reg_number))):
-            #     utils.generate_barcode(obj.reg_number)
-            #     utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
-            #                        obj.alias, obj.reg_number)
-            # else:
-            #     utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
-            #                        obj.alias, obj.reg_number)
-            tasks.simple_send_mail.delay(obj.pk,obj.__class__.__name__,"Заявка на конкурс")
-
-
 
     def get_changeform_initial_data(self, request):
         return {'city': request.user.city,
@@ -90,6 +80,15 @@ class BaseAdmin(admin.ModelAdmin):
                 'region': request.user.region,
                 'district': request.user.district,
                 'fio_teacher': request.user.fio, }
+
+    # def render_change_form(self, request, context, *args, **kwargs):
+    #     name_fields=['nomination','nomination_extra']
+    #     for field in name_fields:
+    #         context['adminform'].form.fields[
+    #             field].queryset = Nomination.objects.filter(
+    #             contest__iexact=self.model.alias)
+    #     return super(BaseAdmin, self).render_change_form(request, context,
+    #                                                      *args, **kwargs)
 
     class Media:
         css = {'all': ('/static/dadata/css/suggestions.min.css',
@@ -108,48 +107,38 @@ class ArtakiadaAdmin(BaseAdmin):
 class NRushevaAdmin(BaseAdmin):
     name = 'nrusheva'
 
+
 class ParticipantInline(admin.StackedInline):
     model = Participant
 
 
-
-
 class MymoskvichiAdmin(BaseAdmin):
-    list_display = ( 'reg_number', 'school',
+    list_display = ('reg_number', 'school',
                     'region', 'district', 'teacher', 'status')
     actions = ['export_list_info']
-    exclude = ('fio','reg_number', 'teacher', 'barcode')
-    model=Mymoskvichi
-    name='mymoskvichi'
+    exclude = ('fio', 'reg_number', 'teacher', 'barcode')
+    model = Mymoskvichi
+    name = 'mymoskvichi'
     inlines = [ParticipantInline]
 
-    def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
-        for obj in formset.deleted_objects:
-                obj.delete()
-                if obj == formset.deleted_objects[-1]:
-                    parent_obj = Mymoskvichi.objects.get(
-                        id=obj.participants_id)
-                    parent_obj.fio=parent_obj.generate_list_participants()
-                    parent_obj.save()
-        for instance in instances:
-            instance.save()
-        if instances:
-            parent_obj = Mymoskvichi.objects.get(
-                id=instances[0].participants_id)
-            parent_obj.fio = parent_obj.generate_list_participants()
-            parent_obj.save()
-
-        formset.save_m2m()
-        super().save_formset(request, form, formset, change)
-        tasks.simple_send_mail.delay( parent_obj.pk, parent_obj.__class__.__name__,
+    def response_add(self, request, obj, post_url_continue=None):
+        obj.fio = obj.generate_list_participants()
+        obj.save()
+        utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
+                           obj.alias, obj.reg_number)
+        tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
                                      "Заявка на конкурс")
+        return super().response_add(request, obj, post_url_continue)
 
-    def save_model(self, request, obj, form, change):
-        if not obj.pk:
-            obj.teacher = request.user
+    def response_change(self, request, obj):
+        obj.fio = obj.generate_list_participants()
+        obj.save()
 
-
+        utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
+                           obj.alias, obj.reg_number)
+        tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
+                                     "Заявка на конкурс")
+        return super().response_change(request, obj)
 
 
 class StatusAdmin(admin.ModelAdmin):
@@ -190,8 +179,9 @@ class MessageAdmin(admin.ModelAdmin):
     model = Message
     list_display = ['name']
 
+
 admin.site.register(PageContest, PageContestAdmin)
-admin.site.register(Mymoskvichi,MymoskvichiAdmin)
+admin.site.register(Mymoskvichi, MymoskvichiAdmin)
 admin.site.register(Nomination, NominationAdmin)
 admin.site.register(Artakiada, ArtakiadaAdmin)
 admin.site.register(NRusheva, NRushevaAdmin)
