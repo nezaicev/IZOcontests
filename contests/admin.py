@@ -2,7 +2,7 @@ import os
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from contests.models import Artakiada, Status, Material, Level, Nomination, \
-    Age, Theme, NRusheva, Mymoskvichi, Participant
+    Age, Theme, NRusheva, Mymoskvichi, Participant, TeacherExtra
 from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm
 from django.conf import settings
@@ -110,20 +110,28 @@ class NRushevaAdmin(BaseAdmin):
 
 class ParticipantInline(admin.StackedInline):
     model = Participant
+    extra = 0
+
+
+class TeacherExtraInline(admin.StackedInline):
+    model = TeacherExtra
+    extra = 0
 
 
 class MymoskvichiAdmin(BaseAdmin):
     list_display = ('reg_number', 'school',
                     'region', 'district', 'teacher', 'status')
     actions = ['export_list_info']
-    exclude = ('fio', 'reg_number', 'teacher', 'barcode')
+    exclude = ('fio', 'reg_number', 'teacher', 'barcode', 'fio_teacher')
     model = Mymoskvichi
     name = 'mymoskvichi'
-    inlines = [ParticipantInline]
+    inlines = [ParticipantInline,TeacherExtraInline]
 
     def response_add(self, request, obj, post_url_continue=None):
-        obj.fio = obj.generate_list_participants()
+        obj.fio = obj.generate_list_participants(Participant)
+        obj.fio_teacher=obj.generate_list_participants(TeacherExtra)
         obj.save()
+
         utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
                            obj.alias, obj.reg_number)
         tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
@@ -131,7 +139,8 @@ class MymoskvichiAdmin(BaseAdmin):
         return super().response_add(request, obj, post_url_continue)
 
     def response_change(self, request, obj):
-        obj.fio = obj.generate_list_participants()
+        obj.fio = obj.generate_list_participants(Participant)
+        obj.fio_teacher = obj.generate_list_participants(TeacherExtra)
         obj.save()
 
         utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],

@@ -8,9 +8,12 @@ from model_utils.managers import InheritanceManager
 from ckeditor.fields import RichTextField
 from users.models import CustomUser, Region, District
 from contests import utils
+from multiselectfield import MultiSelectField
 
 
 # Create your models here.
+
+
 class Age(models.Model):
     name = models.CharField('Возраст', max_length=10)
 
@@ -87,7 +90,7 @@ class BaseContest(models.Model):
                                blank=False, null=False)
     teacher = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     fio = models.CharField('Участник', max_length=300)
-    fio_teacher = models.CharField('ФИО педагога', max_length=40)
+    fio_teacher = models.CharField('Педагог', max_length=300)
     school = models.CharField('Образовательная организация', max_length=150)
     city = models.CharField('Город', max_length=101, blank=True)
     year_contest = models.CharField('Год проведения', max_length=20,
@@ -208,7 +211,7 @@ class NRusheva(BaseContest):
     author_name = models.CharField(max_length=50, blank=False,
                                    verbose_name='Авторское название')
     format = models.CharField(max_length=2, choices=(
-    ('A1', 'A1'), ('A2', 'A2'), ('A3', 'A3')), blank=False,
+        ('A1', 'A1'), ('A2', 'A2'), ('A3', 'A3')), blank=False,
                               verbose_name='Формат работы')
     description = models.TextField(max_length=500, blank=False,
                                    verbose_name='Аннотация')
@@ -230,6 +233,9 @@ class Mymoskvichi(BaseContest):
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school',
         'region', 'city', 'district'
     )
+    nomination = MultiSelectField(choices=MY_CHOICES2,
+                                  max_choices=3,
+                                  max_length=3)
 
     def __str__(self):
         return str(self.reg_number)
@@ -238,11 +244,11 @@ class Mymoskvichi(BaseContest):
         verbose_name = 'Конкурс Мы Москвичи'
         verbose_name_plural = 'Конкурс Мы Москвичи'
 
-    def generate_list_participants(self,fios=None):
-        if fios==None:
+    def generate_list_participants(self, model, fios=None):
+        if fios == None:
             fios = ''
             participants = list(
-                Participant.objects.filter(participants_id=self.pk).values_list(
+                model.objects.filter(participants_id=self.pk).values_list(
                     'fio', flat=True))
             for participant in participants:
                 if participant != participants[-1]:
@@ -252,10 +258,8 @@ class Mymoskvichi(BaseContest):
             return fios
 
 
-
-
 class Participant(models.Model):
-    fio = models.CharField(max_length=50, verbose_name='ФИО')
+    fio = models.CharField(max_length=50, verbose_name='Фамилия, имя')
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Участники',
                                      on_delete=models.CASCADE)
 
@@ -267,6 +271,17 @@ class Participant(models.Model):
         verbose_name_plural = 'Участники'
 
 
+class TeacherExtra(models.Model):
+    fio = models.CharField(max_length=50, verbose_name='ФИО')
+    participants = models.ForeignKey(Mymoskvichi, verbose_name='Педагог',
+                                     on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.fio)
+
+    class Meta:
+        verbose_name = 'Педагог'
+        verbose_name_plural = 'Педагоги'
 
 
 class PageContest(models.Model):
