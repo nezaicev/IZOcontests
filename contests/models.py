@@ -12,6 +12,21 @@ from multiselectfield import MultiSelectField
 
 
 # Create your models here.
+class Select(models.Model):
+    field = models.CharField('Название поля', max_length=20,
+                             choices=(
+                                 ('nomination', 'Номинация'), ('age', 'Возраст'),
+                                 ('theme','Тема')))
+    data = models.CharField('Данные', max_length=50)
+
+    class Meta:
+        abstract = True
+        verbose_name = 'Список'
+        verbose_name_plural = 'Списки'
+
+    def __str__(self):
+        return self.data
+
 
 
 class Age(models.Model):
@@ -145,16 +160,13 @@ class PathAndRename(object):
 
     def __call__(self, instance, filename):
         ext = filename.split('.')[-1]
-        # get filename
         if instance:
-            # Задаем имя файла по маске
             if hasattr(instance, 'reg_number'):
                 filename = '{}.{}'.format(instance.reg_number, ext)
             else:
                 filename = '{}.{}'.format(int(time.time()), ext)
 
         else:
-            # иначе генерируем по хэшу
             filename = '{}.{}'.format(uuid4().hex, ext)
         return os.path.join(self.path, filename)
 
@@ -231,18 +243,33 @@ class Mymoskvichi(BaseContest):
     back_email = 'mymoskvichi@mioo.ru'
     fields = (
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school',
-        'region', 'city', 'district'
+        'region', 'city', 'district','age','author_name','nomination',
+        'nomination_extra','program',
     )
-    nomination = MultiSelectField(choices=MY_CHOICES2,
-                                  max_choices=3,
-                                  max_length=3)
+    nomination = models.CharField(verbose_name='Номинация',
+
+                                  max_length=50)
+    nomination_extra = models.CharField(verbose_name='Доп.номинация',
+
+                                  max_length=50)
+    author_name = models.CharField(max_length=50, blank=False,
+                                   verbose_name='Авторское название')
+    program = models.CharField(max_length=100, blank=False,
+                               verbose_name="Программа(ы), в которой выполнена работа",
+                               null=True)
+    age = models.CharField(max_length=50,
+                           blank=False, verbose_name='Возрастная категория',
+                           null=True)
+    link = models.CharField(max_length=200,
+                           blank=True, verbose_name='Ссылка на файл (облако)',
+                           null=True)
 
     def __str__(self):
         return str(self.reg_number)
 
     class Meta:
-        verbose_name = 'Конкурс Мы Москвичи'
-        verbose_name_plural = 'Конкурс Мы Москвичи'
+        verbose_name = 'Конкурс Мы Москвичи (участники)'
+        verbose_name_plural = 'Конкурс Мы Москвичи (участники)'
 
     def generate_list_participants(self, model, fios=None):
         if fios == None:
@@ -256,6 +283,12 @@ class Mymoskvichi(BaseContest):
                 else:
                     fios += participant
             return fios
+
+class MymoskvichiSelect(Select):
+    class Meta:
+        verbose_name = 'Список (Мы Москвичи)'
+        verbose_name_plural = 'Списки (Мы Москвичи)'
+
 
 
 class Participant(models.Model):

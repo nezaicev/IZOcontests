@@ -2,7 +2,8 @@ import os
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from contests.models import Artakiada, Status, Material, Level, Nomination, \
-    Age, Theme, NRusheva, Mymoskvichi, Participant, TeacherExtra
+    Age, Theme, NRusheva, Mymoskvichi, Participant, TeacherExtra, MymoskvichiSelect
+from contests.forms import MymoskvichiForm
 from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm
 from django.conf import settings
@@ -119,6 +120,7 @@ class TeacherExtraInline(admin.StackedInline):
 
 
 class MymoskvichiAdmin(BaseAdmin):
+    form = MymoskvichiForm
     list_display = ('reg_number', 'school',
                     'region', 'district', 'teacher', 'status')
     actions = ['export_list_info']
@@ -155,6 +157,11 @@ class StatusAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
+class MymoskvichiSelectAdmin(admin.ModelAdmin):
+    model=MymoskvichiSelect
+    list_display = ['data']
+
+
 class MaterialAdmin(admin.ModelAdmin):
     model = Material
     list_display = ['name']
@@ -189,6 +196,7 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
+admin.site.register(MymoskvichiSelect, MymoskvichiSelectAdmin)
 admin.site.register(PageContest, PageContestAdmin)
 admin.site.register(Mymoskvichi, MymoskvichiAdmin)
 admin.site.register(Nomination, NominationAdmin)

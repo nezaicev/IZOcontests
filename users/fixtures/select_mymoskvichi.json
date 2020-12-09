@@ -1,0 +1,132 @@
+[
+  
+  {
+    "model": "contests.mymoskvichiselect",
+    "pk": 1,
+    "fields": {
+      "field": "nomination",
+      "data": "Лучший короткометражный фильм"
+    }
+  },
+  {
+    "model": "contests.mymoskvichiselect",
+    "pk": 2,
+    "fields": {
+      "field": "nomination",
+      "data": "Лучший анимационный фильм, снятый в технике stop-m"
+    }
+  },
+  {
+    "model": "contests.mymoskvichiselect",
+    "pk": 3,
+    "fields": {
+      "field": "nomination",
+      "data": "Лучший анимационный фильм, созданныйс помощью техн"
+    }
+  },
+  {
+    "model": "contests.mymoskvichiselect",
+    "pk": 4,
+    "fields": {
+      "field": "nomination",
+      "data": "Социальная  реклама"
+    }
+  },
+  {
+    "model": "contests.mymoskvichiselect",
+    "pk": 5,
+    "fields": {
+      "field": "nomination",
+      "data": "Репортаж"
+    }
+  },
+  {
+    "model": "contests.mymoskvichiselect",
+    "pk": 6,
+    "fields": {
+      "field": "nomination",
+      "data": "Лучшая экранизация литературного произведения"
+    }
+  },
+  {
+    "model": "contests.mymoskvichiselect",
+    "pk": 7,
+    "fields": {
+      "field": "nomination",
+      "data": "Лучшая экранизация литературного произведения"
+    }
+  },
+  {
+    "model": "contests.mymoskvichiselect",
+    "pk": 8,
+    "fields": {
+      "field": "nomination",
+      "data": "Лучший образовательный маршрут по изобразительному"
+    }
+  },
+  {
+    "model": "contests.mymoskvichiselect",
+    "pk": 9,
+    "fields": {
+      "field": "nomination",
+      "data": "Мой город, моя страна, мой мир"
+    }
+  },
+  {
+    "model": "contests.mymoskvichiselect",
+    "pk": 10,
+    "fields": {
+      "field": "nomination",
+      "data": "Профессии XXI века"
+    }
+  },
+  {
+    "model": "contests.mymoskvichiselect",
+    "pk": 11,
+    "fields": {
+      "field": "age",
+      "data": "До 6 лет включительно"
+    }
+  },
+  {
+    "model": "contests.mymoskvichiselect",
+    "pk": 12,
+    "fields": {
+      "field": "age",
+      "data": "От 7 до 10 лет включительно"
+    }
+  },
+  {
+    "model": "contests.mymoskvichiselect",
+    "pk": 13,
+    "fields": {
+      "field": "age",
+      "data": "От 11 до 13 лет включительно"
+    }
+  },
+  {
+    "model": "contests.mymoskvichiselect",
+    "pk": 14,
+    "fields": {
+      "field": "age",
+      "data": "От 14 до 17 лет включительно"
+    }
+  },
+  {
+    "model": "contests.mymoskvichiselect",
+    "pk": 15,
+    "fields": {
+      "field": "age",
+      "data": "Педагогическая разработка"
+    }
+  },
+  {
+    "model": "contests.mymoskvichiselect",
+    "pk": 16,
+    "fields": {
+      "field": "age",
+      "data": "Семейная работа"
+    }
+  }
+
+]
