@@ -82,14 +82,24 @@ class BaseAdmin(admin.ModelAdmin):
                 'district': request.user.district,
                 'fio_teacher': request.user.fio, }
 
-    # def render_change_form(self, request, context, *args, **kwargs):
-    #     name_fields=['nomination','nomination_extra']
-    #     for field in name_fields:
-    #         context['adminform'].form.fields[
-    #             field].queryset = Nomination.objects.filter(
-    #             contest__iexact=self.model.alias)
-    #     return super(BaseAdmin, self).render_change_form(request, context,
-    #                                                      *args, **kwargs)
+    def response_add(self, request, obj, post_url_continue=None):
+
+
+        utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
+                           obj.alias, obj.reg_number)
+        tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
+                                     "Заявка на конкурс")
+        return super().response_add(request, obj, post_url_continue)
+
+    def response_change(self, request, obj):
+
+
+        utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
+                           obj.alias, obj.reg_number)
+        tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
+                                     "Заявка на конкурс")
+        return super().response_change(request, obj)
+
 
     class Media:
         css = {'all': ('/static/dadata/css/suggestions.min.css',
@@ -134,10 +144,10 @@ class MymoskvichiAdmin(BaseAdmin):
         obj.fio_teacher=obj.generate_list_participants(TeacherExtra)
         obj.save()
 
-        utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
-                           obj.alias, obj.reg_number)
-        tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
-                                     "Заявка на конкурс")
+        # utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
+        #                    obj.alias, obj.reg_number)
+        # tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
+        #                              "Заявка на конкурс")
         return super().response_add(request, obj, post_url_continue)
 
     def response_change(self, request, obj):
@@ -145,10 +155,10 @@ class MymoskvichiAdmin(BaseAdmin):
         obj.fio_teacher = obj.generate_list_participants(TeacherExtra)
         obj.save()
 
-        utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
-                           obj.alias, obj.reg_number)
-        tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
-                                     "Заявка на конкурс")
+        # utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
+        #                    obj.alias, obj.reg_number)
+        # tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
+        #                              "Заявка на конкурс")
         return super().response_change(request, obj)
 
 
