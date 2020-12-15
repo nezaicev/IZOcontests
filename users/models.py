@@ -93,13 +93,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             ("status_view", "Can status view"),)
         
     def save(self, *args, **kwargs):
+        if not self.pk:
+            try:
+                group = Group.objects.get(name=self.default_group_teacher)
+                if group:
+                    self.groups.add(group.id)
+            except ObjectDoesNotExist:
+                print('Group {} not exist'.format(self.default_group_teacher))
+
         super(CustomUser, self).save(*args, **kwargs)
-        try:
-            group=Group.objects.get(name=self.default_group_teacher)
-            if group:
-                self.groups.add(group.id)
-        except ObjectDoesNotExist:
-            print('Group {} not exist'.format(self.default_group_teacher))
 
     def get_short_name(self):
         return self.email

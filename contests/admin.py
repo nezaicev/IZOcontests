@@ -61,13 +61,18 @@ class BaseAdmin(admin.ModelAdmin):
                 return self.list_display[:-1]
 
     def get_queryset(self, request):
-        if request.user.is_superuser or request.user.groups.filter(
-                name='Manager').exists():
+        if request.user.is_superuser or request.user.groups.filter(name='Manager'
+                                                                   ).exists():
+            exclude = list(self.exclude)
+            if 'status' in self.exclude:
+                exclude.remove('status')
+                self.exclude = exclude
             return super(BaseAdmin, self).get_queryset(request)
         else:
             exclude = list(self.exclude)
-            exclude.append('status')
-            self.exclude = exclude
+            if 'status' not in self.exclude:
+                exclude.append('status')
+                self.exclude = exclude
             qs = super(BaseAdmin, self).get_queryset(request)
             return qs.filter(teacher=request.user)
 
