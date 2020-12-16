@@ -3,12 +3,11 @@ import os
 from uuid import uuid4
 from django.db import models
 from django.utils.deconstruct import deconstructible
-from django.conf import settings
+from django.utils.safestring import mark_safe
 from model_utils.managers import InheritanceManager
 from ckeditor.fields import RichTextField
 from users.models import CustomUser, Region, District
 from contests import utils
-from multiselectfield import MultiSelectField
 
 
 # Create your models here.
@@ -192,6 +191,14 @@ class Artakiada(BaseContest):
     def __str__(self):
         return str(self.reg_number)
 
+    def image_tag(self):
+        if self.image:
+            return mark_safe('<a  href="%s" class="image-link">Изображение</a>' % self.image.url)
+        else:
+            return 'No Image Found'
+
+    image_tag.short_description = 'Image'
+
     class Meta:
         verbose_name = 'АРТакиада (участник)'
         verbose_name_plural = 'АРТакиада (участники)'
@@ -230,6 +237,12 @@ class NRusheva(BaseContest):
 
     def __str__(self):
         return str(self.reg_number)
+
+    def image_tag(self):
+        if self.image:
+            return mark_safe('<a  href="%s" class="image-link">Изображение</a>' % self.image.url)
+        else:
+            return 'No Image Found'
 
     class Meta:
         verbose_name = 'Конкурс им. Нади Рушевой (участник)'

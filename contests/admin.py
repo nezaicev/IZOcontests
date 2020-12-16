@@ -20,6 +20,7 @@ from contests import tasks
 
 
 class BaseAdmin(admin.ModelAdmin):
+    name=''
     form = ModelForm
     search_fields = ('reg_number', 'email', 'fio', 'fio_teacher')
     list_display = (
@@ -28,6 +29,12 @@ class BaseAdmin(admin.ModelAdmin):
     list_filter = ('status', 'district', 'region')
     actions = ('export_list_info',)
     exclude = ('reg_number', 'teacher', 'barcode','status')
+
+    def __init__(self,request, *args, **kwargs):
+        super().__init__(request,*args, **kwargs)
+        if not Group.objects.filter(name=self.name).exists():
+            group_contest = Group.objects.create(name=self.name)
+            group_contest.save()
 
     def export_list_info(self, request, queryset):
         meta = self.model._meta
@@ -60,7 +67,8 @@ class BaseAdmin(admin.ModelAdmin):
             self.list_editable = ('status',)
             return self.list_display
         else:
-            group_perm = Group.objects.get(name='Teacher').permissions.all()
+            self.list_filter = ()
+            group_perm = Group.objects.get(name=self.name).permissions.all()
             perm = Permission.objects.get(codename='status_view')
             if (perm in group_perm) or request.user.is_superuser:
                 self.list_display = self.__class__.list_display
@@ -70,7 +78,6 @@ class BaseAdmin(admin.ModelAdmin):
                 if 'status' in self.list_display:
                     list_display.remove('status')
                     self.list_display = list_display
-                    self.list_filter = ()
                 return self.list_display
 
 
@@ -116,10 +123,17 @@ class Media:
 
 class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
+    list_display = (
+        'reg_number', 'image_tag','fio', 'status', 'school', 'region', 'district',
+        'fio_teacher')
 
 
 class NRushevaAdmin(BaseAdmin):
     name = 'nrusheva'
+    list_display = (
+        'reg_number', 'image_tag', 'fio', 'status', 'school', 'region',
+        'district',
+        'fio_teacher')
 
 
 class ParticipantInline(admin.StackedInline):
