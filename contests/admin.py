@@ -1,4 +1,6 @@
 import os
+from typing import Tuple
+
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from contests.models import Artakiada, Status, Material, Level, Nomination, \
@@ -19,10 +21,13 @@ from contests import tasks
 
 class BaseAdmin(admin.ModelAdmin):
     form = ModelForm
-    list_display = ('fio', 'reg_number', 'school',
-                    'region', 'district', 'teacher', 'status')
-    actions = ['export_list_info']
-    exclude = ('reg_number', 'teacher', 'barcode')
+    search_fields = ('reg_number', 'email', 'fio', 'fio_teacher')
+    list_display = (
+        'reg_number', 'fio', 'status', 'school', 'region', 'district',
+        'fio_teacher')
+    list_filter = ('status', 'district', 'region')
+    actions = ('export_list_info',)
+    exclude = ('reg_number', 'teacher', 'barcode','status')
 
     def export_list_info(self, request, queryset):
         meta = self.model._meta
@@ -50,68 +55,63 @@ class BaseAdmin(admin.ModelAdmin):
     export_list_info.short_description = 'Скачать регистрационный лист участника'
 
     def get_list_display(self, request):
-        if request.user.is_superuser:
+        if request.user.is_superuser or request.user.groups.filter(
+                name='Manager').exists():
+            self.list_editable = ('status',)
             return self.list_display
         else:
             group_perm = Group.objects.get(name='Teacher').permissions.all()
             perm = Permission.objects.get(codename='status_view')
-            if perm in group_perm:
+            if (perm in group_perm) or request.user.is_superuser:
+                self.list_display = self.__class__.list_display
                 return self.list_display
             else:
-                return self.list_display[:-1]
+                list_display = list(self.list_display)
+                if 'status' in self.list_display:
+                    list_display.remove('status')
+                    self.list_display = list_display
+                    self.list_filter = ()
+                return self.list_display
 
-    def get_queryset(self, request):
-        if request.user.is_superuser or request.user.groups.filter(name='Manager'
-                                                                   ).exists():
-            exclude = list(self.exclude)
-            if 'status' in self.exclude:
-                exclude.remove('status')
-                self.exclude = exclude
-            return super(BaseAdmin, self).get_queryset(request)
-        else:
-            exclude = list(self.exclude)
-            if 'status' not in self.exclude:
-                exclude.append('status')
-                self.exclude = exclude
-            qs = super(BaseAdmin, self).get_queryset(request)
-            return qs.filter(teacher=request.user)
 
-    def save_model(self, request, obj, form, change):
-        if not obj.pk:
-            obj.teacher = request.user
-        super().save_model(request, obj, form, change)
+def save_model(self, request, obj, form, change):
+    if not obj.pk:
+        obj.teacher = request.user
+    super().save_model(request, obj, form, change)
 
-    def get_changeform_initial_data(self, request):
-        return {'city': request.user.city,
-                'school': request.user.school,
-                'region': request.user.region,
-                'district': request.user.district,
-                'fio_teacher': request.user.fio, }
 
-    def response_add(self, request, obj, post_url_continue=None):
+def get_changeform_initial_data(self, request):
+    return {'city': request.user.city,
+            'school': request.user.school,
+            'region': request.user.region,
+            'district': request.user.district,
+            'fio_teacher': request.user.fio, }
 
-        utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
-                           obj.alias, obj.reg_number)
-        tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
-                                     "Заявка на конкурс")
-        return super().response_add(request, obj, post_url_continue)
 
-    def response_change(self, request, obj):
+def response_add(self, request, obj, post_url_continue=None):
+    utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
+                       obj.alias, obj.reg_number)
+    tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
+                                 "Заявка на конкурс")
+    return super().response_add(request, obj, post_url_continue)
 
-        utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
-                           obj.alias, obj.reg_number)
-        tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
-                                     "Заявка на конкурс")
-        return super().response_change(request, obj)
 
-    class Media:
-        css = {'all': ('/static/dadata/css/suggestions.min.css',
-                       )}
-        js = [
-            'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js',
-            'https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/js/jquery.suggestions.min.js',
-            '/static/dadata/js/organizations.js',
-            '/static/dadata/js/city_for_admin.js']
+def response_change(self, request, obj):
+    utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
+                       obj.alias, obj.reg_number)
+    tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
+                                 "Заявка на конкурс")
+    return super().response_change(request, obj)
+
+
+class Media:
+    css = {'all': ('/static/dadata/css/suggestions.min.css',
+                   )}
+    js = [
+        'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js',
+        'https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/js/jquery.suggestions.min.js',
+        '/static/dadata/js/organizations.js',
+        '/static/dadata/js/city_for_admin.js']
 
 
 class ArtakiadaAdmin(BaseAdmin):
@@ -134,10 +134,6 @@ class TeacherExtraInline(admin.StackedInline):
 
 class MymoskvichiAdmin(BaseAdmin):
     form = MymoskvichiForm
-    list_display = ('reg_number', 'school',
-                    'region', 'district', 'teacher', 'status')
-    actions = ['export_list_info']
-    exclude = ('fio', 'reg_number', 'teacher', 'barcode', 'fio_teacher')
     model = Mymoskvichi
     name = 'mymoskvichi'
     inlines = [ParticipantInline, TeacherExtraInline]
