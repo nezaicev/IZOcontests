@@ -30,12 +30,6 @@ class BaseAdmin(admin.ModelAdmin):
     actions = ('export_list_info',)
     exclude = ('reg_number', 'teacher', 'barcode','status')
 
-    # def __init__(self,request, *args, **kwargs):
-    #     super().__init__(request,*args, **kwargs)
-    #     if not Group.objects.filter(name=self.name).exists():
-    #         group_contest = Group.objects.create(name=self.name)
-    #         group_contest.save()
-
     def export_list_info(self, request, queryset):
         meta = self.model._meta
         reg_number = queryset[0].reg_number
