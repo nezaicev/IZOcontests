@@ -73,45 +73,40 @@ class BaseAdmin(admin.ModelAdmin):
                     self.list_display = list_display
                 return self.list_display
 
+    def save_model(self, request, obj, form, change):
+        if not obj.pk:
+            obj.teacher = request.user
+        super().save_model(request, obj, form, change)
 
-def save_model(self, request, obj, form, change):
-    if not obj.pk:
-        obj.teacher = request.user
-    super().save_model(request, obj, form, change)
+    def get_changeform_initial_data(self, request):
+        return {'city': request.user.city,
+                'school': request.user.school,
+                'region': request.user.region,
+                'district': request.user.district,
+                'fio_teacher': request.user.fio, }
 
+    def response_add(self, request, obj, post_url_continue=None):
+        utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
+                           obj.alias, obj.reg_number)
+        tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
+                                     "Заявка на конкурс")
+        return super().response_add(request, obj, post_url_continue)
 
-def get_changeform_initial_data(self, request):
-    return {'city': request.user.city,
-            'school': request.user.school,
-            'region': request.user.region,
-            'district': request.user.district,
-            'fio_teacher': request.user.fio, }
+    def response_change(self, request, obj):
+        utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
+                           obj.alias, obj.reg_number)
+        tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
+                                     "Заявка на конкурс")
+        return super().response_change(request, obj)
 
-
-def response_add(self, request, obj, post_url_continue=None):
-    utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
-                       obj.alias, obj.reg_number)
-    tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
-                                 "Заявка на конкурс")
-    return super().response_add(request, obj, post_url_continue)
-
-
-def response_change(self, request, obj):
-    utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
-                       obj.alias, obj.reg_number)
-    tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
-                                 "Заявка на конкурс")
-    return super().response_change(request, obj)
-
-
-class Media:
-    css = {'all': ('/static/dadata/css/suggestions.min.css',
-                   )}
-    js = [
-        'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js',
-        'https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/js/jquery.suggestions.min.js',
-        '/static/dadata/js/organizations.js',
-        '/static/dadata/js/city_for_admin.js']
+    class Media:
+        css = {'all': ('/static/dadata/css/suggestions.min.css',
+                       )}
+        js = [
+            'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js',
+            'https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/js/jquery.suggestions.min.js',
+            '/static/dadata/js/organizations.js',
+            '/static/dadata/js/city_for_admin.js']
 
 
 class ArtakiadaAdmin(BaseAdmin):
