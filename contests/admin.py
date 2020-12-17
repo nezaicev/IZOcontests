@@ -30,11 +30,11 @@ class BaseAdmin(admin.ModelAdmin):
     actions = ('export_list_info',)
     exclude = ('reg_number', 'teacher', 'barcode','status')
 
-    def __init__(self,request, *args, **kwargs):
-        super().__init__(request,*args, **kwargs)
-        if not Group.objects.filter(name=self.name).exists():
-            group_contest = Group.objects.create(name=self.name)
-            group_contest.save()
+    # def __init__(self,request, *args, **kwargs):
+    #     super().__init__(request,*args, **kwargs)
+    #     if not Group.objects.filter(name=self.name).exists():
+    #         group_contest = Group.objects.create(name=self.name)
+    #         group_contest.save()
 
     def export_list_info(self, request, queryset):
         meta = self.model._meta
@@ -65,14 +65,13 @@ class BaseAdmin(admin.ModelAdmin):
         if request.user.is_superuser or request.user.groups.filter(
                 name='Manager').exists():
             self.list_editable = ('status',)
-            return self.list_display
+            return self.__class__.list_display
         else:
             self.list_filter = ()
-            group_perm = Group.objects.get(name=self.name).permissions.all()
-            perm = Permission.objects.get(codename='status_view')
+            group_perm = Group.objects.get(name='Teacher').permissions.all()
+            perm = Permission.objects.get(codename='status_view_{}'.format(self.name))
             if (perm in group_perm) or request.user.is_superuser:
-                self.list_display = self.__class__.list_display
-                return self.list_display
+                return self.__class__.list_display
             else:
                 list_display = list(self.list_display)
                 if 'status' in self.list_display:
@@ -211,10 +210,14 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
+class PermissionAdmin(admin.ModelAdmin):
+    model=Permission
+
 admin.site.register(MymoskvichiSelect, MymoskvichiSelectAdmin)
 admin.site.register(PageContest, PageContestAdmin)
 admin.site.register(Mymoskvichi, MymoskvichiAdmin)
 admin.site.register(Nomination, NominationAdmin)
+admin.site.register(Permission,PermissionAdmin)
 admin.site.register(Artakiada, ArtakiadaAdmin)
 admin.site.register(NRusheva, NRushevaAdmin)
 admin.site.register(Material, MaterialAdmin)
