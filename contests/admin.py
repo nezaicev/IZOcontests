@@ -55,6 +55,14 @@ class BaseAdmin(admin.ModelAdmin):
 
     export_list_info.short_description = 'Скачать регистрационный лист участника'
 
+    def get_queryset(self, request):
+        if request.user.is_superuser or request.user.groups.filter(
+                name='Manager').exists():
+            return super(BaseAdmin, self).get_queryset(request)
+        else:
+            qs = super(BaseAdmin, self).get_queryset(request)
+            return qs.filter(teacher=request.user)
+
     def get_list_display(self, request):
         if request.user.is_superuser or request.user.groups.filter(
                 name='Manager').exists():
@@ -62,6 +70,7 @@ class BaseAdmin(admin.ModelAdmin):
             return self.__class__.list_display
         else:
             self.list_filter = ()
+            self.list_editable = ()
             group_perm = Group.objects.get(name='Teacher').permissions.all()
             perm = Permission.objects.get(codename='status_view_{}'.format(self.name))
             if (perm in group_perm) or request.user.is_superuser:
