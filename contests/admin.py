@@ -148,6 +148,7 @@ class MymoskvichiAdmin(BaseAdmin):
     model = Mymoskvichi
     name = 'mymoskvichi'
     inlines = [ParticipantInline, TeacherExtraInline]
+    exclude = ('reg_number', 'teacher', 'barcode', 'status','fio')
 
     def response_add(self, request, obj, post_url_continue=None):
         obj.fio = obj.generate_list_participants(Participant)

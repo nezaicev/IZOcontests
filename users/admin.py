@@ -10,8 +10,8 @@ class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
-    list_display = ('email', 'fio')
-    list_filter = ('email',)
+    list_display = ('email', 'fio','school','region', 'status','district')
+    list_filter = ('status', 'district', 'region')
     fieldsets = (
         (None, {'fields': ('email', 'fio', 'region', 'status','district','school','city','position','phone','age')}),
         ('Permissions',
@@ -35,7 +35,6 @@ class CustomUserAdmin(UserAdmin):
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = super(CustomUserAdmin, self).get_fieldsets(request, obj)
-        # if obj:
         if request.user.is_superuser:
             return fieldsets
         else:
