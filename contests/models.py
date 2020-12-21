@@ -14,8 +14,9 @@ from contests import utils
 class Select(models.Model):
     field = models.CharField('Название поля', max_length=20,
                              choices=(
-                                 ('nomination', 'Номинация'), ('age', 'Возраст'),
-                                 ('theme','Тема')))
+                                 ('nomination', 'Номинация'),
+                                 ('age', 'Возраст'),
+                                 ('theme', 'Тема')))
     data = models.CharField('Данные', max_length=50)
 
     class Meta:
@@ -25,7 +26,6 @@ class Select(models.Model):
 
     def __str__(self):
         return self.data
-
 
 
 class Age(models.Model):
@@ -193,7 +193,9 @@ class Artakiada(BaseContest):
 
     def image_tag(self):
         if self.image:
-            return mark_safe('<a data-fancybox="gallery" href="%s" class="image-link">Изображение</a>' % self.image.url)
+            return mark_safe(
+                '<a data-fancybox="gallery" data-caption="{}, {}" href="{}" class="image-link">Изображение</a>'.format(
+                    self.reg_number, self.fio, self.image.url))
         else:
             return 'No Image Found'
 
@@ -240,7 +242,10 @@ class NRusheva(BaseContest):
 
     def image_tag(self):
         if self.image:
-            return mark_safe('<a  data-fancybox="gallery" href="%s" class="image-link">Изображение</a>' % self.image.url)
+            return mark_safe(
+                '<a data-fancybox="gallery" data-caption="{}, {}" href="{}" class="image-link">Изображение</a>'.format(
+                    self.reg_number, self.fio, self.image.url)
+                )
         else:
             return 'No Image Found'
 
@@ -256,15 +261,15 @@ class Mymoskvichi(BaseContest):
     back_email = 'mymoskvichi@mioo.ru'
     fields = (
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school',
-        'region', 'city', 'district','age','author_name','nomination',
-        'nomination_extra','program',
+        'region', 'city', 'district', 'age', 'author_name', 'nomination',
+        'nomination_extra', 'program',
     )
     nomination = models.CharField(verbose_name='Номинация',
 
                                   max_length=50)
     nomination_extra = models.CharField(verbose_name='Доп.номинация',
 
-                                  max_length=50)
+                                        max_length=50)
     author_name = models.CharField(max_length=50, blank=False,
                                    verbose_name='Авторское название')
     program = models.CharField(max_length=100, blank=False,
@@ -274,8 +279,8 @@ class Mymoskvichi(BaseContest):
                            blank=False, verbose_name='Возрастная категория',
                            null=True)
     link = models.CharField(max_length=200,
-                           blank=True, verbose_name='Ссылка на файл (облако)',
-                           null=True)
+                            blank=True, verbose_name='Ссылка на файл (облако)',
+                            null=True)
 
     def __str__(self):
         return str(self.reg_number)
@@ -297,11 +302,11 @@ class Mymoskvichi(BaseContest):
                     fios += participant
             return fios
 
+
 class MymoskvichiSelect(Select):
     class Meta:
         verbose_name = 'Список (Мы Москвичи)'
         verbose_name_plural = 'Списки (Мы Москвичи)'
-
 
 
 class Participant(models.Model):
