@@ -194,8 +194,8 @@ class Artakiada(BaseContest):
     def image_tag(self):
         if self.image:
             return mark_safe(
-                '<a data-fancybox="gallery" data-caption="{}, {}" href="{}" class="image-link">Изображение</a>'.format(
-                    self.reg_number, self.fio, self.image.url))
+                '<a data-fancybox="gallery" data-caption="{}, {}, {}" href="{}" class="image-link">Изображение</a>'.format(
+                    self.reg_number, self.fio,self.level, self.image.url))
         else:
             return 'No Image Found'
 
@@ -243,8 +243,8 @@ class NRusheva(BaseContest):
     def image_tag(self):
         if self.image:
             return mark_safe(
-                '<a data-fancybox="gallery" data-caption="{}, {}" href="{}" class="image-link">Изображение</a>'.format(
-                    self.reg_number, self.fio, self.image.url)
+                '<a data-fancybox="gallery" data-caption="{}, {}, {}" href="{}" class="image-link">Изображение</a>'.format(
+                    self.reg_number, self.fio, self.age, self.image.url)
                 )
         else:
             return 'No Image Found'
