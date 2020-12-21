@@ -20,7 +20,7 @@ from contests import tasks
 
 
 class BaseAdmin(admin.ModelAdmin):
-    name=''
+    name = ''
     form = ModelForm
     search_fields = ('reg_number', 'email', 'fio', 'fio_teacher')
     list_display = (
@@ -28,7 +28,7 @@ class BaseAdmin(admin.ModelAdmin):
         'fio_teacher')
     list_filter = ('status', 'district', 'region')
     actions = ('export_list_info',)
-    exclude = ('reg_number', 'teacher', 'barcode','status')
+    exclude = ('reg_number', 'teacher', 'barcode', 'status')
 
     def export_list_info(self, request, queryset):
         meta = self.model._meta
@@ -72,7 +72,8 @@ class BaseAdmin(admin.ModelAdmin):
             self.list_filter = ()
             self.list_editable = ()
             group_perm = Group.objects.get(name='Teacher').permissions.all()
-            perm = Permission.objects.get(codename='status_view_{}'.format(self.name))
+            perm = Permission.objects.get(
+                codename='status_view_{}'.format(self.name))
             if (perm in group_perm) or request.user.is_superuser:
                 return self.__class__.list_display
             else:
@@ -110,18 +111,23 @@ class BaseAdmin(admin.ModelAdmin):
 
     class Media:
         css = {'all': ('/static/dadata/css/suggestions.min.css',
+                       "https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css",
                        )}
         js = [
             'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js',
             'https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/js/jquery.suggestions.min.js',
             '/static/dadata/js/organizations.js',
-            '/static/dadata/js/city_for_admin.js']
+            '/static/dadata/js/city_for_admin.js',
+            "https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js",
+            "https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js",
+        ]
 
 
 class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
     list_display = (
-        'reg_number', 'image_tag','fio', 'status', 'school', 'region', 'district',
+        'reg_number', 'image_tag', 'fio', 'status', 'school', 'region',
+        'district',
         'fio_teacher')
 
 
@@ -148,7 +154,7 @@ class MymoskvichiAdmin(BaseAdmin):
     model = Mymoskvichi
     name = 'mymoskvichi'
     inlines = [ParticipantInline, TeacherExtraInline]
-    exclude = ('reg_number', 'teacher', 'barcode', 'status','fio')
+    exclude = ('reg_number', 'teacher', 'barcode', 'status', 'fio')
 
     def response_add(self, request, obj, post_url_continue=None):
         obj.fio = obj.generate_list_participants(Participant)
@@ -210,13 +216,14 @@ class MessageAdmin(admin.ModelAdmin):
 
 
 class PermissionAdmin(admin.ModelAdmin):
-    model=Permission
+    model = Permission
+
 
 admin.site.register(MymoskvichiSelect, MymoskvichiSelectAdmin)
 admin.site.register(PageContest, PageContestAdmin)
 admin.site.register(Mymoskvichi, MymoskvichiAdmin)
 admin.site.register(Nomination, NominationAdmin)
-admin.site.register(Permission,PermissionAdmin)
+admin.site.register(Permission, PermissionAdmin)
 admin.site.register(Artakiada, ArtakiadaAdmin)
 admin.site.register(NRusheva, NRushevaAdmin)
 admin.site.register(Material, MaterialAdmin)
