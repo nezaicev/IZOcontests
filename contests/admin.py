@@ -22,7 +22,7 @@ from contests import tasks
 class BaseAdmin(admin.ModelAdmin):
     name = ''
     form = ModelForm
-    search_fields = ('reg_number', 'email', 'fio', 'fio_teacher')
+    search_fields = ('reg_number', 'fio', 'fio_teacher')
     list_display = (
         'reg_number', 'fio', 'status', 'school', 'region', 'district',
         'fio_teacher')
