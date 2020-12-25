@@ -67,6 +67,8 @@ class BaseAdmin(admin.ModelAdmin):
         if request.user.is_superuser or request.user.groups.filter(
                 name='Manager').exists():
             self.list_editable = ('status',)
+            self.list_filter=self.__class__.list_filter
+            print(self.list_filter)
             return self.__class__.list_display
         else:
             self.list_filter = ()
