@@ -310,7 +310,7 @@ class MymoskvichiSelect(Select):
 
 
 class Participant(models.Model):
-    fio = models.CharField(max_length=50, verbose_name='Фамилия, имя')
+    fio = models.CharField(max_length=50, verbose_name='Фамилия, имя',blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Участники',
                                      on_delete=models.CASCADE)
 
@@ -323,7 +323,7 @@ class Participant(models.Model):
 
 
 class TeacherExtra(models.Model):
-    fio = models.CharField(max_length=50, verbose_name='ФИО')
+    fio = models.CharField(max_length=50, verbose_name='ФИО',blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Педагог',
                                      on_delete=models.CASCADE)
 

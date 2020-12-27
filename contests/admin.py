@@ -1,6 +1,6 @@
 import os
 from typing import Tuple
-
+from django import forms
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from contests.models import Artakiada, Status, Material, Level, Nomination, \
@@ -141,14 +141,28 @@ class NRushevaAdmin(BaseAdmin):
         'fio_teacher')
 
 
+class InlineFormset(forms.models.BaseInlineFormSet):
+    def clean(self):
+        count = 0
+        for form in self.forms:
+            try:
+                if form.cleaned_data:
+                    count += 1
+            except AttributeError:
+                pass
+        if count < 1:
+            raise forms.ValidationError('Должен быть хотябы один участник и один педагог')
+
+
 class ParticipantInline(admin.StackedInline):
+    formset = InlineFormset
     model = Participant
-    extra = 0
+    extra = 1
 
 
 class TeacherExtraInline(admin.StackedInline):
     model = TeacherExtra
-    extra = 0
+    extra = 1
 
 
 class MymoskvichiAdmin(BaseAdmin):
@@ -156,18 +170,22 @@ class MymoskvichiAdmin(BaseAdmin):
     model = Mymoskvichi
     name = 'mymoskvichi'
     inlines = [ParticipantInline, TeacherExtraInline]
-    exclude = ('reg_number', 'teacher', 'barcode', 'status', 'fio')
+    exclude = ('reg_number', 'teacher', 'barcode', 'status', 'fio','fio_teacher')
 
     def response_add(self, request, obj, post_url_continue=None):
-        obj.fio = obj.generate_list_participants(Participant)
-        obj.fio_teacher = obj.generate_list_participants(TeacherExtra)
+        if obj.generate_list_participants(Participant):
+            obj.fio = obj.generate_list_participants(Participant)
+        if obj.generate_list_participants(TeacherExtra):
+            obj.fio_teacher = obj.generate_list_participants(TeacherExtra)
         obj.save()
 
         return super().response_add(request, obj, post_url_continue)
 
     def response_change(self, request, obj):
-        obj.fio = obj.generate_list_participants(Participant)
-        obj.fio_teacher = obj.generate_list_participants(TeacherExtra)
+        if obj.generate_list_participants(Participant):
+            obj.fio = obj.generate_list_participants(Participant)
+        if obj.generate_list_participants(TeacherExtra):
+            obj.fio_teacher = obj.generate_list_participants(TeacherExtra)
         obj.save()
 
         return super().response_change(request, obj)
