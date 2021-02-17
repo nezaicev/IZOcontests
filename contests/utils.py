@@ -19,6 +19,13 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.styles import ParagraphStyle
 
 
+def remove_field_in_list(obj_tuple,name_field):
+    fields = list(obj_tuple)
+    if name_field in fields:
+        fields.remove(name_field)
+    return fields
+
+
 def generate_xls(queryset, field_names, exclude_field, path):
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Users')

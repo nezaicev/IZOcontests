@@ -79,10 +79,7 @@ class BaseAdmin(admin.ModelAdmin):
             if (perm in group_perm) or request.user.is_superuser:
                 return self.__class__.list_display
             else:
-                list_display = list(self.list_display)
-                if 'status' in self.list_display:
-                    list_display.remove('status')
-                    self.list_display = list_display
+                self.list_display = utils.remove_field_in_list(self.list_display,'status')
                 return self.list_display
 
     def save_model(self, request, obj, form, change):
@@ -127,16 +124,36 @@ class BaseAdmin(admin.ModelAdmin):
 
 class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
+    list_filter = ('level','status', 'district', 'region')
     list_display = (
-        'reg_number', 'image_tag', 'fio', 'status', 'school', 'region',
+        'reg_number', 'image_tag', 'fio', 'level','status', 'school', 'region',
         'district',
         'fio_teacher')
+
+    def get_queryset(self, request):
+        if request.user.is_superuser or request.user.groups.filter(
+                name='Manager').exists() or request.user.groups.filter(
+                name='Jury').exists():
+            return super(BaseAdmin, self).get_queryset(request)
+        else:
+            qs = super(BaseAdmin, self).get_queryset(request)
+            return qs.filter(teacher=request.user)
+
+    def get_list_display(self, request):
+        if request.user.is_superuser or request.user.groups.filter(
+                name='Jury').exists():
+            self.list_display=utils.remove_field_in_list(self.list_display,'status')
+            self.list_filter=utils.remove_field_in_list(self.list_filter,'status')
+            return self.list_display
+        else:
+            return super(BaseAdmin,self).get_list_display(request)
 
 
 class NRushevaAdmin(BaseAdmin):
     name = 'nrusheva'
+    list_filter = ('level', 'status', 'district', 'region')
     list_display = (
-        'reg_number', 'image_tag', 'fio', 'status', 'school', 'region',
+        'reg_number', 'image_tag', 'fio','status', 'school', 'region',
         'district',
         'fio_teacher')
 
