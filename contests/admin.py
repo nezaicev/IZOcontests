@@ -27,19 +27,8 @@ class BaseAdmin(admin.ModelAdmin):
         'reg_number', 'fio', 'status', 'school', 'region', 'district',
         'fio_teacher')
     list_filter = ('status', 'district', 'region')
-    actions = ['export_list_info','export_as_xls']
+    actions = ('export_list_info',)
     exclude = ('reg_number', 'teacher', 'barcode', 'status')
-
-    def export_as_xls(self, request, queryset):
-        meta = self.model._meta
-        path = os.path.join(settings.MEDIA_ROOT, 'xls', 'report.xls')
-        response = HttpResponse(content_type='application/ms-excel')
-        response['Content-Disposition'] = 'attachment; filename={}.xls'.format(meta)
-        utils.generate_xls(queryset,path)
-        response = FileResponse(open(path, 'rb'))
-        return response
-
-    export_as_xls.short_description = 'Выгрузить список Excel'
 
     def export_list_info(self, request, queryset):
         meta = self.model._meta
@@ -66,16 +55,6 @@ class BaseAdmin(admin.ModelAdmin):
 
     export_list_info.short_description = 'Скачать регистрационный лист участника'
 
-    def get_actions(self, request):
-        actions = super().get_actions(request)
-
-        if not request.user.groups.filter(
-                name='Manager').exists():
-            if 'export_as_xls' in actions:
-                del actions['export_as_xls']
-        return actions
-
-
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.groups.filter(
                 name='Manager').exists():
@@ -85,24 +64,25 @@ class BaseAdmin(admin.ModelAdmin):
             return qs.filter(teacher=request.user)
 
     def get_list_display(self, request):
-
         if request.user.is_superuser or request.user.groups.filter(
                 name='Manager').exists():
             self.list_editable = ('status',)
             self.list_filter=self.__class__.list_filter
+            print(self.list_filter)
             return self.__class__.list_display
         else:
             self.list_filter = ()
             self.list_editable = ()
-
             group_perm = Group.objects.get(name='Teacher').permissions.all()
             perm = Permission.objects.get(
                 codename='status_view_{}'.format(self.name))
             if (perm in group_perm) or request.user.is_superuser:
                 return self.__class__.list_display
             else:
-                self.list_display = utils.remove_field_in_list(self.list_display,'status')
-
+                list_display = list(self.list_display)
+                if 'status' in self.list_display:
+                    list_display.remove('status')
+                    self.list_display = list_display
                 return self.list_display
 
     def save_model(self, request, obj, form, change):
@@ -113,7 +93,7 @@ class BaseAdmin(admin.ModelAdmin):
     def get_changeform_initial_data(self, request):
         return {'city': request.user.city,
                 'school': request.user.school,
-                'region': (request.user.region),
+                'region': request.user.region,
                 'district': request.user.district,
                 'fio_teacher': request.user.fio, }
 
@@ -147,36 +127,16 @@ class BaseAdmin(admin.ModelAdmin):
 
 class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
-    list_filter = ('level','status', 'district', 'region')
     list_display = (
-        'reg_number', 'image_tag', 'fio', 'level','status', 'school', 'region',
+        'reg_number', 'image_tag', 'fio', 'status', 'school', 'region',
         'district',
         'fio_teacher')
-
-    def get_queryset(self, request):
-        if request.user.is_superuser or request.user.groups.filter(
-                name='Manager').exists() or request.user.groups.filter(
-                name='Jury').exists():
-            return super(BaseAdmin, self).get_queryset(request)
-        else:
-            qs = super(BaseAdmin, self).get_queryset(request)
-            return qs.filter(teacher=request.user)
-
-    def get_list_display(self, request):
-        if request.user.groups.filter(
-                name='Jury').exists():
-            self.list_display=utils.remove_field_in_list(self.list_display,'status')
-            self.list_filter=utils.remove_field_in_list(self.list_filter,'status')
-            return self.list_display
-        else:
-            return super().get_list_display(request)
 
 
 class NRushevaAdmin(BaseAdmin):
     name = 'nrusheva'
-    list_filter = ('level', 'status', 'district', 'region')
     list_display = (
-        'reg_number', 'image_tag', 'fio','status', 'school', 'region',
+        'reg_number', 'image_tag', 'fio', 'status', 'school', 'region',
         'district',
         'fio_teacher')
 
@@ -277,7 +237,6 @@ class MessageAdmin(admin.ModelAdmin):
 
 class PermissionAdmin(admin.ModelAdmin):
     model = Permission
-
 
 
 admin.site.register(MymoskvichiSelect, MymoskvichiSelectAdmin)

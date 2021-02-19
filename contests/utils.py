@@ -19,14 +19,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.styles import ParagraphStyle
 
 
-def remove_field_in_list(obj_tuple,name_field):
-    fields = list(obj_tuple)
-    if name_field in fields:
-        fields.remove(name_field)
-    return fields
-
-
-def generate_xls(queryset, path):
+def generate_xls(queryset, field_names, exclude_field, path):
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Users')
 
@@ -34,18 +27,20 @@ def generate_xls(queryset, path):
     row_num = 0
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
-    for col_num in range(len(queryset[0]._meta.fields)):
-        ws.write(row_num, col_num, queryset[0]._meta.fields[col_num].verbose_name, font_style)
+
+    for col_num in range(len(field_names)):
+        ws.write(row_num, col_num, field_names[col_num], font_style)
     font_style = xlwt.XFStyle()
     for ridx, obj in enumerate(queryset):
         ridx += 1
         for cidx, field in enumerate(obj._meta.fields):
-            if field.choices:
-                val = obj._get_FIELD_display(field)
-                ws.write(ridx, cidx, val, font_style)
-            else:
-                val = str(getattr(obj, field.name))
-                ws.write(ridx, cidx, val, font_style)
+            if field.name not in exclude_field:
+                if field.choices:
+                    val = obj._get_FIELD_display(field)
+                    ws.write(ridx, cidx, val, font_style)
+                else:
+                    val = getattr(obj, field.name)
+                    ws.write(ridx, cidx, val, font_style)
 
     wb.save(path)
 
@@ -109,6 +104,15 @@ def generate_pdf(list, contest_name, alias, reg_number):
     c.save()
 
 
+# def simple_send_mail(obj, email, message_template, subject, from_email):
+#     list_emails = [email]
+#     message = render_to_string(message_template,
+#                                {'reg_number': obj.reg_number})
+#     msg = EmailMultiAlternatives(subject, message, from_email, list_emails)
+#     msg.content_subtype = "html"
+#     attached_file = os.path.join(settings.MEDIA_ROOT, 'pdf', obj.name, f'{obj.reg_number}.pdf')
+#     msg.attach_file(attached_file, mimetype='text/html')
+#     msg.send()
 
 
 def send_mail_contest(secret, email, reg_number, message_template,
