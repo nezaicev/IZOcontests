@@ -165,6 +165,7 @@ class ArtakiadaAdmin(BaseAdmin):
     def get_list_display(self, request):
         if request.user.groups.filter(
                 name='Jury').exists():
+            self.list_filter = self.__class__.list_filter
             self.list_display=utils.remove_field_in_list(self.list_display,'status')
             self.list_filter=utils.remove_field_in_list(self.list_filter,'status')
             return self.list_display
