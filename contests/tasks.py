@@ -4,8 +4,28 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from celery import shared_task
+from django_selectel_storage.storage import SelectelStorage, Container
 from contests import models
-from contests.models import Artakiada
+from contests.utils import generate_thumb
+
+
+@shared_task
+def celery_create_thumbs(urls_levels, config):
+    if config['USERNAME']=='':
+        storage = SelectelStorage()
+    else:
+        storage = SelectelStorage()
+        storage.config=config
+        storage.container=Container(config)
+
+    for obj in urls_levels:
+        path_thumb=generate_thumb(obj)
+        name_img=obj['level'].replace(' ','_')+'_'+obj['url'].split('/')[-1]
+        with open(path_thumb, 'rb' ) as image:
+            print(storage._save(os.path.join(name_img),image.read()))
+            os.remove(os.path.join(settings.MEDIA_ROOT,'tmp',name_img))
+    else:
+        print('Объект не содержит атрибута "image"')
 
 
 @shared_task

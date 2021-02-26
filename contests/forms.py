@@ -3,6 +3,13 @@ from contests.models import PageContest, Mymoskvichi, MymoskvichiSelect
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 
+class ConfStorageForm(forms.Form):
+    _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
+    username = forms.CharField(widget=forms.TextInput)
+    password = forms.CharField(widget=forms.TextInput)
+    container = forms.CharField(widget=forms.TextInput)
+
+
 class PageContestsFrom(forms.ModelForm):
     name = forms.CharField()
     logo = forms.ImageField()
