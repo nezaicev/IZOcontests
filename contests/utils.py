@@ -29,6 +29,7 @@ def generate_thumb(obj,size='md'):
         with open(os.path.join(settings.MEDIA_ROOT, 'tmp','thumb.jpg'), 'wb') as f:
             f.write(result.content)
         img = Image.open(os.path.join(settings.MEDIA_ROOT,'tmp', 'thumb.jpg'))
+        img=img.convert("RGB")
         img.thumbnail(sizes[size],Image.ANTIALIAS)
         new_name_image=obj['level'].replace(' ','_')+'_'+obj['url'].split('/')[-1]
         path_img=os.path.join(settings.MEDIA_ROOT,'tmp',new_name_image)
