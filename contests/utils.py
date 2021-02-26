@@ -17,6 +17,24 @@ from reportlab.lib import colors
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.styles import ParagraphStyle
+from PIL import Image
+import requests
+
+
+def generate_thumb(obj,size='md'):
+    result=requests.get(obj['url'])
+    sizes = {'sm': (200, 200),
+             'md': (900, 900)}
+    if result.status_code==200:
+        with open(os.path.join(settings.MEDIA_ROOT, 'tmp','thumb.jpg'), 'wb') as f:
+            f.write(result.content)
+        img = Image.open(os.path.join(settings.MEDIA_ROOT,'tmp', 'thumb.jpg'))
+        img.thumbnail(sizes[size],Image.ANTIALIAS)
+        new_name_image=obj['level'].replace(' ','_')+'_'+obj['url'].split('/')[-1]
+        path_img=os.path.join(settings.MEDIA_ROOT,'tmp',new_name_image)
+        img.save(path_img, "JPEG")
+    if os.path.exists(path_img):
+        return path_img
 
 
 def remove_field_in_list(obj_tuple,name_field):

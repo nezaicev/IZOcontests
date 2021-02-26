@@ -1,6 +1,8 @@
 import os
 from typing import Tuple
 from django import forms
+from django.template.response import TemplateResponse
+from django.shortcuts import render
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from contests.models import Artakiada, Status, Material, Level, Nomination, \
@@ -10,7 +12,7 @@ from contests.forms import MymoskvichiForm
 from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm
 from django.conf import settings
-from contests.forms import PageContestsFrom
+from contests.forms import PageContestsFrom, ConfStorageForm
 from contests.models import PageContest, Message
 from contests import utils
 from contests import tasks
@@ -27,8 +29,30 @@ class BaseAdmin(admin.ModelAdmin):
         'reg_number', 'fio', 'status', 'school', 'region', 'district',
         'fio_teacher')
     list_filter = ('status', 'district', 'region')
-    actions = ['export_list_info','export_as_xls']
+    actions = ['export_list_info','export_as_xls','create_thumbs']
     exclude = ('reg_number', 'teacher', 'barcode', 'status')
+
+    def create_thumbs(self,request,queryset):
+        config={}
+        if 'apply' in request.POST:
+            form=ConfStorageForm(request.POST)
+            if form.is_valid():
+
+                config={'USERNAME':form.cleaned_data['username'],
+                        'PASSWORD':form.cleaned_data['password'],
+                        'CONTAINER':form.cleaned_data['container']
+                        }
+            urls_levels=[{'url':obj.image.url,'level':obj.level.name} for obj in queryset]
+            tasks.celery_create_thumbs.delay(urls_levels,config=config)
+            return None
+        form = ConfStorageForm(initial={'_selected_action': queryset.values_list('id', flat=True),
+                                        'username':os.getenv('USERNAME_SELECTEL'),
+                                        'password':os.getenv('PASSWORD_SELECTEL'),
+                                        'container': os.getenv('CONTAINER_SELECTEL')
+                                        })
+        # request.current_app=self.admin_site.name
+        return TemplateResponse(request,"admin/set_thumb_config.html",{'items': queryset, 'form': form})
+    create_thumbs.short_description='Создать превью'
 
     def export_as_xls(self, request, queryset):
         meta = self.model._meta
@@ -68,6 +92,10 @@ class BaseAdmin(admin.ModelAdmin):
 
     def get_actions(self, request):
         actions = super().get_actions(request)
+
+        if not request.user.is_superuser:
+            if 'create_thumbs' in actions:
+                del actions['create_thumbs']
 
         if not request.user.groups.filter(
                 name='Manager').exists():
