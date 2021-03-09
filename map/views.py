@@ -14,5 +14,6 @@ class MapView(View):
 
 class PlacemarkView(View):
     def get(self, request):
-        placemarks=Placemark.objects.values('title','video_url','image_url','coordinates')
-        return JsonResponse({'placemarks':list(placemarks)})
+        placemarks = Placemark.objects.values('title', 'video_url',
+                                              'image_url', 'coordinates')
+        return JsonResponse({'placemarks': list(placemarks)})

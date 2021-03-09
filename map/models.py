@@ -8,3 +8,7 @@ class Placemark(models.Model):
     video_url=models.URLField(verbose_name='Видео')
     image_url = models.URLField(verbose_name='Изображение')
     coordinates=ArrayField(models.FloatField(verbose_name='Координаты'))
+
+    class Meta:
+        app_label = 'map'
+        managed = True
