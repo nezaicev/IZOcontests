@@ -17,9 +17,35 @@ from reportlab.lib import colors
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.styles import ParagraphStyle
+from PIL import Image
+import requests
 
 
-def generate_xls(queryset, field_names, exclude_field, path):
+def generate_thumb(obj, size='md'):
+    result = requests.get(obj['url'])
+    sizes = {'sm': (200, 200),
+             'md': (900, 900)}
+    if result.status_code == 200:
+        with open(os.path.join(settings.MEDIA_ROOT, 'tmp', 'thumb.jpg'), 'wb') as f:
+            f.write(result.content)
+        img = Image.open(os.path.join(settings.MEDIA_ROOT, 'tmp', 'thumb.jpg'))
+        img = img.convert("RGB")
+        img.thumbnail(sizes[size], Image.ANTIALIAS)
+        new_name_image = obj['level'].replace(' ', '_') + '_' + obj['url'].split('/')[-1]
+        path_img = os.path.join(settings.MEDIA_ROOT, 'tmp', new_name_image)
+        img.save(path_img, "JPEG")
+    if os.path.exists(path_img):
+        return path_img
+
+
+def remove_field_in_list(obj_tuple, name_field):
+    fields = list(obj_tuple)
+    if name_field in fields:
+        fields.remove(name_field)
+    return fields
+
+
+def generate_xls(queryset, path):
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Users')
 
@@ -27,20 +53,18 @@ def generate_xls(queryset, field_names, exclude_field, path):
     row_num = 0
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
-
-    for col_num in range(len(field_names)):
-        ws.write(row_num, col_num, field_names[col_num], font_style)
+    for col_num in range(len(queryset[0]._meta.fields)):
+        ws.write(row_num, col_num, queryset[0]._meta.fields[col_num].verbose_name, font_style)
     font_style = xlwt.XFStyle()
     for ridx, obj in enumerate(queryset):
         ridx += 1
         for cidx, field in enumerate(obj._meta.fields):
-            if field.name not in exclude_field:
-                if field.choices:
-                    val = obj._get_FIELD_display(field)
-                    ws.write(ridx, cidx, val, font_style)
-                else:
-                    val = getattr(obj, field.name)
-                    ws.write(ridx, cidx, val, font_style)
+            if field.choices:
+                val = obj._get_FIELD_display(field)
+                ws.write(ridx, cidx, val, font_style)
+            else:
+                val = str(getattr(obj, field.name))
+                ws.write(ridx, cidx, val, font_style)
 
     wb.save(path)
 
@@ -94,7 +118,7 @@ def generate_pdf(list, contest_name, alias, reg_number):
         pagesize=A4)
     c.setFont('Yandex', 20)
     c.drawString(20, 810, contest_name)
-    if not os.path.exists(os.path.join(settings.BARCODE_MEDIA_ROOT,'{}.png'.format(reg_number))):
+    if not os.path.exists(os.path.join(settings.BARCODE_MEDIA_ROOT, '{}.png'.format(reg_number))):
         generate_barcode(reg_number)
     c.drawImage(os.path.join(settings.BARCODE_MEDIA_ROOT, f'{reg_number}.png'),
                 340, 715)
@@ -102,17 +126,6 @@ def generate_pdf(list, contest_name, alias, reg_number):
     width2, height2 = table.wrapOn(c, width, height)
     table.drawOn(c, 1.2 * cm, A4[1] - height2 - 125, 0)
     c.save()
-
-
-# def simple_send_mail(obj, email, message_template, subject, from_email):
-#     list_emails = [email]
-#     message = render_to_string(message_template,
-#                                {'reg_number': obj.reg_number})
-#     msg = EmailMultiAlternatives(subject, message, from_email, list_emails)
-#     msg.content_subtype = "html"
-#     attached_file = os.path.join(settings.MEDIA_ROOT, 'pdf', obj.name, f'{obj.reg_number}.pdf')
-#     msg.attach_file(attached_file, mimetype='text/html')
-#     msg.send()
 
 
 def send_mail_contest(secret, email, reg_number, message_template,

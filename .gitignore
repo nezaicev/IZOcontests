@@ -12,3 +12,9 @@ data.json
 .idea/
 contests/migrations
 users/migrations
+**/migrations/*
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+**/**/migrations
+
