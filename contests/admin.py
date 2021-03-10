@@ -1,8 +1,6 @@
 import os
-from typing import Tuple
 from django import forms
 from django.template.response import TemplateResponse
-from django.shortcuts import render
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from contests.models import Artakiada, Status, Material, Level, Nomination, \
@@ -21,12 +19,12 @@ from contests import tasks
 # Register your models here.
 
 class RegionsListFilter(admin.SimpleListFilter):
-    title = ('Россия')
+    title = ('Россия',)
     parameter_name = 'russia'
 
     def lookups(self, request, model_admin):
         return (
-            ('regions', ('Регионы')),
+            ('regions', ('Регионы',)),
         )
 
     def queryset(self, request, queryset):
@@ -193,7 +191,6 @@ class BaseAdmin(admin.ModelAdmin):
 class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
     list_filter = ('level', 'status', 'district', RegionsListFilter, 'region')
-    list_filter = ('level','status', 'district', 'region','nomination')
     list_display = (
         'reg_number', 'image_tag', 'fio', 'level', 'status', 'school',
         'region',
@@ -217,8 +214,10 @@ class ArtakiadaAdmin(BaseAdmin):
             self.list_filter = utils.remove_field_in_list(self.list_filter,
                                                           'status')
             self.list_filter = self.__class__.list_filter
-            self.list_display=utils.remove_field_in_list(self.list_display,'status')
-            self.list_filter=utils.remove_field_in_list(self.list_filter,'status')
+            self.list_display = utils.remove_field_in_list(self.list_display,
+                                                           'status')
+            self.list_filter = utils.remove_field_in_list(self.list_filter,
+                                                          'status')
             return self.list_display
         else:
             return super().get_list_display(request)
@@ -264,7 +263,7 @@ class MymoskvichiAdmin(BaseAdmin):
     name = 'mymoskvichi'
     inlines = [ParticipantInline, TeacherExtraInline]
     exclude = (
-    'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher')
+        'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher')
 
     def response_add(self, request, obj, post_url_continue=None):
         if obj.generate_list_participants(Participant):
