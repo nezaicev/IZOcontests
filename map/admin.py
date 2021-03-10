@@ -2,4 +2,9 @@ from django.contrib import admin
 from map.models import Placemark
 # Register your models here.
 
-admin.site.register(Placemark)
+
+class PlacemarkAdmin(admin.ModelAdmin):
+    exclude = ('image_url',)
+
+
+admin.site.register(Placemark, PlacemarkAdmin)

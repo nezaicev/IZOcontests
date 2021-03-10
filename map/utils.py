@@ -4,22 +4,21 @@ import requests
 from PIL import Image, ImageDraw
 from django.conf import settings
 
-POSTER_DIR = 'posters'
 
-
-def download_poster_video(url_video: str) -> None:
+def download_poster_video(url_video: str) -> str:
     url_poster = get_url_poster(url_video)
     r = requests.get(url_poster)
     r.raise_for_status()
-    with open(
-            settings.BASE_DIR / settings.MEDIA_ROOT / POSTER_DIR / 'tmp_poster.jpg',
-            'wb+') as image:
+    path_image=settings.BASE_DIR / settings.MEDIA_ROOT / settings.POSTER_DIR / settings.POSTER_TMP_NAME
+    with open(path_image,'wb+') as image:
         image.write(r.content)
-    create_circle_image(settings.BASE_DIR / settings.MEDIA_ROOT / POSTER_DIR / 'tmp_poster.jpg')
+    path_image=create_circle_image(path_image)
+    if os.path.exists(path_image):
+        return path_image
 
 
 def get_url_poster(url: str) -> str:
-    url_poster = 'https://img.youtube.com/vi/{}/mqdefault.jpg'
+    url_poster = settings.YOUTUBE_POSTER
     id_video = url.split('/')[-1]
     return url_poster.format(id_video)
 
@@ -35,7 +34,7 @@ def crop_center(pil_img, crop_width: int, crop_height: int) -> Image:
                          (img_height + crop_height) // 2))
 
 
-def create_circle_image(path_image: str) -> None:
+def create_circle_image(path_image: str) -> str:
     img = Image.open(path_image).convert("RGB")
     img = crop_center(img, 200, 200)
     npImage = np.array(img)
@@ -51,7 +50,8 @@ def create_circle_image(path_image: str) -> None:
 
     # Add alpha layer to RGB
     npImage = np.dstack((npImage, npAlpha))
-
+    path_image=settings.BASE_DIR / settings.MEDIA_ROOT / settings.POSTER_DIR / settings.POSTER_TMP_NAME.replace(
+            'jpg', 'png')
     # Save with alpha
-    Image.fromarray(npImage).save(
-        settings.BASE_DIR / settings.MEDIA_ROOT / POSTER_DIR / 'tmp_poster.png')
+    Image.fromarray(npImage).save(path_image)
+    return path_image

@@ -175,6 +175,12 @@ SELECTEL_STORAGES = {
     },
 
 }
+YOUTUBE_POSTER='https://img.youtube.com/vi/{}/mqdefault.jpg'
+POSTER_DIR = 'posters'
+POSTER_TMP_NAME='tmp_poster.jpg'
+
+
+
 
 DEFAULT_FILE_STORAGE = 'django_selectel_storage.storage.SelectelStorage'
 
