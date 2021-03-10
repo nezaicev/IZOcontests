@@ -175,7 +175,7 @@ class BaseAdmin(admin.ModelAdmin):
 
 class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
-    list_filter = ('level','status', 'district', 'region')
+    list_filter = ('level','status', 'district', 'region','nomination')
     list_display = (
         'reg_number', 'image_tag', 'fio', 'level','status', 'school', 'region',
         'district',
