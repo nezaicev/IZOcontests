@@ -19,12 +19,12 @@ from contests import tasks
 # Register your models here.
 
 class RegionsListFilter(admin.SimpleListFilter):
-    title = ('Россия',)
+    title = ('Россия')
     parameter_name = 'russia'
 
     def lookups(self, request, model_admin):
         return (
-            ('regions', ('Регионы',)),
+            ('regions', ('Регионы')),
         )
 
     def queryset(self, request, queryset):
