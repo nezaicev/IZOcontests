@@ -12,6 +12,7 @@ data.json
 .idea/
 contests/migrations
 users/migrations
+map/migrations
 **/migrations/*
 **/migrations/**
 !**/migrations
