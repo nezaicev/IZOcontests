@@ -190,7 +190,7 @@ class BaseAdmin(admin.ModelAdmin):
 
 class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
-    list_filter = ('level', 'status', 'district', RegionsListFilter, 'region')
+    list_filter = ('level', 'status', 'district', RegionsListFilter, 'region','nomination')
     list_display = (
         'reg_number', 'image_tag', 'fio', 'level', 'status', 'school',
         'region',
