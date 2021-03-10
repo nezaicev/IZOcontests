@@ -20,6 +20,20 @@ from contests import tasks
 
 # Register your models here.
 
+class RegionsListFilter(admin.SimpleListFilter):
+    title = ('Россия')
+    parameter_name = 'russia'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('regions', ('Регионы')),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'regions':
+            return queryset.exclude(
+                region__in=[1, 2])
+
 
 class BaseAdmin(admin.ModelAdmin):
     name = ''
@@ -29,37 +43,40 @@ class BaseAdmin(admin.ModelAdmin):
         'reg_number', 'fio', 'status', 'school', 'region', 'district',
         'fio_teacher')
     list_filter = ('status', 'district', 'region')
-    actions = ['export_list_info','export_as_xls','create_thumbs']
+    actions = ['export_list_info', 'export_as_xls', 'create_thumbs']
     exclude = ('reg_number', 'teacher', 'barcode', 'status')
 
-    def create_thumbs(self,request,queryset):
-        config={}
+    def create_thumbs(self, request, queryset):
+        config = {}
         if 'apply' in request.POST:
-            form=ConfStorageForm(request.POST)
+            form = ConfStorageForm(request.POST)
             if form.is_valid():
-
-                config={'USERNAME':form.cleaned_data['username'],
-                        'PASSWORD':form.cleaned_data['password'],
-                        'CONTAINER':form.cleaned_data['container']
-                        }
-            urls_levels=[{'url':obj.image.url,'level':obj.level.name} for obj in queryset]
-            tasks.celery_create_thumbs.delay(urls_levels,config=config)
+                config = {'USERNAME': form.cleaned_data['username'],
+                          'PASSWORD': form.cleaned_data['password'],
+                          'CONTAINER': form.cleaned_data['container']
+                          }
+            urls_levels = [{'url': obj.image.url, 'level': obj.level.name} for
+                           obj in queryset]
+            tasks.celery_create_thumbs.delay(urls_levels, config=config)
             return None
-        form = ConfStorageForm(initial={'_selected_action': queryset.values_list('id', flat=True),
-                                        'username':os.getenv('USERNAME_SELECTEL'),
-                                        'password':os.getenv('PASSWORD_SELECTEL'),
-                                        'container': os.getenv('CONTAINER_SELECTEL')
-                                        })
-        # request.current_app=self.admin_site.name
-        return TemplateResponse(request,"admin/set_thumb_config.html",{'items': queryset, 'form': form})
-    create_thumbs.short_description='Создать превью'
+        form = ConfStorageForm(
+            initial={'_selected_action': queryset.values_list('id', flat=True),
+                     'username': os.getenv('USERNAME_SELECTEL'),
+                     'password': os.getenv('PASSWORD_SELECTEL'),
+                     'container': os.getenv('CONTAINER_SELECTEL')
+                     })
+        return TemplateResponse(request, "admin/set_thumb_config.html",
+                                {'items': queryset, 'form': form})
+
+    create_thumbs.short_description = 'Создать превью'
 
     def export_as_xls(self, request, queryset):
         meta = self.model._meta
         path = os.path.join(settings.MEDIA_ROOT, 'xls', 'report.xls')
         response = HttpResponse(content_type='application/ms-excel')
-        response['Content-Disposition'] = 'attachment; filename={}.xls'.format(meta)
-        utils.generate_xls(queryset,path)
+        response['Content-Disposition'] = 'attachment; filename={}.xls'.format(
+            meta)
+        utils.generate_xls(queryset, path)
         response = FileResponse(open(path, 'rb'))
         return response
 
@@ -103,7 +120,6 @@ class BaseAdmin(admin.ModelAdmin):
                 del actions['export_as_xls']
         return actions
 
-
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.groups.filter(
                 name='Manager').exists():
@@ -117,7 +133,7 @@ class BaseAdmin(admin.ModelAdmin):
         if request.user.is_superuser or request.user.groups.filter(
                 name='Manager').exists():
             self.list_editable = ('status',)
-            self.list_filter=self.__class__.list_filter
+            self.list_filter = self.__class__.list_filter
             return self.__class__.list_display
         else:
             self.list_filter = ()
@@ -129,7 +145,8 @@ class BaseAdmin(admin.ModelAdmin):
             if (perm in group_perm) or request.user.is_superuser:
                 return self.__class__.list_display
             else:
-                self.list_display = utils.remove_field_in_list(self.list_display,'status')
+                self.list_display = utils.remove_field_in_list(
+                    self.list_display, 'status')
 
                 return self.list_display
 
@@ -175,16 +192,17 @@ class BaseAdmin(admin.ModelAdmin):
 
 class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
-    list_filter = ('level','status', 'district', 'region')
+    list_filter = ('level', 'status', 'district', RegionsListFilter, 'region')
     list_display = (
-        'reg_number', 'image_tag', 'fio', 'level','status', 'school', 'region',
+        'reg_number', 'image_tag', 'fio', 'level', 'status', 'school',
+        'region',
         'district',
         'fio_teacher')
 
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.groups.filter(
                 name='Manager').exists() or request.user.groups.filter(
-                name='Jury').exists():
+            name='Jury').exists():
             return super(BaseAdmin, self).get_queryset(request)
         else:
             qs = super(BaseAdmin, self).get_queryset(request)
@@ -193,8 +211,10 @@ class ArtakiadaAdmin(BaseAdmin):
     def get_list_display(self, request):
         if request.user.groups.filter(
                 name='Jury').exists():
-            self.list_display=utils.remove_field_in_list(self.list_display,'status')
-            self.list_filter=utils.remove_field_in_list(self.list_filter,'status')
+            self.list_display = utils.remove_field_in_list(self.list_display,
+                                                           'status')
+            self.list_filter = utils.remove_field_in_list(self.list_filter,
+                                                          'status')
             return self.list_display
         else:
             return super().get_list_display(request)
@@ -204,7 +224,7 @@ class NRushevaAdmin(BaseAdmin):
     name = 'nrusheva'
     list_filter = ('level', 'status', 'district', 'region')
     list_display = (
-        'reg_number', 'image_tag', 'fio','status', 'school', 'region',
+        'reg_number', 'image_tag', 'fio', 'status', 'school', 'region',
         'district',
         'fio_teacher')
 
@@ -219,7 +239,8 @@ class InlineFormset(forms.models.BaseInlineFormSet):
             except AttributeError:
                 pass
         if count < 1:
-            raise forms.ValidationError('Должен быть хотябы один участник и один педагог')
+            raise forms.ValidationError(
+                'Должен быть хотябы один участник и один педагог')
 
 
 class ParticipantInline(admin.StackedInline):
@@ -238,7 +259,8 @@ class MymoskvichiAdmin(BaseAdmin):
     model = Mymoskvichi
     name = 'mymoskvichi'
     inlines = [ParticipantInline, TeacherExtraInline]
-    exclude = ('reg_number', 'teacher', 'barcode', 'status', 'fio','fio_teacher')
+    exclude = (
+    'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher')
 
     def response_add(self, request, obj, post_url_continue=None):
         if obj.generate_list_participants(Participant):
@@ -305,7 +327,6 @@ class MessageAdmin(admin.ModelAdmin):
 
 class PermissionAdmin(admin.ModelAdmin):
     model = Permission
-
 
 
 admin.site.register(MymoskvichiSelect, MymoskvichiSelectAdmin)
