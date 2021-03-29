@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Документы{% endblock %}
+
+{% block content %}
+  <div class="container mt-4 mb-3 card col-5">
+    <h4 class="mb-3">Поиск данных</h4>
+    <form method="post">
+      {% csrf_token %}
+      {% if messages %}
+        <div class="alert alert-danger" role="alert">
+        <ul class="messages">
+          {% for message in messages %}
+            <li{% if message.tags %}
+              class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        </div>
+      {% endif %}
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+      {% for field in form %}
+        <div class=" col-4 mb-3">
+          {{ field.errors }}
+          {{ field.label_tag }} {{ field }}
+        </div>
+      {% endfor %}
+      <div class="row">
+
+
+        <div class="text-right mr-3">
+          <button class="btn btn-outline-primary mb-3 " type="submit">Найти
+          </button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+{% endblock %}

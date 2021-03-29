@@ -12,6 +12,7 @@
 				<span><a href="{% url 'logout' %}" class='mr-1'>Выход</a></span>
 				<span><a href="{% url 'password_reset' %}">Изменить пароль</a></span>
 				<span><a href="{% url 'admin:index' %}">Личный кабинет</a></span>
+        <span><a href="{% url 'search_cert' %}">Сертификаты</a></span>
 			{% else %}
 				<span>Вы не авторизированы</span>
 				<a href="{% url 'login' %} " class='mr-3'>Вход</a>
