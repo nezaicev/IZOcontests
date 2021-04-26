@@ -1,5 +1,5 @@
 from django import forms
-from contests.models import Level, Participant, TeacherExtra
+from contests.models import Level, Participant, TeacherExtra, MymoskvichiSelect
 from cert.models import Events
 
 
@@ -11,15 +11,25 @@ class SearchRegNumForm(forms.Form):
 
 
 class BaseConfirmationUserDataForm(forms.Form):
+    field_order = ('reg_number', 'fio','position','school')
     reg_number = forms.CharField(label='Регистрационный номер',
                                  max_length=20,
                                  widget=forms.TextInput(
                                      attrs={'readonly': 'readonly'}
                                     )
                                  )
-    fio = forms.CharField(widget=forms.TextInput(attrs={'class': 'col-12'}),
-                          label='ФИО для сертификата',
+    fio = forms.CharField(widget=forms.TextInput(attrs={'class': 'col-6'}),
+                          label='ФИО участника',
                           max_length=200)
+    position=forms.CharField(widget=forms.TextInput(attrs={'class': 'col-6',
+                                                           'placeholder':"ученик 3 класса / педагог "}),
+                          label='Должность/класс',
+                          max_length=200)
+    school = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form control col-8'}),
+        label='Название организации/студии',
+        max_length=200)
+
     status = forms.CharField(widget=forms.HiddenInput, max_length=10)
 
 
@@ -30,18 +40,11 @@ class ConfirmationUserDataForm(BaseConfirmationUserDataForm):
 
 
 class ConfirmationUserDataExtraForm(BaseConfirmationUserDataForm):
-    field_order = ("reg_number","fio",)
+    nomination = forms.ChoiceField(label='Номинация',
+                              choices=MymoskvichiSelect.objects.filter(
+                                  field='nomination').values_list('id',
+                                                                  'data'))
 
-    fio = forms.CharField(widget=forms.TextInput(attrs={'class':'form control col-6 '}), label='ФИО участника',
-                          max_length=200)
-    teacher= forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form control col-6'}),
-        label='Руководитель',
-        max_length=100)
-    school = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form control col-8'}),
-        label='Название организации/студии',
-        max_length=200)
 
 
 

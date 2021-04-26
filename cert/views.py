@@ -1,11 +1,12 @@
+import os
 from django.shortcuts import render
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy, reverse
 from django.http import FileResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.views import generic, View
-from cert.forms import SearchRegNumForm, ConfirmationUserDataForm, \
-    ConfirmationUserDataExtraForm
+from cert.forms import SearchRegNumForm, ConfirmationUserDataForm, BaseConfirmationUserDataForm,ConfirmationUserDataExtraForm
 from cert.services import get_obj_by_reg_num, get_blank_cert
 from cert.utils import generate_cert
 
@@ -45,30 +46,29 @@ class SearchRegNumView(generic.FormView):
 class ConfirmationUserDataView(View):
 
     def dispatch(self, request, *args, **kwargs):
+        self.form = BaseConfirmationUserDataForm
         context = {}
         participant = get_obj_by_reg_num(self.request.session['reg_number'],
                                          self.request.session['event'],
                                          self.request.user)
+        self.initial_data = {'reg_number': participant.reg_number,
+                             'status': participant.status.id if participant.status else participant.status,
+                             'school':participant.school,
+                             }
         if participant:
-            if participant.__class__.alias == 'mymoskvichi':
-                self.form=ConfirmationUserDataExtraForm
-                self.initial_data={'reg_number': participant.reg_number,
-                     'status': participant.status.id if participant.status else participant.status,
-                     }
+            if participant.__class__.alias != 'mymoskvichi':
+                self.initial_data['fio'] =participant.fio
+                self.initial_data['position'] = participant.level
             else:
-                self.form = ConfirmationUserDataForm
-                self.initial_data={'reg_number': participant.reg_number,
-                     'fio': participant.fio,
-                     'level': participant.level.id,
-                     'status': participant.status.id if participant.status else participant.status,
-                     }
+                self.form=ConfirmationUserDataExtraForm
 
         if request.method == 'GET':
-            self.form=self.form(self.initial_data)
+            self.form = self.form(self.initial_data)
             context['form'] = self.form
             return render(request, 'cert/cert_confirmation.html', context)
         if request.method == 'POST':
-            self.form=self.form(request.POST)
+            self.form = self.form(request.POST)
+            print(self.form.errors)
             if self.form.is_valid():
                 event = request.session.get('event')
                 status = self.form.cleaned_data['status']
@@ -76,11 +76,14 @@ class ConfirmationUserDataView(View):
                 try:
                     blank = get_blank_cert(event, status)
                     form_values = self.form.cleaned_data
-                    path_cert = generate_cert(reg_number, blank, self.request.user,
+                    path_cert = generate_cert(reg_number, blank,
+                                              self.request.user,
                                               form_values)
                     if path_cert:
-                        response = FileResponse(open(path_cert, 'rb'))
-                        return response
+                        return HttpResponseRedirect(
+                            os.path.join(settings.MEDIA_URL, 'certs',
+                                         path_cert.split('/')[-1]))
+
                 except ObjectDoesNotExist:
                     messages.add_message(self.request, messages.ERROR,
                                          'Для участника с номером {} нет доступных сертификатов'.format(

@@ -17,7 +17,7 @@ class Select(models.Model):
                                  ('nomination', 'Номинация'),
                                  ('age', 'Возраст'),
                                  ('theme', 'Тема')))
-    data = models.CharField('Данные', max_length=255)
+    data = models.CharField('Данные', max_length=500)
 
     class Meta:
         abstract = True
@@ -195,7 +195,7 @@ class Artakiada(BaseContest):
         if self.image:
             return mark_safe(
                 '<a data-fancybox="gallery" data-caption="{}, {}, {}" href="{}" class="image-link">Изображение</a>'.format(
-                    self.reg_number, self.fio,self.level, self.image.url))
+                    self.reg_number, self.fio, self.level, self.image.url))
         else:
             return 'No Image Found'
 
@@ -245,7 +245,7 @@ class NRusheva(BaseContest):
             return mark_safe(
                 '<a data-fancybox="gallery" data-caption="{}, {}, {}" href="{}" class="image-link">Изображение</a>'.format(
                     self.reg_number, self.fio, self.age, self.image.url)
-                )
+            )
         else:
             return 'No Image Found'
 
@@ -310,7 +310,8 @@ class MymoskvichiSelect(Select):
 
 
 class Participant(models.Model):
-    fio = models.CharField(max_length=50, verbose_name='Фамилия, имя',blank=False)
+    fio = models.CharField(max_length=50, verbose_name='Фамилия, имя',
+                           blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Участники',
                                      on_delete=models.CASCADE)
 
@@ -323,7 +324,7 @@ class Participant(models.Model):
 
 
 class TeacherExtra(models.Model):
-    fio = models.CharField(max_length=50, verbose_name='ФИО',blank=False)
+    fio = models.CharField(max_length=50, verbose_name='ФИО', blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Педагог',
                                      on_delete=models.CASCADE)
 
