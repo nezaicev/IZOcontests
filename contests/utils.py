@@ -3,6 +3,7 @@ import os
 import time
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, get_connection
+from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
 import barcode
 import xlwt
@@ -54,7 +55,7 @@ def generate_xls(queryset, path):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
     for col_num in range(len(queryset[0]._meta.fields)):
-        ws.write(row_num, col_num, queryset[0]._meta.fields[col_num].verbose_name, font_style)
+        ws.write(row_num, col_num, _(queryset[0]._meta.fields[col_num].verbose_name), font_style)
     font_style = xlwt.XFStyle()
     for ridx, obj in enumerate(queryset):
         ridx += 1
