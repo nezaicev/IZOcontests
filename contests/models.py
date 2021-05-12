@@ -361,3 +361,31 @@ class Message(models.Model):
     class Meta:
         verbose_name = 'Сообщение'
         verbose_name_plural = 'Сообщения'
+
+
+
+class ModxDbimgMuz(models.Model):
+    location = models.CharField(db_column='Location', max_length=255, blank=True, null=True)
+    oldname = models.CharField(db_column='oldName', max_length=255, blank=True, null=True)
+    dateupload = models.CharField(db_column='dateUpload', max_length=255, blank=True, null=True)
+    competition1 = models.CharField(max_length=255, blank=True, null=True)
+    picturename = models.CharField(db_column='PictureName', max_length=255, blank=True, null=True)
+    material = models.CharField(db_column='Material', max_length=255, blank=True, null=True)
+    fiocompetitor = models.CharField(db_column='FioCompetitor', max_length=255, blank=True, null=True)
+    agecompetitor = models.CharField(db_column='ageCompetitor', max_length=255, blank=True, null=True)
+    age = models.IntegerField(db_column='Age', blank=True, null=True)
+    shcoolname = models.CharField(db_column='shcoolName', max_length=255, blank=True, null=True)
+    fioteacher = models.CharField(db_column='FioTeacher', max_length=255, blank=True, null=True)
+    year = models.CharField(max_length=255, blank=True, null=True)
+    temaname = models.CharField(db_column='TemaName', max_length=255, blank=True, null=True)
+    quarter = models.IntegerField(blank=True, null=True)
+    sortage = models.IntegerField(db_column='sortAge', blank=True, null=True)
+    status = models.CharField(db_column='Status', max_length=255, blank=True, null=True)
+    cityname = models.CharField(db_column='cityName', max_length=255, blank=True, null=True)
+    pathfile = models.CharField(db_column='pathFile', max_length=255)
+    hesh = models.CharField(max_length=255, blank=True, null=True)
+    available = models.CharField(db_column='Available', max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'modx_dbimg_muz'

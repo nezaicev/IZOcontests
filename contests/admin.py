@@ -11,7 +11,7 @@ from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm
 from django.conf import settings
 from contests.forms import PageContestsFrom, ConfStorageForm
-from contests.models import PageContest, Message
+from contests.models import PageContest, Message, ModxDbimgMuz
 from contests import utils
 from contests import tasks
 
@@ -41,8 +41,23 @@ class BaseAdmin(admin.ModelAdmin):
         'reg_number', 'fio', 'status', 'school', 'region', 'district',
         'fio_teacher')
     list_filter = ('status', 'district', 'region')
-    actions = ['export_list_info', 'export_as_xls', 'create_thumbs']
+    actions = ['export_list_info', 'export_as_xls', 'create_thumbs','send_vm']
     exclude = ('reg_number', 'teacher', 'barcode', 'status')
+
+    def send_vm(self,request, queryset):
+
+        for obj in queryset:
+            path_thumb=utils.generate_thumb(obj.image.url)
+            if path_thumb:
+                path_file_selectel=utils.upload_img(path_thumb,'thumbs')
+                obj=ModxDbimgMuz.objects.using('vm').get_or_create(
+                    oldname=obj.reg_number,
+                    competition1=obj.__class__.alias,
+                    pathfile=path_file_selectel
+                )
+                obj.save(using='vm')
+
+    send_vm.short_description = 'Отправить в ВМ'
 
     def create_thumbs(self, request, queryset):
         config = {}

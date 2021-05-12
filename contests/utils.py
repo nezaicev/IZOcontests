@@ -1,4 +1,5 @@
 import re
+import uuid
 import os
 import time
 from django.conf import settings
@@ -18,12 +19,33 @@ from reportlab.lib import colors
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.styles import ParagraphStyle
+from django_selectel_storage.storage import SelectelStorage, Container
 from PIL import Image
 import requests
 
 
-def generate_thumb(obj, size='md'):
-    result = requests.get(obj['url'])
+def upload_img(local_url_image,path_in_container):
+    storage = SelectelStorage()
+    name_img = '{}.jpg'.format(uuid.uuid1())
+    with open(local_url_image, 'rb') as image:
+        (storage._save(os.path.join(path_in_container,name_img), image.read()))
+        if os.path.exists(os.path.join(settings.MEDIA_ROOT, 'tmp', name_img)):
+            os.remove(os.path.join(settings.MEDIA_ROOT, 'tmp', name_img))
+    if storage.exists(os.path.join(path_in_container,name_img)):
+        return storage.url(os.path.join(path_in_container,name_img))
+    else:
+        return None
+
+
+def generate_thumb(url, size='md'):
+    print(url)
+    storage = SelectelStorage()
+    if storage.url(url):
+        url= storage.url(url)
+        print(url)
+    else:
+        return None
+    result = requests.get(url)
     sizes = {'sm': (200, 200),
              'md': (900, 900)}
     if result.status_code == 200:
@@ -32,11 +54,13 @@ def generate_thumb(obj, size='md'):
         img = Image.open(os.path.join(settings.MEDIA_ROOT, 'tmp', 'thumb.jpg'))
         img = img.convert("RGB")
         img.thumbnail(sizes[size], Image.ANTIALIAS)
-        new_name_image = obj['level'].replace(' ', '_') + '_' + obj['url'].split('/')[-1]
+        new_name_image = "{}.jpg".format(uuid.uuid1())
         path_img = os.path.join(settings.MEDIA_ROOT, 'tmp', new_name_image)
         img.save(path_img, "JPEG")
-    if os.path.exists(path_img):
-        return path_img
+        if os.path.exists(path_img):
+            return path_img
+        else:
+            return None
 
 
 def remove_field_in_list(obj_tuple, name_field):
