@@ -94,7 +94,15 @@ DATABASES = {
         'PASSWORD': os.getenv('DB_PASSWORD', ''),
         'HOST': os.getenv('DB_HOST', ''),
         'PORT': os.getenv('DB_PORT',''),
-    }
+    },
+    'vm': {
+        'ENGINE': os.getenv('MODX_DB_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': os.getenv('MODX_DB_NAME', BASE_DIR / 'db.sqlite3'),
+        'USER': os.getenv('MODX_DB_USER', ''),
+        'PASSWORD': os.getenv('MODX_DB_PASSWORD', ''),
+        'HOST': os.getenv('MODX_DB_HOST', ''),
+        'PORT': os.getenv('MODX_DB_PORT', ''),
+    },
 }
 
 # Password validation

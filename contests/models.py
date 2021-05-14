@@ -11,6 +11,19 @@ from contests import utils
 
 
 # Create your models here.
+
+
+class ThemeART(models.Model):
+    name = models.CharField('Тема', max_length=200)
+
+    class Meta:
+        verbose_name = 'Тема(Артакиада)'
+        verbose_name_plural = 'Темы(Артакиада)'
+
+    def __str__(self):
+        return self.name
+
+
 class Select(models.Model):
     field = models.CharField('Название поля', max_length=20,
                              choices=(
@@ -185,6 +198,8 @@ class Artakiada(BaseContest):
                                  on_delete=models.SET_NULL, null=True)
     level = models.ForeignKey(Level, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True)
+    theme = models.ForeignKey(ThemeART, verbose_name='Тема',
+                                   on_delete=models.SET_NULL, null=True, blank=True)
     nomination = models.ForeignKey(Nomination, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
 

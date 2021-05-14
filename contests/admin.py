@@ -1,11 +1,12 @@
 import os
 from django import forms
+from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from contests.models import Artakiada, Status, Material, Level, Nomination, \
     Age, Theme, NRusheva, Mymoskvichi, Participant, TeacherExtra, \
-    MymoskvichiSelect
+    MymoskvichiSelect, ThemeART
 from contests.forms import MymoskvichiForm
 from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm
@@ -41,21 +42,44 @@ class BaseAdmin(admin.ModelAdmin):
         'reg_number', 'fio', 'status', 'school', 'region', 'district',
         'fio_teacher')
     list_filter = ('status', 'district', 'region')
-    actions = ['export_list_info', 'export_as_xls', 'create_thumbs','send_vm']
+    actions = ['export_list_info', 'export_as_xls', 'create_thumbs', 'send_vm']
     exclude = ('reg_number', 'teacher', 'barcode', 'status')
 
-    def send_vm(self,request, queryset):
+    def send_vm(self, request, queryset):
 
         for obj in queryset:
-            path_thumb=utils.generate_thumb(obj.image.url)
+            path_thumb = utils.generate_thumb(obj.image.url)
             if path_thumb:
-                path_file_selectel=utils.upload_img(path_thumb,'thumbs')
-                obj=ModxDbimgMuz.objects.using('vm').get_or_create(
-                    oldname=obj.reg_number,
-                    competition1=obj.__class__.alias,
-                    pathfile=path_file_selectel
+                path_file_selectel = utils.upload_img(path_thumb, 'thumbs')
+
+                values_for_update = {
+                    'competition1' : obj.__class__.alias,
+                    'material' : obj.material.name,
+                    'fiocompetitor' : utils.formatting_fio_participant(obj.fio),
+                    'agecompetitor' : obj.level.name,
+                    'pathfile' : path_file_selectel,
+                    'fioteacher':utils.formatting_fio_teacher(obj.fio_teacher),
+                    'shcoolname':obj.school,
+                    'cityname':obj.teacher.region.name,
+                    'picturename':obj.author_name if hasattr(obj,'author_name') else obj.theme.name if (hasattr(obj,'theme') and hasattr(obj.theme,'name'))  else '',
+                    'year':utils.generate_year().split('-')[1].split(' ')[0],
+                    'temaname':obj.theme.name if (hasattr(obj,'theme') and hasattr(obj.theme,'name')) else obj.nomination if hasattr(obj,'nomination') else ''
+
+
+                }
+                vm_record, created = ModxDbimgMuz.objects.using(
+                    'vm').update_or_create(
+                    oldname=obj.reg_number, defaults=values_for_update
                 )
-                obj.save(using='vm')
+                if created:
+                    messages.add_message(request, messages.INFO,
+                                         'Запись "{}" отправленна в ВМ'.format(obj.reg_number))
+                else:
+                    messages.add_message(request, messages.INFO,
+                                         'Запись "{}" обновлена в ВМ'.format(
+                                             obj.reg_number))
+
+                os.remove(path_thumb)
 
     send_vm.short_description = 'Отправить в ВМ'
 
@@ -131,6 +155,11 @@ class BaseAdmin(admin.ModelAdmin):
                 name='Manager').exists():
             if 'export_as_xls' in actions:
                 del actions['export_as_xls']
+
+        if not request.user.groups.filter(
+                name='Manager').exists():
+            if 'send_vm' in actions:
+                del actions['send_vm']
         return actions
 
     def get_queryset(self, request):
@@ -185,8 +214,8 @@ class BaseAdmin(admin.ModelAdmin):
     def response_change(self, request, obj):
         utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
                            obj.alias, obj.reg_number)
-        tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
-                                     "Заявка на конкурс")
+        # tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
+        #                              "Заявка на конкурс")
         return super().response_change(request, obj)
 
     class Media:
@@ -205,7 +234,8 @@ class BaseAdmin(admin.ModelAdmin):
 
 class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
-    list_filter = ('level', 'status', 'district', RegionsListFilter, 'region','nomination')
+    list_filter = (
+    'level', 'status', 'district', RegionsListFilter, 'region', 'nomination')
     list_display = (
         'reg_number', 'image_tag', 'fio', 'level', 'status', 'school',
         'region',
@@ -360,3 +390,4 @@ admin.site.register(Status, StatusAdmin)
 admin.site.register(Level, LevelAdmin)
 admin.site.register(Theme, ThemeAdmin)
 admin.site.register(Age, AgeAdmin)
+admin.site.register(ThemeART)

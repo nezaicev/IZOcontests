@@ -24,34 +24,53 @@ from PIL import Image
 import requests
 
 
-def upload_img(local_url_image,path_in_container):
+def formatting_fio_participant(fio):
+    fio_list = fio.split(' ')
+    if len(fio_list) >= 2:
+        fio = '{} {}'.format(fio_list[0].title(), fio_list[1].title())
+        return fio
+    else:
+        return fio
+
+
+def formatting_fio_teacher(fio):
+    fio_list = fio.split(' ')
+    if len(fio_list) >= 3:
+        fio = '{} {}.{}.'.format(fio_list[0].title(),
+                             fio_list[1][0].title(),
+                             fio_list[2][0].title()
+                             )
+        return fio
+    else:
+        return fio
+
+
+
+def upload_img(local_url_image, path_in_container):
     storage = SelectelStorage()
     name_img = '{}.jpg'.format(uuid.uuid1())
     with open(local_url_image, 'rb') as image:
-        (storage._save(os.path.join(path_in_container,name_img), image.read()))
+        (storage._save(os.path.join(path_in_container, name_img),
+                       image.read()))
         if os.path.exists(os.path.join(settings.MEDIA_ROOT, 'tmp', name_img)):
             os.remove(os.path.join(settings.MEDIA_ROOT, 'tmp', name_img))
-    if storage.exists(os.path.join(path_in_container,name_img)):
-        return storage.url(os.path.join(path_in_container,name_img))
+    if storage.exists(os.path.join(path_in_container, name_img)):
+        return storage.url(os.path.join(path_in_container, name_img))
     else:
         return None
 
 
 def generate_thumb(url, size='md'):
-    print(url)
     storage = SelectelStorage()
-    if storage.url(url):
-        url= storage.url(url)
-        print(url)
-    else:
-        return None
     result = requests.get(url)
     sizes = {'sm': (200, 200),
              'md': (900, 900)}
     if result.status_code == 200:
-        with open(os.path.join(settings.MEDIA_ROOT, 'tmp', 'thumb.jpg'), 'wb') as f:
+        with open(os.path.join(settings.MEDIA_ROOT, 'tmp', 'thumb.jpg'),
+                  'wb') as f:
             f.write(result.content)
-        img = Image.open(os.path.join(settings.MEDIA_ROOT, 'tmp', 'thumb.jpg'))
+        img = Image.open(
+            os.path.join(settings.MEDIA_ROOT, 'tmp', 'thumb.jpg'))
         img = img.convert("RGB")
         img.thumbnail(sizes[size], Image.ANTIALIAS)
         new_name_image = "{}.jpg".format(uuid.uuid1())
@@ -79,7 +98,8 @@ def generate_xls(queryset, path):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
     for col_num in range(len(queryset[0]._meta.fields)):
-        ws.write(row_num, col_num, _(queryset[0]._meta.fields[col_num].verbose_name), font_style)
+        ws.write(row_num, col_num,
+                 _(queryset[0]._meta.fields[col_num].verbose_name), font_style)
     font_style = xlwt.XFStyle()
     for ridx, obj in enumerate(queryset):
         ridx += 1
@@ -143,7 +163,8 @@ def generate_pdf(list, contest_name, alias, reg_number):
         pagesize=A4)
     c.setFont('Yandex', 20)
     c.drawString(20, 810, contest_name)
-    if not os.path.exists(os.path.join(settings.BARCODE_MEDIA_ROOT, '{}.png'.format(reg_number))):
+    if not os.path.exists(os.path.join(settings.BARCODE_MEDIA_ROOT,
+                                       '{}.png'.format(reg_number))):
         generate_barcode(reg_number)
     c.drawImage(os.path.join(settings.BARCODE_MEDIA_ROOT, f'{reg_number}.png'),
                 340, 715)
