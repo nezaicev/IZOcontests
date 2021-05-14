@@ -22,13 +22,7 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'Темы(Артакиада)',
             },
         ),
-        migrations.RemoveField(
-            model_name='artakiada',
-            name='author_name',
-        ),
-        migrations.DeleteModel(
-            name='AuthorName',
-        ),
+        
         migrations.AddField(
             model_name='artakiada',
             name='theme',

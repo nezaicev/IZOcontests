@@ -10,9 +10,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='authorname',
-            name='name',
-            field=models.CharField(max_length=145, verbose_name='Название'),
-        ),
+    
     ]
