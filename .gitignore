@@ -12,12 +12,14 @@ data.json
 .idea/
 cert/migrations
 mailing/migrations
-contests/migrations
 users/migrations
 map/migrations
-**/migrations/*
-**/migrations/**
-!**/migrations
-!**/migrations/__init__.py
-**/**/migrations
+event/
+vm/
+
+#**/migrations/*
+#**/migrations/**
+#!**/migrations
+#!**/migrations/__init__.py
+#**/**/migrations
 
