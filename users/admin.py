@@ -34,6 +34,7 @@ class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
+    search_fields = ( 'fio','email')
     actions = ['export_as_xls']
     list_display = ('email', 'fio','school','region', 'status','district')
     list_filter = (ContestListFilter,'status', 'district', 'region')
