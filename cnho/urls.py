@@ -23,11 +23,11 @@ from contests.models import Message
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('certs/', include('cert.urls')),
     path('map/', include('map.urls')),
     path('users/', include('users.urls')),
     path('users/', include('django.contrib.auth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    # path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('', PageContestView.as_view(template_name='home.html',extra_context={'messages':Message.objects.all()}),
          name='home')
 ]

@@ -1,22 +1,24 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Мероприятия{% endblock %}
 
 {% block content %}
 
-	<div class="card col-2 float-right ">
+	<div class="mt-1 card col-2 float-right ">
 		<div class="card-body">
 			{% if user.is_authenticated %}
 				<p>{{ user.email }}</p>
-				<span><a href="{% url 'logout' %}" class='mr-1'>Выход</a></span>
-				<span><a href="{% url 'password_reset' %}">Изменить пароль</a></span>
-				<span><a href="{% url 'admin:index' %}">Личный кабинет</a></span>
+        <p class="mb-0"><a href="{% url 'admin:index' %}">Личный кабинет</a></p>
+{#				<p class="mb-0"><a href="{% url 'search_cert' %}">Сертификаты</a></p>#}
+				<p class="mb-0"><a href="{% url 'password_reset' %}">Изменить пароль</a></p>
+        <p class="mb-0"><a href="{% url 'logout' %}" class='mr-1'>Выход</a></p>
+
 			{% else %}
-				<span>Вы не авторизированы</span>
-				<a href="{% url 'login' %} " class='mr-3'>Вход</a>
-				<a href="{% url 'signup' %}">Регистрация</a>
-				<p><a href="{% url 'password_reset' %}">Сброс пароля</a></p>
+				<p>Вы не авторизированы!</p>
+        <p class="mb-0"><a href="{% url 'login' %} " class='mr-3'>Вход</a></p>
+        <p class="mb-0"><a href="{% url 'signup' %}">Регистрация</a></p>
+				<p class="mb-0"><a href="{% url 'password_reset' %}">Сброс пароля</a></p>
 
 			{% endif %}
 		</div>

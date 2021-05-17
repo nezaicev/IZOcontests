@@ -30,7 +30,7 @@ class Select(models.Model):
                                  ('nomination', 'Номинация'),
                                  ('age', 'Возраст'),
                                  ('theme', 'Тема')))
-    data = models.CharField('Данные', max_length=255)
+    data = models.CharField('Данные', max_length=500)
 
     class Meta:
         abstract = True

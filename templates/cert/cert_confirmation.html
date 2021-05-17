@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Создание документа {% endblock %}
+
+{% block content %}
+  <div class="container mt-4 mb-3 card col-6">
+    <h4 class="mb-3">Формирование документа</h4>
+    <form method="post">
+      {% csrf_token %}
+       {% if messages %}
+        <div class="alert alert-danger" role="alert">
+        <ul class="messages">
+          {% for message in messages %}
+            <li{% if message.tags %}
+              class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        </div>
+      {% endif %}
+      {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+      {% endfor %}
+      {% for field in form.visible_fields %}
+        <div class=" mb-3">
+          {{ field.label_tag }} {{ field }}
+        </div>
+      {% endfor %}
+      <div class="row">
+        <div class="text-right mr-3">
+          <button class="btn btn-outline-primary mb-3 " type="submit">Получить
+            документ
+          </button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+{% endblock %}
