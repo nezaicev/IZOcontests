@@ -10,7 +10,7 @@ db.sqlite3
 media/
 data.json
 .idea/
-cert/migrations
+#cert/migrations
 mailing/migrations
 users/migrations
 map/migrations
