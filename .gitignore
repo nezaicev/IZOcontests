@@ -10,13 +10,17 @@ db.sqlite3
 media/
 data.json
 .idea/
-mailing/migrations
-contests/migrations
+
 users/migrations
 map/migrations
-**/migrations/*
-**/migrations/**
-!**/migrations
-!**/migrations/__init__.py
-**/**/migrations
+event/
+vm/
+
+#cert/migrations
+#contests/migrations
+#**/migrations/*
+#**/migrations/**
+#!**/migrations
+#!**/migrations/__init__.py
+#**/**/migrations
 

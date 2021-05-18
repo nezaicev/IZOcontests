@@ -1,8 +1,10 @@
 import re
+import uuid
 import os
 import time
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, get_connection
+from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
 import barcode
 import xlwt
@@ -17,25 +19,67 @@ from reportlab.lib import colors
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.styles import ParagraphStyle
+from django_selectel_storage.storage import SelectelStorage, Container
 from PIL import Image
 import requests
 
 
-def generate_thumb(obj, size='md'):
-    result = requests.get(obj['url'])
+def formatting_fio_participant(fio):
+    fio_list = fio.split(' ')
+    if len(fio_list) >= 2:
+        fio = '{} {}'.format(fio_list[0].title(), fio_list[1].title())
+        return fio
+    else:
+        return fio
+
+
+def formatting_fio_teacher(fio):
+    fio_list = fio.split(' ')
+    if len(fio_list) >= 3:
+        fio = '{} {}.{}.'.format(fio_list[0].title(),
+                             fio_list[1][0].title(),
+                             fio_list[2][0].title()
+                             )
+        return fio
+    else:
+        return fio
+
+
+
+def upload_img(local_url_image, path_in_container):
+    storage = SelectelStorage()
+    name_img = '{}.jpg'.format(uuid.uuid1())
+    with open(local_url_image, 'rb') as image:
+        (storage._save(os.path.join(path_in_container, name_img),
+                       image.read()))
+        if os.path.exists(os.path.join(settings.MEDIA_ROOT, 'tmp', name_img)):
+            os.remove(os.path.join(settings.MEDIA_ROOT, 'tmp', name_img))
+    if storage.exists(os.path.join(path_in_container, name_img)):
+        return storage.url(os.path.join(path_in_container, name_img))
+    else:
+        return None
+
+
+def generate_thumb(url, size='md'):
+    storage = SelectelStorage()
+    result = requests.get(url)
     sizes = {'sm': (200, 200),
              'md': (900, 900)}
     if result.status_code == 200:
-        with open(os.path.join(settings.MEDIA_ROOT, 'tmp', 'thumb.jpg'), 'wb') as f:
+        with open(os.path.join(settings.MEDIA_ROOT, 'tmp', 'thumb.jpg'),
+                  'wb') as f:
             f.write(result.content)
-        img = Image.open(os.path.join(settings.MEDIA_ROOT, 'tmp', 'thumb.jpg'))
+        img = Image.open(
+            os.path.join(settings.MEDIA_ROOT, 'tmp', 'thumb.jpg'))
         img = img.convert("RGB")
         img.thumbnail(sizes[size], Image.ANTIALIAS)
-        new_name_image = obj['level'].replace(' ', '_') + '_' + obj['url'].split('/')[-1]
+        new_name_image = "{}.jpg".format(uuid.uuid1())
         path_img = os.path.join(settings.MEDIA_ROOT, 'tmp', new_name_image)
         img.save(path_img, "JPEG")
-    if os.path.exists(path_img):
-        return path_img
+        if os.path.exists(path_img):
+            return path_img
+        else:
+            return None
 
 
 def remove_field_in_list(obj_tuple, name_field):
@@ -54,7 +98,8 @@ def generate_xls(queryset, path):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
     for col_num in range(len(queryset[0]._meta.fields)):
-        ws.write(row_num, col_num, queryset[0]._meta.fields[col_num].verbose_name, font_style)
+        ws.write(row_num, col_num,
+                 _(queryset[0]._meta.fields[col_num].verbose_name), font_style)
     font_style = xlwt.XFStyle()
     for ridx, obj in enumerate(queryset):
         ridx += 1
@@ -118,7 +163,8 @@ def generate_pdf(list, contest_name, alias, reg_number):
         pagesize=A4)
     c.setFont('Yandex', 20)
     c.drawString(20, 810, contest_name)
-    if not os.path.exists(os.path.join(settings.BARCODE_MEDIA_ROOT, '{}.png'.format(reg_number))):
+    if not os.path.exists(os.path.join(settings.BARCODE_MEDIA_ROOT,
+                                       '{}.png'.format(reg_number))):
         generate_barcode(reg_number)
     c.drawImage(os.path.join(settings.BARCODE_MEDIA_ROOT, f'{reg_number}.png'),
                 340, 715)

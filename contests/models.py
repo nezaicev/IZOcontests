@@ -11,13 +11,26 @@ from contests import utils
 
 
 # Create your models here.
+
+
+class ThemeART(models.Model):
+    name = models.CharField('Тема', max_length=200)
+
+    class Meta:
+        verbose_name = 'Тема(Артакиада)'
+        verbose_name_plural = 'Темы(Артакиада)'
+
+    def __str__(self):
+        return self.name
+
+
 class Select(models.Model):
     field = models.CharField('Название поля', max_length=20,
                              choices=(
                                  ('nomination', 'Номинация'),
                                  ('age', 'Возраст'),
                                  ('theme', 'Тема')))
-    data = models.CharField('Данные', max_length=255)
+    data = models.CharField('Данные', max_length=500)
 
     class Meta:
         abstract = True
@@ -185,6 +198,8 @@ class Artakiada(BaseContest):
                                  on_delete=models.SET_NULL, null=True)
     level = models.ForeignKey(Level, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True)
+    theme = models.ForeignKey(ThemeART, verbose_name='Тема',
+                                   on_delete=models.SET_NULL, null=True, blank=True)
     nomination = models.ForeignKey(Nomination, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
 
@@ -195,7 +210,7 @@ class Artakiada(BaseContest):
         if self.image:
             return mark_safe(
                 '<a data-fancybox="gallery" data-caption="{}, {}, {}" href="{}" class="image-link">Изображение</a>'.format(
-                    self.reg_number, self.fio,self.level, self.image.url))
+                    self.reg_number, self.fio, self.level, self.image.url))
         else:
             return 'No Image Found'
 
@@ -245,7 +260,7 @@ class NRusheva(BaseContest):
             return mark_safe(
                 '<a data-fancybox="gallery" data-caption="{}, {}, {}" href="{}" class="image-link">Изображение</a>'.format(
                     self.reg_number, self.fio, self.age, self.image.url)
-                )
+            )
         else:
             return 'No Image Found'
 
@@ -310,7 +325,8 @@ class MymoskvichiSelect(Select):
 
 
 class Participant(models.Model):
-    fio = models.CharField(max_length=50, verbose_name='Фамилия, имя',blank=False)
+    fio = models.CharField(max_length=50, verbose_name='Фамилия, имя',
+                           blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Участники',
                                      on_delete=models.CASCADE)
 
@@ -323,7 +339,7 @@ class Participant(models.Model):
 
 
 class TeacherExtra(models.Model):
-    fio = models.CharField(max_length=50, verbose_name='ФИО',blank=False)
+    fio = models.CharField(max_length=50, verbose_name='ФИО', blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Педагог',
                                      on_delete=models.CASCADE)
 
@@ -361,3 +377,31 @@ class Message(models.Model):
     class Meta:
         verbose_name = 'Сообщение'
         verbose_name_plural = 'Сообщения'
+
+
+
+class ModxDbimgMuz(models.Model):
+    location = models.CharField(db_column='Location', max_length=255, blank=True, null=True)
+    oldname = models.CharField(db_column='oldName', max_length=255, blank=True, null=True)
+    dateupload = models.CharField(db_column='dateUpload', max_length=255, blank=True, null=True)
+    competition1 = models.CharField(max_length=255, blank=True, null=True)
+    picturename = models.CharField(db_column='PictureName', max_length=255, blank=True, null=True)
+    material = models.CharField(db_column='Material', max_length=255, blank=True, null=True)
+    fiocompetitor = models.CharField(db_column='FioCompetitor', max_length=255, blank=True, null=True)
+    agecompetitor = models.CharField(db_column='ageCompetitor', max_length=255, blank=True, null=True)
+    age = models.IntegerField(db_column='Age', blank=True, null=True)
+    shcoolname = models.CharField(db_column='shcoolName', max_length=255, blank=True, null=True)
+    fioteacher = models.CharField(db_column='FioTeacher', max_length=255, blank=True, null=True)
+    year = models.CharField(max_length=255, blank=True, null=True)
+    temaname = models.CharField(db_column='TemaName', max_length=255, blank=True, null=True)
+    quarter = models.IntegerField(blank=True, null=True)
+    sortage = models.IntegerField(db_column='sortAge', blank=True, null=True)
+    status = models.CharField(db_column='Status', max_length=255, blank=True, null=True)
+    cityname = models.CharField(db_column='cityName', max_length=255, blank=True, null=True)
+    pathfile = models.CharField(db_column='pathFile', max_length=255)
+    hesh = models.CharField(max_length=255, blank=True, null=True)
+    available = models.CharField(db_column='Available', max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'modx_dbimg_muz'

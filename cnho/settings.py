@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = env.bool("DEBUG", True)
 
 ALLOWED_HOSTS = [os.getenv('HOST_NAME','127.0.0.1')]
-
+DATA_UPLOAD_MAX_NUMBER_FIELDS=10000
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'contests.apps.ContestsConfig',
     'map.apps.MapConfig',
     'mailing.apps.MailingConfig',
+    'cert.apps.CertConfig',
 
     'ckeditor',
     'ckeditor_uploader',
@@ -95,7 +96,15 @@ DATABASES = {
         'PASSWORD': os.getenv('DB_PASSWORD', ''),
         'HOST': os.getenv('DB_HOST', ''),
         'PORT': os.getenv('DB_PORT',''),
-    }
+    },
+    'vm': {
+        'ENGINE': os.getenv('MODX_DB_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': os.getenv('MODX_DB_NAME', BASE_DIR / 'db.sqlite3'),
+        'USER': os.getenv('MODX_DB_USER', ''),
+        'PASSWORD': os.getenv('MODX_DB_PASSWORD', ''),
+        'HOST': os.getenv('MODX_DB_HOST', ''),
+        'PORT': os.getenv('MODX_DB_PORT', ''),
+    },
 }
 
 # Password validation
