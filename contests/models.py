@@ -193,7 +193,7 @@ class Artakiada(BaseContest):
     name = ('Конкурс', 'АРТакиада "Изображение и слово"')
     alias = 'artakiada'
     image = models.ImageField(upload_to=PathAndRename('artakiada/'),
-                              max_length=100, verbose_name='Изображение')
+                              max_length=200, verbose_name='Изображение')
     material = models.ForeignKey(Material, verbose_name='Материал',
                                  on_delete=models.SET_NULL, null=True)
     level = models.ForeignKey(Level, verbose_name='Класс',
@@ -241,7 +241,7 @@ class NRusheva(BaseContest):
                             on_delete=models.SET_NULL, null=True)
 
     image = models.ImageField(upload_to=PathAndRename('nrusheva/'),
-                              max_length=100, verbose_name='Изображение')
+                              max_length=200, verbose_name='Изображение')
     material = models.ForeignKey(Material, verbose_name='Материал',
                                  on_delete=models.SET_NULL, null=True)
     author_name = models.CharField(max_length=50, blank=False,
