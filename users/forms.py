@@ -9,7 +9,7 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ('email', 'fio',
                   'age', 'school', 'region',
                   'district', 'city', 'phone', 'status',
-                  'position','password1','password2'
+                  'position','password1','password2', 'subscription',
                   )
         widgets = {
             'status': forms.Select(attrs={'class': 'form-select',
@@ -30,6 +30,7 @@ class CustomUserCreationForm(UserCreationForm):
             'phone': forms.TextInput(attrs={'class': 'form-control' }),
             'position': forms.Select(attrs={'class': 'form-select', }),
             'age': forms.Select(attrs={'class': 'form-select'}),
+            'subscription': forms.CheckboxInput(attrs={'class': 'custom-control custom-checkbox mb-3'}),
 
 
         }

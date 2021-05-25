@@ -85,6 +85,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     age = models.ForeignKey(Age, verbose_name='Возрастная категория',
                             on_delete=models.SET_NULL, null=True,
                             blank=True)
+    subscription=models.BooleanField(verbose_name='Подписка', default=True)
 
     class Meta:
         verbose_name = 'Пользователь'

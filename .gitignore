@@ -13,8 +13,8 @@ data.json
 
 
 mailing/migrations
-users/migrations
-map/migrations
+#users/migrations
+#map/migrations
 event/
 vm/
 
