@@ -44,3 +44,12 @@ def simple_send_mail(id, class_name, subject):
                                  '{}.pdf'.format(obj.reg_number))
     msg.attach_file(attached_file, mimetype='text/html')
     msg.send()
+
+
+@shared_task
+def send_mail_for_subscribers(emails,theme , content):
+    from_email = settings.DEFAULT_FROM_EMAIL
+    list_emails = emails
+    msg = EmailMultiAlternatives(theme, content, from_email, list_emails)
+    msg.content_subtype = "html"
+    msg.send()

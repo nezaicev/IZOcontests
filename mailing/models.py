@@ -1,7 +1,24 @@
 from django.db import models
 from django.core.files.storage import FileSystemStorage
+from ckeditor.fields import RichTextField
+from users.models import CustomUser
 
 # Create your models here.
+
+
+class Email(models.Model):
+    date=models.DateTimeField(verbose_name='Дата создания',auto_now=True, blank=True)
+    theme=models.CharField(verbose_name='Тема',max_length=200, blank=False, )
+    content = RichTextField(verbose_name='Контент')
+    user=models.ForeignKey(CustomUser,related_name='sender_email',verbose_name='Пользователь', on_delete=models.PROTECT)
+    recipient=models.CharField(verbose_name='Получатель',max_length=20, blank=True,null=True )
+
+    class Meta:
+        verbose_name = 'Письмо'
+        verbose_name_plural = 'Письма'
+
+    def __str__(self):
+        return self.theme
 
 
 class Subscriber(models.Model):
