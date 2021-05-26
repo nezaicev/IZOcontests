@@ -11,8 +11,10 @@ media/
 data.json
 .idea/
 
-users/migrations
-map/migrations
+
+#mailing/migrations
+#users/migrations
+#map/migrations
 event/
 vm/
 

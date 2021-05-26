@@ -39,7 +39,7 @@ class CustomUserAdmin(UserAdmin):
     list_display = ('email', 'fio','school','region', 'status','district')
     list_filter = (ContestListFilter,'status', 'district', 'region')
     fieldsets = (
-        (None, {'fields': ('email', 'fio', 'region', 'status','district','school','city','position','phone','age')}),
+        (None, {'fields': ('email', 'fio', 'region', 'status','district','school','city','position','phone','age','subscription',)}),
         ('Permissions',
          {'fields': ('is_staff', 'is_active', 'groups', 'user_permissions')}),
     )

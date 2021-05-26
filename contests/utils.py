@@ -2,6 +2,7 @@ import re
 import uuid
 import os
 import time
+from PIL import Image,ImageOps
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, get_connection
 from django.utils.translation import ugettext as _
@@ -20,7 +21,6 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.styles import ParagraphStyle
 from django_selectel_storage.storage import SelectelStorage, Container
-from PIL import Image
 import requests
 
 
@@ -71,6 +71,7 @@ def generate_thumb(url, size='md'):
             f.write(result.content)
         img = Image.open(
             os.path.join(settings.MEDIA_ROOT, 'tmp', 'thumb.jpg'))
+        img = ImageOps.exif_transpose(img)
         img = img.convert("RGB")
         img.thumbnail(sizes[size], Image.ANTIALIAS)
         new_name_image = "{}.jpg".format(uuid.uuid1())
