@@ -319,6 +319,8 @@ class Mymoskvichi(BaseContest):
 
 
 class MymoskvichiSelect(Select):
+    access=models.BooleanField(default=True, verbose_name='Доступ')
+
     class Meta:
         verbose_name = 'Список (Мы Москвичи)'
         verbose_name_plural = 'Списки (Мы Москвичи)'

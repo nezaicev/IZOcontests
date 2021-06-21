@@ -22,7 +22,7 @@ class PageContestsFrom(forms.ModelForm):
 
 def get_my_choices(model, field):
     choices_list = tuple((i, i) for i in
-                         model.objects.filter(field=field).values_list('data',
+                         model.objects.filter(field=field,access=True).values_list('data',
                                                                        flat=True))
     return choices_list
 
