@@ -62,7 +62,7 @@ class BaseAdmin(admin.ModelAdmin):
                     'shcoolname':obj.school,
                     'cityname':obj.teacher.region.name,
                     'picturename':obj.author_name if hasattr(obj,'author_name') else obj.theme.name if (hasattr(obj,'theme') and hasattr(obj.theme,'name'))  else '',
-                    'year':utils.generate_year().split('-')[1].split(' ')[0],
+                    'year':obj.year_contest.split('-')[1].split(' ')[0],
                     'temaname':obj.theme.name if (hasattr(obj,'theme') and hasattr(obj.theme,'name')) else obj.nomination if hasattr(obj,'nomination') else ''
 
 
