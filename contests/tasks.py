@@ -47,7 +47,7 @@ def simple_send_mail(id, class_name, subject):
 
 
 @shared_task
-def send_mail_for_subscribers(emails,theme , content):
+def send_mail_for_subscribers(emails, theme, content):
     from_email = settings.DEFAULT_FROM_EMAIL
     list_emails = emails
     msg = EmailMultiAlternatives(theme, content, from_email, list_emails)

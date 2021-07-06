@@ -19,7 +19,8 @@ def parse_xls(path_file):
             continue
         region = Subscriber.REGION if row[1].lower().find(
             'москв') == -1 else Subscriber.MOSCOW
-        if row[2]:
+
+        if len(row)==3:
             phone_number = ''.join([i for i in str(row[2]) if i.isdigit()])
             if phone_number:
                 phone_number='8'+phone_number[1:] if phone_number[0]=='7' else phone_number
