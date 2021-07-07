@@ -1,5 +1,6 @@
 import os
 from contests import utils
+
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -50,6 +51,10 @@ def simple_send_mail(id, class_name, subject):
 def send_mail_for_subscribers(emails, theme, content):
     from_email = settings.DEFAULT_FROM_EMAIL
     list_emails = emails
+    context = {
+        'link': 'http://konkurs.shkola-nemenskogo.ru/mailing/unsubscribe/'
+    }
+    content += render_to_string('mailing/footer_message.html', context)
     msg = EmailMultiAlternatives(theme, content, from_email, list_emails)
     msg.content_subtype = "html"
     msg.send()

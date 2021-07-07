@@ -2,7 +2,7 @@ import re
 import uuid
 import os
 import time
-from PIL import Image,ImageOps
+from PIL import Image, ImageOps
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, get_connection
 from django.utils.translation import ugettext as _
@@ -24,6 +24,7 @@ from django_selectel_storage.storage import SelectelStorage, Container
 import requests
 
 
+
 def formatting_fio_participant(fio):
     fio_list = fio.split(' ')
     if len(fio_list) >= 2:
@@ -37,13 +38,12 @@ def formatting_fio_teacher(fio):
     fio_list = fio.split(' ')
     if len(fio_list) >= 3:
         fio = '{} {}.{}.'.format(fio_list[0].title(),
-                             fio_list[1][0].title(),
-                             fio_list[2][0].title()
-                             )
+                                 fio_list[1][0].title(),
+                                 fio_list[2][0].title()
+                                 )
         return fio
     else:
         return fio
-
 
 
 def upload_img(local_url_image, path_in_container):
@@ -228,3 +228,6 @@ def generate_year():
             int(time.strftime("%Y", time.localtime())),
             int(time.strftime("%Y", time.localtime())) + 1)
     return year_contest
+
+
+

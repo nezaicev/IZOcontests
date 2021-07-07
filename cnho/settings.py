@@ -34,6 +34,8 @@ ALLOWED_HOSTS = [os.getenv('HOST_NAME','127.0.0.1')]
 DATA_UPLOAD_MAX_NUMBER_FIELDS=10000
 # Application definition
 
+
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
 
     'users.apps.UsersConfig',
     'contests.apps.ContestsConfig',

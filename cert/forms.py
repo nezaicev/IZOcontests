@@ -1,6 +1,7 @@
 from django import forms
 from contests.models import Level, Participant, TeacherExtra, MymoskvichiSelect
 from cert.models import Events
+from django.contrib import messages
 
 
 class SearchRegNumForm(forms.Form):
