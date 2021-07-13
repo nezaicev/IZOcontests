@@ -199,7 +199,7 @@ class Artakiada(BaseContest):
     level = models.ForeignKey(Level, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True)
     theme = models.ForeignKey(ThemeART, verbose_name='Тема',
-                                   on_delete=models.SET_NULL, null=True, blank=True)
+                              on_delete=models.SET_NULL, null=True, blank=True)
     nomination = models.ForeignKey(Nomination, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
 
@@ -319,7 +319,7 @@ class Mymoskvichi(BaseContest):
 
 
 class MymoskvichiSelect(Select):
-    access=models.BooleanField(default=True, verbose_name='Доступ')
+    access = models.BooleanField(default=True, verbose_name='Доступ')
 
     class Meta:
         verbose_name = 'Список (Мы Москвичи)'
@@ -381,29 +381,88 @@ class Message(models.Model):
         verbose_name_plural = 'Сообщения'
 
 
-
 class ModxDbimgMuz(models.Model):
-    location = models.CharField(db_column='Location', max_length=255, blank=True, null=True)
-    oldname = models.CharField(db_column='oldName', max_length=255, blank=True, null=True)
-    dateupload = models.CharField(db_column='dateUpload', max_length=255, blank=True, null=True)
+    location = models.CharField(db_column='Location', max_length=255,
+                                blank=True, null=True)
+    oldname = models.CharField(db_column='oldName', max_length=255, blank=True,
+                               null=True)
+    dateupload = models.CharField(db_column='dateUpload', max_length=255,
+                                  blank=True, null=True)
     competition1 = models.CharField(max_length=255, blank=True, null=True)
-    picturename = models.CharField(db_column='PictureName', max_length=255, blank=True, null=True)
-    material = models.CharField(db_column='Material', max_length=255, blank=True, null=True)
-    fiocompetitor = models.CharField(db_column='FioCompetitor', max_length=255, blank=True, null=True)
-    agecompetitor = models.CharField(db_column='ageCompetitor', max_length=255, blank=True, null=True)
+    picturename = models.CharField(db_column='PictureName', max_length=255,
+                                   blank=True, null=True)
+    material = models.CharField(db_column='Material', max_length=255,
+                                blank=True, null=True)
+    fiocompetitor = models.CharField(db_column='FioCompetitor', max_length=255,
+                                     blank=True, null=True)
+    agecompetitor = models.CharField(db_column='ageCompetitor', max_length=255,
+                                     blank=True, null=True)
     age = models.IntegerField(db_column='Age', blank=True, null=True)
-    shcoolname = models.CharField(db_column='shcoolName', max_length=255, blank=True, null=True)
-    fioteacher = models.CharField(db_column='FioTeacher', max_length=255, blank=True, null=True)
+    shcoolname = models.CharField(db_column='shcoolName', max_length=255,
+                                  blank=True, null=True)
+    fioteacher = models.CharField(db_column='FioTeacher', max_length=255,
+                                  blank=True, null=True)
     year = models.CharField(max_length=255, blank=True, null=True)
-    temaname = models.CharField(db_column='TemaName', max_length=255, blank=True, null=True)
+    temaname = models.CharField(db_column='TemaName', max_length=255,
+                                blank=True, null=True)
     quarter = models.IntegerField(blank=True, null=True)
     sortage = models.IntegerField(db_column='sortAge', blank=True, null=True)
-    status = models.CharField(db_column='Status', max_length=255, blank=True, null=True)
-    cityname = models.CharField(db_column='cityName', max_length=255, blank=True, null=True)
+    status = models.CharField(db_column='Status', max_length=255, blank=True,
+                              null=True)
+    cityname = models.CharField(db_column='cityName', max_length=255,
+                                blank=True, null=True)
     pathfile = models.CharField(db_column='pathFile', max_length=255)
     hesh = models.CharField(max_length=255, blank=True, null=True)
-    available = models.CharField(db_column='Available', max_length=255, blank=True, null=True)
+    available = models.CharField(db_column='Available', max_length=255,
+                                 blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'modx_dbimg_muz'
+
+
+class Archive(BaseContest):
+    contest_name = models.CharField(max_length=200, null=False,
+                               verbose_name='Конкурс', blank=False)
+    year_contest = models.CharField('Год проведения', max_length=20, blank=False, null=False)
+    image = models.ImageField(upload_to=PathAndRename('all_contests/'),
+                              max_length=200, verbose_name='Изображение', blank=True, null=True)
+    material = models.ForeignKey(Material, verbose_name='Материал',
+                                 on_delete=models.SET_NULL, null=True, blank=True)
+    level = models.ForeignKey(Level, verbose_name='Класс',
+                              on_delete=models.SET_NULL, null=True, blank=True)
+    theme = models.CharField(verbose_name='Тема',
+                             max_length=200, null=True, blank=True)
+    nomination = models.CharField(verbose_name='Номинация',
+                             max_length=200, null=True, blank=True)
+
+    age = models.CharField( verbose_name='Возраст',
+                            max_length=50, null=True, blank=True)
+
+    author_name = models.CharField(max_length=50, blank=True,null=True,
+                                   verbose_name='Авторское название',
+                                   )
+    format = models.CharField(max_length=2, choices=(
+        ('A1', 'A1'), ('A2', 'A2'), ('A3', 'A3')), blank=True,null=True,
+                              verbose_name='Формат работы')
+    description = models.TextField(max_length=500, blank=True,null=True,
+                                   verbose_name='Аннотация')
+
+    program = models.CharField(max_length=100, blank=True,null=True,
+                               verbose_name="Программа(ы), в которой выполнена работа",
+                               )
+    link = models.CharField(max_length=200,
+                            blank=True, verbose_name='Ссылка на файл (облако)',
+                            null=True)
+
+    city = models.CharField('Город', max_length=101, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        super(BaseContest, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = 'Архив'
+        verbose_name_plural = 'Архив'
+
+    def __str__(self):
+        return self.reg_number

@@ -24,7 +24,6 @@ from django_selectel_storage.storage import SelectelStorage, Container
 import requests
 
 
-
 def formatting_fio_participant(fio):
     fio_list = fio.split(' ')
     if len(fio_list) >= 2:
@@ -230,4 +229,10 @@ def generate_year():
     return year_contest
 
 
+def get_dependent_data_for_obj(obj, field_name):
+    if hasattr(obj, field_name):
+        if getattr(obj, field_name):
 
+            return getattr(obj, field_name)
+        else:
+            return None

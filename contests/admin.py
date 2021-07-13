@@ -5,7 +5,7 @@ from django.template.response import TemplateResponse
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from contests.models import Artakiada, Status, Material, Level, Nomination, \
-    Age, Theme, NRusheva, Mymoskvichi, Participant, TeacherExtra, \
+    Age, Theme, NRusheva, Mymoskvichi, Participant, TeacherExtra, Archive, \
     MymoskvichiSelect, ThemeART
 from contests.forms import MymoskvichiForm
 from django.contrib.auth.models import Group, Permission
@@ -42,8 +42,60 @@ class BaseAdmin(admin.ModelAdmin):
         'reg_number', 'fio', 'status', 'school', 'region', 'district',
         'fio_teacher')
     list_filter = ('status', 'district', 'region')
-    actions = ['export_list_info', 'export_as_xls', 'create_thumbs', 'send_vm']
+    actions = ['export_list_info', 'export_as_xls', 'create_thumbs', 'send_vm',
+               'archived']
     exclude = ('reg_number', 'teacher', 'barcode', 'status')
+
+    def archived(self, request, queryset):
+        count_created_obj = 0
+        count_updated_obj = 0
+
+        for obj in queryset:
+            values_for_record = {
+                'contest_name': obj.__class__.alias,
+                'year_contest': obj.year_contest,
+                'image': utils.get_dependent_data_for_obj(obj, 'image'),
+                'material': utils.get_dependent_data_for_obj(obj, 'material'),
+                'level': utils.get_dependent_data_for_obj(obj, 'level'),
+                'theme': utils.get_dependent_data_for_obj(obj, 'theme'),
+                'nomination': utils.get_dependent_data_for_obj(obj,
+                                                               'nomination'),
+                'age': utils.get_dependent_data_for_obj(obj, 'age'),
+                'author_name': utils.get_dependent_data_for_obj(obj,
+                                                                'author_name'),
+                'format': utils.get_dependent_data_for_obj(obj, 'format'),
+                'description': utils.get_dependent_data_for_obj(obj,
+                                                                'description'),
+                'program': utils.get_dependent_data_for_obj(obj, 'program'),
+                'link': utils.get_dependent_data_for_obj(obj, 'link'),
+                'reg_number': utils.get_dependent_data_for_obj(obj,
+                                                               'reg_number'),
+                'barcode': utils.get_dependent_data_for_obj(obj, 'barcode'),
+                'teacher': utils.get_dependent_data_for_obj(obj, 'teacher'),
+                'fio': utils.get_dependent_data_for_obj(obj, 'fio'),
+                'fio_teacher': utils.get_dependent_data_for_obj(obj,
+                                                                'fio_teacher'),
+                'school': utils.get_dependent_data_for_obj(obj, 'school'),
+                'city': utils.get_dependent_data_for_obj(obj, 'city'),
+                'status': utils.get_dependent_data_for_obj(obj, 'status'),
+                'region': utils.get_dependent_data_for_obj(obj, 'region'),
+                'date_reg': utils.get_dependent_data_for_obj(obj, 'date_reg'),
+                'district': utils.get_dependent_data_for_obj(obj, 'district'),
+
+            }
+            vm_record, created = Archive.objects.get_or_create(
+                reg_number=obj.reg_number, defaults=values_for_record
+            )
+            if created:
+                count_created_obj += 1
+            else:
+                count_updated_obj += 1
+
+        messages.add_message(request, messages.INFO,
+                             ' "{}"  новых записей  отправленно в АРХИВ, "{}" обновлено'.format(
+                                 count_created_obj, count_updated_obj))
+
+    archived.short_description = 'Отправить в Архив'
 
     def send_vm(self, request, queryset):
 
@@ -53,18 +105,24 @@ class BaseAdmin(admin.ModelAdmin):
                 path_file_selectel = utils.upload_img(path_thumb, 'thumbs')
 
                 values_for_update = {
-                    'competition1' : obj.__class__.alias,
-                    'material' : obj.material.name,
-                    'fiocompetitor' : utils.formatting_fio_participant(obj.fio),
-                    'agecompetitor' : obj.level.name,
-                    'pathfile' : path_file_selectel,
-                    'fioteacher':utils.formatting_fio_teacher(obj.fio_teacher),
-                    'shcoolname':obj.school,
-                    'cityname':obj.teacher.region.name,
-                    'picturename':obj.author_name if hasattr(obj,'author_name') else obj.theme.name if (hasattr(obj,'theme') and hasattr(obj.theme,'name'))  else '',
-                    'year':obj.year_contest.split('-')[1].split(' ')[0],
-                    'temaname':obj.theme.name if (hasattr(obj,'theme') and hasattr(obj.theme,'name')) else obj.nomination if hasattr(obj,'nomination') else ''
-
+                    'competition1': obj.__class__.alias,
+                    'material': obj.material.name,
+                    'fiocompetitor': utils.formatting_fio_participant(obj.fio),
+                    'agecompetitor': obj.level.name,
+                    'pathfile': path_file_selectel,
+                    'fioteacher': utils.formatting_fio_teacher(
+                        obj.fio_teacher),
+                    'shcoolname': obj.school,
+                    'cityname': obj.teacher.region.name,
+                    'picturename': obj.author_name if hasattr(obj,
+                                                              'author_name') else obj.theme.name if (
+                            hasattr(obj, 'theme') and hasattr(obj.theme,
+                                                              'name')) else '',
+                    'year': obj.year_contest.split('-')[1].split(' ')[0],
+                    'temaname': obj.theme.name if (
+                            hasattr(obj, 'theme') and hasattr(obj.theme,
+                                                              'name')) else obj.nomination if hasattr(
+                        obj, 'nomination') else ''
 
                 }
                 vm_record, created = ModxDbimgMuz.objects.using(
@@ -73,7 +131,8 @@ class BaseAdmin(admin.ModelAdmin):
                 )
                 if created:
                     messages.add_message(request, messages.INFO,
-                                         'Запись "{}" отправленна в ВМ'.format(obj.reg_number))
+                                         'Запись "{}" отправленна в ВМ'.format(
+                                             obj.reg_number))
                 else:
                     messages.add_message(request, messages.INFO,
                                          'Запись "{}" обновлена в ВМ'.format(
@@ -160,6 +219,10 @@ class BaseAdmin(admin.ModelAdmin):
                 name='Manager').exists():
             if 'send_vm' in actions:
                 del actions['send_vm']
+        if not request.user.groups.filter(
+                name='Manager').exists():
+            if 'archived' in actions:
+                del actions['archived']
         return actions
 
     def get_queryset(self, request):
@@ -235,7 +298,8 @@ class BaseAdmin(admin.ModelAdmin):
 class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
     list_filter = (
-    'level', 'status', 'district', RegionsListFilter, 'region', 'nomination')
+        'level', 'status', 'district', RegionsListFilter, 'region',
+        'nomination')
     list_display = (
         'reg_number', 'image_tag', 'fio', 'level', 'status', 'school',
         'region',
@@ -377,6 +441,14 @@ class PermissionAdmin(admin.ModelAdmin):
     model = Permission
 
 
+class ArchiveAdmin(admin.ModelAdmin):
+    model = Archive
+    list_display = ['reg_number', 'contest_name', 'fio', 'fio_teacher', 'teacher',
+                    'region', 'status', 'year_contest']
+    search_fields = ('reg_number', 'fio', 'fio_teacher')
+    list_filter = ('contest_name', 'year_contest',)
+
+
 admin.site.register(MymoskvichiSelect, MymoskvichiSelectAdmin)
 admin.site.register(PageContest, PageContestAdmin)
 admin.site.register(Mymoskvichi, MymoskvichiAdmin)
@@ -385,6 +457,7 @@ admin.site.register(Permission, PermissionAdmin)
 admin.site.register(Artakiada, ArtakiadaAdmin)
 admin.site.register(NRusheva, NRushevaAdmin)
 admin.site.register(Material, MaterialAdmin)
+admin.site.register(Archive, ArchiveAdmin)
 admin.site.register(Message, MessageAdmin)
 admin.site.register(Status, StatusAdmin)
 admin.site.register(Level, LevelAdmin)
