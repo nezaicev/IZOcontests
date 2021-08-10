@@ -1,13 +1,13 @@
 from django import forms
 from contests.models import Level, Participant, TeacherExtra, MymoskvichiSelect
-from cert.models import Events
+from contests.models import Events
 from django.contrib import messages
 
 
 class SearchRegNumForm(forms.Form):
     event = forms.ChoiceField(label='Конкурс/мероприятие',
-                              choices=Events.objects.all().values_list('id',
-                                                                       'name'))
+                              choices=Events.objects.all().values_list('id', 'name')
+                              )
     reg_number = forms.CharField(label='Регистрационный номер', max_length=20)
 
 

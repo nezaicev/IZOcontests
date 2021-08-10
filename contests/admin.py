@@ -12,12 +12,15 @@ from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm
 from django.conf import settings
 from contests.forms import PageContestsFrom, ConfStorageForm
-from contests.models import PageContest, Message, ModxDbimgMuz
+from contests.models import PageContest, Message, ModxDbimgMuz, Events
 from contests import utils
 from contests import tasks
 
 
 # Register your models here.
+
+
+
 
 class RegionsListFilter(admin.SimpleListFilter):
     title = ('Россия')
@@ -464,3 +467,4 @@ admin.site.register(Level, LevelAdmin)
 admin.site.register(Theme, ThemeAdmin)
 admin.site.register(Age, AgeAdmin)
 admin.site.register(ThemeART)
+admin.site.register(Events)

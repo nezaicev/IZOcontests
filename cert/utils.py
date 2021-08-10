@@ -2,7 +2,7 @@ import os
 import textwrap
 from PIL import Image, ImageDraw, ImageFont
 from django.conf import settings
-from cert.services import get_obj_by_reg_num
+from cert.services import get_obj_by_reg_num_from_archive
 from contests.models import MymoskvichiSelect
 
 
@@ -45,8 +45,7 @@ def insert_text(font_url,size,text,width,align_value,position,color,draw,anchor 
 
 def generate_cert(reg_num, blank_cert, teacher, form_values):
     module_dir = os.getcwd()
-
-    obj = get_obj_by_reg_num(reg_num, blank_cert.contest.id, teacher)
+    obj = get_obj_by_reg_num_from_archive(reg_num, teacher)
     path_file = os.path.join(module_dir, settings.MEDIA_URL[1:], 'certs',
                              '{}_cert.jpg'.format(obj.reg_number))
 
@@ -62,6 +61,7 @@ def generate_cert(reg_num, blank_cert, teacher, form_values):
                 draw,
                 blank_cert.fio_text.anchor
                 )
+    print(fio)
     if fio:
         blank_cert.position_text.position[1]=fio[3]+blank_cert.fio_text.offset
         position = insert_text(blank_cert.position_text.font.url,
@@ -74,6 +74,7 @@ def generate_cert(reg_num, blank_cert, teacher, form_values):
                           draw,
                           blank_cert.position_text.anchor
                           )
+        print(position)
         if position :
             blank_cert.school_text.position[1] = fio[3] + blank_cert.position_text.offset
             school = insert_text(blank_cert.school_text.font.url,

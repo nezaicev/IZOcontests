@@ -6,8 +6,9 @@ from django.urls import reverse_lazy, reverse
 from django.http import FileResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.views import generic, View
-from cert.forms import SearchRegNumForm, ConfirmationUserDataForm, BaseConfirmationUserDataForm,ConfirmationUserDataExtraForm
-from cert.services import get_obj_by_reg_num, get_blank_cert
+from cert.forms import SearchRegNumForm, ConfirmationUserDataForm, \
+    BaseConfirmationUserDataForm, ConfirmationUserDataExtraForm
+from cert.services import get_obj_by_reg_num_from_archive, get_blank_cert
 from cert.utils import generate_cert
 
 
@@ -29,9 +30,9 @@ class SearchRegNumView(generic.FormView):
     def form_valid(self, form):
         self.request.session['reg_number'] = form.cleaned_data['reg_number']
         self.request.session['event'] = form.cleaned_data['event']
-        participant = get_obj_by_reg_num(self.request.session['reg_number'],
-                                         self.request.session['event'],
-                                         self.request.user)
+        participant = get_obj_by_reg_num_from_archive(
+            self.request.session['reg_number'],
+            self.request.user)
         if participant:
             self.request.session['contest'] = participant.__class__.__name__
             self.request.session['participant_id'] = participant.id
@@ -48,19 +49,17 @@ class ConfirmationUserDataView(View):
     def dispatch(self, request, *args, **kwargs):
         self.form = BaseConfirmationUserDataForm
         context = {}
-        participant = get_obj_by_reg_num(self.request.session['reg_number'],
-                                         self.request.session['event'],
-                                         self.request.user)
+        participant = get_obj_by_reg_num_from_archive(self.request.session['reg_number'],self.request.user)
         self.initial_data = {'reg_number': participant.reg_number,
                              'status': participant.status.id if participant.status else participant.status,
-                             'school':participant.school,
+                             'school': participant.school,
                              }
         if participant:
-            if participant.__class__.alias != 'mymoskvichi':
-                self.initial_data['fio'] =participant.fio
+            if participant.contest_name != 'mymoskvichi':
+                self.initial_data['fio'] = participant.fio
                 self.initial_data['position'] = participant.level
             else:
-                self.form=ConfirmationUserDataExtraForm
+                self.form = ConfirmationUserDataExtraForm
 
         if request.method == 'GET':
             self.form = self.form(self.initial_data)

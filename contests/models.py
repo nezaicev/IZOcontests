@@ -8,9 +8,24 @@ from model_utils.managers import InheritanceManager
 from ckeditor.fields import RichTextField
 from users.models import CustomUser, Region, District
 from contests import utils
+# from cert.models import Events
 
 
 # Create your models here.
+
+class Events(models.Model):
+    name = models.CharField(verbose_name='Название (конкурс/мероприятие)',
+                            max_length=100, blank=False)
+    app = models.CharField(verbose_name='Приложение', max_length=30,
+                           blank=False)
+    model = models.CharField(verbose_name='Модель', max_length=30, blank=False)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Мероприятие'
+        verbose_name_plural = 'Мероприятия'
 
 
 class ThemeART(models.Model):
@@ -54,6 +69,8 @@ class Age(models.Model):
 
 class Theme(models.Model):
     name = models.CharField('Тема', max_length=60)
+    # contest = models.ForeignKey(Events, verbose_name='Конкурс/Мероприятие',
+    #                             on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = 'Тема'
@@ -423,32 +440,35 @@ class ModxDbimgMuz(models.Model):
 
 class Archive(BaseContest):
     contest_name = models.CharField(max_length=200, null=False,
-                               verbose_name='Конкурс', blank=False)
-    year_contest = models.CharField('Год проведения', max_length=20, blank=False, null=False)
+                                    verbose_name='Конкурс', blank=False)
+    year_contest = models.CharField('Год проведения', max_length=20,
+                                    blank=False, null=False)
     image = models.ImageField(upload_to=PathAndRename('all_contests/'),
-                              max_length=200, verbose_name='Изображение', blank=True, null=True)
+                              max_length=200, verbose_name='Изображение',
+                              blank=True, null=True)
     material = models.ForeignKey(Material, verbose_name='Материал',
-                                 on_delete=models.SET_NULL, null=True, blank=True)
+                                 on_delete=models.SET_NULL, null=True,
+                                 blank=True)
     level = models.ForeignKey(Level, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True, blank=True)
     theme = models.CharField(verbose_name='Тема',
                              max_length=200, null=True, blank=True)
     nomination = models.CharField(verbose_name='Номинация',
-                             max_length=200, null=True, blank=True)
+                                  max_length=200, null=True, blank=True)
 
-    age = models.CharField( verbose_name='Возраст',
-                            max_length=50, null=True, blank=True)
+    age = models.CharField(verbose_name='Возраст',
+                           max_length=50, null=True, blank=True)
 
-    author_name = models.CharField(max_length=50, blank=True,null=True,
+    author_name = models.CharField(max_length=50, blank=True, null=True,
                                    verbose_name='Авторское название',
                                    )
     format = models.CharField(max_length=2, choices=(
-        ('A1', 'A1'), ('A2', 'A2'), ('A3', 'A3')), blank=True,null=True,
+        ('A1', 'A1'), ('A2', 'A2'), ('A3', 'A3')), blank=True, null=True,
                               verbose_name='Формат работы')
-    description = models.TextField(max_length=500, blank=True,null=True,
+    description = models.TextField(max_length=500, blank=True, null=True,
                                    verbose_name='Аннотация')
 
-    program = models.CharField(max_length=100, blank=True,null=True,
+    program = models.CharField(max_length=100, blank=True, null=True,
                                verbose_name="Программа(ы), в которой выполнена работа",
                                )
     link = models.CharField(max_length=200,
