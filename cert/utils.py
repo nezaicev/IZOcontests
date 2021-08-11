@@ -3,7 +3,7 @@ import textwrap
 from PIL import Image, ImageDraw, ImageFont
 from django.conf import settings
 from cert.services import get_obj_by_reg_num_from_archive
-from contests.models import MymoskvichiSelect
+from contests.directory import NominationMYMSK
 
 
 def formatting_fio(fio):
@@ -61,7 +61,7 @@ def generate_cert(reg_num, blank_cert, teacher, form_values):
                 draw,
                 blank_cert.fio_text.anchor
                 )
-    print(fio)
+
     if fio:
         blank_cert.position_text.position[1]=fio[3]+blank_cert.fio_text.offset
         position = insert_text(blank_cert.position_text.font.url,
@@ -74,7 +74,7 @@ def generate_cert(reg_num, blank_cert, teacher, form_values):
                           draw,
                           blank_cert.position_text.anchor
                           )
-        print(position)
+
         if position :
             blank_cert.school_text.position[1] = fio[3] + blank_cert.position_text.offset
             school = insert_text(blank_cert.school_text.font.url,
@@ -92,7 +92,7 @@ def generate_cert(reg_num, blank_cert, teacher, form_values):
                     blank_cert.nomination_text.position[1]=fio[3]+blank_cert.school_text.offset
                     nomination = insert_text(blank_cert.nomination_text.font.url,
                                       blank_cert.nomination_text.size,
-                                      '«{}»'.format(MymoskvichiSelect.objects.get(id=form_values['nomination']).data),
+                                      '«{}»'.format(NominationMYMSK.objects.get(id=form_values['nomination']).data),
                                       blank_cert.nomination_text.width,
                                       blank_cert.nomination_text.align,
                                       blank_cert.nomination_text.position,

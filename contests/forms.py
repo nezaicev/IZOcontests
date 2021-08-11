@@ -1,5 +1,5 @@
 from django import forms
-from contests.models import PageContest, Mymoskvichi, MymoskvichiSelect
+from contests.models import PageContest, Events
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 
@@ -27,18 +27,21 @@ def get_my_choices(model, field):
     return choices_list
 
 
-class MymoskvichiForm(forms.ModelForm):
-    model = Mymoskvichi
+# class MymoskvichiForm(forms.ModelForm):
+#     model = Mymoskvichi
+#
+#     def __init__(self, *args, **kwargs):
+#         super(MymoskvichiForm, self).__init__(*args, **kwargs)
+#         self.fields['nomination'] = forms.ChoiceField(label='Номинация',
+#                                                       choices=get_my_choices(
+#                                                           MymoskvichiSelect,
+#                                                           'nomination'))
+#         self.fields['nomination_extra'] = forms.ChoiceField(label='Доп. номинация',
+#                                                             choices=get_my_choices(
+#                                                                 MymoskvichiSelect,
+#                                                                 'nomination'))
+#         self.fields['age'] = forms.ChoiceField(label='Возрастная категория',
+#             choices=get_my_choices(MymoskvichiSelect, 'age'))
+#
+#
 
-    def __init__(self, *args, **kwargs):
-        super(MymoskvichiForm, self).__init__(*args, **kwargs)
-        self.fields['nomination'] = forms.ChoiceField(label='Номинация',
-                                                      choices=get_my_choices(
-                                                          MymoskvichiSelect,
-                                                          'nomination'))
-        self.fields['nomination_extra'] = forms.ChoiceField(label='Доп. номинация',
-                                                            choices=get_my_choices(
-                                                                MymoskvichiSelect,
-                                                                'nomination'))
-        self.fields['age'] = forms.ChoiceField(label='Возрастная категория',
-            choices=get_my_choices(MymoskvichiSelect, 'age'))
