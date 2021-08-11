@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'contests.apps.ContestsConfig',
     'map.apps.MapConfig',
     'mailing.apps.MailingConfig',
-    'cert.apps.CertConfig',
+#    'cert.apps.CertConfig',
 
     'ckeditor',
     'ckeditor_uploader',

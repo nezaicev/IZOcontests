@@ -8,10 +8,12 @@ from model_utils.managers import InheritanceManager
 from ckeditor.fields import RichTextField
 from users.models import CustomUser, Region, District
 from contests import utils
-# from cert.models import Events
+from contests.directory import NominationART, NominationMYMSK, ThemeART, \
+    ThemeRUSH, ThemeMYMSK, AgeRUSH, AgeMYMSK, Status, Level, Material
 
 
 # Create your models here.
+# Заявки на конкурсы
 
 class Events(models.Model):
     name = models.CharField(verbose_name='Название (конкурс/мероприятие)',
@@ -26,17 +28,6 @@ class Events(models.Model):
     class Meta:
         verbose_name = 'Мероприятие'
         verbose_name_plural = 'Мероприятия'
-
-
-class ThemeART(models.Model):
-    name = models.CharField('Тема', max_length=200)
-
-    class Meta:
-        verbose_name = 'Тема(Артакиада)'
-        verbose_name_plural = 'Темы(Артакиада)'
-
-    def __str__(self):
-        return self.name
 
 
 class Select(models.Model):
@@ -54,74 +45,6 @@ class Select(models.Model):
 
     def __str__(self):
         return self.data
-
-
-class Age(models.Model):
-    name = models.CharField('Возраст', max_length=10)
-
-    class Meta:
-        verbose_name = 'Возраст'
-        verbose_name_plural = 'Возраст'
-
-    def __str__(self):
-        return self.name
-
-
-class Theme(models.Model):
-    name = models.CharField('Тема', max_length=60)
-    # contest = models.ForeignKey(Events, verbose_name='Конкурс/Мероприятие',
-    #                             on_delete=models.PROTECT)
-
-    class Meta:
-        verbose_name = 'Тема'
-        verbose_name_plural = 'Темы'
-
-    def __str__(self):
-        return self.name
-
-
-class Nomination(models.Model):
-    name = models.CharField('Номинация', max_length=100)
-
-    class Meta:
-        verbose_name = 'Номинация'
-        verbose_name_plural = 'Номинация'
-
-    def __str__(self):
-        return self.name
-
-
-class Level(models.Model):
-    name = models.CharField('Класс', max_length=10)
-
-    class Meta:
-        verbose_name = 'Класс'
-        verbose_name_plural = 'Класс'
-
-    def __str__(self):
-        return self.name
-
-
-class Material(models.Model):
-    name = models.CharField('Материал', max_length=100)
-
-    class Meta:
-        verbose_name = 'Материал'
-        verbose_name_plural = 'Материал'
-
-    def __str__(self):
-        return self.name
-
-
-class Status(models.Model):
-    name = models.CharField('Статус', max_length=35, blank=True)
-
-    class Meta:
-        verbose_name = 'Статус'
-        verbose_name_plural = 'Статус'
-
-    def __str__(self):
-        return self.name
 
 
 class BaseContest(models.Model):
@@ -217,7 +140,7 @@ class Artakiada(BaseContest):
                               on_delete=models.SET_NULL, null=True)
     theme = models.ForeignKey(ThemeART, verbose_name='Тема',
                               on_delete=models.SET_NULL, null=True, blank=True)
-    nomination = models.ForeignKey(Nomination, verbose_name='Номинация',
+    nomination = models.ForeignKey(NominationART, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
@@ -250,11 +173,11 @@ class NRusheva(BaseContest):
     name = ('Конкурс', 'Конкурс им. Нади Рушевой')
     alias = 'nrusheva'
 
-    theme = models.ForeignKey(Theme, verbose_name='Тема',
+    theme = models.ForeignKey(ThemeRUSH, verbose_name='Тема',
                               on_delete=models.SET_NULL, null=True)
     level = models.ForeignKey(Level, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True)
-    age = models.ForeignKey(Age, verbose_name='Возраст',
+    age = models.ForeignKey(AgeRUSH, verbose_name='Возраст',
                             on_delete=models.SET_NULL, null=True)
 
     image = models.ImageField(upload_to=PathAndRename('nrusheva/'),
@@ -296,22 +219,21 @@ class Mymoskvichi(BaseContest):
         'region', 'city', 'district', 'age', 'author_name', 'nomination',
         'nomination_extra', 'program',
     )
-    nomination = models.CharField(verbose_name='Номинация',
+    nomination = models.ForeignKey(NominationMYMSK, verbose_name='Номинация',
+                                   on_delete=models.SET_NULL, null=True)
+    theme = models.ForeignKey(ThemeMYMSK, verbose_name='Тема',
+                              on_delete=models.SET_NULL, null=True)
 
-                                  max_length=50)
-    nomination_extra = models.CharField(verbose_name='Доп.номинация',
-
-                                        max_length=50)
     author_name = models.CharField(max_length=50, blank=False,
                                    verbose_name='Авторское название')
     program = models.CharField(max_length=100, blank=False,
                                verbose_name="Программа(ы), в которой выполнена работа",
                                null=True)
-    age = models.CharField(max_length=50,
-                           blank=False, verbose_name='Возрастная категория',
-                           null=True)
+    age = models.ForeignKey(AgeMYMSK,
+                            verbose_name='Возрастная категория',
+                            null=True, on_delete=models.SET_NULL)
     link = models.CharField(max_length=200,
-                            blank=True, verbose_name='Ссылка на файл (облако)',
+                            verbose_name='Ссылка на файл (облако)',
                             null=True)
 
     def __str__(self):
@@ -333,14 +255,6 @@ class Mymoskvichi(BaseContest):
                 else:
                     fios += participant
             return fios
-
-
-class MymoskvichiSelect(Select):
-    access = models.BooleanField(default=True, verbose_name='Доступ')
-
-    class Meta:
-        verbose_name = 'Список (Мы Москвичи)'
-        verbose_name_plural = 'Списки (Мы Москвичи)'
 
 
 class Participant(models.Model):
