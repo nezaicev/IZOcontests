@@ -3,24 +3,10 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.db.models import JSONField
 from django.core.files.storage import FileSystemStorage
-from contests.models import Status
+from contests.models import Status, Events
 
 
 # Create your models here.
-
-class Events(models.Model):
-    name = models.CharField(verbose_name='Название (конкурс/мероприятие)',
-                            max_length=100, blank=False)
-    app = models.CharField(verbose_name='Приложение', max_length=30,
-                           blank=False)
-    model = models.CharField(verbose_name='Модель', max_length=30, blank=False)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = 'Мероприятие'
-        verbose_name_plural = 'Мероприятия'
 
 
 class Font(models.Model):

@@ -4,20 +4,20 @@ from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
-from contests.models import Artakiada, Status, Material, Level, Nomination, \
-    Age, Theme, NRusheva, Mymoskvichi, Participant, TeacherExtra, Archive, \
-    MymoskvichiSelect, ThemeART
-from contests.forms import MymoskvichiForm
+from contests.models import Artakiada, NRusheva, Mymoskvichi, Participant, TeacherExtra, Archive
+from contests.directory import NominationART, NominationMYMSK, ThemeART, \
+    ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level
 from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm
 from django.conf import settings
 from contests.forms import PageContestsFrom, ConfStorageForm
-from contests.models import PageContest, Message, ModxDbimgMuz
+from contests.models import PageContest, Message, ModxDbimgMuz, Events
 from contests import utils
 from contests import tasks
 
 
 # Register your models here.
+
 
 class RegionsListFilter(admin.SimpleListFilter):
     title = ('Россия')
@@ -277,8 +277,6 @@ class BaseAdmin(admin.ModelAdmin):
     def response_change(self, request, obj):
         utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
                            obj.alias, obj.reg_number)
-        # tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
-        #                              "Заявка на конкурс")
         return super().response_change(request, obj)
 
     class Media:
@@ -299,7 +297,7 @@ class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
     list_filter = (
         'level', 'status', 'district', RegionsListFilter, 'region',
-        'nomination')
+    )
     list_display = (
         'reg_number', 'image_tag', 'fio', 'level', 'status', 'school',
         'region',
@@ -367,7 +365,6 @@ class TeacherExtraInline(admin.StackedInline):
 
 
 class MymoskvichiAdmin(BaseAdmin):
-    form = MymoskvichiForm
     model = Mymoskvichi
     name = 'mymoskvichi'
     inlines = [ParticipantInline, TeacherExtraInline]
@@ -398,11 +395,6 @@ class StatusAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
-class MymoskvichiSelectAdmin(admin.ModelAdmin):
-    model = MymoskvichiSelect
-    list_display = ['data']
-
-
 class MaterialAdmin(admin.ModelAdmin):
     model = Material
     list_display = ['name']
@@ -413,18 +405,33 @@ class LevelAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
-class NominationAdmin(admin.ModelAdmin):
-    model = Nomination
+class NominationARTAdmin(admin.ModelAdmin):
+    model = NominationART
     list_display = ['name']
 
 
-class AgeAdmin(admin.ModelAdmin):
-    model = Age
+class NominationMYMSKAdmin(admin.ModelAdmin):
+    model = NominationART
     list_display = ['name']
 
 
-class ThemeAdmin(admin.ModelAdmin):
-    model = Theme
+class AgeRUSHAdmin(admin.ModelAdmin):
+    model = AgeRUSH
+    list_display = ['name']
+
+
+class AgeMYMSKAdmin(admin.ModelAdmin):
+    model = AgeMYMSK
+    list_display = ['name']
+
+
+class ThemeRUSHAdmin(admin.ModelAdmin):
+    model = ThemeRUSH
+    list_display = ['name']
+
+
+class ThemeMYMSKAdmin(admin.ModelAdmin):
+    model = ThemeMYMSK
     list_display = ['name']
 
 
@@ -443,16 +450,18 @@ class PermissionAdmin(admin.ModelAdmin):
 
 class ArchiveAdmin(admin.ModelAdmin):
     model = Archive
-    list_display = ['reg_number', 'contest_name', 'fio', 'fio_teacher', 'teacher',
+    list_display = ['reg_number', 'contest_name', 'fio', 'fio_teacher',
+                    'teacher',
                     'region', 'status', 'year_contest']
     search_fields = ('reg_number', 'fio', 'fio_teacher')
     list_filter = ('contest_name', 'year_contest',)
 
 
-admin.site.register(MymoskvichiSelect, MymoskvichiSelectAdmin)
+
 admin.site.register(PageContest, PageContestAdmin)
 admin.site.register(Mymoskvichi, MymoskvichiAdmin)
-admin.site.register(Nomination, NominationAdmin)
+admin.site.register(NominationART, NominationARTAdmin)
+admin.site.register(NominationMYMSK, NominationMYMSKAdmin)
 admin.site.register(Permission, PermissionAdmin)
 admin.site.register(Artakiada, ArtakiadaAdmin)
 admin.site.register(NRusheva, NRushevaAdmin)
@@ -461,6 +470,9 @@ admin.site.register(Archive, ArchiveAdmin)
 admin.site.register(Message, MessageAdmin)
 admin.site.register(Status, StatusAdmin)
 admin.site.register(Level, LevelAdmin)
-admin.site.register(Theme, ThemeAdmin)
-admin.site.register(Age, AgeAdmin)
+admin.site.register(AgeRUSH, AgeRUSHAdmin)
+admin.site.register(AgeMYMSK, AgeMYMSKAdmin)
+admin.site.register(ThemeRUSH, ThemeRUSHAdmin)
+admin.site.register(ThemeMYMSK, ThemeMYMSKAdmin)
 admin.site.register(ThemeART)
+admin.site.register(Events)
