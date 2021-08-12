@@ -23,7 +23,7 @@ from contests.models import Message
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-#    path('certs/', include('cert.urls')),
+    path('certs/', include('cert.urls')),
     path('map/', include('map.urls')),
     path('users/', include('users.urls')),
     path('mailing/', include('mailing.urls')),
