@@ -10,6 +10,7 @@ class Migration(migrations.Migration):
         ('contests', '0019_auto_20210810_0949'),
     ]
 
+
 #    operations = [
 #        migrations.AddField(
 #            model_name='theme',
