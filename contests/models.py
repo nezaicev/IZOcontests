@@ -353,6 +353,8 @@ class ModxDbimgMuz(models.Model):
 
 
 class Archive(BaseContest):
+
+    date_reg = models.DateTimeField(blank=True)
     contest_name = models.CharField(max_length=200, null=False,
                                     verbose_name='Конкурс', blank=False)
     year_contest = models.CharField('Год проведения', max_length=20,

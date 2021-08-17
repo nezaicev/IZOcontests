@@ -19,6 +19,9 @@ from contests import tasks
 # Register your models here.
 
 
+
+
+
 class RegionsListFilter(admin.SimpleListFilter):
     title = ('Россия')
     parameter_name = 'russia'
@@ -234,7 +237,6 @@ class BaseAdmin(admin.ModelAdmin):
             return qs.filter(teacher=request.user)
 
     def get_list_display(self, request):
-
         if request.user.is_superuser or request.user.groups.filter(
                 name='Manager').exists():
             self.list_editable = ('status',)
@@ -453,8 +455,14 @@ class ArchiveAdmin(admin.ModelAdmin):
     list_display = ['reg_number', 'contest_name', 'fio', 'fio_teacher',
                     'teacher',
                     'region', 'status', 'year_contest']
-    search_fields = ('reg_number', 'fio', 'fio_teacher')
-    list_filter = ('contest_name', 'year_contest',)
+
+    def get_queryset(self, request):
+        if request.user.is_superuser or request.user.groups.filter(
+                name='Manager').exists():
+            return super(admin.ModelAdmin, self).get_queryset(request)
+        else:
+            qs = super(admin.ModelAdmin, self).get_queryset(request)
+            return qs.filter(teacher=request.user)
 
 
 
