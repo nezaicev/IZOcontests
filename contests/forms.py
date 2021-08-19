@@ -3,6 +3,11 @@ from contests.models import PageContest, Events
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 
+class SubscribeShowEventForm(forms.Form):
+    teacher=forms.CharField(max_length=20)
+    page_contest=forms.CharField(max_length=20)
+
+
 class ConfStorageForm(forms.Form):
     _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
     username = forms.CharField(widget=forms.TextInput)
@@ -11,12 +16,13 @@ class ConfStorageForm(forms.Form):
 
 
 class PageContestsFrom(forms.ModelForm):
-    name = forms.CharField()
-    logo = forms.ImageField()
-    content = forms.CharField(widget=CKEditorUploadingWidget())
+    name = forms.CharField(label='Название')
+    logo = forms.ImageField(label='Логотип')
+    content = forms.CharField(widget=CKEditorUploadingWidget(), label='Контент')
+    letter = forms.CharField(widget=CKEditorUploadingWidget(), label='Информационное письмо')
 
     class Meta:
-        fields = ('name', 'logo', 'content')
+        fields = ('hide','name', 'logo','type', 'content','letter')
         model = PageContest
 
 
@@ -25,6 +31,9 @@ def get_my_choices(model, field):
                          model.objects.filter(field=field,access=True).values_list('data',
                                                                        flat=True))
     return choices_list
+
+
+
 
 
 # class MymoskvichiForm(forms.ModelForm):

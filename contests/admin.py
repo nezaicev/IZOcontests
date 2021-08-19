@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
-from contests.models import Artakiada, NRusheva, Mymoskvichi, Participant, TeacherExtra, Archive
+from contests.models import Artakiada, NRusheva, Mymoskvichi, Participant, TeacherExtra, Archive, ShowEvent
 from contests.directory import NominationART, NominationMYMSK, ThemeART, \
     ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level
 from django.contrib.auth.models import Group, Permission
@@ -15,11 +15,7 @@ from contests.models import PageContest, Message, ModxDbimgMuz, Events
 from contests import utils
 from contests import tasks
 
-
 # Register your models here.
-
-
-
 
 
 class RegionsListFilter(admin.SimpleListFilter):
@@ -441,6 +437,7 @@ class PageContestAdmin(admin.ModelAdmin):
     form = PageContestsFrom
 
 
+
 class MessageAdmin(admin.ModelAdmin):
     model = Message
     list_display = ['name']
@@ -465,7 +462,14 @@ class ArchiveAdmin(admin.ModelAdmin):
             return qs.filter(teacher=request.user)
 
 
+class ShowEventAdmin(admin.ModelAdmin):
+    model = ShowEvent
+    list_display = ['reg_number', 'page_contest',
+                    'teacher',
+                    ]
+    exclude = ('reg_number',)
 
+admin.site.register(ShowEvent, ShowEventAdmin)
 admin.site.register(PageContest, PageContestAdmin)
 admin.site.register(Mymoskvichi, MymoskvichiAdmin)
 admin.site.register(NominationART, NominationARTAdmin)

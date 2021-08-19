@@ -29,7 +29,7 @@ urlpatterns = [
     path('mailing/', include('mailing.urls')),
     path('users/', include('django.contrib.auth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('', PageContestView.as_view(template_name='home.html',extra_context={'messages':Message.objects.all()}),
+    path('', PageContestView.as_view(template_name='home.html'),
          name='home')
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -5,60 +5,104 @@
 
 {% block content %}
 
-	<div class="mt-1 card col-2 float-right ">
-		<div class="card-body">
-			{% if user.is_authenticated %}
-				<p>{{ user.email }}</p>
-        <p class="mb-0"><a href="{% url 'admin:index' %}">Личный кабинет</a></p>
-				<p class="mb-0"><a href="{% url 'search_cert' %}">Сертификаты</a></p>
-				<p class="mb-0"><a href="{% url 'password_reset' %}">Изменить пароль</a></p>
+  <div class="mt-1 card col-2 float-right ">
+    <div class="card-body">
+      {% if user.is_authenticated %}
+        <p>{{ user.email }}</p>
+        <p class="mb-0"><a href="{% url 'admin:index' %}">Личный кабинет</a>
+        </p>
+        <p class="mb-0"><a href="{% url 'search_cert' %}">Сертификаты</a></p>
+        <p class="mb-0"><a href="{% url 'password_reset' %}">Изменить
+          пароль</a></p>
         <p class="mb-0"><a href="{% url 'logout' %}" class='mr-1'>Выход</a></p>
 
-			{% else %}
-				<p>Вы не авторизированы!</p>
+      {% else %}
+        <p>Вы не авторизированы!</p>
         <p class="mb-0"><a href="{% url 'login' %} " class='mr-3'>Вход</a></p>
         <p class="mb-0"><a href="{% url 'signup' %}">Регистрация</a></p>
-				<p class="mb-0"><a href="{% url 'password_reset' %}">Сброс пароля</a></p>
+        <p class="mb-0"><a href="{% url 'password_reset' %}">Сброс пароля</a>
+        </p>
 
-			{% endif %}
-		</div>
+      {% endif %}
+    </div>
 
-	</div>
-	<div class="album py-5">
-		<div class="container">
-			{% for  message in messages %}
-				<div class="alert alert-light col-10" role="alert">
-					{{ message.content|safe }}
-				</div>
+  </div>
+  <div class="album py-5">
+    <div class="container">
 
-			{% endfor %}
-			<div class="row">
-				{% for contest in object_list %}
-					{#					<div class="card mr-3 mb-3" style="width: 18rem;">#}
-					{#						<img src="{{ contest.logo.url}}" class="card-img-top" alt="...">#}
-					{#						<div class="card-body">#}
-					{#							<h5>{{contest.name}}</h5>#}
-					{#								<hr>#}
-					{#							<p class="card-text">#}
-					{#								{{ contest.content|safe }}#}
-					{#							</p>#}
-					{#						</div>#}
-					{#					</div>#}
-					<div class="col-md-4">
-						<div class="card mb-4 shadow-sm">
-							<img src="{{ contest.logo.url }}"
-									 class="card-img-top">
-							<div class="card-body align-content-center">
-								<h5>{{ contest.name }}</h5>
-								<hr>
-								<p class="card-text">{{ contest.content|safe }}</p>
 
-							</div>
-						</div>
-					</div>
-				{% endfor %}
+      {% for  message in messages %}
+        <div class="alert alert-light col-10" role="alert">
+          {{ message.content|safe }}
+        </div>
 
-			</div>
-		</div>
-	</div>
+      {% endfor %}
+      <h3 class="align-content-center">Мероприятия</h3>
+      <hr>
+      <div class="row">
+        {% for event in events %}
+          <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+              <img src="{{ event.logo.url }}"
+                   class="card-img-top">
+              <div class="card-body align-content-center">
+                <h5>{{ event.name }}</h5>
+                {% if event.id in show_events %}
+                  <p class="card-text">
+                    Вы подписаны. Дополнительная информация отправлена
+                    на Ваш email.
+                  </p>
+                {% else %}
+                  {% if user.is_authenticated %}
+                    <form method="post">{% csrf_token %}
+
+                      <input name="teacher" value="{{ user.id }}" hidden>
+                      <input name="page_contest" value="{{ event.id }}" hidden>
+
+                      <button type="submit" value="Save"
+                              class="btn btn-sm btn-success">
+                        Принять участие
+                      </button>
+                    </form>
+
+                  {% else %}
+                    <a href="{% url 'login' %}">
+                      <button type="button" class="btn btn-sm btn-success">
+                        Принять участие
+                      </button>
+                    </a>
+                  {% endif %}
+
+
+                {% endif %}
+                <hr>
+                <p class="card-text">{{ event.content|safe }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+
+      </div>
+      <h3 class="align-content-center">Конкурсы</h3>
+      <hr>
+      <div class="row">
+        {% for contest in contests %}
+          <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+              <img src="{{ contest.logo.url }}"
+                   class="card-img-top">
+              <div class="card-body align-content-center">
+                <h5>{{ contest.name }}</h5>
+                <hr>
+                <p class="card-text">{{ contest.content|safe }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+
+    </div>
+
+  </div>
 {% endblock %}

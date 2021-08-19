@@ -15,6 +15,31 @@ from contests.directory import NominationART, NominationMYMSK, ThemeART, \
 # Create your models here.
 # Заявки на конкурсы
 
+class ShowEvent(models.Model):
+    reg_number = models.CharField(max_length=20, blank=False, null=False,
+                                  unique=True,
+                                  verbose_name='Регистрационный номер')
+    date_reg = models.DateTimeField(verbose_name='Дата регистрации',
+                                    auto_now=True, blank=True)
+    teacher = models.ForeignKey(CustomUser, verbose_name='Пользователь',
+                                on_delete=models.CASCADE)
+    page_contest = models.ForeignKey('PageContest', verbose_name='Информация',
+                                     on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.reg_number = str(int(time.time())) + str(
+                CustomUser.objects.get(email=self.teacher).id)
+        super(ShowEvent, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.reg_number
+
+    class Meta:
+        verbose_name = 'Публичное мероприятие'
+        verbose_name_plural = 'Публичные мероприятия'
+
+
 class Events(models.Model):
     name = models.CharField(verbose_name='Название (конкурс/мероприятие)',
                             max_length=100, blank=False)
@@ -288,15 +313,22 @@ class PageContest(models.Model):
     name = models.CharField(verbose_name='Название конкурса', max_length=150,
                             blank=True)
     logo = models.ImageField(verbose_name='Логотип',
-                             upload_to=PathAndRename('PageContests/'))
-    content = RichTextField(verbose_name='Контент')
+                             upload_to=PathAndRename('PageContests/'),
+                             blank=True, null=True)
+    content = RichTextField(verbose_name='Контент', blank=True, null=True)
+    type = models.CharField(verbose_name='Тип',
+                            choices=(('1', 'Конкурс'), ('2', 'Мероприятие')),
+                            default=1, max_length=20)
+    letter = RichTextField(verbose_name='Письмо', blank=True, null=True)
+    hide = models.BooleanField(verbose_name='Скрыть', default=False)
 
     def __str__(self):
         return str(self.name)
 
     class Meta:
-        verbose_name = 'Страница конкурса'
-        verbose_name_plural = 'Страницы конкурсов'
+        ordering = ('-id',)
+        verbose_name = 'Страница мероприятия'
+        verbose_name_plural = 'Страницы мероприятия'
 
 
 class Message(models.Model):
@@ -353,7 +385,6 @@ class ModxDbimgMuz(models.Model):
 
 
 class Archive(BaseContest):
-
     date_reg = models.DateTimeField(blank=True)
     contest_name = models.CharField(max_length=200, null=False,
                                     verbose_name='Конкурс', blank=False)
