@@ -1,4 +1,5 @@
-from django.shortcuts import render
+
+from django.template.loader import render_to_string
 from django.views.generic import ListView
 from django.urls import reverse
 from django.http import HttpResponseRedirect
@@ -22,10 +23,14 @@ class PageContestView(ListView):
                 page_contest = form.cleaned_data['page_contest']
                 record_show_event = subscribe_show_event(teacher, page_contest)
                 if record_show_event:
+                    context = {
+                        'reg_number': record_show_event.reg_number,
+
+                    }
                     tasks.send_mail_for_subscribers.delay(
                         (record_show_event.teacher.email,),
                         record_show_event.page_contest.name,
-                        record_show_event.page_contest.letter)
+                        record_show_event.page_contest.letter.format(reg_number=record_show_event.reg_number))
 
             return HttpResponseRedirect(reverse('home'))
 

@@ -22,7 +22,7 @@ class PageContestsFrom(forms.ModelForm):
     letter = forms.CharField(widget=CKEditorUploadingWidget(), label='Информационное письмо')
 
     class Meta:
-        fields = ('hide','name', 'logo','type', 'content','letter')
+        fields = ('hide','name', 'logo','type', 'content','letter', 'start_date')
         model = PageContest
 
 

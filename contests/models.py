@@ -15,30 +15,6 @@ from contests.directory import NominationART, NominationMYMSK, ThemeART, \
 # Create your models here.
 # Заявки на конкурсы
 
-class ShowEvent(models.Model):
-    reg_number = models.CharField(max_length=20, blank=False, null=False,
-                                  unique=True,
-                                  verbose_name='Регистрационный номер')
-    date_reg = models.DateTimeField(verbose_name='Дата регистрации',
-                                    auto_now=True, blank=True)
-    teacher = models.ForeignKey(CustomUser, verbose_name='Пользователь',
-                                on_delete=models.CASCADE)
-    page_contest = models.ForeignKey('PageContest', verbose_name='Информация',
-                                     on_delete=models.CASCADE)
-
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            self.reg_number = str(int(time.time())) + str(
-                CustomUser.objects.get(email=self.teacher).id)
-        super(ShowEvent, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return self.reg_number
-
-    class Meta:
-        verbose_name = 'Публичное мероприятие'
-        verbose_name_plural = 'Публичные мероприятия'
-
 
 class Events(models.Model):
     name = models.CharField(verbose_name='Название (конкурс/мероприятие)',
@@ -88,7 +64,7 @@ class BaseContest(models.Model):
     year_contest = models.CharField('Год проведения', max_length=20,
                                     default=utils.generate_year())
     status = models.ForeignKey(Status, verbose_name='Статус',
-                               on_delete=models.PROTECT, null=True, blank=True)
+                               on_delete=models.PROTECT, null=True, default=3)
     region = models.ForeignKey(Region, verbose_name='Регион',
                                on_delete=models.PROTECT, null=True)
     date_reg = models.DateTimeField(auto_now=True, blank=True)
@@ -146,6 +122,31 @@ class PathAndRename(object):
         else:
             filename = '{}.{}'.format(uuid4().hex, ext)
         return os.path.join(self.path, filename)
+
+
+class ShowEvent(BaseContest):
+    back_email = 'cnho@yandex.ru'
+    fields = None
+    full_name = 'Мероприятие'
+    name = ('Мероприятие', '')
+    alias = 'event'
+
+    page_contest = models.ForeignKey('PageContest', verbose_name='Мероприятие',
+                                     on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+
+        self.fio = self.teacher.fio
+        self.fio_teacher = self.teacher.fio
+        self.school = self.teacher.school
+        self.city = self.city
+        self.region = self.teacher.region
+        self.district = self.teacher.district
+        super(ShowEvent, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = 'Публичное мероприятие'
+        verbose_name_plural = 'Публичные мероприятия'
 
 
 class Artakiada(BaseContest):
@@ -312,6 +313,8 @@ class TeacherExtra(models.Model):
 class PageContest(models.Model):
     name = models.CharField(verbose_name='Название конкурса', max_length=150,
                             blank=True)
+    start_date = models.DateTimeField(verbose_name='Начало мероприятия',
+                                      blank=True, null=True)
     logo = models.ImageField(verbose_name='Логотип',
                              upload_to=PathAndRename('PageContests/'),
                              blank=True, null=True)

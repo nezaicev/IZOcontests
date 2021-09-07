@@ -2,15 +2,25 @@ from django import forms
 from contests.models import Level, Participant, TeacherExtra
 from contests.directory import NominationMYMSK
 from contests.models import Events
+from django.forms.widgets import ChoiceWidget, Input
 from django.contrib import messages
 
 
 class SearchRegNumForm(forms.Form):
+
     event = forms.ChoiceField(label='Конкурс/мероприятие',
-                              choices=Events.objects.all().values_list('id',
-                                                                       'name')
+
                               )
     reg_number = forms.CharField(label='Регистрационный номер', max_length=20)
+
+    # class Meta:
+    #     fields = ('reg_number','event')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Make the query here
+        MYQUERY = Events.objects.all().values_list('id','name')
+        self.fields['event'] = forms.ChoiceField(choices=(*MYQUERY,),label='Конкурс/мероприятие')
 
 
 class BaseConfirmationUserDataForm(forms.Form):

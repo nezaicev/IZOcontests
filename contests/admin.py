@@ -4,7 +4,8 @@ from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
-from contests.models import Artakiada, NRusheva, Mymoskvichi, Participant, TeacherExtra, Archive, ShowEvent
+from contests.models import Artakiada, NRusheva, Mymoskvichi, Participant, \
+    TeacherExtra, Archive, ShowEvent
 from contests.directory import NominationART, NominationMYMSK, ThemeART, \
     ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level
 from django.contrib.auth.models import Group, Permission
@@ -14,6 +15,7 @@ from contests.forms import PageContestsFrom, ConfStorageForm
 from contests.models import PageContest, Message, ModxDbimgMuz, Events
 from contests import utils
 from contests import tasks
+
 
 # Register your models here.
 
@@ -33,25 +35,18 @@ class RegionsListFilter(admin.SimpleListFilter):
                 region__in=[1, 2])
 
 
-class BaseAdmin(admin.ModelAdmin):
-    name = ''
-    form = ModelForm
-    search_fields = ('reg_number', 'fio', 'fio_teacher')
-    list_display = (
-        'reg_number', 'fio', 'status', 'school', 'region', 'district',
-        'fio_teacher')
-    list_filter = ('status', 'district', 'region')
-    actions = ['export_list_info', 'export_as_xls', 'create_thumbs', 'send_vm',
-               'archived']
-    exclude = ('reg_number', 'teacher', 'barcode', 'status')
-
+class ArchiveInterface:
     def archived(self, request, queryset):
         count_created_obj = 0
         count_updated_obj = 0
 
         for obj in queryset:
+            print(utils.get_dependent_data_for_obj(obj, 'page_contest'))
             values_for_record = {
-                'contest_name': obj.__class__.alias,
+
+                'contest_name': utils.get_dependent_data_for_obj(obj,
+                                                                 'page_contest') if utils.get_dependent_data_for_obj(
+                    obj, 'page_contest') else obj.__class__.alias,
                 'year_contest': obj.year_contest,
                 'image': utils.get_dependent_data_for_obj(obj, 'image'),
                 'material': utils.get_dependent_data_for_obj(obj, 'material'),
@@ -95,6 +90,19 @@ class BaseAdmin(admin.ModelAdmin):
                                  count_created_obj, count_updated_obj))
 
     archived.short_description = 'Отправить в Архив'
+
+
+class BaseAdmin(admin.ModelAdmin, ArchiveInterface):
+    name = ''
+    form = ModelForm
+    search_fields = ('reg_number', 'fio', 'fio_teacher')
+    list_display = (
+        'reg_number', 'fio', 'status', 'school', 'region', 'district',
+        'fio_teacher')
+    list_filter = ('status', 'district', 'region')
+    actions = ['export_list_info', 'export_as_xls', 'create_thumbs', 'send_vm',
+               'archived']
+    exclude = ('reg_number', 'teacher', 'barcode', 'status')
 
     def send_vm(self, request, queryset):
 
@@ -437,7 +445,6 @@ class PageContestAdmin(admin.ModelAdmin):
     form = PageContestsFrom
 
 
-
 class MessageAdmin(admin.ModelAdmin):
     model = Message
     list_display = ['name']
@@ -452,6 +459,7 @@ class ArchiveAdmin(admin.ModelAdmin):
     list_display = ['reg_number', 'contest_name', 'fio', 'fio_teacher',
                     'teacher',
                     'region', 'status', 'year_contest']
+    list_filter = ('contest_name', 'year_contest', 'status')
 
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.groups.filter(
@@ -462,12 +470,19 @@ class ArchiveAdmin(admin.ModelAdmin):
             return qs.filter(teacher=request.user)
 
 
-class ShowEventAdmin(admin.ModelAdmin):
+class ShowEventAdmin(admin.ModelAdmin, ArchiveInterface):
     model = ShowEvent
-    list_display = ['reg_number', 'page_contest',
-                    'teacher',
-                    ]
-    exclude = ('reg_number',)
+    search_fields = ('reg_number', 'fio')
+    actions = ['archived']
+    list_display = (
+        'reg_number', 'page_contest', 'fio', 'status', 'school', 'region',
+        'district',
+    )
+    list_filter = ('page_contest',)
+    actions = [
+        'archived']
+    exclude = ('reg_number', 'teacher', 'barcode', 'status')
+
 
 admin.site.register(ShowEvent, ShowEventAdmin)
 admin.site.register(PageContest, PageContestAdmin)
