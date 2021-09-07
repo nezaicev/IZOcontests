@@ -36,6 +36,21 @@ class RegionsListFilter(admin.SimpleListFilter):
 
 
 class ArchiveInterface:
+
+
+    def export_as_xls(self, request, queryset):
+        meta = self.model._meta
+        path = os.path.join(settings.MEDIA_ROOT, 'xls', 'report.xls')
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename={}.xls'.format(
+            meta)
+        utils.generate_xls(queryset, path)
+        response = FileResponse(open(path, 'rb'))
+        return response
+
+    export_as_xls.short_description = 'Выгрузить список Excel'
+
+
     def archived(self, request, queryset):
         count_created_obj = 0
         count_updated_obj = 0
@@ -173,17 +188,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface):
 
     create_thumbs.short_description = 'Создать превью'
 
-    def export_as_xls(self, request, queryset):
-        meta = self.model._meta
-        path = os.path.join(settings.MEDIA_ROOT, 'xls', 'report.xls')
-        response = HttpResponse(content_type='application/ms-excel')
-        response['Content-Disposition'] = 'attachment; filename={}.xls'.format(
-            meta)
-        utils.generate_xls(queryset, path)
-        response = FileResponse(open(path, 'rb'))
-        return response
 
-    export_as_xls.short_description = 'Выгрузить список Excel'
 
     def export_list_info(self, request, queryset):
         meta = self.model._meta
@@ -454,8 +459,9 @@ class PermissionAdmin(admin.ModelAdmin):
     model = Permission
 
 
-class ArchiveAdmin(admin.ModelAdmin):
+class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface):
     model = Archive
+    actions = [ 'export_as_xls']
     list_display = ['reg_number', 'contest_name', 'fio', 'fio_teacher',
                     'teacher',
                     'region', 'status', 'year_contest']
@@ -479,8 +485,7 @@ class ShowEventAdmin(admin.ModelAdmin, ArchiveInterface):
         'district',
     )
     list_filter = ('page_contest',)
-    actions = [
-        'archived']
+    actions = ['archived', 'export_as_xls']
     exclude = ('reg_number', 'teacher', 'barcode', 'status')
 
 
