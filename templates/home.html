@@ -67,9 +67,11 @@
 
                   {% else %}
                     <a href="{% url 'login' %}">
-                      <button type="button" class="btn btn-sm btn-success">
+                      <button type="button" class="btn btn-sm btn-danger">
                         Принять участие
                       </button>
+                      <hr>
+                    <span class="badge bg-light text-dark">Необходима авторизация</span>
                     </a>
                   {% endif %}
 
