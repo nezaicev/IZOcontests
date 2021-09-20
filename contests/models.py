@@ -320,7 +320,7 @@ class PageContest(models.Model):
                              blank=True, null=True)
     content = RichTextField(verbose_name='Контент', blank=True, null=True)
     type = models.CharField(verbose_name='Тип',
-                            choices=(('1', 'Конкурс'), ('2', 'Мероприятие')),
+                            choices=(('1', 'Конкурс'), ('2', 'Мероприятие'), ('3', 'Анонс')),
                             default=1, max_length=20)
     letter = RichTextField(verbose_name='Письмо', blank=True, null=True)
     hide = models.BooleanField(verbose_name='Скрыть', default=False)

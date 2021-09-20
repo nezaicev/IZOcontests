@@ -39,5 +39,7 @@ class PageContestView(ListView):
         context['messages'] = Message.objects.all()
         context['contests'] = PageContest.objects.filter(hide=False, type='1')
         context['events'] = PageContest.objects.filter(hide=False, type='2')
+        context['announcements'] = PageContest.objects.filter(hide=False, type='3')
         context['show_events'] = get_show_evens_by_user(self.request.user)
+        # context['type']=PageContest.objects.filter()
         return context
