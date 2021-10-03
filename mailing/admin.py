@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth import get_permission_codename
 from django.template.response import TemplateResponse
 from django.contrib import messages
 from mailing.models import Subscriber, FileXls, Email
@@ -12,6 +13,7 @@ from contests import tasks
 
 
 class SendEmail():
+
     def send_selected_letter(self, request, queryset):
 
         if 'apply' in request.POST:
@@ -39,6 +41,13 @@ class SendEmail():
                                 {'items': queryset, 'form': form})
 
     send_selected_letter.short_description = 'Отправить выбранное письмо'
+    send_selected_letter.allowed_permissions = ('execution_all_actions',)
+
+    def has_execution_all_actions_permission(self, request):
+        """Does the user have the publish permission?"""
+        opts = self.opts
+        codename = get_permission_codename('execution_all_actions', opts)
+        return request.user.has_perm('%s.%s' % (opts.app_label, codename))
 
 
 class EmailAdmin(admin.ModelAdmin):
