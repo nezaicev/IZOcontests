@@ -12,6 +12,7 @@ from contests.directory import NominationART, NominationMYMSK, ThemeART, \
     ThemeRUSH, ThemeMYMSK, AgeRUSH, AgeMYMSK, Status, Level, Material
 
 
+
 # Create your models here.
 # Заявки на конкурсы
 
