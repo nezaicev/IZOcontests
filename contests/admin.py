@@ -15,7 +15,7 @@ from contests.forms import PageContestsFrom, ConfStorageForm
 from contests.models import PageContest, Message, ModxDbimgMuz, Events
 from contests import utils
 from contests import tasks
-
+from mailing.admin import SendEmail
 
 # Register your models here.
 
@@ -36,7 +36,6 @@ class RegionsListFilter(admin.SimpleListFilter):
 
 
 class ArchiveInterface:
-
 
     def export_as_xls(self, request, queryset):
         meta = self.model._meta
@@ -107,7 +106,7 @@ class ArchiveInterface:
     archived.short_description = 'Отправить в Архив'
 
 
-class BaseAdmin(admin.ModelAdmin, ArchiveInterface):
+class BaseAdmin(admin.ModelAdmin, ArchiveInterface,SendEmail ):
     name = ''
     form = ModelForm
     search_fields = ('reg_number', 'fio', 'fio_teacher')
@@ -116,7 +115,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface):
         'fio_teacher')
     list_filter = ('status', 'district', 'region')
     actions = ['export_list_info', 'export_as_xls', 'create_thumbs', 'send_vm',
-               'archived']
+               'archived', 'send_selected_letter',]
     exclude = ('reg_number', 'teacher', 'barcode', 'status')
 
     def send_vm(self, request, queryset):
@@ -217,6 +216,10 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface):
 
     def get_actions(self, request):
         actions = super().get_actions(request)
+
+        if not request.user.is_superuser:
+            if 'send_selected_letter' in actions:
+                del actions['send_selected_letter']
 
         if not request.user.is_superuser:
             if 'create_thumbs' in actions:
@@ -459,9 +462,9 @@ class PermissionAdmin(admin.ModelAdmin):
     model = Permission
 
 
-class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface):
+class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     model = Archive
-    actions = [ 'export_as_xls']
+    actions = [ 'export_as_xls','send_selected_letter',]
     list_display = ['reg_number', 'contest_name', 'fio', 'fio_teacher',
                     'teacher',
                     'region', 'status', 'year_contest']
@@ -476,16 +479,16 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface):
             return qs.filter(teacher=request.user)
 
 
-class ShowEventAdmin(admin.ModelAdmin, ArchiveInterface):
+class ShowEventAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     model = ShowEvent
     search_fields = ('reg_number', 'fio')
-    actions = ['archived']
+
     list_display = (
         'reg_number', 'page_contest', 'fio', 'status', 'school', 'region',
         'district',
     )
     list_filter = ('page_contest',)
-    actions = ['archived', 'export_as_xls']
+    actions = ['archived', 'export_as_xls','send_selected_letter']
     exclude = ('reg_number', 'teacher', 'barcode', 'status')
 
 

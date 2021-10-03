@@ -3,11 +3,42 @@ from django.template.response import TemplateResponse
 from django.contrib import messages
 from mailing.models import Subscriber, FileXls, Email
 from mailing.utils import parse_xls
-from mailing.forms import SelectRecipientsForm, EmailCreateForm
+from mailing.forms import SelectRecipientsForm, EmailCreateForm, \
+    SelectLetterForm
 from contests import tasks
 
 
 # Register your models here.
+
+
+class SendEmail():
+    def send_selected_letter(self, request, queryset):
+
+        if 'apply' in request.POST:
+            form = SelectLetterForm(request.POST)
+            if form.is_valid():
+                letter = Email.objects.get(id=form.cleaned_data['letters'])
+                recipients = list(
+                    queryset.values_list('teacher_id__email', flat=True))
+                if recipients:
+                    tasks.send_mail_for_subscribers.delay(recipients,
+                                                          letter.theme,
+                                                          letter.content)
+                    messages.add_message(request, messages.INFO,
+                                         'Письмо {}_{}, отправлено - {} '.format(
+                                             letter.date,
+                                             letter.theme,
+                                             len(recipients)))
+            return None
+
+        form = SelectLetterForm(
+            initial={
+                '_selected_action': queryset.values_list('id',
+                                                         flat=True), })
+        return TemplateResponse(request, "admin/select_letter.html",
+                                {'items': queryset, 'form': form})
+
+    send_selected_letter.short_description = 'Отправить выбранное письмо'
 
 
 class EmailAdmin(admin.ModelAdmin):

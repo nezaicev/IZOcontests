@@ -8,13 +8,21 @@ class UploadXlsFrom(forms.Form):
     file = forms.FileField(widget=forms.FileInput)
 
 
+class SelectLetterForm(forms.Form):
+    letters = Email.objects.all().values_list('id','date')
+    _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
+    letters = forms.ChoiceField(label='Письмо', widget=forms.Select,
+                                choices=letters)
+
+
 class SelectRecipientsForm(forms.Form):
     REGION = Subscriber.REGION_CHOICES
     REGION.append(('ALL', 'Всем'))
     REGION.append(('MYSELF', 'Себе'))
 
     _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
-    recipients = forms.ChoiceField(label='Получатель', widget=forms.Select, choices=REGION)
+    recipients = forms.ChoiceField(label='Получатель', widget=forms.Select,
+                                   choices=REGION)
 
 
 class EmailCreateForm(forms.ModelForm):
