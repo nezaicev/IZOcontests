@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('contests', '0029_merge_20210812_1135'),
+#        ('contests', '0029_merge_20210812_1135'),
         ('cert', '0015_auto_20210429_1205'),
     ]
 
