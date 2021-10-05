@@ -1,6 +1,6 @@
 from django import forms
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
-from mailing.models import Email, Subscriber
+from mailing.models import Email, Subscriber, GroupSubscribe
 from ckeditor.fields import RichTextField
 
 
@@ -16,13 +16,10 @@ class SelectLetterForm(forms.Form):
 
 
 class SelectRecipientsForm(forms.Form):
-    REGION = Subscriber.REGION_CHOICES
-    REGION.append(('ALL', 'Всем'))
-    REGION.append(('MYSELF', 'Себе'))
-
+    groups = GroupSubscribe.objects.all().values_list('id', 'name')
     _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
-    recipients = forms.ChoiceField(label='Получатель', widget=forms.Select,
-                                   choices=REGION)
+    recipients = forms.ChoiceField(label='Группа', widget=forms.Select,
+                                   choices=groups)
 
 
 class EmailCreateForm(forms.ModelForm):

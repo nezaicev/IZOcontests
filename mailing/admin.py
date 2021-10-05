@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import get_permission_codename
 from django.template.response import TemplateResponse
 from django.contrib import messages
-from mailing.models import Subscriber, FileXls, Email
+from mailing.models import Subscriber, FileXls, Email, GroupSubscribe
 from mailing.utils import parse_xls
 from mailing.forms import SelectRecipientsForm, EmailCreateForm, \
     SelectLetterForm
@@ -98,9 +98,9 @@ class EmailAdmin(admin.ModelAdmin):
 
 
 class SubscriberAdmin(admin.ModelAdmin):
-    list_display = ('email', 'region', 'phone_number')
-    search_fields = ('email', 'region')
-    list_filter = ('region',)
+    list_display = ('email', 'group', 'phone_number')
+    search_fields = ('email', 'group')
+    list_filter = ('group',)
 
 
 class FileXlsAdmin(admin.ModelAdmin):
@@ -110,25 +110,38 @@ class FileXlsAdmin(admin.ModelAdmin):
     def insert_xls(self, request, queryset):
         count_dublicates = 0
         count_inserts = 0
+        if 'apply' in request.POST:
+            form = SelectRecipientsForm(request.POST)
 
-        for obj in queryset:
-            new_subscribers = parse_xls(obj.file.url[1:])
-            for new_subscriber in new_subscribers:
-                subscriber, created = Subscriber.objects.get_or_create(
-                    email=new_subscriber['email'],
-                    defaults=new_subscriber)
-                if created:
-                    count_inserts += 1
+            if form.is_valid():
+
+                for obj in queryset:
+                    new_subscribers = parse_xls(obj.file.url[1:],form.cleaned_data['recipients'])
+                    for new_subscriber in new_subscribers:
+                        subscriber, created = Subscriber.objects.get_or_create(
+                            email=new_subscriber['email'],
+                            defaults=new_subscriber)
+                        if created:
+                            count_inserts += 1
+                        else:
+                            count_dublicates += 1
+                            continue
+                if count_inserts:
+                    messages.add_message(request, messages.INFO,
+                                         'Записей загружено - {}, кол-во дубликатов - {}'.format(
+                                             count_inserts, count_dublicates))
                 else:
-                    count_dublicates += 1
-                    continue
-        if count_inserts:
-            messages.add_message(request, messages.INFO,
-                                 'Записей загружено - {}, кол-во дубликатов - {}'.format(
-                                     count_inserts, count_dublicates))
-        else:
-            messages.add_message(request, messages.INFO,
-                                 'Нет новых записей')
+                    messages.add_message(request, messages.INFO,
+                                         'Нет новых записей')
+                return None
+        form = SelectRecipientsForm(
+            initial={
+                '_selected_action': queryset.values_list('id',
+                                                         flat=True), })
+        return TemplateResponse(request, "admin/insert_subscribers.html",
+                                {'items': queryset, 'form': form})
+
+
 
     insert_xls.short_description = 'Загрузить данные'
 
@@ -136,3 +149,4 @@ class FileXlsAdmin(admin.ModelAdmin):
 admin.site.register(Subscriber, SubscriberAdmin)
 admin.site.register(FileXls, FileXlsAdmin)
 admin.site.register(Email, EmailAdmin)
+admin.site.register(GroupSubscribe)
