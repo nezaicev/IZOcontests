@@ -14,9 +14,9 @@ def subscribe_show_event(teacher, page_contest):
 
 def get_show_evens_by_user(user):
     if user.is_authenticated:
-        # user_show_evens_tuple = ShowEvent.objects.filter(
-        #     teacher_id=user.id).values_list('page_contest')
-        user_show_evens_tuple=ShowEvent.objects.all().values_list('page_contest')
+        user_show_evens_tuple = ShowEvent.objects.filter(
+            teacher_id=user.id).values_list('page_contest')
+        # user_show_evens_tuple=ShowEvent.objects.all().values_list('page_contest')
         user_show_evens_tuple=[id[0] for id in user_show_evens_tuple]
         if user_show_evens_tuple:
             return user_show_evens_tuple
