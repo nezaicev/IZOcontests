@@ -76,7 +76,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                                  on_delete=models.SET_NULL, null=True,
                                  blank=True)
     city = models.CharField('Населенный пункт', max_length=101, blank=True)
-    phone = models.CharField('Телефон', max_length=15, blank=True)
+    phone = models.CharField('Телефон', max_length=20, blank=True)
     status = models.ForeignKey(Status, verbose_name='Статус',
                                on_delete=models.PROTECT, default=1)
     position = models.ForeignKey(Position, verbose_name='Должность',
