@@ -1,4 +1,5 @@
 import os
+import math
 from contests import utils
 
 from django.conf import settings
@@ -55,6 +56,17 @@ def send_mail_for_subscribers(emails, theme, content):
         'link': 'http://konkurs.shkola-nemenskogo.ru/mailing/unsubscribe/'
     }
     content += render_to_string('mailing/footer_message.html', context)
-    msg = EmailMultiAlternatives(theme, content, from_email, list_emails)
-    msg.content_subtype = "html"
-    msg.send()
+    list_emails_sliced=slice_list_email(list_emails,48)
+    for slice_emails in list_emails_sliced:
+        msg = EmailMultiAlternatives(theme, content, from_email, slice_emails)
+        msg.content_subtype = "html"
+        msg.send()
+
+
+def slice_list_email(list_emails, count):
+    step = 0
+    emails = []
+    for i in range(math.ceil(len(list_emails) / count)):
+        emails.append(list_emails[step:step + count])
+        step += count
+    return emails
