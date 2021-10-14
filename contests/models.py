@@ -9,7 +9,7 @@ from ckeditor.fields import RichTextField
 from users.models import CustomUser, Region, District
 from contests import utils
 from contests.directory import NominationART, NominationMYMSK, ThemeART, \
-    ThemeRUSH, ThemeMYMSK, AgeRUSH, AgeMYMSK, Status, Level, Material
+    ThemeRUSH, ThemeMYMSK, AgeRUSH, AgeMYMSK, Status, Level, Material, NominationVP, AgeVP, LevelVP
 
 
 
@@ -236,6 +236,40 @@ class NRusheva(BaseContest):
         verbose_name_plural = 'Конкурс им. Нади Рушевой (участники)'
 
 
+class VP(BaseContest):
+    LESSON = '1'
+    NOT_LESSON = '2'
+    ACTIVITY_FORM_CHOICES = [
+        (NOT_LESSON, 'Внеурочнный проект'),
+        (LESSON, 'Урочный проект'),
+    ]
+    INDIVIDUAL = '1'
+    COLLECTIVE = '2'
+    ACTIVITY_FORMAT = [
+        (INDIVIDUAL, 'Индивидуальный проект'),
+        (COLLECTIVE, 'Коллективный проект'),
+    ]
+
+    full_name = 'Конкурс художественных выставочных проектов'
+    name = ('Конкурс', 'Конкурс художественных выставочных проектов')
+    alias = 'vp'
+    back_email = 'cnho-konkurs@yandex.ru'
+    fields = (
+        'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school',
+        'region', 'city', 'district', 'age', 'author_name', 'nomination',
+    )
+    author_name = models.CharField(max_length=50, blank=False,
+                                   verbose_name='Авторское название')
+    activity_form= models.CharField(choices=ACTIVITY_FORMAT, max_length=50, verbose_name='Организационная форма')
+    activity_format= models.CharField(choices=ACTIVITY_FORM_CHOICES, max_length=50, verbose_name='Формат проекта')
+    nomination = models.ForeignKey(NominationVP, verbose_name='Номинация',
+                                   on_delete=models.SET_NULL, null=True)
+    age = models.ForeignKey(AgeVP, verbose_name='Возраст',
+                                   on_delete=models.SET_NULL, null=True)
+    level = models.ForeignKey(LevelVP, verbose_name='Класс',
+                                   on_delete=models.SET_NULL, null=True)
+
+
 class Mymoskvichi(BaseContest):
     full_name = 'Конкурс мультимедиа "Мы Москвичи"'
     name = ('Конкурс', 'Конкурс мультимедиа Мы Москвичи')
@@ -244,7 +278,7 @@ class Mymoskvichi(BaseContest):
     fields = (
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school',
         'region', 'city', 'district', 'age', 'author_name', 'nomination',
-        'nomination_extra', 'program',
+        'program',
     )
     nomination = models.ForeignKey(NominationMYMSK, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
@@ -262,6 +296,10 @@ class Mymoskvichi(BaseContest):
     link = models.CharField(max_length=200,
                             verbose_name='Ссылка на файл (облако)',
                             null=True)
+    participants=models.ForeignKey('ParticipantMymoskvichi', verbose_name='Участники',
+                                   on_delete=models.SET_NULL, null=True)
+    teachers=models.ForeignKey('TeacherExtraMymoskvichi', verbose_name='Педагоги',
+                                   on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return str(self.reg_number)
@@ -269,6 +307,10 @@ class Mymoskvichi(BaseContest):
     class Meta:
         verbose_name = 'Конкурс Мы Москвичи (участники)'
         verbose_name_plural = 'Конкурс Мы Москвичи (участники)'
+
+    # def generate_enumeration(self):
+    #     # test=self.objects.values_list("participants")
+    #     print(self.participants)
 
     def generate_list_participants(self, model, fios=None):
         if fios == None:
@@ -284,7 +326,7 @@ class Mymoskvichi(BaseContest):
             return fios
 
 
-class Participant(models.Model):
+class ParticipantMymoskvichi(models.Model):
     fio = models.CharField(max_length=50, verbose_name='Фамилия, имя',
                            blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Участники',
@@ -298,7 +340,7 @@ class Participant(models.Model):
         verbose_name_plural = 'Участники'
 
 
-class TeacherExtra(models.Model):
+class TeacherExtraMymoskvichi(models.Model):
     fio = models.CharField(max_length=50, verbose_name='ФИО', blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Педагог',
                                      on_delete=models.CASCADE)
