@@ -9,17 +9,25 @@ class UploadXlsFrom(forms.Form):
 
 
 class SelectLetterForm(forms.Form):
-    letters = Email.objects.all().values_list('id','date')
+    # letters = Email.objects.all().values_list('id','date')
     _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
-    letters = forms.ChoiceField(label='Письмо', widget=forms.Select,
-                                choices=letters)
+    letters = forms.CharField(label='Письмо')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        MYQUERY = Email.objects.all().values_list('id','date')
+        self.fields['letters'] = forms.ChoiceField(choices=(*MYQUERY,),label='Письмо')
 
 
 class SelectRecipientsForm(forms.Form):
-    groups = GroupSubscribe.objects.all().values_list('id', 'name')
+    # groups = GroupSubscribe.objects.all().values_list('id', 'name')
     _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
-    recipients = forms.ChoiceField(label='Группа', widget=forms.Select,
-                                   choices=groups)
+    recipients = forms.CharField(label='Группа')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        MYQUERY = GroupSubscribe.objects.all().values_list('id','name')
+        self.fields['recipients'] = forms.ChoiceField(choices=(*MYQUERY,),label='Группа')
 
 
 class EmailCreateForm(forms.ModelForm):
