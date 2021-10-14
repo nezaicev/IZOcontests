@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.files.storage import FileSystemStorage
+from django.utils.translation import ugettext_lazy as _
 from ckeditor.fields import RichTextField
 from users.models import CustomUser
 
@@ -44,7 +45,7 @@ class Subscriber(models.Model):
         (MOSCOW, 'Москва и МО'),
         (REGION, 'Регион'),
     ]
-    email = models.EmailField(verbose_name='Email', unique=True)
+    email = models.EmailField(_('email'), unique=True)
     group= models.ForeignKey(GroupSubscribe, verbose_name='Группа',
                              on_delete=models.PROTECT, null=True)
     phone_number = models.CharField(verbose_name='Телефон', max_length=15,
