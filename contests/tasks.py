@@ -56,7 +56,7 @@ def send_mail_for_subscribers(emails, theme, content):
         'link': 'http://konkurs.shkola-nemenskogo.ru/mailing/unsubscribe/'
     }
     content += render_to_string('mailing/footer_message.html', context)
-    list_emails_sliced=slice_list_email(list_emails,48)
+    list_emails_sliced=slice_list_email(list_emails,1)
     for slice_emails in list_emails_sliced:
         msg = EmailMultiAlternatives(theme, content, from_email, slice_emails)
         msg.content_subtype = "html"
