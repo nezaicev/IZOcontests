@@ -75,7 +75,7 @@ class EmailAdmin(admin.ModelAdmin):
                     recipients.append(request.user.email)
                 else:
                     recipients = list(Subscriber.objects.filter(
-                        region=form.cleaned_data[
+                        group=form.cleaned_data[
                             'recipients']).values_list(
                         'email', flat=True))
 
@@ -99,7 +99,7 @@ class EmailAdmin(admin.ModelAdmin):
 
 class SubscriberAdmin(admin.ModelAdmin):
     list_display = ('email', 'group', 'phone_number')
-    search_fields = ('email', 'group')
+    search_fields = ('email',)
     list_filter = ('group',)
 
 
