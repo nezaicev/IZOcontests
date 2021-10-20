@@ -1,6 +1,39 @@
 from django.db import models
 
 
+class NominationVP(models.Model):
+    name = models.CharField('Номинация', max_length=100)
+
+    class Meta:
+        verbose_name = 'Номинация(Выставочные проекты)'
+        verbose_name_plural = 'Номинация(Выставочные проекты)'
+
+    def __str__(self):
+        return self.name
+
+
+class AgeVP(models.Model):
+    name = models.CharField('Возраст', max_length=10)
+
+    class Meta:
+        verbose_name = 'Возраст(Выставочные проекты)'
+        verbose_name_plural = 'Возраст(Выставочные проекты)'
+
+    def __str__(self):
+        return self.name
+
+
+class LevelVP(models.Model):
+    name = models.CharField('Класс', max_length=10)
+
+    class Meta:
+        verbose_name = 'Класс(Выставочные проекты)'
+        verbose_name_plural = 'Класс(Выставочные проекты)'
+
+    def __str__(self):
+        return self.name
+
+
 class NominationART(models.Model):
     name = models.CharField('Номинация', max_length=100)
 

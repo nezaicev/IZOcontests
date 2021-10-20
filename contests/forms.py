@@ -17,12 +17,14 @@ class ConfStorageForm(forms.Form):
 
 class PageContestsFrom(forms.ModelForm):
     name = forms.CharField(label='Название')
+    alias = forms.CharField(label='Псевдоним')
+    email = forms.EmailField(label='Email')
     logo = forms.ImageField(label='Логотип')
     content = forms.CharField(widget=CKEditorUploadingWidget(), label='Контент')
     letter = forms.CharField(widget=CKEditorUploadingWidget(), label='Информационное письмо')
 
     class Meta:
-        fields = ('hide','name', 'logo','type', 'content','letter', 'start_date')
+        fields = ('hide','name','alias', 'email','logo','type', 'content','letter', 'start_date', )
         model = PageContest
 
 

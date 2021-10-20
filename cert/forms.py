@@ -1,5 +1,5 @@
 from django import forms
-from contests.models import Level, Participant, TeacherExtra
+from contests.models import Level
 from contests.directory import NominationMYMSK
 from contests.models import Events
 from django.forms.widgets import ChoiceWidget, Input

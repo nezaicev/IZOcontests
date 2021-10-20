@@ -2,6 +2,7 @@ import time
 import os
 from uuid import uuid4
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.deconstruct import deconstructible
 from django.utils.safestring import mark_safe
 from model_utils.managers import InheritanceManager
@@ -9,12 +10,71 @@ from ckeditor.fields import RichTextField
 from users.models import CustomUser, Region, District
 from contests import utils
 from contests.directory import NominationART, NominationMYMSK, ThemeART, \
-    ThemeRUSH, ThemeMYMSK, AgeRUSH, AgeMYMSK, Status, Level, Material
-
+    ThemeRUSH, ThemeMYMSK, AgeRUSH, AgeMYMSK, Status, Level, Material, \
+    NominationVP, AgeVP, LevelVP
 
 
 # Create your models here.
 # Заявки на конкурсы
+
+@deconstructible
+class PathAndRename(object):
+    def __init__(self, sub_path):
+        self.path = sub_path
+
+    def __call__(self, instance, filename):
+        ext = filename.split('.')[-1]
+        if instance:
+            if hasattr(instance, 'reg_number'):
+                filename = '{}.{}'.format(instance.reg_number, ext)
+            else:
+                filename = '{}.{}'.format(int(time.time()), ext)
+
+        else:
+            filename = '{}.{}'.format(uuid4().hex, ext)
+        return os.path.join(self.path, filename)
+
+
+class PageContest(models.Model):
+    TYPE_CONTESTS = {'1': 'Конкурс',
+                     '2': 'Мероприятие',
+                     '3': 'Анонс'}
+    alias = models.CharField(verbose_name='Псевдоним', blank=False,
+                             max_length=100, default='test')
+    email = models.EmailField(verbose_name='Email', blank=True, null=True)
+    name = models.CharField(verbose_name='Название мероприятия',
+                            max_length=150, default='test',
+                            blank=True)
+    start_date = models.DateTimeField(verbose_name='Начало мероприятия',
+                                      blank=True, null=True)
+    logo = models.ImageField(verbose_name='Логотип',
+                             upload_to=PathAndRename('PageContests/'),
+                             blank=True, null=True)
+    content = RichTextField(verbose_name='Контент', blank=True, null=True)
+    type = models.CharField(verbose_name='Тип',
+                            choices=(('1', 'Конкурс'), ('2', 'Мероприятие'),
+                                     ('3', 'Анонс')),
+                            default=1, max_length=20)
+    letter = RichTextField(verbose_name='Письмо', blank=True, null=True)
+    hide = models.BooleanField(verbose_name='Скрыть', default=False)
+
+    def __str__(self):
+        return str(self.name)
+
+    class Meta:
+        ordering = ('-id',)
+        verbose_name = 'Страница мероприятия'
+        verbose_name_plural = 'Страницы мероприятия'
+
+
+def get_info_contests(alias_contest):
+    try:
+        pc = PageContest.objects.get(alias=alias_contest)
+        return pc
+    except ObjectDoesNotExist:
+        print(
+            'Необходимо создать "Страницу мероприятия" с псевдонимом {}'.format(
+                alias_contest))
 
 
 class Events(models.Model):
@@ -28,8 +88,8 @@ class Events(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'Мероприятие'
-        verbose_name_plural = 'Мероприятия'
+        verbose_name = ''
+        verbose_name_plural = 'Мероприятия для сертификатов'
 
 
 class Select(models.Model):
@@ -50,8 +110,9 @@ class Select(models.Model):
 
 
 class BaseContest(models.Model):
-    fields = None
     objects = InheritanceManager()
+    info = models.ForeignKey('PageContest', verbose_name='Информация',
+                             blank=False, on_delete=models.PROTECT, null=True)
     reg_number = models.CharField(max_length=20, blank=False, null=False,
                                   unique=True,
                                   verbose_name='Регистрационный номер')
@@ -73,6 +134,8 @@ class BaseContest(models.Model):
                                  on_delete=models.PROTECT, null=True,
                                  blank=True)
 
+
+
     def save(self, *args, **kwargs):
         if not self.pk:
             self.reg_number = str(int(time.time())) + str(
@@ -86,7 +149,7 @@ class BaseContest(models.Model):
     def get_fields_for_pdf(self, attrs_obj=None):
         if not attrs_obj:
             attrs_obj = []
-            attrs_obj.append(self.name)
+            attrs_obj.append((PageContest.TYPE_CONTESTS[self.info.type], self.info.name))
         for attr in self.fields:
             if type(getattr(self, attr)) is str:
                 field_value = getattr(self, attr)
@@ -107,36 +170,14 @@ class BaseContest(models.Model):
         return str(self.reg_number)
 
 
-@deconstructible
-class PathAndRename(object):
-    def __init__(self, sub_path):
-        self.path = sub_path
-
-    def __call__(self, instance, filename):
-        ext = filename.split('.')[-1]
-        if instance:
-            if hasattr(instance, 'reg_number'):
-                filename = '{}.{}'.format(instance.reg_number, ext)
-            else:
-                filename = '{}.{}'.format(int(time.time()), ext)
-
-        else:
-            filename = '{}.{}'.format(uuid4().hex, ext)
-        return os.path.join(self.path, filename)
-
-
 class ShowEvent(BaseContest):
-    back_email = 'cnho@yandex.ru'
     fields = None
-    full_name = 'Мероприятие'
-    name = ('Мероприятие', '')
-    alias = 'event'
-
-    page_contest = models.ForeignKey('PageContest', verbose_name='Мероприятие',
+    page_contest = models.ForeignKey('PageContest',
+                                     related_name='page_contest_show_event',
+                                     verbose_name='Мероприятие',
                                      on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
-
         self.fio = self.teacher.fio
         self.fio_teacher = self.teacher.fio
         self.school = self.teacher.school
@@ -146,19 +187,19 @@ class ShowEvent(BaseContest):
         super(ShowEvent, self).save(*args, **kwargs)
 
     class Meta:
-        verbose_name = 'Публичное мероприятие'
-        verbose_name_plural = 'Публичные мероприятия'
+        verbose_name = 'Мероприятие'
+        verbose_name_plural = 'Мероприятия'
 
 
 class Artakiada(BaseContest):
-    back_email = 'artakiada@mioo.ru'
     fields = (
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school', 'level',
         'region', 'city',
         'district', 'nomination', 'material',)
-    full_name = 'АРТакиада "Изображение и слово"'
-    name = ('Конкурс', 'АРТакиада "Изображение и слово"')
-    alias = 'artakiada'
+
+    info = models.ForeignKey('PageContest', on_delete=models.SET_NULL,
+                             null=True, default=get_info_contests('artakiada'))
+
     image = models.ImageField(upload_to=PathAndRename('artakiada/'),
                               max_length=200, verbose_name='Изображение')
     material = models.ForeignKey(Material, verbose_name='Материал',
@@ -189,16 +230,14 @@ class Artakiada(BaseContest):
 
 
 class NRusheva(BaseContest):
-    back_email = 'nrusheva@mioo.ru'
     fields = (
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school', 'level',
         'age', 'region', 'city', 'district', 'theme', 'material',
         'author_name',
         'format', 'description'
     )
-    full_name = 'Конкурс им. Нади Рушевой'
-    name = ('Конкурс', 'Конкурс им. Нади Рушевой')
-    alias = 'nrusheva'
+    info = models.ForeignKey('PageContest', on_delete=models.SET_NULL,
+                             null=True, default=get_info_contests('nrusheva'))
 
     theme = models.ForeignKey(ThemeRUSH, verbose_name='Тема',
                               on_delete=models.SET_NULL, null=True)
@@ -236,16 +275,100 @@ class NRusheva(BaseContest):
         verbose_name_plural = 'Конкурс им. Нади Рушевой (участники)'
 
 
-class Mymoskvichi(BaseContest):
-    full_name = 'Конкурс мультимедиа "Мы Москвичи"'
-    name = ('Конкурс', 'Конкурс мультимедиа Мы Москвичи')
-    alias = 'mymoskvichi'
-    back_email = 'mymoskvichi@mioo.ru'
+class MultiParticipants:
+
+    def generate_list_participants(self, model, filed='fio', enumeration=None):
+        if enumeration is None:
+            enumeration = ''
+            participants = utils.generate_enumeration_field_by_id(self.id,
+                                                                  model, filed)
+            for item in participants:
+                if item != participants[-1]:
+                    enumeration += item + ', '
+                else:
+                    enumeration += item
+            return enumeration
+
+
+class VP(BaseContest, MultiParticipants):
+    LESSON = '1'
+    NOT_LESSON = '2'
+    ACTIVITY_FORM_CHOICES = [
+        (NOT_LESSON, 'Внеурочнный проект'),
+        (LESSON, 'Урочный проект'),
+    ]
+    INDIVIDUAL = '1'
+    COLLECTIVE = '2'
+    ACTIVITY_FORMAT = [
+        (INDIVIDUAL, 'Индивидуальный проект'),
+        (COLLECTIVE, 'Коллективный проект'),
+    ]
+
+    fields = (
+        'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school',
+        'region', 'city', 'district', 'age', 'author_name', 'nomination','level',
+    )
+    info = models.ForeignKey('PageContest', on_delete=models.SET_NULL,
+                             null=True, default=get_info_contests('vp'))
+    author_name = models.CharField(max_length=50, blank=False,
+                                   verbose_name='Авторское название')
+    activity_form = models.CharField(choices=ACTIVITY_FORMAT, max_length=50,
+                                     verbose_name='Организационная форма')
+    activity_format = models.CharField(choices=ACTIVITY_FORM_CHOICES,
+                                       max_length=50,
+                                       verbose_name='Формат проекта')
+    nomination = models.ForeignKey(NominationVP, verbose_name='Номинация',
+                                   on_delete=models.SET_NULL, null=True)
+    age = models.ForeignKey(AgeVP, verbose_name='Возраст',
+                            on_delete=models.SET_NULL, null=True)
+    level = models.ForeignKey(LevelVP, verbose_name='Класс',
+                              on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return str(self.reg_number)
+
+    class Meta:
+        verbose_name = 'Конкурс Выставочных проектов (участники)'
+        verbose_name_plural = 'Конкурс Выставочных проектов (участники)'
+
+
+class ParticipantVP(models.Model):
+    fio = models.CharField(max_length=50, verbose_name='Фамилия, имя',
+                           blank=False)
+    participants = models.ForeignKey(VP, verbose_name='Участники',
+                                     on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.fio)
+
+    class Meta:
+        verbose_name = 'Участник'
+        verbose_name_plural = 'Участники'
+
+
+class TeacherExtraVP(models.Model):
+    fio = models.CharField(max_length=50, verbose_name='ФИО', blank=False)
+    participants = models.ForeignKey(VP, verbose_name='Педагог',
+                                     on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.fio)
+
+    class Meta:
+        verbose_name = 'Педагог'
+        verbose_name_plural = 'Педагоги'
+
+
+class Mymoskvichi(BaseContest, MultiParticipants):
+
     fields = (
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school',
         'region', 'city', 'district', 'age', 'author_name', 'nomination',
-        'nomination_extra', 'program',
+        'program',
     )
+    info = models.ForeignKey('PageContest', on_delete=models.SET_NULL,
+                             null=True, default=get_info_contests('mymoskvichi'))
+
     nomination = models.ForeignKey(NominationMYMSK, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
     theme = models.ForeignKey(ThemeMYMSK, verbose_name='Тема',
@@ -270,21 +393,8 @@ class Mymoskvichi(BaseContest):
         verbose_name = 'Конкурс Мы Москвичи (участники)'
         verbose_name_plural = 'Конкурс Мы Москвичи (участники)'
 
-    def generate_list_participants(self, model, fios=None):
-        if fios == None:
-            fios = ''
-            participants = list(
-                model.objects.filter(participants_id=self.pk).values_list(
-                    'fio', flat=True))
-            for participant in participants:
-                if participant != participants[-1]:
-                    fios += participant + ', '
-                else:
-                    fios += participant
-            return fios
 
-
-class Participant(models.Model):
+class ParticipantMymoskvichi(models.Model):
     fio = models.CharField(max_length=50, verbose_name='Фамилия, имя',
                            blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Участники',
@@ -298,7 +408,7 @@ class Participant(models.Model):
         verbose_name_plural = 'Участники'
 
 
-class TeacherExtra(models.Model):
+class TeacherExtraMymoskvichi(models.Model):
     fio = models.CharField(max_length=50, verbose_name='ФИО', blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Педагог',
                                      on_delete=models.CASCADE)
@@ -309,30 +419,6 @@ class TeacherExtra(models.Model):
     class Meta:
         verbose_name = 'Педагог'
         verbose_name_plural = 'Педагоги'
-
-
-class PageContest(models.Model):
-    name = models.CharField(verbose_name='Название конкурса', max_length=150,
-                            blank=True)
-    start_date = models.DateTimeField(verbose_name='Начало мероприятия',
-                                      blank=True, null=True)
-    logo = models.ImageField(verbose_name='Логотип',
-                             upload_to=PathAndRename('PageContests/'),
-                             blank=True, null=True)
-    content = RichTextField(verbose_name='Контент', blank=True, null=True)
-    type = models.CharField(verbose_name='Тип',
-                            choices=(('1', 'Конкурс'), ('2', 'Мероприятие'), ('3', 'Анонс')),
-                            default=1, max_length=20)
-    letter = RichTextField(verbose_name='Письмо', blank=True, null=True)
-    hide = models.BooleanField(verbose_name='Скрыть', default=False)
-
-    def __str__(self):
-        return str(self.name)
-
-    class Meta:
-        ordering = ('-id',)
-        verbose_name = 'Страница мероприятия'
-        verbose_name_plural = 'Страницы мероприятия'
 
 
 class Message(models.Model):

@@ -4,10 +4,10 @@ from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
-from contests.models import Artakiada, NRusheva, Mymoskvichi, Participant, \
-    TeacherExtra, Archive, ShowEvent
+from contests.models import Artakiada, NRusheva, Mymoskvichi, ParticipantMymoskvichi, \
+    TeacherExtraMymoskvichi, Archive, ShowEvent, VP, ParticipantVP ,TeacherExtraVP
 from contests.directory import NominationART, NominationMYMSK, ThemeART, \
-    ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level
+    ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level, AgeVP, NominationVP, LevelVP
 from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm
 from django.conf import settings
@@ -16,6 +16,7 @@ from contests.models import PageContest, Message, ModxDbimgMuz, Events
 from contests import utils
 from contests import tasks
 from mailing.admin import SendEmail
+
 
 # Register your models here.
 
@@ -49,13 +50,12 @@ class ArchiveInterface:
 
     export_as_xls.short_description = 'Выгрузить список Excel'
 
-
     def archived(self, request, queryset):
         count_created_obj = 0
         count_updated_obj = 0
 
         for obj in queryset:
-            print(utils.get_dependent_data_for_obj(obj, 'page_contest'))
+
             values_for_record = {
 
                 'contest_name': utils.get_dependent_data_for_obj(obj,
@@ -106,7 +106,7 @@ class ArchiveInterface:
     archived.short_description = 'Отправить в Архив'
 
 
-class BaseAdmin(admin.ModelAdmin, ArchiveInterface,SendEmail ):
+class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     name = ''
     form = ModelForm
     search_fields = ('reg_number', 'fio', 'fio_teacher')
@@ -115,8 +115,8 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface,SendEmail ):
         'fio_teacher')
     list_filter = ('status', 'district', 'region')
     actions = ['export_list_info', 'export_as_xls', 'create_thumbs', 'send_vm',
-               'archived', 'send_selected_letter',]
-    exclude = ('reg_number', 'teacher', 'barcode', 'status')
+               'archived', 'send_selected_letter', ]
+    exclude = ('reg_number', 'teacher', 'barcode', 'status', 'info')
 
     def send_vm(self, request, queryset):
 
@@ -187,8 +187,6 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface,SendEmail ):
 
     create_thumbs.short_description = 'Создать превью'
 
-
-
     def export_list_info(self, request, queryset):
         meta = self.model._meta
         reg_number = queryset[0].reg_number
@@ -203,7 +201,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface,SendEmail ):
             else:
                 utils.generate_barcode(queryset[0].reg_number)
                 utils.generate_pdf(queryset[0].get_parm_for_pdf(),
-                                   queryset[0].name, queryset[0].alias,
+                                   queryset[0].info.name, queryset[0].info.alias,
                                    queryset[0].reg_number)
                 response = FileResponse(open(file_location, 'rb'))
                 return response
@@ -282,15 +280,17 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface,SendEmail ):
                 'fio_teacher': request.user.fio, }
 
     def response_add(self, request, obj, post_url_continue=None):
-        utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
-                           obj.alias, obj.reg_number)
+
+        message=PageContest
+        utils.generate_pdf(obj.get_fields_for_pdf(), obj.info.name,
+                           obj.info.alias, obj.reg_number)
         tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
                                      "Заявка на конкурс")
         return super().response_add(request, obj, post_url_continue)
 
     def response_change(self, request, obj):
-        utils.generate_pdf(obj.get_fields_for_pdf(), obj.name[1],
-                           obj.alias, obj.reg_number)
+        utils.generate_pdf(obj.get_fields_for_pdf(), obj.info.name,
+                           obj.info.alias, obj.reg_number)
         return super().response_change(request, obj)
 
     class Media:
@@ -360,45 +360,91 @@ class InlineFormset(forms.models.BaseInlineFormSet):
             try:
                 if form.cleaned_data:
                     count += 1
+                    if form.cleaned_data['DELETE']:
+                        count -= 1
+
             except AttributeError:
                 pass
+
         if count < 1:
             raise forms.ValidationError(
                 'Должен быть хотябы один участник и один педагог')
 
 
-class ParticipantInline(admin.StackedInline):
+class ParticipantMymoskvichiInline(admin.StackedInline):
     formset = InlineFormset
-    model = Participant
+    model = ParticipantMymoskvichi
     extra = 1
 
 
-class TeacherExtraInline(admin.StackedInline):
-    model = TeacherExtra
+class TeacherExtraMymoskvichiInline(admin.StackedInline):
+    formset = InlineFormset
+    model = TeacherExtraMymoskvichi
     extra = 1
 
 
 class MymoskvichiAdmin(BaseAdmin):
     model = Mymoskvichi
     name = 'mymoskvichi'
-    inlines = [ParticipantInline, TeacherExtraInline]
+    inlines = [ParticipantMymoskvichiInline, TeacherExtraMymoskvichiInline]
     exclude = (
-        'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher')
+        'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher',
+        'participants', 'teachers', 'info')
 
     def response_add(self, request, obj, post_url_continue=None):
-        if obj.generate_list_participants(Participant):
-            obj.fio = obj.generate_list_participants(Participant)
-        if obj.generate_list_participants(TeacherExtra):
-            obj.fio_teacher = obj.generate_list_participants(TeacherExtra)
+        if obj.generate_list_participants(ParticipantMymoskvichi):
+            obj.fio = obj.generate_list_participants(ParticipantMymoskvichi)
+        if obj.generate_list_participants(TeacherExtraMymoskvichi):
+            obj.fio_teacher = obj.generate_list_participants(TeacherExtraMymoskvichi)
         obj.save()
 
         return super().response_add(request, obj, post_url_continue)
 
     def response_change(self, request, obj):
-        if obj.generate_list_participants(Participant):
-            obj.fio = obj.generate_list_participants(Participant)
-        if obj.generate_list_participants(TeacherExtra):
-            obj.fio_teacher = obj.generate_list_participants(TeacherExtra)
+        if obj.generate_list_participants(ParticipantMymoskvichi):
+            obj.fio = obj.generate_list_participants(ParticipantMymoskvichi)
+        if obj.generate_list_participants(TeacherExtraMymoskvichi):
+            obj.fio_teacher = obj.generate_list_participants(TeacherExtraMymoskvichi)
+        obj.save()
+
+        return super().response_change(request, obj)
+
+
+class ParticipantVPInline(admin.StackedInline):
+    formset = InlineFormset
+    model = ParticipantVP
+    extra = 1
+
+
+class TeacherExtraVPInline(admin.StackedInline):
+    formset = InlineFormset
+    model = TeacherExtraVP
+    extra = 1
+
+
+class VPAdmin(BaseAdmin):
+    model = Mymoskvichi
+    name = 'mymoskvichi'
+    inlines = [ParticipantVPInline, TeacherExtraVPInline]
+    exclude = (
+        'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher',
+        'participants', 'teachers','info')
+
+    def response_add(self, request, obj, post_url_continue=None):
+
+        if obj.generate_list_participants(ParticipantVP):
+            obj.fio = obj.generate_list_participants(ParticipantVP)
+        if obj.generate_list_participants(TeacherExtraVP):
+            obj.fio_teacher = obj.generate_list_participants(TeacherExtraVP)
+        obj.save()
+
+        return super().response_add(request, obj, post_url_continue)
+
+    def response_change(self, request, obj):
+        if obj.generate_list_participants(ParticipantVP):
+            obj.fio = obj.generate_list_participants(ParticipantVP)
+        if obj.generate_list_participants(TeacherExtraVP):
+            obj.fio_teacher = obj.generate_list_participants(TeacherExtraVP)
         obj.save()
 
         return super().response_change(request, obj)
@@ -464,7 +510,7 @@ class PermissionAdmin(admin.ModelAdmin):
 
 class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     model = Archive
-    actions = [ 'export_as_xls','send_selected_letter',]
+    actions = ['export_as_xls', 'send_selected_letter', ]
     list_display = ['reg_number', 'contest_name', 'fio', 'fio_teacher',
                     'teacher',
                     'region', 'status', 'year_contest']
@@ -488,13 +534,19 @@ class ShowEventAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
         'district',
     )
     list_filter = ('page_contest',)
-    actions = ['archived', 'export_as_xls','send_selected_letter']
+    actions = ['archived', 'export_as_xls', 'send_selected_letter']
     exclude = ('reg_number', 'teacher', 'barcode', 'status')
 
+    def get_name(self, obj):
+        if obj.info:
+            return obj.info.name
+        else:
+            return ''
 
 admin.site.register(ShowEvent, ShowEventAdmin)
 admin.site.register(PageContest, PageContestAdmin)
 admin.site.register(Mymoskvichi, MymoskvichiAdmin)
+admin.site.register(VP, VPAdmin)
 admin.site.register(NominationART, NominationARTAdmin)
 admin.site.register(NominationMYMSK, NominationMYMSKAdmin)
 admin.site.register(Permission, PermissionAdmin)
@@ -511,3 +563,6 @@ admin.site.register(ThemeRUSH, ThemeRUSHAdmin)
 admin.site.register(ThemeMYMSK, ThemeMYMSKAdmin)
 admin.site.register(ThemeART)
 admin.site.register(Events)
+admin.site.register(AgeVP)
+admin.site.register(LevelVP)
+admin.site.register(NominationVP)

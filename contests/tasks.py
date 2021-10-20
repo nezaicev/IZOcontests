@@ -34,15 +34,17 @@ def celery_create_thumbs(urls_levels, config):
 @shared_task
 def simple_send_mail(id, class_name, subject):
     obj = getattr(models, class_name).objects.get(id=id)
-    message_template = 'email/letters/contest_registration.html'
+    # message_template = 'email/letters/contest_registration.html'
+    message = obj.info.letter.format(reg_number=obj.reg_number,
+                                     name=obj.info.name, email=obj.info.email)
     from_email = settings.DEFAULT_FROM_EMAIL
     list_emails = [obj.teacher.email]
-    message = render_to_string(message_template,
-                               {'reg_number': obj.reg_number,
-                                'name': obj.name[1], 'email': obj.back_email})
+    # message = render_to_string(message,
+    #                            {'reg_number': obj.reg_number,
+    #                             'name': obj.info.name, 'email': obj.info.email})
     msg = EmailMultiAlternatives(subject, message, from_email, list_emails)
     msg.content_subtype = "html"
-    attached_file = os.path.join(settings.MEDIA_ROOT, 'pdf', obj.alias,
+    attached_file = os.path.join(settings.MEDIA_ROOT, 'pdf', obj.info.alias,
                                  '{}.pdf'.format(obj.reg_number))
     msg.attach_file(attached_file, mimetype='text/html')
     msg.send()
@@ -56,7 +58,7 @@ def send_mail_for_subscribers(emails, theme, content):
         'link': 'http://konkurs.shkola-nemenskogo.ru/mailing/unsubscribe/'
     }
     content += render_to_string('mailing/footer_message.html', context)
-    list_emails_sliced=slice_list_email(list_emails,1)
+    list_emails_sliced = slice_list_email(list_emails, 1)
     for slice_emails in list_emails_sliced:
         msg = EmailMultiAlternatives(theme, content, from_email, slice_emails)
         msg.content_subtype = "html"
