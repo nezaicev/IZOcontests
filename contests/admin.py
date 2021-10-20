@@ -423,8 +423,8 @@ class TeacherExtraVPInline(admin.StackedInline):
 
 
 class VPAdmin(BaseAdmin):
-    model = Mymoskvichi
-    name = 'mymoskvichi'
+    model = VP
+    name = 'vp'
     inlines = [ParticipantVPInline, TeacherExtraVPInline]
     exclude = (
         'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher',
