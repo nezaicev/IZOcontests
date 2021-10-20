@@ -238,6 +238,13 @@ def get_dependent_data_for_obj(obj, field_name):
             return None
 
 
+def generate_enumeration_field_by_id(obj_id, model_participant_id, field_name_generate,):
+    enumeration = list(
+        model_participant_id.objects.filter(participants_id=obj_id).values_list(
+            field_name_generate, flat=True))
+
+    return enumeration
+
 # def generate_enumeration_from_inline_model(obj, model,field, enumeration=None):
 #     if enumeration == None:
 #         enumeration = ''
