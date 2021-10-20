@@ -37,7 +37,7 @@
         </div>
 
       {% endfor %}
-
+      {% if events %}
       <h3 class="align-content-center">Мероприятия</h3>
       <hr>
       <div class="row">
@@ -87,6 +87,9 @@
         {% endfor %}
 
       </div>
+    {% endif %}
+
+      {% if  announcements%}
          <h3 class="align-content-center">Анонсы</h3>
       <hr>
 
@@ -108,7 +111,9 @@
         {% endfor %}
 
       </div>
+    {% endif %}
 
+    {% if contests%}
       <h3 class="align-content-center">Конкурсы</h3>
       <hr>
       <div class="row">
@@ -126,7 +131,7 @@
           </div>
         {% endfor %}
       </div>
-
+    {% endif %}
 
     </div>
 
