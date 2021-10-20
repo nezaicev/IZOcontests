@@ -535,7 +535,7 @@ class ShowEventAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     )
     list_filter = ('page_contest',)
     actions = ['archived', 'export_as_xls', 'send_selected_letter']
-    exclude = ('reg_number', 'teacher', 'barcode', 'status')
+    exclude = ('reg_number', 'teacher', 'barcode', 'status', 'info')
 
     def get_name(self, obj):
         if obj.info:
