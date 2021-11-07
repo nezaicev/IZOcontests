@@ -11,7 +11,7 @@ from users.models import CustomUser, Region, District
 from contests import utils
 from contests.directory import NominationART, NominationMYMSK, ThemeART, \
     ThemeRUSH, ThemeMYMSK, AgeRUSH, AgeMYMSK, Status, Level, Material, \
-    NominationVP, AgeVP, LevelVP
+    NominationVP, AgeVP, LevelVP, NominationNR
 
 
 # Create your models here.
@@ -241,6 +241,9 @@ class NRusheva(BaseContest):
 
     theme = models.ForeignKey(ThemeRUSH, verbose_name='Тема',
                               on_delete=models.SET_NULL, null=True)
+    nomination = models.ForeignKey(NominationNR, verbose_name='Номинация',
+                                   on_delete=models.SET_NULL, null=True)
+    birthday=models.DateField(verbose_name='Дата Рождения', blank=False)
     level = models.ForeignKey(Level, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True)
     age = models.ForeignKey(AgeRUSH, verbose_name='Возраст',
