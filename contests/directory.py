@@ -12,6 +12,17 @@ class NominationVP(models.Model):
         return self.name
 
 
+class NominationNR(models.Model):
+    name = models.CharField('Номинация', max_length=100)
+
+    class Meta:
+        verbose_name = 'Номинация(Н.Рушева)'
+        verbose_name_plural = 'Номинация(Н.Рушева)'
+
+    def __str__(self):
+        return self.name
+
+
 class AgeVP(models.Model):
     name = models.CharField('Возраст', max_length=10)
 
