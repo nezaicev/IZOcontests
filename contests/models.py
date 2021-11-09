@@ -70,7 +70,7 @@ class PageContest(models.Model):
 def get_info_contests(alias_contest):
     try:
         pc = PageContest.objects.get(alias=alias_contest)
-        return pc
+        return pc.pk
     except ObjectDoesNotExist:
         print(
             'Необходимо создать "Страницу мероприятия" с псевдонимом {}'.format(
