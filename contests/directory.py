@@ -12,6 +12,17 @@ class NominationVP(models.Model):
         return self.name
 
 
+class DirectionVP(models.Model):
+    name = models.CharField('Направление', max_length=100)
+
+    class Meta:
+        verbose_name = 'Направление(Выставочные проекты)'
+        verbose_name_plural = 'Направление(Выставочные проекты)'
+
+    def __str__(self):
+        return self.name
+
+
 class NominationNR(models.Model):
     name = models.CharField('Номинация', max_length=100)
 

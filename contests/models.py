@@ -11,7 +11,7 @@ from users.models import CustomUser, Region, District
 from contests import utils
 from contests.directory import NominationART, NominationMYMSK, ThemeART, \
     ThemeRUSH, ThemeMYMSK, AgeRUSH, AgeMYMSK, Status, Level, Material, \
-    NominationVP, AgeVP, LevelVP, NominationNR
+    NominationVP, AgeVP, LevelVP, NominationNR, DirectionVP
 
 
 # Create your models here.
@@ -134,8 +134,6 @@ class BaseContest(models.Model):
                                  on_delete=models.PROTECT, null=True,
                                  blank=True)
 
-
-
     def save(self, *args, **kwargs):
         if not self.pk:
             self.reg_number = str(int(time.time())) + str(
@@ -149,7 +147,8 @@ class BaseContest(models.Model):
     def get_fields_for_pdf(self, attrs_obj=None):
         if not attrs_obj:
             attrs_obj = []
-            attrs_obj.append((PageContest.TYPE_CONTESTS[self.info.type], self.info.name))
+            attrs_obj.append(
+                (PageContest.TYPE_CONTESTS[self.info.type], self.info.name))
         for attr in self.fields:
             if type(getattr(self, attr)) is str:
                 field_value = getattr(self, attr)
@@ -244,7 +243,7 @@ class NRusheva(BaseContest):
                               on_delete=models.SET_NULL, null=True)
     nomination = models.ForeignKey(NominationNR, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
-    birthday=models.DateField(verbose_name='Дата Рождения', blank=False)
+    birthday = models.DateField(verbose_name='Дата Рождения', blank=False)
     level = models.ForeignKey(Level, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True)
     age = models.ForeignKey(AgeRUSH, verbose_name='Возраст',
@@ -295,32 +294,27 @@ class MultiParticipants:
 
 
 class VP(BaseContest, MultiParticipants):
-    LESSON = '1'
-    NOT_LESSON = '2'
-    ACTIVITY_FORM_CHOICES = [
-        (NOT_LESSON, 'Внеурочнный проект'),
-        (LESSON, 'Урочный проект'),
-    ]
     INDIVIDUAL = '1'
     COLLECTIVE = '2'
-    ACTIVITY_FORMAT = [
+    LESSON = '3'
+    DIRECTION = [
         (INDIVIDUAL, 'Индивидуальный проект'),
         (COLLECTIVE, 'Коллективный проект'),
+        (LESSON, 'Урочный проект')
     ]
 
     fields = (
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school',
-        'region', 'city', 'district', 'age', 'author_name', 'nomination','level',
+        'region', 'city', 'district', 'age', 'author_name', 'nomination',
+        'level','direction',
     )
     info = models.ForeignKey('PageContest', on_delete=models.SET_NULL,
                              null=True, default=get_info_contests('vp'))
     author_name = models.CharField(max_length=50, blank=False,
                                    verbose_name='Авторское название')
-    activity_form = models.CharField(choices=ACTIVITY_FORMAT, max_length=50,
-                                     verbose_name='Организационная форма')
-    activity_format = models.CharField(choices=ACTIVITY_FORM_CHOICES,
-                                       max_length=50,
-                                       verbose_name='Формат проекта')
+    direction = models.ForeignKey(DirectionVP,on_delete=models.SET_NULL,
+                                 verbose_name='Направление', null=True)
+
     nomination = models.ForeignKey(NominationVP, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
     age = models.ForeignKey(AgeVP, verbose_name='Возраст',
@@ -364,14 +358,14 @@ class TeacherExtraVP(models.Model):
 
 
 class Mymoskvichi(BaseContest, MultiParticipants):
-
     fields = (
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school',
         'region', 'city', 'district', 'age', 'author_name', 'nomination',
         'program',
     )
     info = models.ForeignKey('PageContest', on_delete=models.SET_NULL,
-                             null=True, default=get_info_contests('mymoskvichi'))
+                             null=True,
+                             default=get_info_contests('mymoskvichi'))
 
     nomination = models.ForeignKey(NominationMYMSK, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)

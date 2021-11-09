@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from contests.models import Artakiada, NRusheva, Mymoskvichi, ParticipantMymoskvichi, \
     TeacherExtraMymoskvichi, Archive, ShowEvent, VP, ParticipantVP ,TeacherExtraVP
 from contests.directory import NominationNR, NominationART, NominationMYMSK, ThemeART, \
-    ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level, AgeVP, NominationVP, LevelVP
+    ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level, AgeVP, NominationVP, LevelVP, DirectionVP
 from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm
 from django.conf import settings
@@ -116,7 +116,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     list_filter = ('status', 'district', 'region')
     actions = ['export_list_info', 'export_as_xls', 'create_thumbs', 'send_vm',
                'archived', 'send_selected_letter', ]
-    exclude = ('reg_number', 'teacher', 'barcode', 'status', 'info')
+    exclude = ('reg_number', 'teacher', 'barcode', 'status', 'info', 'year_contest')
 
     def send_vm(self, request, queryset):
 
@@ -389,7 +389,7 @@ class MymoskvichiAdmin(BaseAdmin):
     inlines = [ParticipantMymoskvichiInline, TeacherExtraMymoskvichiInline]
     exclude = (
         'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher',
-        'participants', 'teachers', 'info')
+        'participants', 'teachers', 'info', 'year_contest')
 
     def response_add(self, request, obj, post_url_continue=None):
         if obj.generate_list_participants(ParticipantMymoskvichi):
@@ -428,7 +428,7 @@ class VPAdmin(BaseAdmin):
     inlines = [ParticipantVPInline, TeacherExtraVPInline]
     exclude = (
         'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher',
-        'participants', 'teachers','info')
+        'participants', 'teachers','info', 'year_contest')
 
     def response_add(self, request, obj, post_url_continue=None):
 
@@ -567,3 +567,4 @@ admin.site.register(AgeVP)
 admin.site.register(LevelVP)
 admin.site.register(NominationVP)
 admin.site.register(NominationNR)
+admin.site.register(DirectionVP)
