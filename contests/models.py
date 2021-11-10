@@ -234,7 +234,7 @@ class NRusheva(BaseContest):
         'age', 'region', 'city', 'district', 'theme', 'material',
         'author_name',
         'format', 'description',
-        'nomination', 'birthday',
+        'nomination',
     )
     info = models.ForeignKey('PageContest', on_delete=models.SET_NULL,
                              null=True, default=get_info_contests('nrusheva'))
@@ -397,6 +397,7 @@ class ParticipantMymoskvichi(models.Model):
                            blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Участники',
                                      on_delete=models.CASCADE)
+    birthday = models.DateField(verbose_name='Дата Рождения', blank=False)
 
     def __str__(self):
         return str(self.fio)
@@ -410,6 +411,7 @@ class TeacherExtraMymoskvichi(models.Model):
     fio = models.CharField(max_length=50, verbose_name='ФИО', blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Педагог',
                                      on_delete=models.CASCADE)
+    birthday = models.DateField(verbose_name='Дата Рождения', blank=False)
 
     def __str__(self):
         return str(self.fio)
