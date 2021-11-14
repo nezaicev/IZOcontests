@@ -40,13 +40,27 @@
     </div>
   </div>
   <div class="navbar navbar-light bg-light shadow-sm">
+
     <div class="container d-flex justify-content-between">
+
       <a href="{% url 'home' %}"
          class="navbar-brand d-flex align-items-center">
         <img src="{% static "site/img/Brand.svg" %}"
              style=";margin-left:-126px;margin-top:-22px;margin-bottom:-22px; width: 60px;">
       </a>
-      <h3 class="align-content-center">Конкурсы и мероприятия</h3>
+      <nav id="links-main" class="nav">
+        {% if events %}
+          <a class="nav-link" href="#events"><h4>Мероприятия</h4></a>
+        {% endif %}
+        {% if announcements %}
+          <a class="nav-link" href="#announcements"><h4>Анонсы</h4></a>
+        {% endif %}
+        {% if contests %}
+          <a class="nav-link" href="#contests"><h4>Конкурсы</h4></a>
+        {% endif %}
+
+      </nav>
+      {#      <h3 class="align-content-center">Конкурсы и мероприятия</h3>#}
       <button class="navbar-toggler collapsed" type="button"
               data-toggle="collapse" data-target="#navbarHeader"
               aria-controls="navbarHeader" aria-expanded="false"
