@@ -123,7 +123,7 @@ class AgeRUSH(models.Model):
 
 
 class AgeMYMSK(models.Model):
-    name = models.CharField('Возраст', max_length=20)
+    name = models.CharField('Возраст', max_length=60)
 
     class Meta:
         verbose_name = 'Возраст(Мы Москвичи)'
