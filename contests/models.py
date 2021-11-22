@@ -2,6 +2,7 @@ import time
 import os
 from uuid import uuid4
 from django.db import models
+from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.deconstruct import deconstructible
 from django.utils.safestring import mark_safe
@@ -11,7 +12,7 @@ from users.models import CustomUser, Region, District
 from contests import utils
 from contests.directory import NominationART, NominationMYMSK, ThemeART, \
     ThemeRUSH, ThemeMYMSK, AgeRUSH, AgeMYMSK, Status, Level, Material, \
-    NominationVP, AgeVP, LevelVP, NominationNR, DirectionVP
+    NominationVP, AgeVP, LevelVP, NominationNR, DirectionVP, AgeART
 
 
 # Create your models here.
@@ -192,10 +193,14 @@ class ShowEvent(BaseContest):
 
 class Artakiada(BaseContest):
     fields = (
-        'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school', 'level',
+        'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school', 'level','age',
         'region', 'city',
-        'district', 'nomination', 'material',)
-
+        'district', 'nomination', 'material','author_name')
+    author_name = models.CharField(max_length=50, blank=False,
+                                   verbose_name='Авторское название')
+    birthday = models.DateField(verbose_name='Дата рождения', blank=False, default=timezone.now)
+    age = models.ForeignKey(AgeART, verbose_name='Возраст',
+                            on_delete=models.SET_NULL, null=True)
     info = models.ForeignKey('PageContest', on_delete=models.SET_NULL,
                              null=True, default=get_info_contests('artakiada'))
 
@@ -206,7 +211,7 @@ class Artakiada(BaseContest):
     level = models.ForeignKey(Level, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True)
     theme = models.ForeignKey(ThemeART, verbose_name='Тема',
-                              on_delete=models.SET_NULL, null=True, blank=True)
+                              on_delete=models.SET_NULL, null=True)
     nomination = models.ForeignKey(NominationART, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
 
@@ -243,7 +248,7 @@ class NRusheva(BaseContest):
                               on_delete=models.SET_NULL, null=True)
     nomination = models.ForeignKey(NominationNR, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
-    birthday = models.DateField(verbose_name='Дата Рождения', blank=False)
+    birthday = models.DateField(verbose_name='Дата рождения', blank=False, default=timezone.now)
     level = models.ForeignKey(Level, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True)
     age = models.ForeignKey(AgeRUSH, verbose_name='Возраст',
@@ -395,7 +400,7 @@ class ParticipantMymoskvichi(models.Model):
                            blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Участники',
                                      on_delete=models.CASCADE)
-    birthday = models.DateField(verbose_name='Дата Рождения', blank=False)
+    birthday = models.DateField(verbose_name='Дата Рождения', blank=False, default=timezone.now)
 
     def __str__(self):
         return str(self.fio)
@@ -409,7 +414,7 @@ class TeacherExtraMymoskvichi(models.Model):
     fio = models.CharField(max_length=50, verbose_name='ФИО', blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Педагог',
                                      on_delete=models.CASCADE)
-    birthday = models.DateField(verbose_name='Дата Рождения', blank=False)
+    birthday = models.DateField(verbose_name='Дата Рождения', blank=False, default=timezone.now)
 
     def __str__(self):
         return str(self.fio)

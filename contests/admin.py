@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from contests.models import Artakiada, NRusheva, Mymoskvichi, ParticipantMymoskvichi, \
     TeacherExtraMymoskvichi, Archive, ShowEvent, VP, ParticipantVP ,TeacherExtraVP
 from contests.directory import NominationNR, NominationART, NominationMYMSK, ThemeART, \
-    ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level, AgeVP, NominationVP, LevelVP, DirectionVP
+    ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level, AgeVP, NominationVP, LevelVP, DirectionVP, AgeART
 from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm
 from django.conf import settings
@@ -568,3 +568,4 @@ admin.site.register(LevelVP)
 admin.site.register(NominationVP)
 admin.site.register(NominationNR)
 admin.site.register(DirectionVP)
+admin.site.register(AgeART)

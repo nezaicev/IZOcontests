@@ -122,6 +122,17 @@ class AgeRUSH(models.Model):
         return self.name
 
 
+class AgeART(models.Model):
+    name = models.CharField('Возраст', max_length=10)
+
+    class Meta:
+        verbose_name = 'Возраст(Артакиада)'
+        verbose_name_plural = 'Возраст(Артакиада)'
+
+    def __str__(self):
+        return self.name
+
+
 class AgeMYMSK(models.Model):
     name = models.CharField('Возраст', max_length=60)
 
