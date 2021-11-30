@@ -515,7 +515,7 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
                     'teacher',
                     'region', 'status', 'year_contest']
     list_filter = ('contest_name', 'year_contest', 'status')
-    search_fields = ('reg_number', 'fio', 'email')
+    search_fields = ('reg_number', 'fio')
 
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.groups.filter(

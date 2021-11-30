@@ -27,6 +27,8 @@ urlpatterns = [
     path('map/', include('map.urls')),
     path('users/', include('users.urls')),
     path('mailing/', include('mailing.urls')),
+    path('frontend/', include('frontend.urls')),
+    path('contests/', include('contests.urls')),
     path('users/', include('django.contrib.auth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('', PageContestView.as_view(template_name='home.html'),

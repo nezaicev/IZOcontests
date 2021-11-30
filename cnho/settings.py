@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'multiselectfield',
+    'frontend',
+    'rest_framework',
 
 ]
 
@@ -149,6 +151,7 @@ USE_TZ = True
 STATIC_URL = os.getenv('STATIC_URL', '/static/')
 STATICFILES_DIRS = [
    os.getenv('STATICFILES_DIRS', os.path.join(BASE_DIR, 'static')),
+   os.getenv('STATICFILES_DIRS', 'frontend/static/frontend/main.js/main.js'),
 ]
 
 #STATIC_ROOT=os.getenv('STATIC_ROOT',os.path.join(BASE_DIR,'static'))
