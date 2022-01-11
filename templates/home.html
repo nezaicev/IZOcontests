@@ -51,7 +51,8 @@
                 <img src="{{ event.logo.url }}"
                      class="card-img-top">
                 <div class="card-body align-content-center">
-                  <h5>{{ event.name }}</h5>
+                  <h5 class="h5">{{ event.name }}</h5>
+                  <p class=""><strong>{{ event.start_date }}</strong></p>
                   {% if event.id in show_events %}
                     <p class="card-text">
                       Вы подписаны. Дополнительная информация отправлена
@@ -64,11 +65,12 @@
                         <input name="teacher" value="{{ user.id }}" hidden>
                         <input name="page_contest" value="{{ event.id }}"
                                hidden>
-
+                        <p class="d-flex justify-content-end">
                         <button type="submit" value="Save"
-                                class="btn btn-sm btn-success">
+                                class="btn btn-sm btn-success ">
                           Принять участие
                         </button>
+                        </p>
                       </form>
 
                     {% else %}
