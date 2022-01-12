@@ -1,4 +1,20 @@
 
+.btn-send{
+color: #fff;
+background-color: #4ead80;
+border-color: #4ead80;
+}
+.logo{
+    height: 50px;
+    width: 50px;
+}
+.navbar{
+    background-color: #FFFFFF;
+    margin:0%;
+    padding: 0%;
+    border: 1px solid #FFFFCC;
+    height: 50px;
+}
 .text-center {
   text-align: center;
 }

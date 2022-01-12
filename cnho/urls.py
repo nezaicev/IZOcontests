@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
 from django.conf import settings
-from contests.views import PageContestView
+from contests.views import PageContestView, EventPageView
 from contests.models import Message
 
 urlpatterns = [
@@ -30,11 +30,14 @@ urlpatterns = [
     path('users/', include('django.contrib.auth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('', PageContestView.as_view(template_name='home.html'),
-         name='home')
+         name='home'),
+    path('event/<int:pk>/',
+         EventPageView.as_view(template_name='event/page.html'), name='event')
+
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-admin.site.site_header = 'ЦНХО'                    # default: "Django Administration"
-admin.site.index_title = 'Личный кабинет '                 # default: "Site administration"
+admin.site.site_header = 'ЦНХО'  # default: "Django Administration"
+admin.site.index_title = 'Личный кабинет '  # default: "Site administration"
 admin.site.site_title = 'Личный кабинет'
