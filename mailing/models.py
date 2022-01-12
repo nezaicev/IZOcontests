@@ -48,7 +48,7 @@ class Subscriber(models.Model):
     email = models.EmailField(_('email'), unique=True)
     group= models.ForeignKey(GroupSubscribe, verbose_name='Группа',
                              on_delete=models.PROTECT, null=True)
-    phone_number = models.CharField(verbose_name='Телефон', max_length=15,
+    phone_number = models.CharField(verbose_name='Телефон', max_length=30,
                                     blank=True,
                                     null=True)
     existing = models.BooleanField(verbose_name='Существование', default=True)
