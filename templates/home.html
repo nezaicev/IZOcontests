@@ -63,6 +63,8 @@
                         Вы подписаны. Дополнительная информация отправлена
                         на Ваш email.
                       </p>
+                      <hr>
+                      <p class="card-text"> {{ event.content | safe }} </p>
                     {% else %}
                       {% if user.is_authenticated %}
                         <form method="post">{% csrf_token %}
@@ -89,6 +91,8 @@
                             Принять участие
                           </button>
                         </a>
+
+                          <p class="card-text"> {{ event.content | safe }} </p>
                       {% endif %}
 
 
