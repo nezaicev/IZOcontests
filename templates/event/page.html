@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Мероприятие{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="card mb-3 mt-5" style="max-width: 1000px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img class="img-fluid" src="{{ object.logo.url }}"  alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h4 class="card-title">{{ object.name }}</h4>
+        <strong class="card-text">{{ object.start_date}}</strong>
+          {% if object.id in show_events %}
+                    <p class="card-text">
+                      Вы подписаны. Дополнительная информация отправлена
+                      на Ваш email.
+                    </p>
+            <p class="card-text"> {{ object.content | safe }} </p>
+                  {% else %}
+                    {% if user.is_authenticated %}
+                      <form method="post">{% csrf_token %}
+
+                        <input name="teacher" value="{{ user.id }}" hidden>
+                        <input name="page_contest" value="{{ object.id }}"
+                               hidden>
+                      <hr>
+                        <button type="submit" value="Save"
+                                class="btn btn-sm btn-send ">
+                          Принять участие
+                        </button>
+                      <hr>
+                      </form>
+                      <p class="card-text"> {{ object.content | safe}} </p>
+
+                    {% else %}
+
+                        <hr>
+                        <span class="badge bg-light text-dark">Необходима авторизация</span>
+                      <hr>
+                      <a href="{% url 'login' %}">
+                        <button type="button" class="btn btn-sm btn-danger">
+                          Принять участие
+                        </button>
+                      </a>
+                      <p class="card-text"> {{ object.content | safe }} </p>
+                    {% endif %}
+
+
+                  {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}
