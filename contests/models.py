@@ -120,7 +120,7 @@ class BaseContest(models.Model):
     barcode = models.CharField(verbose_name='Штрих-код', max_length=15,
                                blank=False, null=False)
     teacher = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    fio = models.CharField('Участник', max_length=300)
+    fio = models.CharField('Участник', max_length=700)
     fio_teacher = models.CharField('Педагог', max_length=300)
     school = models.CharField('Образовательная организация', max_length=150)
     city = models.CharField('Город', max_length=101, blank=True)
