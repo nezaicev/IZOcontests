@@ -44,7 +44,7 @@ class PageContest(models.Model):
                              max_length=100, default='test')
     email = models.EmailField(verbose_name='Email', blank=True, null=True)
     name = models.CharField(verbose_name='Название мероприятия',
-                            max_length=150, default='test',
+                            max_length=250, default='test',
                             blank=True)
     start_date = models.DateTimeField(verbose_name='Начало мероприятия',
                                       blank=True, null=True)
