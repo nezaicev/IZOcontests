@@ -221,7 +221,6 @@ CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 CKEDITOR_CONFIGS = {
     'default': {
         'skin': 'moono-lisa',
-
         'toolbar_Basic': [
             ['Source', '-', 'Bold', 'Italic']
         ],
