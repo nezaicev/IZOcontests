@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'contests.apps.ContestsConfig',
     'map.apps.MapConfig',
     'cert.apps.CertConfig',
+    'event.apps.EventConfig',
 
     'ckeditor',
     'ckeditor_uploader',

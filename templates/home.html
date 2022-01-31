@@ -12,6 +12,13 @@
         <p class="mb-0"><a href="{% url 'admin:index' %}">Личный кабинет</a>
         </p>
         <p class="mb-0"><a href="{% url 'search_cert' %}">Сертификаты</a></p>
+
+        {% for group in request.user.groups.all %}
+          {% if group.name == 'Manager' %}
+            <p class="mb-0"><a href="{% url 'stat' %}">Статистика</a></p>
+          {% endif %}
+        {% endfor %}
+
         <p class="mb-0"><a href="{% url 'password_reset' %}">Изменить
           пароль</a></p>
         <p class="mb-0"><a href="{% url 'logout' %}" class='mr-1'>Выход</a></p>
@@ -92,7 +99,7 @@
                           </button>
                         </a>
 
-                          <p class="card-text"> {{ event.content | safe }} </p>
+                        <p class="card-text"> {{ event.content | safe }} </p>
                       {% endif %}
 
 
@@ -149,8 +156,8 @@
             <div class="card mb-3 mt-3" style="max-width: 900px;">
               <div class="row g-0">
                 <div class="col-md-4">
-                    <img class="img-fluid" src="{{ contest.logo.url }}"
-                         alt="{{ contest.name }}">
+                  <img class="img-fluid" src="{{ contest.logo.url }}"
+                       alt="{{ contest.name }}">
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">

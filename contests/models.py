@@ -166,6 +166,18 @@ class BaseContest(models.Model):
                               self.teacher.email))
         return tuple(attrs_obj)
 
+    @classmethod
+    def get_stat_data(cls):
+        result = {
+            'statement_count': cls.objects.all().count(),
+            'teacher_count': cls.objects.values('teacher_id').distinct().count(),
+            'school_count': cls.objects.values('school').distinct().count(),
+            'participant_count':cls.objects.all().count(),
+        }
+        return result
+
+
+
     def __str__(self):
         return str(self.reg_number)
 
@@ -334,6 +346,14 @@ class VP(BaseContest, MultiParticipants):
         verbose_name = 'Конкурс Выставочных проектов (участники)'
         verbose_name_plural = 'Конкурс Выставочных проектов (участники)'
 
+    @classmethod
+    def get_stat_data(cls):
+        stat=super().get_stat_data()
+        stat['participant_count']=ParticipantVP.objects.all().count()
+        stat['teacher_count']=TeacherExtraVP.objects.all().count()
+
+        return stat
+
 
 class ParticipantVP(models.Model):
     fio = models.CharField(max_length=50, verbose_name='Фамилия, имя',
@@ -393,6 +413,14 @@ class Mymoskvichi(BaseContest, MultiParticipants):
     class Meta:
         verbose_name = 'Конкурс Мы Москвичи (участники)'
         verbose_name_plural = 'Конкурс Мы Москвичи (участники)'
+
+    @classmethod
+    def get_stat_data(cls):
+        stat = super().get_stat_data()
+        stat['participant_count'] = ParticipantMymoskvichi.objects.all().count()
+        stat['teacher_count'] = TeacherExtraMymoskvichi.objects.all().count()
+
+        return stat
 
 
 class ParticipantMymoskvichi(models.Model):
