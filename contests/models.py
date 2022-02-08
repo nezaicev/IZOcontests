@@ -161,7 +161,7 @@ class BaseContest(models.Model):
                               field_value))
         if self.teacher:
             attrs_obj.append((self.teacher.__class__.fio.field.verbose_name,
-                              self.teacher.fio))
+                              CustomUser.objects.get(id=self.teacher_id).fio))
             attrs_obj.append((self.teacher.__class__.email.field.verbose_name,
                               self.teacher.email))
         return tuple(attrs_obj)
