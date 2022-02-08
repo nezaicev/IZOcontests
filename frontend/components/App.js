@@ -12,11 +12,10 @@ import * as PropTypes from "prop-types";
 class App extends Component {
   render() {
     return(
-    <Container maxWidth="lg">
-      <Paper sx={{ p: 2, margin: 'auto', maxWidth: 500, flexGrow: 1 }}>
-      <CustomGrid/>
-      </Paper>
-    </Container>
+        <div>
+            test
+        </div>
+
     );
 }
 
