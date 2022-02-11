@@ -4,10 +4,14 @@ from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
-from contests.models import Artakiada, NRusheva, Mymoskvichi, ParticipantMymoskvichi, \
-    TeacherExtraMymoskvichi, Archive, ShowEvent, VP, ParticipantVP ,TeacherExtraVP
-from contests.directory import NominationNR, NominationART, NominationMYMSK, ThemeART, \
-    ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level, AgeVP, NominationVP, LevelVP, DirectionVP, AgeART
+from contests.models import Artakiada, NRusheva, Mymoskvichi, \
+    ParticipantMymoskvichi, \
+    TeacherExtraMymoskvichi, Archive, ShowEvent, VP, ParticipantVP, \
+    TeacherExtraVP
+from contests.directory import NominationNR, NominationART, NominationMYMSK, \
+    ThemeART, \
+    ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level, AgeVP, \
+    NominationVP, LevelVP, DirectionVP, AgeART
 from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm
 from django.conf import settings
@@ -116,7 +120,8 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     list_filter = ('status', 'district', 'region')
     actions = ['export_list_info', 'export_as_xls', 'create_thumbs', 'send_vm',
                'archived', 'send_selected_letter', ]
-    exclude = ('reg_number', 'teacher', 'barcode', 'status', 'info', 'year_contest')
+    exclude = (
+    'reg_number', 'teacher', 'barcode', 'status', 'info', 'year_contest')
 
     def send_vm(self, request, queryset):
 
@@ -201,7 +206,8 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
             else:
                 utils.generate_barcode(queryset[0].reg_number)
                 utils.generate_pdf(queryset[0].get_parm_for_pdf(),
-                                   queryset[0].info.name, queryset[0].info.alias,
+                                   queryset[0].info.name,
+                                   queryset[0].info.alias,
                                    queryset[0].reg_number)
                 response = FileResponse(open(file_location, 'rb'))
                 return response
@@ -281,7 +287,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
 
     def response_add(self, request, obj, post_url_continue=None):
 
-        message=PageContest
+        message = PageContest
         utils.generate_pdf(obj.get_fields_for_pdf(), obj.info.name,
                            obj.info.alias, obj.reg_number)
         tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
@@ -395,7 +401,8 @@ class MymoskvichiAdmin(BaseAdmin):
         if obj.generate_list_participants(ParticipantMymoskvichi):
             obj.fio = obj.generate_list_participants(ParticipantMymoskvichi)
         if obj.generate_list_participants(TeacherExtraMymoskvichi):
-            obj.fio_teacher = obj.generate_list_participants(TeacherExtraMymoskvichi)
+            obj.fio_teacher = obj.generate_list_participants(
+                TeacherExtraMymoskvichi)
         obj.save()
 
         return super().response_add(request, obj, post_url_continue)
@@ -404,7 +411,8 @@ class MymoskvichiAdmin(BaseAdmin):
         if obj.generate_list_participants(ParticipantMymoskvichi):
             obj.fio = obj.generate_list_participants(ParticipantMymoskvichi)
         if obj.generate_list_participants(TeacherExtraMymoskvichi):
-            obj.fio_teacher = obj.generate_list_participants(TeacherExtraMymoskvichi)
+            obj.fio_teacher = obj.generate_list_participants(
+                TeacherExtraMymoskvichi)
         obj.save()
 
         return super().response_change(request, obj)
@@ -428,7 +436,7 @@ class VPAdmin(BaseAdmin):
     inlines = [ParticipantVPInline, TeacherExtraVPInline]
     exclude = (
         'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher',
-        'participants', 'teachers','info', 'year_contest')
+        'participants', 'teachers', 'info', 'year_contest')
 
     def response_add(self, request, obj, post_url_continue=None):
 
@@ -543,6 +551,7 @@ class ShowEventAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
             return obj.info.name
         else:
             return ''
+
 
 admin.site.register(ShowEvent, ShowEventAdmin)
 admin.site.register(PageContest, PageContestAdmin)

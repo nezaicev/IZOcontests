@@ -12,6 +12,7 @@
     "@babel/preset-react": "^7.16.0",
     "@material-ui/core": "^4.12.3",
     "@mui/x-data-grid-pro": "^5.1.0",
+    "@svgr/webpack": "^6.2.1",
     "babel-loader": "^8.2.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -19,17 +20,28 @@
     "webpack-cli": "^4.9.1"
   },
   "scripts": {
-    "dev": "webpack --mode development ./src/index.js --output-path ./static/frontend/main.js",
-    "build": "webpack --mode production ./src/index.js --output-path ./static/frontend/main.js"
+    "dev": "webpack --mode development ./src/index.js --output-path ../static/frontend/main.js",
+    "build": "webpack --mode production ./src/index.js --output-path ../static/frontend/main.js"
   },
   "presets": [
     "@babel/preset-env",
     "@babel/preset-react"
   ],
   "dependencies": {
-    "@emotion/react": "^11.7.0",
-    "@emotion/styled": "^11.6.0",
-    "@mui/material": "^5.2.2",
-    "@mui/x-data-grid": "^5.1.0"
+    "@emotion/react": "^11.8.1",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.4.1",
+    "@mui/material": "^5.4.2",
+    "@mui/styled-engine-sc": "^5.4.1",
+    "@mui/system": "^5.4.1",
+    "@mui/x-data-grid": "^5.1.0",
+    "image-thumbnail": "^1.0.14",
+    "material-ui-player": "^1.0.5",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "process": "^0.11.10",
+    "react-player": "^2.9.0",
+    "simple-react-lightbox": "^3.6.9-0",
+    "styled-components": "^5.3.3"
   }
 }
