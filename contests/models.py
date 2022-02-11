@@ -81,9 +81,11 @@ def get_info_contests(alias_contest):
 class Events(models.Model):
     name = models.CharField(verbose_name='Название (конкурс/мероприятие)',
                             max_length=100, blank=False)
-    app = models.CharField(verbose_name='Приложение', max_length=30,
-                           blank=False)
-    model = models.CharField(verbose_name='Модель', max_length=30, blank=False)
+    event=models.ForeignKey('PageContest',verbose_name='Мероприятие', blank=True,null=True,
+                            on_delete=models.PROTECT)
+    # app = models.CharField(verbose_name='Приложение', max_length=30,
+    #                        blank=False)
+    # model = models.CharField(verbose_name='Модель', max_length=30, blank=False)
 
     def __str__(self):
         return self.name

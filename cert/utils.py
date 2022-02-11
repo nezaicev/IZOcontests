@@ -43,9 +43,9 @@ def insert_text(font_url,size,text,width,align_value,position,color,draw,anchor 
         return None
 
 
-def generate_cert(reg_num, blank_cert, teacher, form_values):
+def generate_cert(reg_num, blank_cert, teacher, form_values, event):
     module_dir = os.getcwd()
-    obj = get_obj_by_reg_num_from_archive(reg_num, teacher)
+    obj = get_obj_by_reg_num_from_archive(reg_num, teacher,event)
     path_file = os.path.join(module_dir, settings.MEDIA_URL[1:], 'certs',
                              '{}_cert.jpg'.format(obj.reg_number))
 
