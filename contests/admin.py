@@ -310,7 +310,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
 class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
     list_filter = (
-        'level', 'status', 'district', RegionsListFilter, 'region',
+        'level', 'status', 'district', RegionsListFilter,'nomination', 'region',
     )
     list_display = (
         'reg_number', 'image_tag', 'fio', 'level', 'status', 'school',
