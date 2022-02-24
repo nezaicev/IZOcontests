@@ -16,6 +16,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
+import {forwardRef} from "react";
 
 const style = {
 
@@ -86,11 +87,10 @@ export default function PlayerModal(props) {
 
     return (
 
-
         <React.Fragment>
 
 
-            <CardVideo sx={{boxShadow: '0'}}>
+            <CardVideo sx={{boxShadow: '0'}} ref={props.forwardedRef}>
                 <ImageButton sx={{p: '10px', backgroundColor: '#ffffff'}} onClick={handleOpen}>
 
                     <ImageListItem>

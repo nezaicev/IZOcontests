@@ -44,7 +44,7 @@ class PageContest(models.Model):
                              max_length=100, default='test')
     email = models.EmailField(verbose_name='Email', blank=True, null=True)
     name = models.CharField(verbose_name='Название мероприятия',
-                            max_length=150, default='test',
+                            max_length=250, default='test',
                             blank=True)
     start_date = models.DateTimeField(verbose_name='Начало мероприятия',
                                       blank=True, null=True)
@@ -81,9 +81,11 @@ def get_info_contests(alias_contest):
 class Events(models.Model):
     name = models.CharField(verbose_name='Название (конкурс/мероприятие)',
                             max_length=100, blank=False)
-    app = models.CharField(verbose_name='Приложение', max_length=30,
-                           blank=False)
-    model = models.CharField(verbose_name='Модель', max_length=30, blank=False)
+    event=models.ForeignKey('PageContest',verbose_name='Мероприятие', blank=True,null=True,
+                            on_delete=models.PROTECT)
+    # app = models.CharField(verbose_name='Приложение', max_length=30,
+    #                        blank=False)
+    # model = models.CharField(verbose_name='Модель', max_length=30, blank=False)
 
     def __str__(self):
         return self.name
@@ -120,7 +122,7 @@ class BaseContest(models.Model):
     barcode = models.CharField(verbose_name='Штрих-код', max_length=15,
                                blank=False, null=False)
     teacher = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    fio = models.CharField('Участник', max_length=300)
+    fio = models.CharField('Участник', max_length=700)
     fio_teacher = models.CharField('Педагог', max_length=300)
     school = models.CharField('Образовательная организация', max_length=150)
     city = models.CharField('Город', max_length=101, blank=True)
@@ -161,10 +163,22 @@ class BaseContest(models.Model):
                               field_value))
         if self.teacher:
             attrs_obj.append((self.teacher.__class__.fio.field.verbose_name,
-                              self.teacher.fio))
+                              CustomUser.objects.get(id=self.teacher_id).fio))
             attrs_obj.append((self.teacher.__class__.email.field.verbose_name,
                               self.teacher.email))
         return tuple(attrs_obj)
+
+    @classmethod
+    def get_stat_data(cls):
+        result = {
+            'statement_count': cls.objects.all().count(),
+            'teacher_count': cls.objects.values('teacher_id').distinct().count(),
+            'school_count': cls.objects.values('school').distinct().count(),
+            'participant_count':cls.objects.all().count(),
+        }
+        return result
+
+
 
     def __str__(self):
         return str(self.reg_number)
@@ -334,6 +348,14 @@ class VP(BaseContest, MultiParticipants):
         verbose_name = 'Конкурс Выставочных проектов (участники)'
         verbose_name_plural = 'Конкурс Выставочных проектов (участники)'
 
+    @classmethod
+    def get_stat_data(cls):
+        stat=super().get_stat_data()
+        stat['participant_count']=ParticipantVP.objects.all().count()
+        stat['teacher_count']=TeacherExtraVP.objects.all().count()
+
+        return stat
+
 
 class ParticipantVP(models.Model):
     fio = models.CharField(max_length=50, verbose_name='Фамилия, имя',
@@ -393,6 +415,14 @@ class Mymoskvichi(BaseContest, MultiParticipants):
     class Meta:
         verbose_name = 'Конкурс Мы Москвичи (участники)'
         verbose_name_plural = 'Конкурс Мы Москвичи (участники)'
+
+    @classmethod
+    def get_stat_data(cls):
+        stat = super().get_stat_data()
+        stat['participant_count'] = ParticipantMymoskvichi.objects.all().count()
+        stat['teacher_count'] = TeacherExtraMymoskvichi.objects.all().count()
+
+        return stat
 
 
 class ParticipantMymoskvichi(models.Model):

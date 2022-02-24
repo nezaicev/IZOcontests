@@ -5,12 +5,12 @@
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}{% endblock %}</title>
-  <link rel="stylesheet" href="{% static "" %}">
   <link rel="stylesheet" href="{% static "site/css/bootstrap.css" %}">
   <link rel="stylesheet" href="{% static "dadata/css/suggestions.min.css" %}">
   <link rel="stylesheet" href="{% static "dadata/css/mycss.css" %}">
   <link rel="stylesheet" href="{% static "site/css/mycss.css" %}">
 </head>
+<body>
 <header>
 
   <div class="bg-light collapse" id="navbarHeader" style="">
@@ -39,36 +39,113 @@
       </div>
     </div>
   </div>
-  <div class="navbar navbar-light bg-light shadow-sm">
 
-    <div class="container d-flex justify-content-between">
 
-      <a href="{% url 'home' %}"
-         class="navbar-brand d-flex align-items-center">
-        <img src="{% static "site/img/Brand.svg" %}"
-             style=";margin-left:-126px;margin-top:-22px;margin-bottom:-22px; width: 60px;">
-      </a>
-      <nav id="links-main" class="nav">
-        {% if events %}
-          <a class="nav-link text-dark" href="#events"><h4>Мероприятия</h4></a>
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+        <a href="{% url 'home' %}"
+       class="logo">
+      <img src="{% static "site/img/Brand.svg" %}"
+           style="">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse bg-light" id="navbarNav">
+    <div class="container">
+      <ul class="navbar-nav">
+
+       {% if events %}
+         <li class="nav-item mr-3">
+          <a class="nav-link" href="#events"><h4>
+            Мероприятия</h4></a>
+         </li>
         {% endif %}
         {% if announcements %}
-          <a class="nav-link text-dark" href="#announcements"><h4>Анонсы</h4>
+          <li class="nav-item mr-3">
+          <a class="nav-link" href="#announcements"><h4>
+            Анонсы</h4>
           </a>
+          </li>
         {% endif %}
         {% if contests %}
-          <a class="nav-link text-dark" href="#contests"><h4>Конкурсы</h4></a>
+          <li class="nav-item mr-3">
+          <a class="nav-link" href="#contests"><h4>Конкурсы</h4>
+          </a>
+          </li>
         {% endif %}
-
-      </nav>
-      <button class="navbar-toggler collapsed" type="button"
-              data-toggle="collapse" data-target="#navbarHeader"
-              aria-controls="navbarHeader" aria-expanded="false"
-              aria-label="Toggle navigation">
-        <span class="">Меню</span>
-      </button>
+      </ul>
+    </div>
     </div>
   </div>
+</nav>
+
+{#  <nav class="navbar navbar-light navbar-expand-lg bg-faded ">#}
+{##}
+{#    <a href="{% url 'home' %}"#}
+{#       class="logo">#}
+{#      <img src="{% static "site/img/Brand.svg" %}"#}
+{#           style="">#}
+{#    </a>#}
+{##}
+{#    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">#}
+{#      <div class="navbar-nav">#}
+{#        {% if events %}#}
+{#          <a class="nav-link text-dark mr-4 ml-4 " href="#events"><h4>#}
+{#            Мероприятия</h4></a>#}
+{#        {% endif %}#}
+{#        {% if announcements %}#}
+{#          <a class="nav-link text-dark mr-4" href="#announcements"><h4>#}
+{#            Анонсы</h4>#}
+{#          </a>#}
+{#        {% endif %}#}
+{#        {% if contests %}#}
+{#          <a class="nav-link text-dark mr-4" href="#contests"><h4>Конкурсы</h4>#}
+{#          </a>#}
+{#        {% endif %}#}
+{##}
+{#      </div>#}
+{#      <a class="btn btn-primary text-right" data-bs-toggle="collapse" href="#navbarHeader"#}
+{#         role="button" aria-expanded="false" aria-controls="collapseExample">#}
+{#        Ссылка с href#}
+{#      </a>#}
+{##}
+{#    </div>#}
+{#  </nav>#}
+  {#  <div class="">#}
+
+  {#    <div class="container">#}
+
+  {#      <a href="{% url 'home' %}"#}
+  {#         class="navbar-brand d-flex align-items-center">#}
+  {#        <img src="{% static "site/img/Brand.svg" %}"#}
+  {#             style=";margin-left:-126px;margin-top:-22px;margin-bottom:-22px; width: 60px;">#}
+  {#      </a>#}
+  {#      <nav id="links-main" class="navbar navbar-light navbar-expand-md bg-faded justify-content-center">#}
+  {#        {% if events %}#}
+  {#          <a class="nav-link text-dark justify-content-center" href="#events"><h4>Мероприятия</h4></a>#}
+  {#        {% endif %}#}
+  {#        {% if announcements %}#}
+  {#          <a class="nav-link text-dark" href="#announcements"><h4>Анонсы</h4>#}
+  {#          </a>#}
+  {#        {% endif %}#}
+  {#        {% if contests %}#}
+  {#          <a class="nav-link text-dark" href="#contests"><h4>Конкурсы</h4></a>#}
+  {#        {% endif %}#}
+  {##}
+  {#      </nav>#}
+
+
+  {#      <button class="navbar-toggler collapsed" type="button"#}
+  {#              data-toggle="collapse" data-target="#navbarHeader"#}
+  {#              aria-controls="navbarHeader" aria-expanded="false"#}
+  {#              aria-label="Toggle navigation">#}
+  {#        <span class="">Меню</span>#}
+  {#      </button>#}
+  {#    </div>#}
+  {#  </div>#}
 
 </header>
 {% block content %}
@@ -80,7 +157,10 @@
   src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
   src="https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/js/jquery.suggestions.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+  crossorigin="anonymous"></script>
 <script src="{% static 'site/js/myfunctions.js' %}"></script>
 <script src="{% static 'dadata/js/organizations.js' %}"></script>
 <script src="{% static 'dadata/js/city.js' %}"></script>

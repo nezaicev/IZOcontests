@@ -12,6 +12,13 @@
         <p class="mb-0"><a href="{% url 'admin:index' %}">Личный кабинет</a>
         </p>
         <p class="mb-0"><a href="{% url 'search_cert' %}">Сертификаты</a></p>
+
+        {% for group in request.user.groups.all %}
+          {% if group.name == 'Manager' %}
+            <p class="mb-0"><a href="{% url 'stat' %}">Статистика</a></p>
+          {% endif %}
+        {% endfor %}
+
         <p class="mb-0"><a href="{% url 'password_reset' %}">Изменить
           пароль</a></p>
         <p class="mb-0"><a href="{% url 'logout' %}" class='mr-1'>Выход</a></p>
@@ -46,52 +53,57 @@
         <hr>
         <div class="row">
           {% for event in events %}
-            <div class="col-md-4">
-              <div class="card mb-4 shadow-sm">
-                <img src="{{ event.logo.url }}"
-                     class="card-img-top">
-                <div class="card-body align-content-center">
-                  <h5>{{ event.name }}</h5>
-                  {% if event.id in show_events %}
-                    <p class="card-text">
-                      Вы подписаны. Дополнительная информация отправлена
-                      на Ваш email.
-                    </p>
-                  {% else %}
-                    {% if user.is_authenticated %}
-                      <form method="post">{% csrf_token %}
-
-                        <input name="teacher" value="{{ user.id }}" hidden>
-                        <input name="page_contest" value="{{ event.id }}"
-                               hidden>
-
-                        <button type="submit" value="Save"
-                                class="btn btn-sm btn-success">
-                          Принять участие
-                        </button>
-                      </form>
-
+            <div class="card mb-3 mt-3" style="max-width: 900px;">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <a href="{% url 'event' event.id %}">
+                    <img class="img-fluid" src="{{ event.logo.url }}"
+                         alt="{{ event.name }}">
+                  </a>
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h4 class="card-title">{{ event.name }}</h4>
+                    <strong class="card-text">{{ event.start_date }}</strong>
+                    {% if event.id in show_events %}
+                      <p class="card-text">
+                        Вы подписаны. Дополнительная информация отправлена
+                        на Ваш email.
+                      </p>
+                      <hr>
+                      <p class="card-text"> {{ event.content | safe }} </p>
                     {% else %}
-                      <a href="{% url 'login' %}">
-                        <button type="button" class="btn btn-sm btn-danger">
-                          Принять участие
-                        </button>
+                      {% if user.is_authenticated %}
+                        <form method="post">{% csrf_token %}
+
+                          <input name="teacher" value="{{ user.id }}" hidden>
+                          <input name="page_contest" value="{{ event.id }}"
+                                 hidden>
+                          <hr>
+                          <button type="submit" value="Save"
+                                  class="btn btn-sm btn-send ">
+                            Принять участие
+                          </button>
+                          <hr>
+                        </form>
+                        <p class="card-text"> {{ event.content | safe }} </p>
+
+                      {% else %}
+
                         <hr>
                         <span class="badge bg-light text-dark">Необходима авторизация</span>
-                      </a>
+                        <hr>
+                        <a href="{% url 'login' %}">
+                          <button type="button" class="btn btn-sm btn-danger">
+                            Принять участие
+                          </button>
+                        </a>
+
+                        <p class="card-text"> {{ event.content | safe }} </p>
+                      {% endif %}
+
+
                     {% endif %}
-
-
-                  {% endif %}
-                  <hr>
-                  <a class="link-primary" data-bs-toggle="collapse"
-                     href="#contentEventDetail{{ event.id }}" role="button"
-                     aria-expanded="false" aria-controls="contentEventDetail{{ event.id }}">
-                    Подробнее
-                  </a>
-                  <div class="collapse card-text"
-                       id="contentEventDetail{{ event.id }}">
-                    <p>{{ event.content|safe }}</p>
                   </div>
                 </div>
               </div>
@@ -103,7 +115,7 @@
       {% endif %}
 
       {% if  announcements %}
-        <h3 id="announcements" class="align-content-center">Анонсы</h3>
+        <h3 id="announcements" class="align-content-center mt-5">Анонсы</h3>
         <hr>
 
         <div class="row">
@@ -117,9 +129,10 @@
 
                   <hr>
 
-                    <a class="link-primary" data-bs-toggle="collapse"
+                  <a class="link-primary" data-bs-toggle="collapse"
                      href="#contentAnonsDetail{{ anons.id }}" role="button"
-                     aria-expanded="false" aria-controls="contentAnonsDetail{{ anons.id }}">
+                     aria-expanded="false"
+                     aria-controls="contentAnonsDetail{{ anons.id }}">
                     Подробнее
                   </a>
                   <div class="collapse card-text"
@@ -140,21 +153,19 @@
         <hr>
         <div class="row">
           {% for contest in contests %}
-            <div class="col-md-4">
-              <div class="card mb-4 shadow-sm">
-                <img src="{{ contest.logo.url }}"
-                     class="card-img-top">
-                <div class="card-body align-content-center">
-                  <h5>{{ contest.name }}</h5>
-                  <hr>
-                    <a class="link-primary" data-bs-toggle="collapse"
-                     href="#contentContestDetail{{ contest.id }}" role="button"
-                     aria-expanded="false" aria-controls="contentContestDetail{{ contest.id }}">
-                    Подробнее
-                  </a>
-                  <div class="collapse card-text"
-                       id="contentContestDetail{{ contest.id }}">
-                    <p>{{ contest.content|safe }}</p>
+            <div class="card mb-3 mt-3" style="max-width: 900px;">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img class="img-fluid" src="{{ contest.logo.url }}"
+                       alt="{{ contest.name }}">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h4 class="card-title">{{ contest.name }}</h4>
+
+                    <p class="card-text"> {{ contest.content | safe }} </p>
+
+
                   </div>
                 </div>
               </div>

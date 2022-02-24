@@ -64,7 +64,7 @@ class ArchiveInterface:
 
                 'contest_name': utils.get_dependent_data_for_obj(obj,
                                                                  'page_contest') if utils.get_dependent_data_for_obj(
-                    obj, 'page_contest') else obj.__class__.alias,
+                    obj, 'page_contest') else obj.info.name,
                 'year_contest': obj.year_contest,
                 'image': utils.get_dependent_data_for_obj(obj, 'image'),
                 'material': utils.get_dependent_data_for_obj(obj, 'material'),
@@ -316,7 +316,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
 class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
     list_filter = (
-        'level', 'status', 'district', RegionsListFilter, 'region',
+        'level', 'status', 'district', RegionsListFilter,'nomination', 'region',
     )
     list_display = (
         'reg_number', 'image_tag', 'fio', 'level', 'status', 'school',
@@ -333,21 +333,21 @@ class ArtakiadaAdmin(BaseAdmin):
             qs = super(BaseAdmin, self).get_queryset(request)
             return qs.filter(teacher=request.user)
 
-    def get_list_display(self, request):
-        if request.user.groups.filter(
-                name='Jury').exists():
-            self.list_display = utils.remove_field_in_list(self.list_display,
-                                                           'status')
-            self.list_filter = utils.remove_field_in_list(self.list_filter,
-                                                          'status')
-            self.list_filter = self.__class__.list_filter
-            self.list_display = utils.remove_field_in_list(self.list_display,
-                                                           'status')
-            self.list_filter = utils.remove_field_in_list(self.list_filter,
-                                                          'status')
-            return self.list_display
-        else:
-            return super().get_list_display(request)
+    # def get_list_display(self, request):
+    #     if request.user.groups.filter(
+    #             name='Jury').exists():
+    #         self.list_display = utils.remove_field_in_list(self.list_display,
+    #                                                        'status')
+    #         self.list_filter = utils.remove_field_in_list(self.list_filter,
+    #                                                       'status')
+    #         self.list_filter = self.__class__.list_filter
+    #         self.list_display = utils.remove_field_in_list(self.list_display,
+    #                                                        'status')
+    #         self.list_filter = utils.remove_field_in_list(self.list_filter,
+    #                                                       'status')
+    #         return self.list_display
+    #     else:
+    #         return super().get_list_display(request)
 
 
 class NRushevaAdmin(BaseAdmin):

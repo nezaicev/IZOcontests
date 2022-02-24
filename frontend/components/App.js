@@ -37,7 +37,7 @@ const App = () => {
 
             <Container sx={{fontFamily: 'Roboto', mt: '20px',justifyContent: 'center'}}>
                 <VideoGallery/>
-                <ImageGallery images={images}/>
+                {/*<ImageGallery images={images}/>*/}
 
 
             </Container>

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'contests.apps.ContestsConfig',
     'map.apps.MapConfig',
     'cert.apps.CertConfig',
+    'event.apps.EventConfig',
 
     'ckeditor',
     'ckeditor_uploader',
@@ -224,7 +225,6 @@ CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 CKEDITOR_CONFIGS = {
     'default': {
         'skin': 'moono-lisa',
-
         'toolbar_Basic': [
             ['Source', '-', 'Bold', 'Italic']
         ],

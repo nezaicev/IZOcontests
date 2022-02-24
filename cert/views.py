@@ -32,7 +32,8 @@ class SearchRegNumView(generic.FormView):
         self.request.session['event'] = form.cleaned_data['event']
         participant = get_obj_by_reg_num_from_archive(
             self.request.session['reg_number'],
-            self.request.user)
+            self.request.user,
+            self.request.session['event'])
         if participant:
             self.request.session['contest'] = participant.__class__.__name__
             self.request.session['participant_id'] = participant.id
@@ -49,7 +50,9 @@ class ConfirmationUserDataView(View):
     def dispatch(self, request, *args, **kwargs):
         self.form = BaseConfirmationUserDataForm
         context = {}
-        participant = get_obj_by_reg_num_from_archive(self.request.session['reg_number'],self.request.user)
+        participant = get_obj_by_reg_num_from_archive(
+            self.request.session['reg_number'], self.request.user,
+            request.session.get('event'))
         self.initial_data = {'reg_number': participant.reg_number,
                              'status': participant.status.id if participant.status else participant.status,
                              'school': participant.school,
@@ -77,7 +80,7 @@ class ConfirmationUserDataView(View):
                     form_values = self.form.cleaned_data
                     path_cert = generate_cert(reg_number, blank,
                                               self.request.user,
-                                              form_values)
+                                              form_values,event)
                     if path_cert:
                         return HttpResponseRedirect(
                             os.path.join(settings.MEDIA_URL, 'certs',
