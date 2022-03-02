@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
+
 from pathlib import Path
 from environs import Env
 from dotenv import load_dotenv
@@ -31,7 +32,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", True)
 
-ALLOWED_HOSTS = [os.getenv('HOST_NAME','127.0.0.1')]
+ALLOWED_HOSTS = ['*']
 DATA_UPLOAD_MAX_NUMBER_FIELDS=10000
 # Application definition
 
@@ -55,12 +56,15 @@ INSTALLED_APPS = [
     'multiselectfield',
     'frontend',
     'rest_framework',
+    'corsheaders',
 
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -297,4 +301,8 @@ CKEDITOR_CONFIGS = {
             'elementspath'
         ]),
     }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'frontend.apps.StandardResultsSetPagination'
 }
