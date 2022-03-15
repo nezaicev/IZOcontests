@@ -81,8 +81,10 @@ def get_info_contests(alias_contest):
 class Events(models.Model):
     name = models.CharField(verbose_name='Название (конкурс/мероприятие)',
                             max_length=100, blank=False)
-    event=models.ForeignKey('PageContest',verbose_name='Мероприятие', blank=True,null=True,
-                            on_delete=models.PROTECT)
+    event = models.ForeignKey('PageContest', verbose_name='Мероприятие',
+                              blank=True, null=True,
+                              on_delete=models.PROTECT)
+
     # app = models.CharField(verbose_name='Приложение', max_length=30,
     #                        blank=False)
     # model = models.CharField(verbose_name='Модель', max_length=30, blank=False)
@@ -172,13 +174,12 @@ class BaseContest(models.Model):
     def get_stat_data(cls):
         result = {
             'statement_count': cls.objects.all().count(),
-            'teacher_count': cls.objects.values('teacher_id').distinct().count(),
+            'teacher_count': cls.objects.values(
+                'teacher_id').distinct().count(),
             'school_count': cls.objects.values('school').distinct().count(),
-            'participant_count':cls.objects.all().count(),
+            'participant_count': cls.objects.all().count(),
         }
         return result
-
-
 
     def __str__(self):
         return str(self.reg_number)
@@ -207,12 +208,14 @@ class ShowEvent(BaseContest):
 
 class Artakiada(BaseContest):
     fields = (
-        'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school', 'level','age',
+        'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school', 'level',
+        'age',
         'region', 'city',
-        'district', 'nomination', 'material','author_name')
+        'district', 'nomination', 'material', 'author_name')
     author_name = models.CharField(max_length=50, blank=False,
                                    verbose_name='Авторское название')
-    birthday = models.DateField(verbose_name='Дата рождения', blank=False, default=timezone.now)
+    birthday = models.DateField(verbose_name='Дата рождения', blank=False,
+                                default=timezone.now)
     age = models.ForeignKey(AgeART, verbose_name='Возраст',
                             on_delete=models.SET_NULL, null=True)
     info = models.ForeignKey('PageContest', on_delete=models.SET_NULL,
@@ -262,7 +265,8 @@ class NRusheva(BaseContest):
                               on_delete=models.SET_NULL, null=True)
     nomination = models.ForeignKey(NominationNR, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
-    birthday = models.DateField(verbose_name='Дата рождения', blank=False, default=timezone.now)
+    birthday = models.DateField(verbose_name='Дата рождения', blank=False,
+                                default=timezone.now)
     level = models.ForeignKey(Level, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True)
     age = models.ForeignKey(AgeRUSH, verbose_name='Возраст',
@@ -325,14 +329,14 @@ class VP(BaseContest, MultiParticipants):
     fields = (
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school',
         'region', 'city', 'district', 'age', 'author_name', 'nomination',
-        'level','direction',
+        'level', 'direction',
     )
     info = models.ForeignKey('PageContest', on_delete=models.SET_NULL,
                              null=True, default=get_info_contests('vp'))
     author_name = models.CharField(max_length=50, blank=False,
                                    verbose_name='Авторское название')
-    direction = models.ForeignKey(DirectionVP,on_delete=models.SET_NULL,
-                                 verbose_name='Направление', null=True)
+    direction = models.ForeignKey(DirectionVP, on_delete=models.SET_NULL,
+                                  verbose_name='Направление', null=True)
 
     nomination = models.ForeignKey(NominationVP, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
@@ -340,6 +344,7 @@ class VP(BaseContest, MultiParticipants):
                             on_delete=models.SET_NULL, null=True)
     level = models.ForeignKey(LevelVP, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True)
+
 
     def __str__(self):
         return str(self.reg_number)
@@ -350,9 +355,9 @@ class VP(BaseContest, MultiParticipants):
 
     @classmethod
     def get_stat_data(cls):
-        stat=super().get_stat_data()
-        stat['participant_count']=ParticipantVP.objects.all().count()
-        stat['teacher_count']=TeacherExtraVP.objects.all().count()
+        stat = super().get_stat_data()
+        stat['participant_count'] = ParticipantVP.objects.all().count()
+        stat['teacher_count'] = TeacherExtraVP.objects.all().count()
 
         return stat
 
@@ -419,7 +424,8 @@ class Mymoskvichi(BaseContest, MultiParticipants):
     @classmethod
     def get_stat_data(cls):
         stat = super().get_stat_data()
-        stat['participant_count'] = ParticipantMymoskvichi.objects.all().count()
+        stat[
+            'participant_count'] = ParticipantMymoskvichi.objects.all().count()
         stat['teacher_count'] = TeacherExtraMymoskvichi.objects.all().count()
 
         return stat
@@ -430,7 +436,8 @@ class ParticipantMymoskvichi(models.Model):
                            blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Участники',
                                      on_delete=models.CASCADE)
-    birthday = models.DateField(verbose_name='Дата Рождения', blank=False, default=timezone.now)
+    birthday = models.DateField(verbose_name='Дата Рождения', blank=False,
+                                default=timezone.now)
 
     def __str__(self):
         return str(self.fio)
@@ -444,7 +451,8 @@ class TeacherExtraMymoskvichi(models.Model):
     fio = models.CharField(max_length=50, verbose_name='ФИО', blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Педагог',
                                      on_delete=models.CASCADE)
-    birthday = models.DateField(verbose_name='Дата Рождения', blank=False, default=timezone.now)
+    birthday = models.DateField(verbose_name='Дата Рождения', blank=False,
+                                default=timezone.now)
 
     def __str__(self):
         return str(self.fio)
@@ -516,11 +524,11 @@ class Archive(BaseContest):
     image = models.ImageField(upload_to=PathAndRename('all_contests/'),
                               max_length=200, verbose_name='Изображение',
                               blank=True, null=True)
-    material = models.ForeignKey(Material, verbose_name='Материал',
-                                 on_delete=models.SET_NULL, null=True,
-                                 blank=True)
-    level = models.ForeignKey(Level, verbose_name='Класс',
-                              on_delete=models.SET_NULL, null=True, blank=True)
+    material = models.CharField(max_length=200, verbose_name='Материал',
+                                null=True,
+                                blank=True)
+    level = models.CharField(max_length=200, verbose_name='Класс',
+                             null=True, blank=True)
     theme = models.CharField(verbose_name='Тема',
                              max_length=200, null=True, blank=True)
     nomination = models.CharField(verbose_name='Номинация',
@@ -556,3 +564,43 @@ class Archive(BaseContest):
 
     def __str__(self):
         return self.reg_number
+
+
+class ExtraImage(models.Model):
+    image = models.ImageField(upload_to=PathAndRename('all_contests/'),
+                              max_length=200, verbose_name='Изображение',
+                              blank=True, null=True)
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return str(self.image.url)
+
+
+class ExtraImageVP(ExtraImage):
+    extra_images = models.ForeignKey(VP, verbose_name='Изображения',
+                                     blank=True,
+                                     null=True,
+                                     on_delete=models.CASCADE,
+                                     related_name='images',
+                                     )
+
+    def __str__(self):
+        return str(self.image)
+
+    class Meta:
+        verbose_name = 'Изображения'
+        verbose_name_plural = 'Изображения'
+
+
+class ExtraImageArchive(ExtraImage):
+    extra_images = models.ForeignKey(Archive, verbose_name='Изображения',
+                                     on_delete=models.CASCADE, blank=True,
+                                     null=True, related_name='images')
+    order_number = models.IntegerField(verbose_name='Порядковый номер',
+                                       null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Изображения'
+        verbose_name_plural = 'Изображения'

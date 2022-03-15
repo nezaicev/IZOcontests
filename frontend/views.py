@@ -1,9 +1,9 @@
 import django_filters
 from django.shortcuts import render
-from contests.models import Archive
+from contests.models import Archive, NominationVP
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView
-from contests.serializers import ArchiveSerializer
+from contests.serializers import ArchiveSerializer, NominationVPSerializer
 
 
 def index(request):
@@ -14,4 +14,9 @@ class ArchiveAPIView(ModelViewSet):
     queryset = Archive.objects.all()
     serializer_class = ArchiveSerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filter_fields = ['contest_name', 'status']
+    filter_fields = ['contest_name', 'status', 'nomination']
+
+
+class NominationVP_API_View(ListAPIView):
+    queryset = NominationVP.objects.all()
+    serializer_class = NominationVPSerializer

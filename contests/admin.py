@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from contests.models import Artakiada, NRusheva, Mymoskvichi, \
     ParticipantMymoskvichi, \
     TeacherExtraMymoskvichi, Archive, ShowEvent, VP, ParticipantVP, \
-    TeacherExtraVP
+    TeacherExtraVP, ExtraImageVP, ExtraImageArchive
 from contests.directory import NominationNR, NominationART, NominationMYMSK, \
     ThemeART, \
     ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level, AgeVP, \
@@ -60,6 +60,7 @@ class ArchiveInterface:
 
         for obj in queryset:
 
+
             values_for_record = {
 
                 'contest_name': utils.get_dependent_data_for_obj(obj,
@@ -94,10 +95,17 @@ class ArchiveInterface:
                 'date_reg': utils.get_dependent_data_for_obj(obj, 'date_reg'),
                 'district': utils.get_dependent_data_for_obj(obj, 'district'),
 
+
             }
             vm_record, created = Archive.objects.get_or_create(
-                reg_number=obj.reg_number, defaults=values_for_record
+
+                reg_number=obj.reg_number, defaults=values_for_record,
             )
+            if hasattr(obj, 'images'):
+                vm_record.images.set(
+                    [ExtraImageArchive.objects.create(image=image.image) for image
+                     in obj.images.select_related()])
+
             if created:
                 count_created_obj += 1
             else:
@@ -121,7 +129,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     actions = ['export_list_info', 'export_as_xls', 'create_thumbs', 'send_vm',
                'archived', 'send_selected_letter', ]
     exclude = (
-    'reg_number', 'teacher', 'barcode', 'status', 'info', 'year_contest')
+        'reg_number', 'teacher', 'barcode', 'status', 'info', 'year_contest')
 
     def send_vm(self, request, queryset):
 
@@ -316,8 +324,10 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
 class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
     list_filter = (
-        'level', 'status', 'district', RegionsListFilter,'nomination', 'region',
+        'level', 'status', 'district', RegionsListFilter, 'nomination',
+        'region',
     )
+    exclude = ('extraImage',)
     list_display = (
         'reg_number', 'image_tag', 'fio', 'level', 'status', 'school',
         'region',
@@ -352,6 +362,7 @@ class ArtakiadaAdmin(BaseAdmin):
 
 class NRushevaAdmin(BaseAdmin):
     name = 'nrusheva'
+    exclude = ('extraImage',)
     list_filter = ('level', 'status', 'district', 'region')
     list_display = (
         'reg_number', 'image_tag', 'fio', 'status', 'school', 'region',
@@ -395,7 +406,7 @@ class MymoskvichiAdmin(BaseAdmin):
     inlines = [ParticipantMymoskvichiInline, TeacherExtraMymoskvichiInline]
     exclude = (
         'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher',
-        'participants', 'teachers', 'info', 'year_contest')
+        'participants', 'teachers', 'info', 'year_contest', 'extraImage')
 
     def response_add(self, request, obj, post_url_continue=None):
         if obj.generate_list_participants(ParticipantMymoskvichi):
@@ -430,13 +441,18 @@ class TeacherExtraVPInline(admin.StackedInline):
     extra = 1
 
 
+class ImageExtraVPInline(admin.StackedInline):
+    model = ExtraImageVP
+    extra = 1
+
+
 class VPAdmin(BaseAdmin):
     model = VP
     name = 'vp'
-    inlines = [ParticipantVPInline, TeacherExtraVPInline]
+    inlines = [ParticipantVPInline, TeacherExtraVPInline, ImageExtraVPInline]
     exclude = (
         'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher',
-        'participants', 'teachers', 'info', 'year_contest')
+        'participants', 'teachers', 'info', 'year_contest', 'extraImage')
 
     def response_add(self, request, obj, post_url_continue=None):
 
@@ -516,7 +532,13 @@ class PermissionAdmin(admin.ModelAdmin):
     model = Permission
 
 
+class ImageExtraArchiveInline(admin.StackedInline):
+    model = ExtraImageArchive
+    extra = 1
+
+
 class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
+    inlines = [ImageExtraArchiveInline, ]
     model = Archive
     actions = ['export_as_xls', 'send_selected_letter', ]
     list_display = ['reg_number', 'contest_name', 'fio', 'fio_teacher',

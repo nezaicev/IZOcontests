@@ -43,6 +43,7 @@
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "react-player": "^2.9.0",
+    "react-router-dom": "^6.2.2",
     "simple-react-lightbox": "^3.6.9-0",
     "styled-components": "^5.3.3"
   }
