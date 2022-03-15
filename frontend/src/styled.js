@@ -7,7 +7,7 @@ import Divider from "@material-ui/core/Divider";
 
 
 export const DividerStyled=styled(Divider)(()=>({
-    backgroundColor:'#e3c7bf',
+    backgroundColor:'#efece3',
     height:'2px'
 }))
 export const ImageListStyled=styled(ImageList)(()=>({

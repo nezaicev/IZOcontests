@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'frontend',
     'rest_framework',
     'corsheaders',
+    'sorl.thumbnail',
 
 ]
 
@@ -204,23 +205,6 @@ POSTER_TMP_NAME='tmp_poster.jpg'
 
 
 DEFAULT_FILE_STORAGE = 'django_selectel_storage.storage.SelectelStorage'
-
-# CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL",'redis://127.0.0.1:6379')
-# CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND",'redis://127.0.0.1:6379')
-# CELERY_REDIS_BACKEND_HEALTH_CHECK_INTERVAL=30
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_RESULT_SERIALIZER = 'json'
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_TIMEZONE = 'Europe/Moscow'
-#
-# CELERY_BEAT_SCHEDULE = {
-#     'add_subscriber': {
-#         'task': 'mailing.tasks.add_subscriber',
-#         'schedule': crontab(),
-#     },
-#
-# }
-
 
 
 CKEDITOR_BROWSE_SHOW_DIRS = True

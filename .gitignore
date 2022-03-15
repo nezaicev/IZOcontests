@@ -10,7 +10,7 @@ db.sqlite3
 media/
 data.json
 .idea/
-
+node_modules/
 
 #mailing/migrations
 #users/migrations
