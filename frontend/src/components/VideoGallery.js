@@ -33,7 +33,7 @@ export default function VideoGallery() {
 
         axios({
             method: "GET",
-            url: "http://127.0.0.1:8000/frontend/api/archive",
+            url: `http://${process.env.REACT_APP_HOST_NAME}/frontend/api/archive`,
             params: {page_size: 1, contest_name: 'mymoskvichi', status: 5, page: page},
         })
             .then((res) => {
