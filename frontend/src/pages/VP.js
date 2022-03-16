@@ -6,6 +6,8 @@ import React from "react";
 
 
 function VP(props){
+    console.log(process.env.REACT_APP_HOST_NAME)
+
     return(
         <Box sx={{bgcolor: 'rgb(239 236 227)', fontFamily: 'Roboto', height: 'auto'}}>
             <Header/>

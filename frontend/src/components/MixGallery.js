@@ -58,7 +58,7 @@ export default function MixGallery() {
 
         axios({
             method: "GET",
-            url: "http://127.0.0.1:8000/frontend/api/archive",
+            url: `http://${process.env.REACT_APP_HOST_NAME}/frontend/api/archive`,
             params: {
                 page_size: 1,
                 contest_name: 'Выставочные проекты',
@@ -83,7 +83,7 @@ export default function MixGallery() {
     return (
         <Box>
             <Box sx={{margin: '20px', width: 'auto'}}>
-                <ScrollableTabs url="http://127.0.0.1:8000/frontend/api/archive/nominationvp"
+                <ScrollableTabs url={`http://${process.env.REACT_APP_HOST_NAME}/frontend/api/archive/nominationvp`}
                                 loadData={loadMoreItems}
                                 resetPage={resetPage}
                                 resetLoadedData={() => {
