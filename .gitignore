@@ -13,6 +13,7 @@ data.json
 node_modules/
 frontend/node_modules/
 
+
 #mailing/migrations
 #users/migrations
 #map/migrations
