@@ -24,7 +24,7 @@ const MixCard = styled(Card)(() => ({
 }))
 
 
-export default function MixGallery() {
+export default function MixGallery(props) {
 
 
     const [Items, setItems] = useState([]);
@@ -61,7 +61,7 @@ export default function MixGallery() {
             url: `http://${process.env.REACT_APP_HOST_NAME}/frontend/api/archive`,
             params: {
                 page_size: 1,
-                contest_name: 'Выставочные проекты',
+                contest_name: props.contestName,
                 page: page,
                 direction: (nomination === 'Все') ? '' : nomination
             },

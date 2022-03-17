@@ -12,7 +12,7 @@ function VP(props){
         <Box sx={{bgcolor: 'rgb(239 236 227)', fontFamily: 'Roboto', height: 'auto'}}>
             <Header/>
             <Container sx={{fontFamily: 'Roboto', mt: '20px', justifyContent: 'center'}}>
-                <MixGallery/>
+                <MixGallery contestName={process.env.REACT_APP_VP}/>
             </Container>
         </Box>
 
