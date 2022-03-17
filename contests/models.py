@@ -533,6 +533,8 @@ class Archive(BaseContest):
                              max_length=200, null=True, blank=True)
     nomination = models.CharField(verbose_name='Номинация',
                                   max_length=200, null=True, blank=True)
+    direction = models.CharField(verbose_name='Направление',
+                                  max_length=200, null=True, blank=True)
 
     age = models.CharField(verbose_name='Возраст',
                            max_length=50, null=True, blank=True)

@@ -94,6 +94,7 @@ class ArchiveInterface:
                 'region': utils.get_dependent_data_for_obj(obj, 'region'),
                 'date_reg': utils.get_dependent_data_for_obj(obj, 'date_reg'),
                 'district': utils.get_dependent_data_for_obj(obj, 'district'),
+                'direction': utils.get_dependent_data_for_obj(obj, 'direction'),
 
 
             }

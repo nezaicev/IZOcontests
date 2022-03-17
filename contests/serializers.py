@@ -1,7 +1,8 @@
 from sorl.thumbnail import get_thumbnail
 
 from rest_framework import serializers
-from .models import ModxDbimgMuz, Archive, Level, ExtraImageArchive, NominationVP
+from .models import ModxDbimgMuz, Archive, Level, ExtraImageArchive, \
+    NominationVP, DirectionVP
 
 
 class ModxDbimgMuzSerializer(serializers.ModelSerializer):
@@ -15,6 +16,11 @@ class NominationVPSerializer(serializers.ModelSerializer):
         model = NominationVP
         fields = ('name',)
 
+
+class DirectionVPSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DirectionVP
+        fields = ('name',)
 
 
 class LevelSerializer(serializers.ModelSerializer):
@@ -38,6 +44,8 @@ class ArchiveSerializer(serializers.ModelSerializer):
     class Meta:
         model = Archive
 
-        fields = ('id','reg_number',
-                  'link', 'author_name', 'fio','fio_teacher', 'school', 'contest_name', 'image',
-                  'nomination', 'level', 'status', 'images','description')
+        fields = ('id', 'reg_number',
+                  'link', 'author_name', 'fio', 'fio_teacher', 'school',
+                  'contest_name', 'image',
+                  'nomination', 'level', 'status', 'images', 'description',
+                  'direction')

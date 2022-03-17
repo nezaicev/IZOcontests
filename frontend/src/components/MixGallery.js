@@ -63,7 +63,7 @@ export default function MixGallery() {
                 page_size: 1,
                 contest_name: 'Выставочные проекты',
                 page: page,
-                nomination: (nomination === 'Все') ? '' : nomination
+                direction: (nomination === 'Все') ? '' : nomination
             },
         })
             .then((res) => {

@@ -23,7 +23,7 @@ export default function ScrollableTabs(props) {
 
     useEffect(()=>{
         props.loadData()
-        console.log(value, 'nomination_effect')
+
 
     },[value])
 
