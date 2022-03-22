@@ -30,12 +30,15 @@ class LevelSerializer(serializers.ModelSerializer):
 
 
 class ImagesSerializer(serializers.RelatedField):
-    model = ExtraImageArchive
+
+    class Meta:
+        model = ExtraImageArchive
 
     def to_representation(self, value):
         return {'thumb': get_thumbnail(value.image, '300x300', crop='center',
                                        quality=99).url,
-                'original': value.image.url}
+                'original': value.image.url,
+                'orderNumber': value.order_number}
 
 
 class ArchiveSerializer(serializers.ModelSerializer):

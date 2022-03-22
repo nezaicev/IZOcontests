@@ -8,6 +8,7 @@ from django.utils.deconstruct import deconstructible
 from django.utils.safestring import mark_safe
 from model_utils.managers import InheritanceManager
 from ckeditor.fields import RichTextField
+from sorl.thumbnail import get_thumbnail
 from users.models import CustomUser, Region, District
 from contests import utils
 from contests.directory import NominationART, NominationMYMSK, ThemeART, \
@@ -345,7 +346,6 @@ class VP(BaseContest, MultiParticipants):
     level = models.ForeignKey(LevelVP, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True)
 
-
     def __str__(self):
         return str(self.reg_number)
 
@@ -534,7 +534,7 @@ class Archive(BaseContest):
     nomination = models.CharField(verbose_name='Номинация',
                                   max_length=200, null=True, blank=True)
     direction = models.CharField(verbose_name='Направление',
-                                  max_length=200, null=True, blank=True)
+                                 max_length=200, null=True, blank=True)
 
     age = models.CharField(verbose_name='Возраст',
                            max_length=50, null=True, blank=True)
@@ -597,12 +597,27 @@ class ExtraImageVP(ExtraImage):
 
 
 class ExtraImageArchive(ExtraImage):
-    extra_images = models.ForeignKey(Archive, verbose_name='Изображения',
-                                     on_delete=models.CASCADE, blank=True,
+    extra_images = models.ForeignKey(Archive,
+                                     on_delete=models.CASCADE,
+                                     blank=True,
                                      null=True, related_name='images')
     order_number = models.IntegerField(verbose_name='Порядковый номер',
                                        null=True, blank=True)
 
     class Meta:
+        ordering = ['order_number', ]
         verbose_name = 'Изображения'
         verbose_name_plural = 'Изображения'
+
+    @property
+    def image_tag(self):
+        if self.extra_images:
+            return mark_safe(
+                '<img src="{}" width="100px" height="100px" />'.format(
+                    get_thumbnail(self.image, '300x300', crop='center',
+                                  quality=99).url
+                ))
+        else:
+            return ''
+
+

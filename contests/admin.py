@@ -60,7 +60,6 @@ class ArchiveInterface:
 
         for obj in queryset:
 
-
             values_for_record = {
 
                 'contest_name': utils.get_dependent_data_for_obj(obj,
@@ -94,8 +93,8 @@ class ArchiveInterface:
                 'region': utils.get_dependent_data_for_obj(obj, 'region'),
                 'date_reg': utils.get_dependent_data_for_obj(obj, 'date_reg'),
                 'district': utils.get_dependent_data_for_obj(obj, 'district'),
-                'direction': utils.get_dependent_data_for_obj(obj, 'direction'),
-
+                'direction': utils.get_dependent_data_for_obj(obj,
+                                                              'direction'),
 
             }
             vm_record, created = Archive.objects.get_or_create(
@@ -104,7 +103,8 @@ class ArchiveInterface:
             )
             if hasattr(obj, 'images'):
                 vm_record.images.set(
-                    [ExtraImageArchive.objects.create(image=image.image) for image
+                    [ExtraImageArchive.objects.create(image=image.image) for
+                     image
                      in obj.images.select_related()])
 
             if created:
@@ -130,7 +130,8 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     actions = ['export_list_info', 'export_as_xls', 'create_thumbs', 'send_vm',
                'archived', 'send_selected_letter', ]
     exclude = (
-        'reg_number', 'teacher', 'barcode', 'status', 'info', 'year_contest')
+        'reg_number', 'teacher', 'barcode', 'status', 'info', 'year_contest',
+        'extraImage')
 
     def send_vm(self, request, queryset):
 
@@ -328,7 +329,6 @@ class ArtakiadaAdmin(BaseAdmin):
         'level', 'status', 'district', RegionsListFilter, 'nomination',
         'region',
     )
-    exclude = ('extraImage',)
     list_display = (
         'reg_number', 'image_tag', 'fio', 'level', 'status', 'school',
         'region',
@@ -363,7 +363,6 @@ class ArtakiadaAdmin(BaseAdmin):
 
 class NRushevaAdmin(BaseAdmin):
     name = 'nrusheva'
-    exclude = ('extraImage',)
     list_filter = ('level', 'status', 'district', 'region')
     list_display = (
         'reg_number', 'image_tag', 'fio', 'status', 'school', 'region',
@@ -534,8 +533,15 @@ class PermissionAdmin(admin.ModelAdmin):
 
 
 class ImageExtraArchiveInline(admin.StackedInline):
+    readonly_fields = ('image_tag',)
     model = ExtraImageArchive
-    extra = 1
+    extra = 0
+
+    def image_tag(self, obj):
+        return obj.image_tag
+
+    image_tag.short_description = 'Загружено'
+    image_tag.allow_tags = True
 
 
 class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):

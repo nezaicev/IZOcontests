@@ -28,4 +28,3 @@ vm/
 #!**/migrations/__init__.py
 #**/**/migrations
 
-../static/frontend/main.js/main.js

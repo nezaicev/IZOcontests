@@ -67,20 +67,20 @@ export function ExpandMoreCollapse(props) {
                     <DividerStyled/>
                     <Box sx={{margin:'20px'}}>
 
-                            <Typography component={'div'}>
+                            <Typography  variant='subtitle2' component={'div'}>
                                 № {props.item.reg_number}
                             </Typography>
-                            <Typography component={'div'}>
+                            <Typography variant='subtitle2' component={'div'}>
                                 Образовательное уч. : {props.item.school}
                             </Typography>
-                            <Typography component={'div'}>
+                            <Typography variant='subtitle2' component={'div'}>
                                 Участники : {props.item.fio}
                             </Typography>
-                            <Typography component={'div'}>
+                            <Typography variant='subtitle2' component={'div'}>
                                 Педагог : {props.item.fio_teacher}
                             </Typography >
-                            <Typography component={'div'}>
-                                {props.item.description}
+                            <Typography variant='subtitle2' component={'div'}>
+                                Описание : {props.item.description}
                             </Typography>
 
 
