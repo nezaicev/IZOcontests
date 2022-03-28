@@ -4,10 +4,14 @@ from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
-from contests.models import Artakiada, NRusheva, Mymoskvichi, ParticipantMymoskvichi, \
-    TeacherExtraMymoskvichi, Archive, ShowEvent, VP, ParticipantVP ,TeacherExtraVP
-from contests.directory import NominationNR, NominationART, NominationMYMSK, ThemeART, \
-    ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level, AgeVP, NominationVP, LevelVP, DirectionVP, AgeART
+from contests.models import Artakiada, NRusheva, Mymoskvichi, \
+    ParticipantMymoskvichi, \
+    TeacherExtraMymoskvichi, Archive, ShowEvent, VP, ParticipantVP, \
+    TeacherExtraVP, ExtraImageVP, ExtraImageArchive
+from contests.directory import NominationNR, NominationART, NominationMYMSK, \
+    ThemeART, \
+    ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level, AgeVP, \
+    NominationVP, LevelVP, DirectionVP, AgeART
 from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm
 from django.conf import settings
@@ -60,7 +64,7 @@ class ArchiveInterface:
 
                 'contest_name': utils.get_dependent_data_for_obj(obj,
                                                                  'page_contest') if utils.get_dependent_data_for_obj(
-                    obj, 'page_contest') else obj.__class__.alias,
+                    obj, 'page_contest') else obj.info.name,
                 'year_contest': obj.year_contest,
                 'image': utils.get_dependent_data_for_obj(obj, 'image'),
                 'material': utils.get_dependent_data_for_obj(obj, 'material'),
@@ -89,11 +93,20 @@ class ArchiveInterface:
                 'region': utils.get_dependent_data_for_obj(obj, 'region'),
                 'date_reg': utils.get_dependent_data_for_obj(obj, 'date_reg'),
                 'district': utils.get_dependent_data_for_obj(obj, 'district'),
+                'direction': utils.get_dependent_data_for_obj(obj,
+                                                              'direction'),
 
             }
             vm_record, created = Archive.objects.get_or_create(
-                reg_number=obj.reg_number, defaults=values_for_record
+
+                reg_number=obj.reg_number, defaults=values_for_record,
             )
+            if hasattr(obj, 'images'):
+                vm_record.images.set(
+                    [ExtraImageArchive.objects.create(image=image.image) for
+                     image
+                     in obj.images.select_related()])
+
             if created:
                 count_created_obj += 1
             else:
@@ -116,7 +129,9 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     list_filter = ('status', 'district', 'region')
     actions = ['export_list_info', 'export_as_xls', 'create_thumbs', 'send_vm',
                'archived', 'send_selected_letter', ]
-    exclude = ('reg_number', 'teacher', 'barcode', 'status', 'info', 'year_contest')
+    exclude = (
+        'reg_number', 'teacher', 'barcode', 'status', 'info', 'year_contest',
+        'extraImage')
 
     def send_vm(self, request, queryset):
 
@@ -201,7 +216,8 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
             else:
                 utils.generate_barcode(queryset[0].reg_number)
                 utils.generate_pdf(queryset[0].get_parm_for_pdf(),
-                                   queryset[0].info.name, queryset[0].info.alias,
+                                   queryset[0].info.name,
+                                   queryset[0].info.alias,
                                    queryset[0].reg_number)
                 response = FileResponse(open(file_location, 'rb'))
                 return response
@@ -281,7 +297,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
 
     def response_add(self, request, obj, post_url_continue=None):
 
-        message=PageContest
+        message = PageContest
         utils.generate_pdf(obj.get_fields_for_pdf(), obj.info.name,
                            obj.info.alias, obj.reg_number)
         tasks.simple_send_mail.delay(obj.pk, obj.__class__.__name__,
@@ -310,7 +326,8 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
 class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
     list_filter = (
-        'level', 'status', 'district', RegionsListFilter, 'region',
+        'level', 'status', 'district', RegionsListFilter, 'nomination',
+        'region',
     )
     list_display = (
         'reg_number', 'image_tag', 'fio', 'level', 'status', 'school',
@@ -327,21 +344,21 @@ class ArtakiadaAdmin(BaseAdmin):
             qs = super(BaseAdmin, self).get_queryset(request)
             return qs.filter(teacher=request.user)
 
-    def get_list_display(self, request):
-        if request.user.groups.filter(
-                name='Jury').exists():
-            self.list_display = utils.remove_field_in_list(self.list_display,
-                                                           'status')
-            self.list_filter = utils.remove_field_in_list(self.list_filter,
-                                                          'status')
-            self.list_filter = self.__class__.list_filter
-            self.list_display = utils.remove_field_in_list(self.list_display,
-                                                           'status')
-            self.list_filter = utils.remove_field_in_list(self.list_filter,
-                                                          'status')
-            return self.list_display
-        else:
-            return super().get_list_display(request)
+    # def get_list_display(self, request):
+    #     if request.user.groups.filter(
+    #             name='Jury').exists():
+    #         self.list_display = utils.remove_field_in_list(self.list_display,
+    #                                                        'status')
+    #         self.list_filter = utils.remove_field_in_list(self.list_filter,
+    #                                                       'status')
+    #         self.list_filter = self.__class__.list_filter
+    #         self.list_display = utils.remove_field_in_list(self.list_display,
+    #                                                        'status')
+    #         self.list_filter = utils.remove_field_in_list(self.list_filter,
+    #                                                       'status')
+    #         return self.list_display
+    #     else:
+    #         return super().get_list_display(request)
 
 
 class NRushevaAdmin(BaseAdmin):
@@ -389,13 +406,14 @@ class MymoskvichiAdmin(BaseAdmin):
     inlines = [ParticipantMymoskvichiInline, TeacherExtraMymoskvichiInline]
     exclude = (
         'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher',
-        'participants', 'teachers', 'info', 'year_contest')
+        'participants', 'teachers', 'info', 'year_contest', 'extraImage')
 
     def response_add(self, request, obj, post_url_continue=None):
         if obj.generate_list_participants(ParticipantMymoskvichi):
             obj.fio = obj.generate_list_participants(ParticipantMymoskvichi)
         if obj.generate_list_participants(TeacherExtraMymoskvichi):
-            obj.fio_teacher = obj.generate_list_participants(TeacherExtraMymoskvichi)
+            obj.fio_teacher = obj.generate_list_participants(
+                TeacherExtraMymoskvichi)
         obj.save()
 
         return super().response_add(request, obj, post_url_continue)
@@ -404,7 +422,8 @@ class MymoskvichiAdmin(BaseAdmin):
         if obj.generate_list_participants(ParticipantMymoskvichi):
             obj.fio = obj.generate_list_participants(ParticipantMymoskvichi)
         if obj.generate_list_participants(TeacherExtraMymoskvichi):
-            obj.fio_teacher = obj.generate_list_participants(TeacherExtraMymoskvichi)
+            obj.fio_teacher = obj.generate_list_participants(
+                TeacherExtraMymoskvichi)
         obj.save()
 
         return super().response_change(request, obj)
@@ -422,13 +441,18 @@ class TeacherExtraVPInline(admin.StackedInline):
     extra = 1
 
 
+class ImageExtraVPInline(admin.StackedInline):
+    model = ExtraImageVP
+    extra = 1
+
+
 class VPAdmin(BaseAdmin):
     model = VP
     name = 'vp'
-    inlines = [ParticipantVPInline, TeacherExtraVPInline]
+    inlines = [ParticipantVPInline, TeacherExtraVPInline, ImageExtraVPInline]
     exclude = (
         'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher',
-        'participants', 'teachers','info', 'year_contest')
+        'participants', 'teachers', 'info', 'year_contest', 'extraImage')
 
     def response_add(self, request, obj, post_url_continue=None):
 
@@ -508,7 +532,20 @@ class PermissionAdmin(admin.ModelAdmin):
     model = Permission
 
 
+class ImageExtraArchiveInline(admin.StackedInline):
+    readonly_fields = ('image_tag',)
+    model = ExtraImageArchive
+    extra = 0
+
+    def image_tag(self, obj):
+        return obj.image_tag
+
+    image_tag.short_description = 'Загружено'
+    image_tag.allow_tags = True
+
+
 class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
+    inlines = [ImageExtraArchiveInline, ]
     model = Archive
     actions = ['export_as_xls', 'send_selected_letter', ]
     list_display = ['reg_number', 'contest_name', 'fio', 'fio_teacher',
@@ -516,6 +553,7 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
                     'region', 'status', 'year_contest']
     list_filter = ('contest_name', 'year_contest', 'status')
     search_fields = ('reg_number', 'fio')
+    exclude = ('info',)
 
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.groups.filter(
@@ -543,6 +581,7 @@ class ShowEventAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
             return obj.info.name
         else:
             return ''
+
 
 admin.site.register(ShowEvent, ShowEventAdmin)
 admin.site.register(PageContest, PageContestAdmin)

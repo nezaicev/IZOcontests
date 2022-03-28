@@ -6,16 +6,20 @@ from contests.models import Archive
 from users.models import CustomUser
 
 
-def get_obj_by_reg_num_from_archive(reg_number, teacher):
+def get_obj_by_reg_num_from_archive(reg_number, teacher, event):
     user = CustomUser.objects.get(email=str(teacher))
+    contest_name = Events.objects.get(id=event).event.name
+    print(reg_number,user,contest_name)
     try:
         if user.groups.filter(
                 name='Manager').exists():
-            record = Archive.objects.get(reg_number=reg_number)
+            record = Archive.objects.get(reg_number=reg_number,
+                                         contest_name=contest_name)
 
         else:
             record = Archive.objects.get(reg_number=reg_number,
-                                         teacher_id=teacher)
+                                         contest_name=contest_name,
+                                         teacher_id=user.id)
         return record
     except ObjectDoesNotExist:
         return None

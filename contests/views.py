@@ -3,7 +3,10 @@ from django.template.loader import render_to_string
 from django.views.generic import ListView, TemplateView, DetailView
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-from contests.models import PageContest, Message
+from rest_framework import generics
+from rest_framework.pagination import PageNumberPagination
+from contests.models import PageContest, Message, ModxDbimgMuz
+from .serializers import ModxDbimgMuzSerializer
 from contests import tasks
 from contests.forms import SubscribeShowEventForm
 from contests.services import get_show_evens_by_user, subscribe_show_event
@@ -69,5 +72,17 @@ class PageContestView(ListView):
         context['events'] = PageContest.objects.filter(hide=False, type='2').order_by("start_date")
         context['announcements'] = PageContest.objects.filter(hide=False, type='3')
         context['show_events'] = get_show_evens_by_user(self.request.user)
-        # context['type']=PageContest.objects.filter()
         return context
+
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 100
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
+
+
+class ImageListCreate(generics.ListCreateAPIView):
+    queryset = ModxDbimgMuz.objects.using(
+                    'vm').all()
+    serializer_class = ModxDbimgMuzSerializer
+    pagination_class = StandardResultsSetPagination

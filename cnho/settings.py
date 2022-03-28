@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
+
 from pathlib import Path
 from environs import Env
 from dotenv import load_dotenv
@@ -31,7 +32,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", True)
 
-ALLOWED_HOSTS = [os.getenv('HOST_NAME','127.0.0.1')]
+ALLOWED_HOSTS = ['*']
 DATA_UPLOAD_MAX_NUMBER_FIELDS=10000
 # Application definition
 
@@ -48,16 +49,23 @@ INSTALLED_APPS = [
     'contests.apps.ContestsConfig',
     'map.apps.MapConfig',
     'cert.apps.CertConfig',
+    'event.apps.EventConfig',
 
     'ckeditor',
     'ckeditor_uploader',
     'multiselectfield',
+    'frontend',
+    'rest_framework',
+    'corsheaders',
+    'sorl.thumbnail',
 
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -149,6 +157,7 @@ USE_TZ = True
 STATIC_URL = os.getenv('STATIC_URL', '/static/')
 STATICFILES_DIRS = [
    os.getenv('STATICFILES_DIRS', os.path.join(BASE_DIR, 'static')),
+   os.getenv('STATICFILES_DIRS', os.path.join(BASE_DIR, 'frontend')),
 ]
 
 #STATIC_ROOT=os.getenv('STATIC_ROOT',os.path.join(BASE_DIR,'static'))
@@ -197,23 +206,6 @@ POSTER_TMP_NAME='tmp_poster.jpg'
 
 DEFAULT_FILE_STORAGE = 'django_selectel_storage.storage.SelectelStorage'
 
-# CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL",'redis://127.0.0.1:6379')
-# CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND",'redis://127.0.0.1:6379')
-# CELERY_REDIS_BACKEND_HEALTH_CHECK_INTERVAL=30
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_RESULT_SERIALIZER = 'json'
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_TIMEZONE = 'Europe/Moscow'
-#
-# CELERY_BEAT_SCHEDULE = {
-#     'add_subscriber': {
-#         'task': 'mailing.tasks.add_subscriber',
-#         'schedule': crontab(),
-#     },
-#
-# }
-
-
 
 CKEDITOR_BROWSE_SHOW_DIRS = True
 CKEDITOR_UPLOAD_PATH = os.getenv("CE_UPLOAD_PATH", "uploads/")
@@ -221,7 +213,6 @@ CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 CKEDITOR_CONFIGS = {
     'default': {
         'skin': 'moono-lisa',
-
         'toolbar_Basic': [
             ['Source', '-', 'Bold', 'Italic']
         ],
@@ -294,4 +285,8 @@ CKEDITOR_CONFIGS = {
             'elementspath'
         ]),
     }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'frontend.apps.StandardResultsSetPagination'
 }
