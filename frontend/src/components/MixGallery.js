@@ -61,9 +61,10 @@ export default function MixGallery(props) {
             url: `http://${process.env.REACT_APP_HOST_NAME}/frontend/api/archive`,
             params: {
                 page_size: 1,
+                publish:true,
                 contest_name: props.contestName,
                 page: page,
-                direction: (nomination === 'Все') ? '' : nomination
+                nomination: (nomination === 'Все') ? '' : nomination
             },
         })
             .then((res) => {
@@ -91,6 +92,7 @@ export default function MixGallery(props) {
                                 }}
                                 setNomination={(value) => {
                                     setNomination(value);
+
                                 }}
 
                 />

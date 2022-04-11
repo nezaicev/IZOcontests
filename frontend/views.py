@@ -15,7 +15,7 @@ class ArchiveAPIView(ModelViewSet):
     queryset = Archive.objects.all()
     serializer_class = ArchiveSerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filter_fields = ['contest_name', 'status', 'direction']
+    filter_fields = ['contest_name', 'status', 'direction','publish','nomination']
 
 
 class NominationVP_API_View(ListAPIView):

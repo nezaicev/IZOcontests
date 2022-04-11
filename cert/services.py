@@ -9,7 +9,7 @@ from users.models import CustomUser
 def get_obj_by_reg_num_from_archive(reg_number, teacher, event):
     user = CustomUser.objects.get(email=str(teacher))
     contest_name = Events.objects.get(id=event).event.name
-    print(reg_number,user,contest_name)
+
     try:
         if user.groups.filter(
                 name='Manager').exists():

@@ -17,7 +17,7 @@ const options = {
         hideControlsAfter: false,
         lightboxTransitionSpeed: 0.3,
         lightboxTransitionTimingFunction: 'linear',
-        overlayColor: 'rgb(104 99 97 / 98%)',
+        overlayColor: 'rgb(38 30 27 /98%)',
         slideAnimationType: 'fade',
         slideSpringValues: [300, 50],
         slideTransitionSpeed: 0.6,
@@ -48,13 +48,13 @@ export default function ImageGallery(props) {
     return (
         <SimpleReactLightbox>
             <SRLWrapper options={options}>
-                <Box>
+                <Box sx={{display: 'flex', justifyContent:'center'}}>
 
-                <ImageListStyled sx={{justifyContent:'space-around'}} cols={[]} rowHeight={250} >
+                <ImageListStyled sx={{}} cols={[]} rowHeight={250} >
                     {images.map((item,index) => (
                         <Box sx={{
-                            padding: '10px',
-                            margin: '10px',
+                            padding: '15px',
+                            margin: '15px',
                             marginTop:'20px',
                             width:[250,300],
                             height:[250,250]

@@ -13,6 +13,7 @@ export default function ScrollableTabs(props) {
         props.setNomination(newValue)
         props.resetLoadedData()
         setValue(newValue);
+        console.log(newValue)
 
     };
 
