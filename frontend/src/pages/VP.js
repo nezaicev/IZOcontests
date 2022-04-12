@@ -9,7 +9,7 @@ function VP(props){
 
     document.title='Выставочные проекты'
     return(
-        <Box sx={{bgcolor: 'rgb(239 236 227)', fontFamily: 'Roboto', height: 'auto'}}>
+        <Box sx={{ fontFamily: 'Roboto', height: 'auto'}}>
             <Header/>
             <Container sx={{fontFamily: 'Roboto', mt: '20px', justifyContent: 'center'}}>
                 <MixGallery contestName={process.env.REACT_APP_VP}/>
