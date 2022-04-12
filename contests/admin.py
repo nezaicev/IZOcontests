@@ -570,9 +570,9 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     model = Archive
     actions = ['export_as_xls', 'send_selected_letter', ]
     list_editable = ['publish']
-    list_display = ['reg_number','publish', 'contest_name', 'fio', 'fio_teacher',
-                    'teacher',
-                    'region', 'status', 'year_contest']
+    list_display = ['reg_number','publish', 'contest_name', 'author_name', 'fio_teacher',
+                    'teacher'
+                    , 'status', 'year_contest']
     list_filter = ('contest_name', 'year_contest', 'status')
     search_fields = ('reg_number', 'fio')
     exclude = ('info',)

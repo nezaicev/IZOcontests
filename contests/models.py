@@ -516,6 +516,7 @@ class ModxDbimgMuz(models.Model):
 
 
 class Archive(BaseContest):
+    rating=models.IntegerField('Райтинг', blank=True, default=0)
     fio = models.CharField('Участник', max_length=700, blank=True, default='')
     content = RichTextField(verbose_name='Контент', blank=True, null=True)
     publish = models.BooleanField(verbose_name='Опубликовать', default=False)
@@ -564,6 +565,7 @@ class Archive(BaseContest):
         super(BaseContest, self).save(*args, **kwargs)
 
     class Meta:
+        ordering = ['-rating', ]
         verbose_name = 'Архив'
         verbose_name_plural = 'Архив'
 
