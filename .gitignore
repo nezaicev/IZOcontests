@@ -13,6 +13,7 @@ data.json
 node_modules/
 frontend/node_modules/
 ../static/frontend/main.js/main.js
+static/frontend/main.js/main.js
 
 
 #mailing/migrations

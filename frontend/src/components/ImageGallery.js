@@ -50,14 +50,14 @@ export default function ImageGallery(props) {
             <SRLWrapper options={options}>
                 <Box sx={{display: 'flex', justifyContent:'center'}}>
 
-                <ImageListStyled sx={{}} cols={[]} rowHeight={250} >
+                <ImageListStyled sx={{}} cols={[]} rowHeight={180} >
                     {images.map((item,index) => (
                         <Box sx={{
                             padding: '15px',
                             margin: '15px',
                             marginTop:'20px',
-                            width:[250,300],
-                            height:[250,250]
+                            width:[250,320],
+                            height:[180,180]
                         }} elevation={3}>
                             <ImageListItem  key={index}>
                                 <a href={item['original']}>

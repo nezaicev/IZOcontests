@@ -14,6 +14,8 @@ import PlayerModal from "./PlayerModal";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import Tooltip from "@material-ui/core/Tooltip";
 import CameraIcon from '@mui/icons-material/Camera';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import ArticleIcon from '@mui/icons-material/Article';
 
 export const ExpandMore = styled((props) => {
     const {expand, ...other} = props;
@@ -106,8 +108,14 @@ export function ExpandMoreCollapse(props) {
 
                         <FieldTitle title='Направление: '
                                     content={props.item.direction}/>
-                        <FieldTitle title='Описание: '
-                                    content={props.item.description}/>
+
+                        {
+                            props.item.description ? <Box sx={{marginTop:'10px'}}>
+                                <Typography variant='body2' mt={10}>
+                                    {props.item.description}
+                            </Typography> </Box> :''
+
+                        }
 
                     </Box>
                     <Box>
@@ -124,7 +132,7 @@ export function ExpandMoreCollapse(props) {
                         marginTop: '10px',
                         marginLeft:'auto',
                         marginRight:'auto',
-                        width: [250, 500, 1000]
+                        width: [250, 500, 1100]
                     , display:'block',}}>
                         <ImageGallery images={props.item.images}
                                       titleImg={props.item.author_name}
@@ -141,7 +149,7 @@ export function ExpandMoreCollapse(props) {
                         marginLeft:'auto',
                         marginRight:'auto',
                         display:'block',
-                        width: [250, 500, 1000]
+                        width: [250, 500, 1100]
                     }}>
                         <ImageListStyled sx={{justifyContent: 'space-between'}}
                                          cols={3} rowHeight={250}>
@@ -156,6 +164,47 @@ export function ExpandMoreCollapse(props) {
 
 
                         </ImageListStyled>
+                    </Box>
+
+
+                     {props.item.files.length>0 ? <React.Fragment><Tooltip title="Дополнительные материалы">
+                                        <IconButton>
+                                            <ArticleIcon sx={{ fontSize:'2rem',color: 'rgb(128,110,110)', padding:'2px'}}/>
+                                        </IconButton>
+                                    </Tooltip> <DividerStyled/> </React.Fragment>:''}
+
+                    <Box sx={{
+                        marginLeft:'auto',
+                        marginRight:'auto',
+                        display:'block',
+                        width: [250, 500, 1100]
+                    }}>
+
+                     {
+                                props.item.files.map((item, index) => (
+
+                                    <React.Fragment>
+                                        <Box sx={{display:'flex', alignItems:'center', marginTop:'10px'}}>
+                                            <a href={item.link} download={item.name}>
+                                         <IconButton >
+                                            <PictureAsPdfIcon sx={{ fontSize:'2rem',color: '#d08686', padding:'2px'}}/>
+                                        </IconButton>
+                                                </a>
+                                        <Typography >
+                                            {item.name}
+                                        </Typography>
+                                            </Box>
+
+
+                                    </React.Fragment>
+
+
+
+
+                            ))
+                            }
+
+
                     </Box>
 
                 </CardContent>

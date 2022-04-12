@@ -14,7 +14,7 @@ from contests import utils
 from contests.directory import NominationART, NominationMYMSK, ThemeART, \
     ThemeRUSH, ThemeMYMSK, AgeRUSH, AgeMYMSK, Status, Level, Material, \
     NominationVP, AgeVP, LevelVP, NominationNR, DirectionVP, AgeART
-
+from contests.validators import validate_file_extension
 
 # Create your models here.
 # Заявки на конкурсы
@@ -516,6 +516,8 @@ class ModxDbimgMuz(models.Model):
 
 
 class Archive(BaseContest):
+    fio = models.CharField('Участник', max_length=700, blank=True, default='')
+    content = RichTextField(verbose_name='Контент', blank=True, null=True)
     publish = models.BooleanField(verbose_name='Опубликовать', default=False)
     date_reg = models.DateTimeField(blank=True)
     contest_name = models.CharField(max_length=200, null=False,
@@ -607,8 +609,8 @@ class ExtraImageArchive(ExtraImage):
 
     class Meta:
         ordering = ['order_number', ]
-        verbose_name = 'Изображения'
-        verbose_name_plural = 'Изображения'
+        verbose_name = 'Изображения архив'
+        verbose_name_plural = 'Изображения архив'
 
     @property
     def image_tag(self):
@@ -623,10 +625,10 @@ class ExtraImageArchive(ExtraImage):
 
 
 class Video(models.Model):
-    name=models.CharField(verbose_name='Название',max_length=300)
+    name = models.CharField(verbose_name='Название', max_length=300)
     video = models.URLField(
-                              max_length=200, verbose_name='Ссылка',
-                              )
+        max_length=200, verbose_name='Ссылка',
+    )
 
     class Meta:
         abstract = True
@@ -637,11 +639,11 @@ class Video(models.Model):
 
 class VideoVP(Video):
     videos = models.ForeignKey(VP, verbose_name='Видео',
-                                     blank=True,
-                                     null=True,
-                                     on_delete=models.CASCADE,
-                                     related_name='videos',
-                                     )
+                               blank=True,
+                               null=True,
+                               on_delete=models.CASCADE,
+                               related_name='videos',
+                               )
 
     class Meta:
         verbose_name = 'Видео'
@@ -650,13 +652,37 @@ class VideoVP(Video):
 
 class VideoArchive(Video):
     videos = models.ForeignKey(Archive,
-                                     on_delete=models.CASCADE,
-                                     blank=True,
-                                     null=True, related_name='videos')
+                               on_delete=models.CASCADE,
+                               blank=True,
+                               null=True, related_name='videos')
     order_number = models.IntegerField(verbose_name='Порядковый номер',
                                        null=True, blank=True)
 
     class Meta:
         ordering = ['order_number', ]
-        verbose_name = 'Видео'
-        verbose_name_plural = 'Видео'
+        verbose_name = 'Видео архив'
+        verbose_name_plural = 'Видео архив'
+
+
+class File(models.Model):
+    name = models.CharField(verbose_name='Название', max_length=300)
+    file=models.FileField(upload_to=PathAndRename('file/'), validators=[validate_file_extension],
+                              max_length=200, verbose_name='Файл', )
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return str(self.name)
+
+
+class FileArchive(File):
+    files = models.ForeignKey(Archive,
+                               on_delete=models.CASCADE,
+                               blank=True,
+                               null=True, related_name='files')
+
+    class Meta:
+        verbose_name = 'Файлы архив'
+        verbose_name_plural = 'Файлы архив'
+

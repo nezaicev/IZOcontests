@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from contests.models import Artakiada, NRusheva, Mymoskvichi, \
     ParticipantMymoskvichi, \
     TeacherExtraMymoskvichi, Archive, ShowEvent, VP, ParticipantVP, \
-    TeacherExtraVP, ExtraImageVP, ExtraImageArchive, VideoArchive, VideoVP
+    TeacherExtraVP, ExtraImageVP, ExtraImageArchive, VideoArchive, VideoVP, FileArchive
 from contests.directory import NominationNR, NominationART, NominationMYMSK, \
     ThemeART, \
     ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level, AgeVP, \
@@ -559,9 +559,14 @@ class VideoArchiveInline(admin.StackedInline):
     model = VideoArchive
     extra = 0
 
+class FileArchiveInline(admin.StackedInline):
+
+    model = FileArchive
+    extra = 0
+
 
 class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
-    inlines = [ImageExtraArchiveInline, VideoArchiveInline ]
+    inlines = [ImageExtraArchiveInline, VideoArchiveInline, FileArchiveInline]
     model = Archive
     actions = ['export_as_xls', 'send_selected_letter', ]
     list_editable = ['publish']
