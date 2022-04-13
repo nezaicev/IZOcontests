@@ -93,6 +93,8 @@ export function ExpandMoreCollapse(props) {
 
                         <FieldTitle title={'№ '}
                                     content={props.item.reg_number}/>
+                        <FieldTitle title={"Регион/город: "}
+                                    content={props.item.region + (props.item.city && (props.item.city !== props.item.region) ? ", " + props.item.city : '')}/>
                         <FieldTitle title={'Образовательное уч.: '}
                                     content={props.item.school}/>
                         <FieldTitle title={'Возраст: '}
@@ -110,45 +112,56 @@ export function ExpandMoreCollapse(props) {
                                     content={props.item.direction}/>
 
                         {
-                            props.item.description ? <Box sx={{marginTop:'10px'}}>
-                                <Typography variant='body2' mt={10}>
-                                    {props.item.description}
-                            </Typography> </Box> :''
+                            props.item.description ?
+                                <Box sx={{marginTop: '10px'}}>
+                                    <Typography variant='body2' mt={10}>
+                                        {props.item.description}
+                                    </Typography> </Box> : ''
 
                         }
 
                     </Box>
                     <Box>
                         <Tooltip title="Фото">
-                                        <IconButton>
-                                            <CameraIcon sx={{ fontSize:'2rem',color: 'rgb(128,110,110)', padding:'2px'}}/>
-                                        </IconButton>
-                                    </Tooltip>
+                            <IconButton>
+                                <CameraIcon sx={{
+                                    fontSize: '2rem',
+                                    color: 'rgb(128,110,110)',
+                                    padding: '2px'
+                                }}/>
+                            </IconButton>
+                        </Tooltip>
                         <DividerStyled/>
                     </Box>
 
 
                     <Box sx={{
                         marginTop: '10px',
-                        marginLeft:'auto',
-                        marginRight:'auto',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
                         width: [250, 500, 1100]
-                    , display:'block',}}>
+                        , display: 'block',
+                    }}>
                         <ImageGallery images={props.item.images}
                                       titleImg={props.item.author_name}
                                       key={props.index}/>
 
                     </Box>
 
-                    {props.item.videos.length>0 ? <React.Fragment><Tooltip title="Видео">
-                                        <IconButton>
-                                            <OndemandVideoIcon sx={{ fontSize:'2rem',color: 'rgb(128,110,110)', padding:'2px'}}/>
-                                        </IconButton>
-                                    </Tooltip> <DividerStyled/> </React.Fragment>:''}
+                    {props.item.videos.length > 0 ?
+                        <React.Fragment><Tooltip title="Видео">
+                            <IconButton>
+                                <OndemandVideoIcon sx={{
+                                    fontSize: '2rem',
+                                    color: 'rgb(128,110,110)',
+                                    padding: '2px'
+                                }}/>
+                            </IconButton>
+                        </Tooltip> <DividerStyled/> </React.Fragment> : ''}
                     <Box sx={{
-                        marginLeft:'auto',
-                        marginRight:'auto',
-                        display:'block',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        display: 'block',
                         width: [250, 500, 1100]
                     }}>
                         <ImageListStyled sx={{justifyContent: 'space-between'}}
@@ -167,42 +180,54 @@ export function ExpandMoreCollapse(props) {
                     </Box>
 
 
-                     {props.item.files.length>0 ? <React.Fragment><Tooltip title="Дополнительные материалы">
-                                        <IconButton>
-                                            <ArticleIcon sx={{ fontSize:'2rem',color: 'rgb(128,110,110)', padding:'2px'}}/>
-                                        </IconButton>
-                                    </Tooltip> <DividerStyled/> </React.Fragment>:''}
+                    {props.item.files.length > 0 ? <React.Fragment><Tooltip
+                        title="Дополнительные материалы">
+                        <IconButton>
+                            <ArticleIcon sx={{
+                                fontSize: '2rem',
+                                color: 'rgb(128,110,110)',
+                                padding: '2px'
+                            }}/>
+                        </IconButton>
+                    </Tooltip> <DividerStyled/> </React.Fragment> : ''}
 
                     <Box sx={{
-                        marginLeft:'auto',
-                        marginRight:'auto',
-                        display:'block',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        display: 'block',
                         width: [250, 500, 1100]
                     }}>
 
-                     {
-                                props.item.files.map((item, index) => (
+                        {
+                            props.item.files.map((item, index) => (
 
-                                    <React.Fragment>
-                                        <Box sx={{display:'flex', alignItems:'center', marginTop:'10px'}}>
-                                            <a href={item.link} download={item.name}>
-                                         <IconButton >
-                                            <PictureAsPdfIcon sx={{ fontSize:'2rem',color: '#d08686', padding:'2px'}}/>
-                                        </IconButton>
-                                                </a>
-                                        <Typography >
+                                <React.Fragment>
+                                    <Box sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        marginTop: '10px'
+                                    }}>
+                                        <a href={item.link}
+                                           download={item.name}>
+                                            <IconButton>
+                                                <PictureAsPdfIcon sx={{
+                                                    fontSize: '2rem',
+                                                    color: '#d08686',
+                                                    padding: '2px'
+                                                }}/>
+                                            </IconButton>
+                                        </a>
+                                        <Typography>
                                             {item.name}
                                         </Typography>
-                                            </Box>
+                                    </Box>
 
 
-                                    </React.Fragment>
-
-
+                                </React.Fragment>
 
 
                             ))
-                            }
+                        }
 
 
                     </Box>

@@ -2,7 +2,7 @@ from sorl.thumbnail import get_thumbnail
 
 from rest_framework import serializers
 from .models import ModxDbimgMuz, Archive, Level, ExtraImageArchive, \
-    NominationVP, DirectionVP, VideoArchive, FileArchive
+    NominationVP, DirectionVP, VideoArchive, FileArchive, Region
 
 
 class ModxDbimgMuzSerializer(serializers.ModelSerializer):
@@ -39,6 +39,15 @@ class ImagesSerializer(serializers.RelatedField):
                 'original': value.image.url,
                 'orderNumber': value.order_number}
 
+class RegionSerializer(serializers.RelatedField):
+    class Meta:
+        model = Region
+
+    def to_representation(self, value):
+        return value.name
+
+
+
 
 class VideosSerializer(serializers.RelatedField):
     class Meta:
@@ -64,6 +73,7 @@ class ArchiveSerializer(serializers.ModelSerializer):
     images = ImagesSerializer(many=True, read_only=True)
     videos = VideosSerializer(many=True, read_only=True)
     files=FilesSerializer(many=True, read_only=True)
+    region=RegionSerializer(many=False, read_only=True)
 
     class Meta:
         model = Archive
@@ -73,4 +83,4 @@ class ArchiveSerializer(serializers.ModelSerializer):
                   'contest_name', 'image', 'publish',
                   'nomination', 'level', 'age', 'status',
                   'description',
-                  'direction', 'images','videos', 'files')
+                  'direction', 'images','videos', 'files', 'region', 'city')
