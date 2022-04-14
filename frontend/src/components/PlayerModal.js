@@ -23,8 +23,8 @@ const style = {
     top: '45%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    height: [170, 250,300],
-    width: [200, 300, 400],
+    height: [170, 250,400],
+    width: [200, 300, 600],
     textAlign: 'center',
 
 };
