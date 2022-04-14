@@ -58,7 +58,7 @@ export default function MixGallery(props) {
 
         axios({
             method: "GET",
-            url: `http://${process.env.REACT_APP_HOST_NAME}/frontend/api/archive`,
+            url: `http://${process.env.REACT_APP_HOST_NAME}/frontend/api/archive/`,
             params: {
                 page_size: 1,
                 publish:true,
