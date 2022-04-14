@@ -60,7 +60,7 @@ export default function MixGallery(props) {
             method: "GET",
             url: `http://${process.env.REACT_APP_HOST_NAME}/frontend/api/archive`,
             params: {
-                page_size: 3,
+                page_size: 1,
                 publish:true,
                 contest_name: props.contestName,
                 page: page,
