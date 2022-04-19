@@ -543,7 +543,7 @@ class Archive(BaseContest):
     age = models.CharField(verbose_name='Возраст',
                            max_length=50, null=True, blank=True)
 
-    author_name = models.CharField(max_length=50, blank=True, null=True,
+    author_name = models.CharField(max_length=250, blank=True, null=True,
                                    verbose_name='Авторское название',
                                    )
     format = models.CharField(max_length=2, choices=(
@@ -565,7 +565,6 @@ class Archive(BaseContest):
         super(BaseContest, self).save(*args, **kwargs)
 
     class Meta:
-        ordering = ['-rating', ]
         verbose_name = 'Архив'
         verbose_name_plural = 'Архив'
 

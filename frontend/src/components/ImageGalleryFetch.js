@@ -8,30 +8,24 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { ExpandMoreCollapse} from "./ExpandMore";
 
 import ScrollableTabs from "./ScrollableTabs";
+import {ImageButton} from "../styled";
+import ImageListItem from "@material-ui/core/ImageListItem";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 
 
 
-const MixCard = styled(Card)(() => ({
-
-    justifyContent: 'center',
-    alignItems: 'baseline',
-    flexDirection: 'column',
-    margin: '20px',
-    marginTop: '30px',
-    padding: '20px',
-    height: 'fit-content',
-    boxShadow: 0
-}))
 
 
-export default function MixGallery(props) {
+export default function ImageGalleryFetch(props) {
 
 
     const [Items, setItems] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
 
     const [page, setPage] = useState(1);
-    const [nomination, setNomination] = useState('');
+    const [theme, setTheme] = useState('');
 
     const [HasMore, setHasMore] = useState(true);
 
@@ -57,12 +51,11 @@ export default function MixGallery(props) {
             method: "GET",
             url: `http://${process.env.REACT_APP_HOST_NAME}/frontend/api/archive/`,
             params: {
-                page_size: 1,
+                page_size: 9,
                 publish:true,
                 contest_name: props.contestName,
                 page: page,
-                nomination: (nomination === 'Все') ? '' : nomination,
-                ordering:'-rating',
+                theme: (theme === 'Все') ? '' : theme
             },
         })
             .then((res) => {
@@ -82,15 +75,15 @@ export default function MixGallery(props) {
     return (
         <Box>
             <Box sx={{margin: '20px', width: 'auto'}}>
-                <ScrollableTabs url={`http://${process.env.REACT_APP_HOST_NAME}/frontend/api/archive/nominationvp`}
+                <ScrollableTabs url={`http://${process.env.REACT_APP_HOST_NAME}/frontend/api/archive/theme/artakiada`}
                                 loadData={loadMoreItems}
                                 resetPage={resetPage}
 
                                 resetLoadedData={() => {
                                     setItems([]);
                                 }}
-                                setNomination={(value) => {
-                                    setNomination(value);
+                                setTheme={(value) => {
+                                    setTheme(value);
 
                                 }}
 
@@ -101,23 +94,48 @@ export default function MixGallery(props) {
                 if (Items.length === index + 1) {
 
                     return (
-                        <MixCard sx={{boxShadow: '0', padding: '0px'}} key={index}>
+                        <ImageButton sx={{
+                    p: '10px',
+                    backgroundColor: '#ffffff'
+                }} >
 
+                      <ImageListItem  key={index}>
+                          lastElementRef={lastElementRef}
+                                <a href={item['image']['original']}>
+                                    <img
+                                        src={item['image']['thumb']}
+                                        alt={item['author_name']}
+                                        loading="lazy"
 
-                            <ExpandMoreCollapse item={item} lastElementRef={lastElementRef}/>
+                                    />
 
+                                </a>
+                            </ImageListItem>
 
-                        </MixCard>
+                </ImageButton>
 
                     );
                 } else {
-                    return (<MixCard sx={{boxShadow: '0', padding: '0px'}} key={index}>
+                    return (
+                            <ImageButton sx={{
+                    p: '10px',
+                    backgroundColor: '#ffffff'
+                }} >
 
+                      <ImageListItem  key={index}>
+                          lastElementRef={lastElementRef}
+                                <a href={item['image']['original']}>
+                                    <img
+                                        src={item['image']['thumb']}
+                                        alt={item['author_name']}
+                                        loading="lazy"
 
-                            <ExpandMoreCollapse item={item} index={index}/>
+                                    />
 
+                                </a>
+                            </ImageListItem>
 
-                        </MixCard>
+                </ImageButton>
 
                     )
 
