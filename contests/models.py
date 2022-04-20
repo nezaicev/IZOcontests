@@ -402,7 +402,7 @@ class Mymoskvichi(BaseContest, MultiParticipants):
     nomination = models.ForeignKey(NominationMYMSK, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
 
-    author_name = models.CharField(max_length=50, blank=False,
+    author_name = models.CharField(max_length=700, blank=False,
                                    verbose_name='Авторское название')
     program = models.CharField(max_length=100, blank=False,
                                verbose_name="Программа(ы), в которой выполнена работа",
