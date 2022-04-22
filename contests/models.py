@@ -568,6 +568,7 @@ class Archive(BaseContest):
     class Meta:
         verbose_name = 'Архив'
         verbose_name_plural = 'Архив'
+        ordering=['-rating',]
         indexes = [
             models.Index(fields=['contest_name','nomination','-rating' ]),
 
