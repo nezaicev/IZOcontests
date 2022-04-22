@@ -1,5 +1,6 @@
 from rest_framework import filters
 import django_filters
+from frontend.apps import  StandardResultsSetPagination
 from django.shortcuts import render
 
 from contests.models import Archive, NominationVP, DirectionVP, ThemeART, \
@@ -17,11 +18,12 @@ def index(request):
 class ArchiveAPIView(ModelViewSet):
     queryset = Archive.objects.all()
     serializer_class = ArchiveSerializer
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend,filters.OrderingFilter]
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filter_fields = ['contest_name', 'status', 'direction', 'publish',
                      'nomination', 'theme']
     ordering_fields = ['rating']
-    ordering = ['rating']
+    ordering = ['-rating']
+    pagination_class = StandardResultsSetPagination
 
 
 class NominationVPAPIView(ListAPIView):
