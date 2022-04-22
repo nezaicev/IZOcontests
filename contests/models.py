@@ -16,6 +16,7 @@ from contests.directory import NominationART, NominationMYMSK, ThemeART, \
     NominationVP, AgeVP, LevelVP, NominationNR, DirectionVP, AgeART
 from contests.validators import validate_file_extension
 
+
 # Create your models here.
 # Заявки на конкурсы
 
@@ -516,7 +517,7 @@ class ModxDbimgMuz(models.Model):
 
 
 class Archive(BaseContest):
-    rating=models.IntegerField('Райтинг', blank=True, default=0)
+    rating = models.IntegerField('Райтинг', blank=True, default=0)
     fio = models.CharField('Участник', max_length=700, blank=True, default='')
     content = RichTextField(verbose_name='Контент', blank=True, null=True)
     publish = models.BooleanField(verbose_name='Опубликовать', default=False)
@@ -567,6 +568,10 @@ class Archive(BaseContest):
     class Meta:
         verbose_name = 'Архив'
         verbose_name_plural = 'Архив'
+        indexes = [
+            models.Index(fields=['contest_name','nomination','-rating' ]),
+
+        ]
 
     def __str__(self):
         return self.reg_number
@@ -667,8 +672,9 @@ class VideoArchive(Video):
 
 class File(models.Model):
     name = models.CharField(verbose_name='Название', max_length=300)
-    file=models.FileField(upload_to=PathAndRename('file/'), validators=[validate_file_extension],
-                              max_length=200, verbose_name='Файл', )
+    file = models.FileField(upload_to=PathAndRename('file/'),
+                            validators=[validate_file_extension],
+                            max_length=200, verbose_name='Файл', )
 
     class Meta:
         abstract = True
@@ -679,11 +685,10 @@ class File(models.Model):
 
 class FileArchive(File):
     files = models.ForeignKey(Archive,
-                               on_delete=models.CASCADE,
-                               blank=True,
-                               null=True, related_name='files')
+                              on_delete=models.CASCADE,
+                              blank=True,
+                              null=True, related_name='files')
 
     class Meta:
         verbose_name = 'Файлы архив'
         verbose_name_plural = 'Файлы архив'
-

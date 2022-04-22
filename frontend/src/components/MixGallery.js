@@ -26,7 +26,6 @@ const MixCard = styled(Card)(() => ({
 
 export default function MixGallery(props) {
 
-
     const [Items, setItems] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
 
@@ -66,6 +65,7 @@ export default function MixGallery(props) {
             },
         })
             .then((res) => {
+                console.log(res)
                 setItems((prevTitles) => {
                     return [...new Set([...prevTitles, ...res.data.results.map((b) => b)])];
                 });
@@ -104,7 +104,7 @@ export default function MixGallery(props) {
                         <MixCard sx={{boxShadow: '0', padding: '0px'}} key={index}>
 
 
-                            <ExpandMoreCollapse item={item} lastElementRef={lastElementRef}/>
+                            <ExpandMoreCollapse item={item} index={index} lastElementRef={lastElementRef}/>
 
 
                         </MixCard>
