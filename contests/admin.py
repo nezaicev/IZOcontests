@@ -572,7 +572,7 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     list_editable = ['publish']
     list_display = ['reg_number','publish', 'contest_name', 'author_name', 'fio_teacher',
                     'teacher'
-                    , 'status', 'year_contest']
+                    , 'status','rating', 'year_contest']
     list_filter = ('contest_name', 'publish','year_contest', 'status')
     search_fields = ('reg_number', 'fio')
     exclude = ('info',)
