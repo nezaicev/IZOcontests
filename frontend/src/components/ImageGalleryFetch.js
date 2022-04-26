@@ -5,17 +5,45 @@ import useInfiniteScroll from "../useInfiniteScroll";
 import axios from "axios";
 import Box from "@material-ui/core/Box";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { ExpandMoreCollapse} from "./ExpandMore";
-
 import ScrollableTabs from "./ScrollableTabs";
-import {ImageButton} from "../styled";
-import ImageListItem from "@material-ui/core/ImageListItem";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
-import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
+import SimpleReactLightbox, {SRLWrapper} from "simple-react-lightbox";
+import {ItemImage} from "./ItemImage";
 
 
 
+const options = {
+    settings: {
+        autoplaySpeed: 3000,
+        boxShadow: 'none',
+        disableKeyboardControls: false,
+        disablePanzoom: false,
+        disableWheelControls: false,
+        hideControlsAfter: false,
+        lightboxTransitionSpeed: 0.3,
+        lightboxTransitionTimingFunction: 'linear',
+        overlayColor: 'rgb(38 30 27 /98%)',
+        slideAnimationType: 'fade',
+        slideSpringValues: [300, 50],
+        slideTransitionSpeed: 0.6,
+        slideTransitionTimingFunction: 'linear',
+        usingPreact: false
+    },
+    buttons: {
+        backgroundColor: "rgb(104 99 97)",
+        iconColor: "#dcd9d9",
+    },
+    caption: {
+        captionColor: "#ffffff",
+        fontFamily: "Roboto",
+        captionContainerPadding: '0px 0 0px 0',
+        showCaption: true
+
+    },
+    thumbnails: {
+        showThumbnails: false
+    }
+
+};
 
 
 export default function ImageGalleryFetch(props) {
@@ -23,7 +51,6 @@ export default function ImageGalleryFetch(props) {
 
     const [Items, setItems] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
-
     const [page, setPage] = useState(1);
     const [theme, setTheme] = useState('');
 
@@ -44,18 +71,18 @@ export default function ImageGalleryFetch(props) {
 
 
     function loadMoreItems() {
-
         setIsFetching(true);
 
         axios({
             method: "GET",
             url: `http://${process.env.REACT_APP_HOST_NAME}/frontend/api/archive/`,
             params: {
-                page_size: 9,
-                publish:true,
+                page_size: 3,
+                publish: true,
                 contest_name: props.contestName,
                 page: page,
-                theme: (theme === 'Все') ? '' : theme
+                theme: (theme === 'Все') ? '' : theme,
+                ordering:'-rating',
             },
         })
             .then((res) => {
@@ -75,74 +102,58 @@ export default function ImageGalleryFetch(props) {
     return (
         <Box>
             <Box sx={{margin: '20px', width: 'auto'}}>
-                <ScrollableTabs url={`http://${process.env.REACT_APP_HOST_NAME}/frontend/api/archive/theme/artakiada`}
-                                loadData={loadMoreItems}
-                                resetPage={resetPage}
+                <ScrollableTabs
+                    url={props.urlTheme}
+                    loadData={loadMoreItems}
+                    resetPage={resetPage}
 
-                                resetLoadedData={() => {
-                                    setItems([]);
-                                }}
-                                setTheme={(value) => {
-                                    setTheme(value);
+                    resetLoadedData={() => {
+                        setItems([]);
+                    }}
+                    setNomination={(value) => {
+                        setTheme(value);
 
-                                }}
+                    }}
 
                 />
             </Box>
 
-            {Items.map((item, index) => {
-                if (Items.length === index + 1) {
+            <Box sx={{
+                marginTop: '10px',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                width: [250, 500, 1100]
+                , display: 'block',
+            }}>
+                <SimpleReactLightbox>
+                    <SRLWrapper options={options}>
+                        {Items.map((item, index) => {
+                            if (Items.length === index + 1) {
 
-                    return (
-                        <ImageButton sx={{
-                    p: '10px',
-                    backgroundColor: '#ffffff'
-                }} >
+                                return (
+                                    <ItemImage item={item} key={index}
+                                               lastElementRef={lastElementRef}/>
 
-                      <ImageListItem  key={index}>
-                          lastElementRef={lastElementRef}
-                                <a href={item['image']['original']}>
-                                    <img
-                                        src={item['image']['thumb']}
-                                        alt={item['author_name']}
-                                        loading="lazy"
-
-                                    />
-
-                                </a>
-                            </ImageListItem>
-
-                </ImageButton>
-
-                    );
-                } else {
-                    return (
-                            <ImageButton sx={{
-                    p: '10px',
-                    backgroundColor: '#ffffff'
-                }} >
-
-                      <ImageListItem  key={index}>
-                          lastElementRef={lastElementRef}
-                                <a href={item['image']['original']}>
-                                    <img
-                                        src={item['image']['thumb']}
-                                        alt={item['author_name']}
-                                        loading="lazy"
-
-                                    />
-
-                                </a>
-                            </ImageListItem>
-
-                </ImageButton>
-
-                    )
+                                );
+                            } else {
+                                return (
+                                    <ItemImage item={item} key={index}/>
+                                )
 
 
-                }
-            })}
-            {isFetching && <Box sx={{justifyContent: 'center', height:'600', display:'flex'}}>
+                            }
+                        })}
+                    </SRLWrapper>
+                </SimpleReactLightbox>
+
+            </Box>
+
+
+            {isFetching && <Box sx={{
+                justifyContent: 'center',
+                height: '600',
+                display: 'flex'
+            }}>
                 <CircularProgress/>
             </Box>}
         </Box>

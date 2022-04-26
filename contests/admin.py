@@ -569,7 +569,7 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     inlines = [ImageExtraArchiveInline, VideoArchiveInline, FileArchiveInline]
     model = Archive
     actions = ['export_as_xls', 'send_selected_letter', ]
-    list_editable = ['publish']
+    list_editable = ['publish', 'rating']
     list_display = ['reg_number','publish', 'contest_name', 'author_name', 'fio_teacher',
                     'teacher'
                     , 'status','rating', 'year_contest']

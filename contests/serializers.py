@@ -83,14 +83,17 @@ class FilesSerializer(serializers.RelatedField):
 class ThumbnailSerializer(serializers.ImageField):
 
     def to_representation(self, value):
-        return {'thumb': get_thumbnail(value.url, '320x180', crop='center',
-                                       quality=99).url,
-                'original': value.url,
-                }
+        if value:
+            return {'thumb': get_thumbnail(value.url, '320x180', crop='center',
+                                           quality=99).url,
+                    'original': value.url,
+                    }
+        else:
+            return {}
 
 
 class ArchiveSerializer(serializers.ModelSerializer):
-    # image=ThumbnailSerializer()
+    image=ThumbnailSerializer()
     images = ImagesSerializer(many=True, read_only=True)
     videos = VideosSerializer(many=True, read_only=True)
     files=FilesSerializer(many=True, read_only=True)

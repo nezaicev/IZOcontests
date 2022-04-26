@@ -28,7 +28,6 @@ export default function MixGallery(props) {
 
     const [Items, setItems] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
-
     const [page, setPage] = useState(1);
     const [nomination, setNomination] = useState('');
 
@@ -65,7 +64,6 @@ export default function MixGallery(props) {
             },
         })
             .then((res) => {
-                console.log(res)
                 setItems((prevTitles) => {
                     return [...new Set([...prevTitles, ...res.data.results.map((b) => b)])];
                 });

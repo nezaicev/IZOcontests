@@ -6,18 +6,25 @@ import React from "react";
 import ImageGalleryFetch from "../components/ImageGalleryFetch";
 
 
-function Artakiada(props){
+function Artakiada(props) {
 
-    document.title='АРТакиада «Изображение и слово»'
-    return(
-        <Box sx={{ fontFamily: 'Roboto', height: 'auto'}}>
+    document.title = 'АРТакиада «Изображение и слово»'
+    return (
+        <Box sx={{fontFamily: 'Roboto', height: 'auto'}}>
             <Header/>
-            <Container sx={{fontFamily: 'Roboto', mt: '20px', justifyContent: 'center'}}>
-                <ImageGalleryFetch contestName={process.env.REACT_APP_ARTAKIADA}/>
+            <Container sx={{
+                fontFamily: 'Roboto',
+                mt: '20px',
+                justifyContent: 'center'
+            }}>
+                <ImageGalleryFetch
+                    contestName={process.env.REACT_APP_ARTAKIADA}
+                    urlTheme={`http://${process.env.REACT_APP_HOST_NAME}/frontend/api/archive/theme/artakiada`}
+                />
             </Container>
         </Box>
 
     )
- }
+}
 
- export default Artakiada
+export default Artakiada
