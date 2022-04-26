@@ -94,8 +94,7 @@ class ConfirmationUserDataView(View):
                     return HttpResponseRedirect(reverse('search_cert'))
             else:
                 messages.add_message(self.request, messages.ERROR,
-                                     'Ошибка ввода данных'.format(
-                                         request.session.get('reg_number')))
+                                     'Ошибка ввода данных. Попробуйте сократить строку "Участник"')
                 return HttpResponseRedirect(reverse('confirmation_data_view'))
 
         else:
