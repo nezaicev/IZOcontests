@@ -32,7 +32,7 @@ class BaseConfirmationUserDataForm(forms.Form):
                                  )
                                  )
     fio = forms.CharField(widget=forms.TextInput(attrs={'class': 'col-6'}),
-                          label='ФИО участника',
+                          label='Участник/Педагог/Коллектив',
                           max_length=200)
     position = forms.CharField(widget=forms.TextInput(attrs={'class': 'col-6',
                                                              'placeholder': "ученик 3 класса / педагог "}),

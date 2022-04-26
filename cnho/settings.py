@@ -33,7 +33,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = env.bool("DEBUG", True)
 
 ALLOWED_HOSTS = ['*']
-DATA_UPLOAD_MAX_NUMBER_FIELDS=10000
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 # Application definition
 
 INSTALLED_APPS = [
@@ -62,7 +62,6 @@ INSTALLED_APPS = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
-
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -106,7 +105,7 @@ DATABASES = {
         'USER': os.getenv('DB_USER', ''),
         'PASSWORD': os.getenv('DB_PASSWORD', ''),
         'HOST': os.getenv('DB_HOST', ''),
-        'PORT': os.getenv('DB_PORT',''),
+        'PORT': os.getenv('DB_PORT', ''),
     },
     'vm': {
         'ENGINE': os.getenv('MODX_DB_ENGINE', 'django.db.backends.sqlite3'),
@@ -156,11 +155,11 @@ USE_TZ = True
 
 STATIC_URL = os.getenv('STATIC_URL', '/static/')
 STATICFILES_DIRS = [
-   os.getenv('STATICFILES_DIRS', os.path.join(BASE_DIR, 'static')),
-   os.getenv('STATICFILES_DIRS', os.path.join(BASE_DIR, 'frontend')),
+    os.getenv('STATICFILES_DIRS', os.path.join(BASE_DIR, 'static')),
+    os.getenv('STATICFILES_DIRS', os.path.join(BASE_DIR, 'frontend')),
 ]
 
-#STATIC_ROOT=os.getenv('STATIC_ROOT',os.path.join(BASE_DIR,'static'))
+# STATIC_ROOT=os.getenv('STATIC_ROOT',os.path.join(BASE_DIR,'static'))
 
 MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
 MEDIA_ROOT = os.getenv('MRDIA_ROOT', os.path.join(BASE_DIR, 'media'))
@@ -197,15 +196,11 @@ SELECTEL_STORAGES = {
     },
 
 }
-YOUTUBE_POSTER='https://img.youtube.com/vi/{}/mqdefault.jpg'
+YOUTUBE_POSTER = 'https://img.youtube.com/vi/{}/mqdefault.jpg'
 POSTER_DIR = 'posters'
-POSTER_TMP_NAME='tmp_poster.jpg'
-
-
-
+POSTER_TMP_NAME = 'tmp_poster.jpg'
 
 DEFAULT_FILE_STORAGE = 'django_selectel_storage.storage.SelectelStorage'
-
 
 CKEDITOR_BROWSE_SHOW_DIRS = True
 CKEDITOR_UPLOAD_PATH = os.getenv("CE_UPLOAD_PATH", "uploads/")
@@ -288,5 +283,7 @@ CKEDITOR_CONFIGS = {
 }
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'frontend.apps.StandardResultsSetPagination'
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100,
+
 }

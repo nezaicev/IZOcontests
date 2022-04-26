@@ -8,11 +8,17 @@ export default function ScrollableTabs(props) {
     const [value, setValue] = React.useState('Все');
     const [Items, setItems] = React.useState([]);
 
+
+
     const handleChange = (event, newValue) => {
-        props.resetPage()
         props.setNomination(newValue)
-        props.resetLoadedData()
         setValue(newValue);
+        props.resetPage()
+        props.resetLoadedData()
+
+
+
+        console.log(newValue)
 
     };
 

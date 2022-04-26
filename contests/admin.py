@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from contests.models import Artakiada, NRusheva, Mymoskvichi, \
     ParticipantMymoskvichi, \
     TeacherExtraMymoskvichi, Archive, ShowEvent, VP, ParticipantVP, \
-    TeacherExtraVP, ExtraImageVP, ExtraImageArchive
+    TeacherExtraVP, ExtraImageVP, ExtraImageArchive, VideoArchive, VideoVP, FileArchive
 from contests.directory import NominationNR, NominationART, NominationMYMSK, \
     ThemeART, \
     ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level, AgeVP, \
@@ -106,6 +106,11 @@ class ArchiveInterface:
                     [ExtraImageArchive.objects.create(image=image.image) for
                      image
                      in obj.images.select_related()])
+            if hasattr(obj, 'videos'):
+                vm_record.videos.set(
+                    [VideoArchive.objects.create(video=video.video, name=video.name) for
+                     video
+                     in obj.videos.select_related()])
 
             if created:
                 count_created_obj += 1
@@ -443,16 +448,21 @@ class TeacherExtraVPInline(admin.StackedInline):
 
 class ImageExtraVPInline(admin.StackedInline):
     model = ExtraImageVP
-    extra = 1
+    extra = 0
+
+
+class VideoVPInline(admin.StackedInline):
+    model = VideoVP
+    extra = 0
 
 
 class VPAdmin(BaseAdmin):
     model = VP
     name = 'vp'
-    inlines = [ParticipantVPInline, TeacherExtraVPInline, ImageExtraVPInline]
+    inlines = [ParticipantVPInline, TeacherExtraVPInline, ImageExtraVPInline, VideoVPInline]
     exclude = (
         'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher',
-        'participants', 'teachers', 'info', 'year_contest', 'extraImage')
+        'participants', 'teachers', 'info', 'year_contest', 'extraImage', 'video')
 
     def response_add(self, request, obj, post_url_continue=None):
 
@@ -544,14 +554,26 @@ class ImageExtraArchiveInline(admin.StackedInline):
     image_tag.allow_tags = True
 
 
+class VideoArchiveInline(admin.StackedInline):
+
+    model = VideoArchive
+    extra = 0
+
+class FileArchiveInline(admin.StackedInline):
+
+    model = FileArchive
+    extra = 0
+
+
 class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
-    inlines = [ImageExtraArchiveInline, ]
+    inlines = [ImageExtraArchiveInline, VideoArchiveInline, FileArchiveInline]
     model = Archive
     actions = ['export_as_xls', 'send_selected_letter', ]
-    list_display = ['reg_number', 'contest_name', 'fio', 'fio_teacher',
-                    'teacher',
-                    'region', 'status', 'year_contest']
-    list_filter = ('contest_name', 'year_contest', 'status')
+    list_editable = ['publish']
+    list_display = ['reg_number','publish', 'contest_name', 'author_name', 'fio_teacher',
+                    'teacher'
+                    , 'status','rating', 'year_contest']
+    list_filter = ('contest_name', 'publish','year_contest', 'status')
     search_fields = ('reg_number', 'fio')
     exclude = ('info',)
 

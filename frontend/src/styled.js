@@ -11,6 +11,7 @@ export const DividerStyled=styled(Divider)(()=>({
     height:'2px'
 }))
 export const ImageListStyled=styled(ImageList)(()=>({
+
 }))
 
 export const TypographyStyled=styled(Typography)(()=>({

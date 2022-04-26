@@ -2,7 +2,7 @@ from sorl.thumbnail import get_thumbnail
 
 from rest_framework import serializers
 from .models import ModxDbimgMuz, Archive, Level, ExtraImageArchive, \
-    NominationVP, DirectionVP
+    NominationVP, DirectionVP, VideoArchive, FileArchive, Region, ThemeART, ThemeRUSH, Artakiada, NRusheva
 
 
 class ModxDbimgMuzSerializer(serializers.ModelSerializer):
@@ -14,6 +14,18 @@ class ModxDbimgMuzSerializer(serializers.ModelSerializer):
 class NominationVPSerializer(serializers.ModelSerializer):
     class Meta:
         model = NominationVP
+        fields = ('name',)
+
+
+class ThemeArtakiadaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ThemeART
+        fields = ('name',)
+
+
+class ThemeNRushevaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ThemeRUSH
         fields = ('name',)
 
 
@@ -30,25 +42,68 @@ class LevelSerializer(serializers.ModelSerializer):
 
 
 class ImagesSerializer(serializers.RelatedField):
-
     class Meta:
         model = ExtraImageArchive
 
     def to_representation(self, value):
-        return {'thumb': get_thumbnail(value.image, '300x300', crop='center',
+        return {'thumb': get_thumbnail(value.image, '320x180', crop='center',
                                        quality=99).url,
                 'original': value.image.url,
                 'orderNumber': value.order_number}
 
 
+class RegionSerializer(serializers.RelatedField):
+    class Meta:
+        model = Region
+
+    def to_representation(self, value):
+        return value.name
+
+
+class VideosSerializer(serializers.RelatedField):
+    class Meta:
+        model = VideoArchive
+
+    def to_representation(self, value):
+        return {'link': value.video,
+                'name': value.name,
+                'orderNumber': value.order_number}
+
+
+class FilesSerializer(serializers.RelatedField):
+    class Meta:
+        model = FileArchive
+
+    def to_representation(self, value):
+        return {'name': value.name,
+                'link': value.file.url,
+                }
+
+
+class ThumbnailSerializer(serializers.ImageField):
+
+    def to_representation(self, value):
+        return {'thumb': get_thumbnail(value.url, '320x180', crop='center',
+                                       quality=99).url,
+                'original': value.url,
+                }
+
+
 class ArchiveSerializer(serializers.ModelSerializer):
+    # image=ThumbnailSerializer()
     images = ImagesSerializer(many=True, read_only=True)
+    videos = VideosSerializer(many=True, read_only=True)
+    files=FilesSerializer(many=True, read_only=True)
+    region=RegionSerializer(many=False, read_only=True)
 
     class Meta:
         model = Archive
 
         fields = ('id', 'reg_number',
                   'link', 'author_name', 'fio', 'fio_teacher', 'school',
-                  'contest_name', 'image',
-                  'nomination', 'level', 'status', 'images', 'description',
-                  'direction')
+                  'contest_name', 'image', 'publish',
+                  'nomination', 'level', 'age', 'status',
+                  'description','theme',
+                  'direction', 'images','videos', 'files', 'region', 'city','rating')
+
+
