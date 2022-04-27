@@ -28,7 +28,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 
 export function ItemImage(props) {
 
-const item=props.item
+const image=props.image
 
     return (<React.Fragment>
 
@@ -43,10 +43,10 @@ const item=props.item
                 >
 
                     <Box component='div' key={props.index}>
-                        <a href={item['image']['original']}>
+                        <a href={image['md_thumb']}>
                             <img
-                                src={item['image']['thumb']}
-                                alt={item['author_name']}
+                                src={image['thumb']}
+                                alt={props.label}
                                 loading="lazy"
 
                             />

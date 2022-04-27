@@ -60,7 +60,7 @@ export default function ImageGallery(props) {
                             height:[180,180]
                         }} elevation={3}>
                             <ImageListItem  key={index}>
-                                <a href={item['original']}>
+                                <a href={item['md_thumb']}>
                                     <img
                                         src={item['thumb']}
                                         alt={title}

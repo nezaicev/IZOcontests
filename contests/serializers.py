@@ -48,6 +48,8 @@ class ImagesSerializer(serializers.RelatedField):
     def to_representation(self, value):
         return {'thumb': get_thumbnail(value.image, '320x180', crop='center',
                                        quality=99).url,
+                'md_thumb': get_thumbnail(value.image, '2000',
+                                          quality=99).url,
                 'original': value.image.url,
                 'orderNumber': value.order_number}
 
@@ -86,6 +88,8 @@ class ThumbnailSerializer(serializers.ImageField):
         if value:
             return {'thumb': get_thumbnail(value.url, '320x180', crop='center',
                                            quality=99).url,
+                    'md_thumb': get_thumbnail(value.url, '1152',
+                                           quality=99).url,
                     'original': value.url,
                     }
         else:
@@ -105,7 +109,7 @@ class ArchiveSerializer(serializers.ModelSerializer):
         fields = ('id', 'reg_number',
                   'link', 'author_name', 'fio', 'fio_teacher', 'school',
                   'contest_name', 'image', 'publish',
-                  'nomination', 'level', 'age', 'status',
+                  'nomination', 'level', 'age', 'status','material',
                   'description','theme',
                   'direction', 'images','videos', 'files', 'region', 'city','rating')
 

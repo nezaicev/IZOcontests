@@ -9,7 +9,7 @@ import {DividerStyled, ImageListStyled, TypographyStyled} from "../styled";
 import ImageGallery from "./ImageGallery";
 import Typography from "@material-ui/core/Typography";
 import FieldTitle from "./FieldTitle";
-import formattingName from "../utils";
+import {formattingName} from "../utils";
 import PlayerModal from "./PlayerModal";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import Tooltip from "@material-ui/core/Tooltip";

@@ -8,6 +8,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import ScrollableTabs from "./ScrollableTabs";
 import SimpleReactLightbox, {SRLWrapper} from "simple-react-lightbox";
 import {ItemImage} from "./ItemImage";
+import {createLabel} from "../utils";
 
 
 
@@ -131,13 +132,13 @@ export default function ImageGalleryFetch(props) {
                             if (Items.length === index + 1) {
 
                                 return (
-                                    <ItemImage item={item} key={index}
+                                    <ItemImage image={item.image} key={index} label={createLabel(item)}
                                                lastElementRef={lastElementRef}/>
 
                                 );
                             } else {
                                 return (
-                                    <ItemImage item={item} key={index}/>
+                                    <ItemImage image={item.image} key={index} label={createLabel(item)}/>
                                 )
 
 
