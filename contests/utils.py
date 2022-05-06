@@ -218,7 +218,7 @@ def send_mail_from_admin(secret, list_emails, message, subject):
 
 
 def generate_year():
-    if int(time.strftime('%m', time.localtime())) < 7:
+    if int(time.strftime('%m', time.localtime())) <=7:
         year_contest = '{}-{} год'.format(
             int(time.strftime("%Y", time.localtime())) - 1,
             int(time.strftime("%Y", time.localtime())) + 1 - 1)

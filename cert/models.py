@@ -69,7 +69,7 @@ class Cert(models.Model):
                               )
     access = models.BooleanField(verbose_name='Доступ', default=False)
     year_contest = models.CharField('Год', max_length=20,
-                                      null=True)
+                                      null=True, default=utils.generate_year())
     contest = models.ForeignKey(Events, verbose_name='Конкурс', max_length=15,
                                 blank=False, on_delete=models.PROTECT)
     status = models.ForeignKey(Status, verbose_name='Статус участника',
@@ -98,7 +98,7 @@ class Cert(models.Model):
                              )
 
     def __str__(self):
-        return "Сертификат {} {}".format(self.contest.name, self.status)
+        return "Сертификат {} {} {}".format(self.contest.name, self.status, self.year_contest)
 
     class Meta:
         verbose_name = 'Сертификат'
