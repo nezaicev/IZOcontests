@@ -44,6 +44,7 @@ class BaseConfirmationUserDataForm(forms.Form):
         max_length=200)
 
     status = forms.CharField(widget=forms.HiddenInput, max_length=10)
+    year = forms.CharField(widget=forms.HiddenInput, max_length=20)
 
 
 class ConfirmationUserDataForm(BaseConfirmationUserDataForm):

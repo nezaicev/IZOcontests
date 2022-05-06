@@ -56,6 +56,7 @@ class ConfirmationUserDataView(View):
         self.initial_data = {'reg_number': participant.reg_number,
                              'status': participant.status.id if participant.status else participant.status,
                              'school': participant.school,
+                             'year': participant.year_contest,
 
                              }
         if participant:
@@ -75,9 +76,10 @@ class ConfirmationUserDataView(View):
             if self.form.is_valid():
                 event = request.session.get('event')
                 status = self.form.cleaned_data['status']
+                year = self.form.cleaned_data['year']
                 reg_number = self.form.cleaned_data['reg_number']
                 try:
-                    blank = get_blank_cert(event, status)
+                    blank = get_blank_cert(event, status, year)
                     form_values = self.form.cleaned_data
                     path_cert = generate_cert(reg_number, blank,
                                               self.request.user,

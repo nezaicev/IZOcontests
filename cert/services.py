@@ -43,6 +43,6 @@ def get_obj_by_reg_num_from_content_type(reg_number, event_id, teacher):
         return None
 
 
-def get_blank_cert(contest, status):
-    blank = Cert.objects.get(contest=contest, status=status)
+def get_blank_cert(contest, status, year):
+    blank = Cert.objects.get(contest=contest, status=status, year_contest=year)
     return blank
