@@ -56,6 +56,7 @@ class ConfirmationUserDataView(View):
         self.initial_data = {'reg_number': participant.reg_number,
                              'status': participant.status.id if participant.status else participant.status,
                              'school': participant.school,
+
                              }
         if participant:
             if participant.contest_name != 'mymoskvichi':

@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import JSONField
 from django.core.files.storage import FileSystemStorage
 from contests.models import Status, Events
+from contests.models import utils
 
 
 # Create your models here.
@@ -60,12 +61,15 @@ class Cert(models.Model):
             raise ValidationError(
                 "Max file size is %sMB" % str(megabyte_limit))
 
+
     blank = models.ImageField(storage=FileSystemStorage,
                               verbose_name='Бланк сертификата',
                               upload_to='certs/', blank=False,
                               validators=[validate_image]
                               )
     access = models.BooleanField(verbose_name='Доступ', default=False)
+    year_contest = models.CharField('Год', max_length=20,
+                                      null=True)
     contest = models.ForeignKey(Events, verbose_name='Конкурс', max_length=15,
                                 blank=False, on_delete=models.PROTECT)
     status = models.ForeignKey(Status, verbose_name='Статус участника',
