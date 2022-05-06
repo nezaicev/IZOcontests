@@ -2,7 +2,7 @@ from sorl.thumbnail import get_thumbnail
 
 from rest_framework import serializers
 from .models import ModxDbimgMuz, Archive, Level, ExtraImageArchive, \
-    NominationVP, DirectionVP, VideoArchive, FileArchive, Region, ThemeART, ThemeRUSH, Artakiada, NRusheva
+    NominationVP, DirectionVP, VideoArchive, FileArchive, Region, ThemeART, ThemeRUSH, NominationMYMSK
 
 
 class ModxDbimgMuzSerializer(serializers.ModelSerializer):
@@ -14,6 +14,11 @@ class ModxDbimgMuzSerializer(serializers.ModelSerializer):
 class NominationVPSerializer(serializers.ModelSerializer):
     class Meta:
         model = NominationVP
+        fields = ('name',)
+
+class NominationMymoskvichiSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NominationMYMSK
         fields = ('name',)
 
 

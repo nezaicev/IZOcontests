@@ -3,8 +3,17 @@ import Tabs from "@material-ui/core/Tabs";
 import React, {useEffect} from "react";
 import Tab from "@material-ui/core/Tab";
 import axios from "axios";
+import {tabsClasses} from "@mui/material";
+import {styled} from '@mui/material/styles';
 
-export default function ScrollableTabs(props) {
+const StyledTabs=styled(Tabs)(()=>({
+"& .MuiTabScrollButton-vertical":{height:20}
+
+}))
+
+
+
+export default function VerticalTabs(props) {
     const [value, setValue] = React.useState('Все');
     const [Items, setItems] = React.useState([]);
 
@@ -16,9 +25,6 @@ export default function ScrollableTabs(props) {
         props.resetPage()
         props.resetLoadedData()
 
-
-
-        console.log(newValue)
 
     };
 
@@ -51,14 +57,23 @@ export default function ScrollableTabs(props) {
     }
 
     return (
-        <Box sx={{ bgcolor: 'background.paper'}}>
-            <Tabs
+        <Box sx={{  maxWidth: { xs: 320, sm: 480 },
+                height:90,
+                bgcolor: 'background.paper',
+                display:'flex',}}>
+            <StyledTabs
                 value={value}
+                orientation="vertical"
                 onChange={handleChange}
                 variant="scrollable"
                 scrollButtons="auto"
                 indicatorColor="secondary"
 
+                // sx={{
+                //     [`& .${tabsClasses.root}`]: {
+                //         height: '20px',
+                //     },
+                // }}
             ><Tab label={"Все"} value={'Все'} key={0}/>
 
                 {
@@ -67,7 +82,7 @@ export default function ScrollableTabs(props) {
 
                 ))}
 
-            </Tabs>
+            </StyledTabs>
         </Box>
     );
 }

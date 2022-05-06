@@ -3,12 +3,12 @@ import django_filters
 from frontend.apps import  StandardResultsSetPagination
 from django.shortcuts import render
 
-from contests.models import Archive, NominationVP, DirectionVP, ThemeART, \
+from contests.models import Archive, NominationVP, DirectionVP, ThemeART,NominationMYMSK, \
     ThemeRUSH, Artakiada
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView
 from contests.serializers import ArchiveSerializer, NominationVPSerializer, \
-    DirectionVPSerializer, ThemeNRushevaSerializer, ThemeArtakiadaSerializer
+    DirectionVPSerializer, ThemeNRushevaSerializer, ThemeArtakiadaSerializer, NominationMymoskvichiSerializer
 
 
 def index(request):
@@ -29,6 +29,11 @@ class ArchiveAPIView(ModelViewSet):
 class NominationVPAPIView(ListAPIView):
     queryset = NominationVP.objects.all()
     serializer_class = NominationVPSerializer
+
+
+class NominationMymoskvichiAPIView(ListAPIView):
+    queryset = NominationMYMSK.objects.all()
+    serializer_class = NominationMymoskvichiSerializer
 
 
 class ThemeArtakiadaAPIView(ListAPIView):

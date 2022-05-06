@@ -8,6 +8,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { ExpandMoreCollapse} from "./ExpandMore";
 
 import ScrollableTabs from "./ScrollableTabs";
+import VerticalTabs from "./VerticalTabs";
 
 
 
@@ -79,7 +80,7 @@ export default function MixGallery(props) {
 
     return (
         <Box>
-            <Box sx={{margin: '20px', width: 'auto'}}>
+            <Box sx={{margin: '20px', width: 'auto', display:'flex',alignItems:'center'}}>
                 <ScrollableTabs url={`http://${process.env.REACT_APP_HOST_NAME}/frontend/api/archive/nominationvp`}
                                 loadData={loadMoreItems}
                                 resetPage={resetPage}
@@ -93,6 +94,17 @@ export default function MixGallery(props) {
                                 }}
 
                 />
+                <VerticalTabs url={`http://${process.env.REACT_APP_HOST_NAME}/frontend/api/archive/nominationvp`}
+                                loadData={loadMoreItems}
+                                resetPage={resetPage}
+
+                                resetLoadedData={() => {
+                                    setItems([]);
+                                }}
+                                setNomination={(value) => {
+                                    setNomination(value);
+
+                                }}/>
             </Box>
 
             {Items.map((item, index) => {

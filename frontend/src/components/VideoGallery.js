@@ -1,4 +1,3 @@
-
 import React, {useEffect, useState} from "react";
 import axios from 'axios';
 import PlayerModal from "./PlayerModal";
@@ -6,6 +5,7 @@ import useInfiniteScroll from "../useInfiniteScroll";
 import Box from "@material-ui/core/Box";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {ImageListStyled} from "../styled";
+import ScrollableTabs from "./ScrollableTabs";
 
 
 export default function VideoGallery() {
@@ -34,7 +34,12 @@ export default function VideoGallery() {
         axios({
             method: "GET",
             url: `http://${process.env.REACT_APP_HOST_NAME}/frontend/api/archive`,
-            params: {page_size: 1, contest_name: 'mymoskvichi', status: 5, page: page},
+            params: {
+                page_size: 1,
+                contest_name: 'mymoskvichi',
+                status: 5,
+                page: page
+            },
         })
             .then((res) => {
                 setItems((prevTitles) => {
@@ -51,19 +56,38 @@ export default function VideoGallery() {
 
 
     return (
-        <ImageListStyled sx={{justifyContent:'center'}} cols={3} rowHeight={250}>
+        <React.Fragment>
+         <Box sx={{margin: '20px', width: 'auto'}}>
+                <ScrollableTabs url={`http://${process.env.REACT_APP_HOST_NAME}/api/archive/nomination/mymoskvichi`}
+                                loadData={loadMoreItems}
+                                resetPage={resetPage}
+
+                                resetLoadedData={() => {
+                                    setItems([]);
+                                }}
+                                setNomination={(value) => {
+                                    setNomination(value);
+
+                                }}
+
+                />
+            </Box>
+        <ImageListStyled sx={{justifyContent: 'center'}} cols={3}
+                         rowHeight={250}>
 
             {Items.map((item, index) => {
                 if (Items.length === index + 1) {
 
                     return (
 
-                        <PlayerModal name={item.author_name} url={item.link} key={index} forwardedRef={lastElementRef}>
+                        <PlayerModal name={item.author_name} url={item.link}
+                                     key={index} forwardedRef={lastElementRef}>
                         </PlayerModal>
 
                     );
                 } else {
-                    return <PlayerModal name={item.author_name} url={item.link} key={index}/>
+                    return <PlayerModal name={item.author_name} url={item.link}
+                                        key={index}/>
 
 
                 }
@@ -74,6 +98,7 @@ export default function VideoGallery() {
 
 
         </ImageListStyled>
+            </React.Fragment>
     )
 
 }
