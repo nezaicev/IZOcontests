@@ -89,6 +89,13 @@ def remove_field_in_list(obj_tuple, name_field):
     return fields
 
 
+def add_field_in_list(obj_tuple, name_field):
+    fields = list(obj_tuple)
+    if name_field not in fields:
+        fields.append(name_field)
+    return fields
+
+
 def generate_xls(queryset, path):
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Users')

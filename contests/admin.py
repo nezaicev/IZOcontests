@@ -286,6 +286,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
                 self.list_display = utils.remove_field_in_list(
                     self.list_display, 'status')
 
+
                 return self.list_display
 
     def save_model(self, request, obj, form, change):
@@ -566,13 +567,14 @@ class FileArchiveInline(admin.StackedInline):
 
 
 class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
+    list_per_page = 50
     inlines = [ImageExtraArchiveInline, VideoArchiveInline, FileArchiveInline]
     model = Archive
     actions = ['export_as_xls', 'send_selected_letter', ]
-    list_editable = ['publish', 'rating']
+    list_editable = []
     list_display = ['reg_number','publish', 'contest_name', 'author_name', 'fio_teacher',
-                    'teacher'
-                    , 'status','rating', 'year_contest']
+                    'teacher',
+                    'rating','status', 'year_contest','certificate']
     list_filter = ('contest_name', 'publish','year_contest', 'status')
     search_fields = ('reg_number', 'fio')
     exclude = ('info',)
@@ -584,6 +586,26 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
         else:
             qs = super(admin.ModelAdmin, self).get_queryset(request)
             return qs.filter(teacher=request.user)
+
+    def get_list_display(self, request):
+        if request.user.is_superuser or request.user.groups.filter(
+                name='Manager').exists():
+            self.list_editable = ('status','publish', 'rating')
+            self.list_filter = self.__class__.list_filter
+            return self.__class__.list_display
+        else:
+            self.list_filter = ()
+            self.list_editable = ()
+
+            if request.user.is_superuser:
+                return self.__class__.list_display
+            else:
+                self.list_display = utils.remove_field_in_list(
+                    self.list_display, 'publish')
+                self.list_display = utils.remove_field_in_list(
+                    self.list_display, 'rating')
+                # self.list_display=utils.add_field_in_list(self.list_display, 'certificate')
+                return self.list_display
 
 
 class ShowEventAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):

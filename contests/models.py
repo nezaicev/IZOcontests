@@ -1,7 +1,10 @@
 import time
 import os
 from uuid import uuid4
+
+import requests
 from django.db import models
+from django.middleware.csrf import get_token
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.deconstruct import deconstructible
@@ -9,6 +12,7 @@ from django.utils.safestring import mark_safe
 from model_utils.managers import InheritanceManager
 from ckeditor.fields import RichTextField
 from sorl.thumbnail import get_thumbnail
+
 from users.models import CustomUser, Region, District
 from contests import utils
 from contests.directory import NominationART, NominationMYMSK, ThemeART, \
@@ -516,6 +520,9 @@ class ModxDbimgMuz(models.Model):
         db_table = 'modx_dbimg_muz'
 
 
+from cert.models import Cert
+
+
 class Archive(BaseContest):
     rating = models.FloatField('Рейтинг', default=0)
     fio = models.CharField('Участник', max_length=700, blank=True, default='')
@@ -568,7 +575,7 @@ class Archive(BaseContest):
     class Meta:
         verbose_name = 'Архив'
         verbose_name_plural = 'Архив'
-        ordering = ['-rating','reg_number' ]
+        ordering = ['-rating', 'reg_number']
 
         indexes = [
             models.Index(fields=['contest_name', 'nomination', '-rating']),
@@ -577,6 +584,20 @@ class Archive(BaseContest):
 
     def __str__(self):
         return self.reg_number
+
+    def certificate(self):
+        try:
+            contest = Events.objects.get(
+                event=PageContest.objects.get(name=self.contest_name).id)
+            blank = Cert.objects.get(contest=contest.id, status=self.status, year_contest=self.year_contest)
+            if blank:
+                return mark_safe(
+                    '<a target="_blank" href="/certs/?reg_number={}&event={}">Сертификат</a>'.format(self.reg_number,contest.id)
+                )
+            else:
+                return '-'
+        except ObjectDoesNotExist:
+            return '-'
 
 
 class ExtraImage(models.Model):

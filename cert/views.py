@@ -5,7 +5,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy, reverse
 from django.http import FileResponse, HttpResponseRedirect
 from django.contrib import messages
+from django.utils.decorators import method_decorator
 from django.views import generic, View
+from django.views.decorators.csrf import csrf_exempt
+
 from cert.forms import SearchRegNumForm, ConfirmationUserDataForm, \
     BaseConfirmationUserDataForm, ConfirmationUserDataExtraForm
 from cert.services import get_obj_by_reg_num_from_archive, get_blank_cert
@@ -14,7 +17,6 @@ from cert.utils import generate_cert
 
 # Create your views here.
 
-
 class SearchRegNumView(generic.FormView):
     template_name = 'cert/cert.html'
     form_class = SearchRegNumForm
@@ -22,6 +24,21 @@ class SearchRegNumView(generic.FormView):
 
     def get(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
+            if request.GET.get('reg_number') and request.GET.get('event'):
+                self.request.session['reg_number'] = request.GET.get(
+                    'reg_number')
+                self.request.session['event'] = request.GET.get('event')
+                participant = get_obj_by_reg_num_from_archive(
+                    self.request.session['reg_number'],
+                    self.request.user,
+                    self.request.session['event'])
+                if participant:
+                    self.request.session[
+                        'contest'] = participant.__class__.__name__
+                    self.request.session['participant_id'] = participant.id
+                    return HttpResponseRedirect(
+                        reverse('confirmation_data_view'))
+
             return render(request, template_name=self.template_name,
                           context={'form': self.form_class})
         else:
@@ -83,7 +100,7 @@ class ConfirmationUserDataView(View):
                     form_values = self.form.cleaned_data
                     path_cert = generate_cert(reg_number, blank,
                                               self.request.user,
-                                              form_values,event)
+                                              form_values, event)
                     if path_cert:
                         return HttpResponseRedirect(
                             os.path.join(settings.MEDIA_URL, 'certs',
