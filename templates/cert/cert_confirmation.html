@@ -3,27 +3,31 @@
 {% block title %}Создание документа {% endblock %}
 
 {% block content %}
-  <div class="container mt-4 mb-3 card col-6">
+  <div class="container mt-4 mb-3 card col-8">
     <h4 class="mb-3">Формирование документа</h4>
     <form method="post">
       {% csrf_token %}
-       {% if messages %}
+      {% if messages %}
         <div class="alert alert-danger" role="alert">
-        <ul class="messages">
-          {% for message in messages %}
-            <li{% if message.tags %}
-              class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-          {% endfor %}
-        </ul>
+          <ul class="messages">
+            {% for message in messages %}
+              <li{% if message.tags %}
+                class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+          </ul>
         </div>
       {% endif %}
       {% for hidden in form.hidden_fields %}
         {{ hidden }}
       {% endfor %}
       {% for field in form.visible_fields %}
-        <div class=" mb-3">
-          {{ field.label_tag }} {{ field }}
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon3">{{ field.label_tag }}</span>
+          {{field}}
         </div>
+        {#        <div class=" mb-3">#}
+        {#          {{ field.label_tag }} {{ field }}#}
+        {#        </div>#}
       {% endfor %}
       <div class="row">
         <div class="text-right mr-3">

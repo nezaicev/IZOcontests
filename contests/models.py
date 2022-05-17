@@ -85,6 +85,7 @@ def get_info_contests(alias_contest):
 
 
 class Events(models.Model):
+
     name = models.CharField(verbose_name='Название (конкурс/мероприятие)',
                             max_length=100, blank=False)
     event = models.ForeignKey('PageContest', verbose_name='Мероприятие',
@@ -571,6 +572,8 @@ class Archive(BaseContest):
 
     def save(self, *args, **kwargs):
         super(BaseContest, self).save(*args, **kwargs)
+
+
 
     class Meta:
         verbose_name = 'Архив'
