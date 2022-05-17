@@ -88,7 +88,23 @@ class Cert(models.Model):
     school_text = models.ForeignKey(Text, related_name='school',
                                     verbose_name='Организация',
                                     on_delete=models.PROTECT, null=True,
-                                    blank=True)
+                                    )
+
+    author_name_text = models.ForeignKey(Text, related_name='author_name',
+                                    verbose_name='Название',
+                                         blank=True,
+                                    on_delete=models.PROTECT, null=True,
+                                    )
+    city_text = models.ForeignKey(Text, related_name='city',
+                                         verbose_name='Город',
+                                         blank=True,
+                                         on_delete=models.PROTECT, null=True,
+                                         )
+    teacher_text = models.ForeignKey(Text, related_name='teacher',
+                                         verbose_name='Педагог',
+                                         blank=True,
+                                         on_delete=models.PROTECT, null=True,
+                                         )
     nomination_text = models.ForeignKey(Text, related_name='nomination',
                                         verbose_name='Номинация',
                                         on_delete=models.PROTECT, blank=True,

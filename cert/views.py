@@ -1,14 +1,13 @@
 import os
+from environs import Env
+from dotenv import load_dotenv
 from django.shortcuts import render
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy, reverse
 from django.http import FileResponse, HttpResponseRedirect
 from django.contrib import messages
-from django.utils.decorators import method_decorator
 from django.views import generic, View
-from django.views.decorators.csrf import csrf_exempt
-
 from cert.forms import SearchRegNumForm, ConfirmationUserDataForm, \
     BaseConfirmationUserDataForm, ConfirmationUserDataExtraForm
 from cert.services import get_obj_by_reg_num_from_archive, get_blank_cert
@@ -77,10 +76,15 @@ class ConfirmationUserDataView(View):
 
                              }
         if participant:
-            if participant.contest_name != 'mymoskvichi':
-                self.initial_data['fio'] = participant.fio
+            if participant.contest_name != os.getenv('MYMOSKVICHI'):
+                self.initial_data['fio'] = participant.fio if len(participant.fio)<=100 else 'Творческий коллектив'
                 self.initial_data['position'] = participant.level
             else:
+                self.initial_data['fio'] = participant.fio if len(participant.fio)<=100 else 'Творческий коллектив'
+                self.initial_data['position'] = participant.age
+                self.initial_data['author_name']=participant.author_name
+                self.initial_data['city']='{}, {}'.format(participant.region,participant.city)
+                self.initial_data['teacher']=participant.fio_teacher
                 self.form = ConfirmationUserDataExtraForm
 
         if request.method == 'GET':
