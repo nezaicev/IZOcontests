@@ -79,6 +79,10 @@ class ConfirmationUserDataView(View):
             if participant.contest_name != os.getenv('MYMOSKVICHI'):
                 self.initial_data['fio'] = participant.fio if len(participant.fio)<=100 else 'Творческий коллектив'
                 self.initial_data['position'] = participant.level
+                self.initial_data['author_name'] = participant.author_name
+                self.initial_data['city'] = '{}, {}'.format(participant.region,
+                                                            participant.city)
+                self.initial_data['teacher'] = participant.fio_teacher
             else:
                 self.initial_data['fio'] = participant.fio if len(participant.fio)<=100 else 'Творческий коллектив'
                 self.initial_data['position'] = participant.age

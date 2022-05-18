@@ -36,15 +36,29 @@ class BaseConfirmationUserDataForm(forms.Form):
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Участник|Педагог|Коллектив',
         max_length=300)
-    school = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
-        label='Название организации|студии',
-        max_length=200)
     position = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-8',
                                       'placeholder': "ученик 3 класса / педагог "}),
         label='Должность|Класс',
         max_length=200)
+    school = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
+        label='Название организации|студии',
+        max_length=200)
+    city = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
+        label='Город|Регион',
+        max_length=200)
+    teacher = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
+        label='Руководитель',
+        max_length=200)
+    author_name = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
+        label='Название работы',
+        max_length=300,
+        required=False
+    )
 
     status = forms.CharField(widget=forms.HiddenInput, max_length=10)
     year = forms.CharField(widget=forms.HiddenInput, max_length=20)
