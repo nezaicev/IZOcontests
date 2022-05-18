@@ -102,7 +102,7 @@ def generate_cert(reg_num, blank_cert, teacher, form_values, event):
                          draw,
                          blank_cert.school_text.anchor
                          )
-    prev_field_position=blank_cert.school_text.offset+blank_cert.school_text.position[1] if blank_cert.school_text else 0
+    prev_field_position=blank_cert.school_text.offset+school[3] if blank_cert.school_text and school else 0
     if form_values.get('city') and blank_cert.city_text:
         blank_cert.city_text.position[1] =prev_field_position
 
