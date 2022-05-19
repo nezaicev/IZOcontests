@@ -85,7 +85,6 @@ class ConfirmationUserDataView(View):
                 self.initial_data['teacher'] = participant.fio_teacher
             else:
                 self.initial_data['fio'] = participant.fio if len(participant.fio)<=100 else 'Творческий коллектив'
-                self.initial_data['position'] = participant.age
                 self.initial_data['author_name']=participant.author_name
                 self.initial_data['city']='{}, {}'.format(participant.region,participant.city)
                 self.initial_data['teacher']=participant.fio_teacher
