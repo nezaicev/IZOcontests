@@ -38,8 +38,8 @@ class BaseConfirmationUserDataForm(forms.Form):
         max_length=300)
     position = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-8',
-                                      'placeholder': "ученик 3 класса / педагог "}),
-        label='Должность|Класс',
+                                      'placeholder': "5-7 лет|3 класс|педагог"}),
+        label='Возраст|Класс|Должность',
         max_length=200)
     school = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
