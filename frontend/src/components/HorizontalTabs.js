@@ -1,13 +1,13 @@
-import Box from "@material-ui/core/Box";
-import Tabs from "@material-ui/core/Tabs";
+import Box from "@mui/material/Box";
+import Tabs, {tabsClasses} from "@mui/material/Tabs"
 import React, {useEffect} from "react";
-import Tab from "@material-ui/core/Tab";
+
 import axios from "axios";
+import {Tab} from "@mui/material";
 
-export default function ScrollableTabs(props) {
+export default function HorizontalTabs(props) {
     const [value, setValue] = React.useState('Все');
-    const [Items, setItems] = React.useState([]);
-
+    const [Items, setItems] = React.useState(props.nominations);
 
 
     const handleChange = (event, newValue) => {
@@ -15,11 +15,6 @@ export default function ScrollableTabs(props) {
         setValue(newValue);
         props.resetPage()
         props.resetLoadedData()
-
-
-
-        console.log(newValue)
-
     };
 
     useEffect(() => {
@@ -27,11 +22,9 @@ export default function ScrollableTabs(props) {
     }, []);
 
 
-    useEffect(()=>{
+    useEffect(() => {
         props.loadData()
-
-
-    },[value])
+    }, [value])
 
     function loadItems() {
 
@@ -41,7 +34,7 @@ export default function ScrollableTabs(props) {
         })
             .then((res) => {
                 setItems(() => {
-                    return [...res.data.results];
+                    return [...res.data];
                 });
 
             })
@@ -51,21 +44,27 @@ export default function ScrollableTabs(props) {
     }
 
     return (
-        <Box sx={{ bgcolor: 'background.paper'}}>
+        <Box sx={{bgcolor: 'background.paper'}}>
             <Tabs
+                sx={{
+                    [`& .${tabsClasses.indicator}`]:{
+                        backgroundColor:'#d36666',
+                    }
+                }}
                 value={value}
                 onChange={handleChange}
                 variant="scrollable"
                 scrollButtons="auto"
-                indicatorColor="secondary"
+                textColor="inherit"
                 aria-label="scrollable auto tabs example"
             ><Tab label={"Все"} value={'Все'} key={0}/>
 
                 {
                     Items.map((item, index) => (
-                    <Tab label={item.name} value={item.name} key={index+1}/>
+                        <Tab label={item.name} value={item.name}
+                             key={index + 1}/>
 
-                ))}
+                    ))}
 
             </Tabs>
         </Box>

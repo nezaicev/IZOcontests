@@ -2,7 +2,8 @@ from sorl.thumbnail import get_thumbnail
 
 from rest_framework import serializers
 from .models import ModxDbimgMuz, Archive, Level, ExtraImageArchive, \
-    NominationVP, DirectionVP, VideoArchive, FileArchive, Region, ThemeART, ThemeRUSH, Artakiada, NRusheva
+    NominationVP, DirectionVP, VideoArchive, FileArchive, Region, ThemeART, \
+    ThemeRUSH, Artakiada, NRusheva
 
 
 class ModxDbimgMuzSerializer(serializers.ModelSerializer):
@@ -62,6 +63,16 @@ class RegionSerializer(serializers.RelatedField):
         return value.name
 
 
+class YearContestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Archive
+
+    def to_representation(self, instance):
+        return {
+            'years': (),
+        }
+
+
 class VideosSerializer(serializers.RelatedField):
     class Meta:
         model = VideoArchive
@@ -89,7 +100,7 @@ class ThumbnailSerializer(serializers.ImageField):
             return {'thumb': get_thumbnail(value.url, '320x180', crop='center',
                                            quality=99).url,
                     'md_thumb': get_thumbnail(value.url, '1152',
-                                           quality=99).url,
+                                              quality=99).url,
                     'original': value.url,
                     }
         else:
@@ -97,20 +108,18 @@ class ThumbnailSerializer(serializers.ImageField):
 
 
 class ArchiveSerializer(serializers.ModelSerializer):
-    image=ThumbnailSerializer()
+    image = ThumbnailSerializer()
     images = ImagesSerializer(many=True, read_only=True)
     videos = VideosSerializer(many=True, read_only=True)
-    files=FilesSerializer(many=True, read_only=True)
-    region=RegionSerializer(many=False, read_only=True)
+    files = FilesSerializer(many=True, read_only=True)
+    region = RegionSerializer(many=False, read_only=True)
 
     class Meta:
         model = Archive
-
         fields = ('id', 'reg_number',
                   'link', 'author_name', 'fio', 'fio_teacher', 'school',
                   'contest_name', 'image', 'publish',
-                  'nomination', 'level', 'age', 'status','material',
-                  'description','theme',
-                  'direction', 'images','videos', 'files', 'region', 'city','rating')
-
-
+                  'nomination', 'level', 'age', 'status', 'material',
+                  'description', 'theme',
+                  'direction', 'images', 'videos', 'files', 'region', 'city',
+                  'rating', 'year_contest')

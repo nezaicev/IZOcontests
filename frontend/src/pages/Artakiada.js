@@ -1,7 +1,7 @@
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import Header from "../components/Header";
-import Container from "@material-ui/core/Container";
-import MixGallery from "../components/MixGallery";
+import Container from "@mui/material/Container";
+import VPGallery from "../components/VPGallery";
 import React from "react";
 import ImageGalleryFetch from "../components/ImageGalleryFetch";
 

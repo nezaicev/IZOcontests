@@ -1,11 +1,10 @@
-import Card from "@material-ui/core/Card";
+
 import React, {useEffect, useState} from "react";
-import {styled} from "@mui/material/styles";
 import useInfiniteScroll from "../useInfiniteScroll";
 import axios from "axios";
-import Box from "@material-ui/core/Box";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import ScrollableTabs from "./ScrollableTabs";
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import HorizontalTabs from "./HorizontalTabs";
 import SimpleReactLightbox, {SRLWrapper} from "simple-react-lightbox";
 import {ItemImage} from "./ItemImage";
 import {createLabel} from "../utils";
@@ -103,7 +102,7 @@ export default function ImageGalleryFetch(props) {
     return (
         <Box>
             <Box sx={{margin: '20px', width: 'auto'}}>
-                <ScrollableTabs
+                <HorizontalTabs
                     url={props.urlTheme}
                     loadData={loadMoreItems}
                     resetPage={resetPage}

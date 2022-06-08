@@ -1,9 +1,9 @@
 import {styled} from "@mui/material/styles";
-import ImageList from "@material-ui/core/ImageList";
-import Button from "@material-ui/core/Button";
+import ImageList from "@mui/material/ImageList";
+import Button from "@mui/material/Button";
 import {Typography} from "@mui/material";
-import ImageListItem from "@material-ui/core/ImageListItem";
-import Divider from "@material-ui/core/Divider";
+import ImageListItem, {imageListItemClasses} from "@mui/material/ImageListItem";
+import Divider from "@mui/material/Divider";
 
 
 export const DividerStyled=styled(Divider)(()=>({

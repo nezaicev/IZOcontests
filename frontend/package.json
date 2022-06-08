@@ -33,7 +33,7 @@
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.4.1",
-    "@mui/material": "^5.4.2",
+    "@mui/material": "^5.8.1",
     "@mui/styled-engine-sc": "^5.4.1",
     "@mui/system": "^5.4.1",
     "@mui/x-data-grid": "^5.1.0",
@@ -41,12 +41,14 @@
     "axios": "^0.21.4",
     "image-thumbnail": "^1.0.14",
     "material-ui-player": "^1.0.5",
+    "mui": "^0.0.1",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "react-player": "^2.9.0",
     "react-router-dom": "^6.2.2",
     "simple-react-lightbox": "^3.6.9-0",
-    "styled-components": "^5.3.3"
+    "styled-components": "^5.3.3",
+    "tar": "^6.1.0"
   }
 }

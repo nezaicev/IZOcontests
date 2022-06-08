@@ -1,9 +1,9 @@
 import SimpleReactLightbox, {SRLWrapper} from "simple-react-lightbox";
-import ImageListItem from "@material-ui/core/ImageListItem";
+import ImageListItem from "@mui/material/ImageListItem";
 import React from "react";
 import {ImageListStyled} from "../styled";
 
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 
 
 

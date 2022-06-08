@@ -12,10 +12,6 @@ import MenuItem from '@mui/material/MenuItem';
 import HomeIcon from './HomeIcon'
 
 
-const pages = []
-// ['Конкурсы', 'Мероприятия', 'Выставки'];
-const settings = []
-// ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const ResponsiveAppBar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);

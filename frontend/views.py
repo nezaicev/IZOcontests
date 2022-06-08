@@ -1,12 +1,14 @@
 from rest_framework import filters
 import django_filters
-from frontend.apps import  StandardResultsSetPagination
+from frontend.apps import StandardResultsSetPagination
 from django.shortcuts import render
 
 from contests.models import Archive, NominationVP, DirectionVP, ThemeART, \
     ThemeRUSH, Artakiada
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from contests.serializers import ArchiveSerializer, NominationVPSerializer, \
     DirectionVPSerializer, ThemeNRushevaSerializer, ThemeArtakiadaSerializer
 
@@ -20,7 +22,7 @@ class ArchiveAPIView(ModelViewSet):
     serializer_class = ArchiveSerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filter_fields = ['contest_name', 'status', 'direction', 'publish',
-                     'nomination', 'theme']
+                     'nomination', 'theme', 'year_contest']
     ordering_fields = ['rating']
     ordering = ['-rating']
     pagination_class = StandardResultsSetPagination
@@ -44,3 +46,29 @@ class ThemeNRushevaAPIView(ListAPIView):
 class DirectionVPAPIView(ListAPIView):
     queryset = DirectionVP.objects.all()
     serializer_class = DirectionVPSerializer
+
+
+class YearContestAPIView(APIView):
+
+    def get(self, request):
+        contest_name = request.query_params.get('contest_name')
+        years = set(
+            Archive.objects.filter(contest_name=contest_name).values_list(
+                'year_contest', flat=True))
+        years = list(years)
+        years.sort(reverse=True)
+        return Response(years)
+
+
+class NominationContestAPIView(APIView):
+
+    def get(self, request):
+        contest_name = request.query_params.get('contest_name')
+        year = request.query_params.get('year_contest')
+        nominations = set(
+            Archive.objects.filter(contest_name=contest_name,
+                                   year_contest=year).values_list(
+                'nomination', flat=True))
+        nominations = list(nominations)
+        nominations.sort(reverse=True)
+        return Response(nominations)
