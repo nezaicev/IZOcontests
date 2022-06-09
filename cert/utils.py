@@ -118,7 +118,7 @@ def generate_cert(reg_num, blank_cert, teacher, form_values, event):
                            )
 
     prev_field_position=blank_cert.city_text.offset+city[3] if blank_cert.city_text and city else 0
-    if form_values.get('teacher') and blank_cert.teacher_text:
+    if form_values.get('teacher') and blank_cert.teacher_text and form_values.get('owner')=='Участник':
         blank_cert.teacher_text.position[1] = prev_field_position
         label_teacher = insert_text(font_default,
                               blank_cert.teacher_text.size,

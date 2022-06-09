@@ -35,29 +35,36 @@ class BaseConfirmationUserDataForm(forms.Form):
     fio = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Участник|Педагог|Коллектив',
-        max_length=300)
+        max_length=100)
     position = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-8',
                                       'placeholder': "5-7 лет|3 класс|педагог"}),
         label='Возраст|Класс|Должность',
-        max_length=200)
+        max_length=100)
     school = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Название организации|студии',
-        max_length=200)
+        max_length=80)
     city = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Город|Регион',
-        max_length=200)
+        max_length=80)
     teacher = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Руководитель',
-        max_length=200)
+        max_length=80,
+        )
     author_name = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Название работы',
-        max_length=300,
+        max_length=80,
         required=False
+    )
+    owner = forms.ChoiceField(
+        widget=forms.Select(attrs={'class': 'form-select col-6'}),
+        label='Статус',
+        choices=(('Участник','Участник'),('Педагог','Педагог'))
+
     )
 
     status = forms.CharField(widget=forms.HiddenInput, max_length=10)
@@ -75,7 +82,7 @@ class ConfirmationUserDataExtraForm(BaseConfirmationUserDataForm):
     city = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Город|Регион',
-        max_length=200)
+        max_length=80)
     nomination = forms.ChoiceField(
         widget=forms.Select(attrs={'class': 'form-select col-6'}),
         label='Номинация',
@@ -85,9 +92,11 @@ class ConfirmationUserDataExtraForm(BaseConfirmationUserDataForm):
     author_name = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Название работы',
-        max_length=300)
+        max_length=80)
 
     teacher = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Руководитель',
-        max_length=200)
+        max_length=80,
+        required=False
+    )
