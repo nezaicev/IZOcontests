@@ -52,7 +52,7 @@ class BaseConfirmationUserDataForm(forms.Form):
     teacher = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Руководитель',
-        max_length=80,
+        max_length=110,
         )
     author_name = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
@@ -97,6 +97,6 @@ class ConfirmationUserDataExtraForm(BaseConfirmationUserDataForm):
     teacher = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Руководитель',
-        max_length=80,
+        max_length=110,
         required=False
     )
