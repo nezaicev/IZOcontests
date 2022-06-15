@@ -1,0 +1,61 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.8.2",
+    "@mui/material": "^5.6.3",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.1.1",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^0.27.2",
+    "dotenv-webpack": "^7.1.0",
+    "process": "^0.11.10",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-infinite-scroll-hook": "^4.0.3",
+    "react-router-dom": "^6.3.0",
+    "react-scripts": "^2.1.3",
+    "web-vitals": "^2.1.4",
+    "webpack-dev-middleware": "^5.3.3"
+  },
+  "scripts": {
+    "dev": "webpack --mode development ./src/index.js --output-path ../../static/frontend/main.js",
+    "build": "webpack --mode production ./src/index.js --output-path ../../static/frontend/main.js",
+    "start": "react-scripts start",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react"
+  ],
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/plugin-syntax-jsx": "^7.17.12",
+    "@babel/preset-react": "^7.17.12",
+    "css-loader": "^6.7.1",
+    "eslint-plugin-react-hooks": "^4.5.0",
+    "react-player": "^2.10.1",
+    "webpack-cli": "^4.10.0"
+  }
+}
