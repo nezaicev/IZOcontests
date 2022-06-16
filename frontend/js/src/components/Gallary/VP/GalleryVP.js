@@ -29,7 +29,7 @@ export default function GalleryVP(props) {
 
 
     return (<React.Fragment>
-            <Box sx={{display: 'flex'}}>
+            <Box sx={{display: 'flex', justifyContent:'center', alignItems:'center'}}>
 
                 <HorizontalTabs contestName={props.contestName}
                                 data={dataHorizontalTabs}

@@ -18,9 +18,8 @@ export default function HorizontalTabs(props) {
     return (
         <Box
             sx={{
-                maxWidth: {xs: 320, sm: 480},
+                maxWidth: {xs: 420, sm: 800},
                 bgcolor: 'background.paper',
-                display: 'flex',
             }}
         >
             <Tabs
@@ -28,8 +27,14 @@ export default function HorizontalTabs(props) {
                 onChange={handleChange}
                 variant="scrollable"
                 scrollButtons
+                textColor="inherit"
                 aria-label="visible arrows tabs example"
                 sx={{
+
+                    '&.MuiButtonBase-root-MuiTab-root.Mui-selected':{color:'#33a4a4'},
+                   [`& .${tabsClasses.indicator}`]:{
+                          backgroundColor:'#d36666'
+                    },
                     [`& .${tabsClasses.scrollButtons}`]: {
                         '&.Mui-disabled': {opacity: 0.3},
                     },
