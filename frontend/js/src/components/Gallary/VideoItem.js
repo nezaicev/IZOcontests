@@ -1,7 +1,7 @@
 import * as React from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import ReactPlayer from  "react-player"
+import ReactPlayer from "react-player"
 import IconButton from "@mui/material/IconButton";
 import {Cancel} from "@mui/icons-material";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
@@ -20,11 +20,11 @@ import {ExpandMore} from "./VP/ExpandMore";
 const style = {
 
     position: 'absolute',
-    top: '45%',
+    top: '70%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    height: [170, 250,400],
-    width: [200, 300, 600],
+    height: [400],
+    width: [400],
     textAlign: 'center',
 
 };
@@ -47,7 +47,6 @@ const CardVideo = styled(Card)(() => ({
 }))
 
 
-
 function getThumbYoutube(url, quality) {
     let thumbUrl;
     let idVideo = new URL(url)
@@ -56,7 +55,7 @@ function getThumbYoutube(url, quality) {
     return thumbUrl
 }
 
-export default function PlayerModal(props) {
+export default function VideoItem(props) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -68,11 +67,11 @@ export default function PlayerModal(props) {
 
     return (
 
-        <React.Fragment>
+        <Box>
 
 
             <CardVideo sx={{boxShadow: '0'}} ref={props.forwardedRef}>
-                <ImageButton sx={{
+                <Box sx={{
                     p: '10px',
                     backgroundColor: '#ffffff'
                 }} onClick={handleOpen}>
@@ -84,12 +83,15 @@ export default function PlayerModal(props) {
                                  loading="lazy"/>
 
                             <CustomItemBar
+                                sx={{position: 'relative', bottom:'50px'}}
                                 title={props.name}
-                                position={'bottom'}
                                 actionIcon={
                                     <Tooltip title="Видео">
                                         <IconButton>
-                                            <OndemandVideoIcon sx={{color: "#fff", p: '5px'}}/>
+                                            <OndemandVideoIcon sx={{
+                                                color: "#fff",
+                                                p: '5px'
+                                            }}/>
                                         </IconButton>
                                     </Tooltip>
                                 }
@@ -101,35 +103,41 @@ export default function PlayerModal(props) {
                         </Box>
                     </ImageListItem>
 
-                </ImageButton>
-                <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                    sx={{p: '2px'}}
-                >
-                    <ExpandMoreIcon/>
-                </ExpandMore>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    <CardContent>
-                        <Typography>
-                            {props.name}
-                        </Typography>
+                </Box>
+                {/*<ExpandMore*/}
+                {/*    expand={expanded}*/}
+                {/*    onClick={handleExpandClick}*/}
+                {/*    aria-expanded={expanded}*/}
+                {/*    aria-label="show more"*/}
+                {/*    sx={{p: '2px'}}*/}
+                {/*>*/}
+                {/*    <ExpandMoreIcon/>*/}
+                {/*</ExpandMore>*/}
+                {/*<Collapse in={expanded} timeout="auto" unmountOnExit>*/}
+                {/*    <CardContent>*/}
+                {/*        <Typography>*/}
+                {/*            {props.name}*/}
+                {/*        </Typography>*/}
 
-                    </CardContent>
-                </Collapse>
+                {/*    </CardContent>*/}
+                {/*</Collapse>*/}
             </CardVideo>
 
             <Modal
                 open={open}
                 onClose={handleClose}
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    alignItems: 'center'
+                }}
             >
 
-                <Box sx={style}>
-                    <Box sx={{textAlign: 'right', width: [700, 700]}}>
+                <Box sx={{width: [400, 500, 600, 800]}}>
+                    <Box sx={{textAlign: 'right'}} component='div'>
                         <IconButton aria-label="Cancel" onClick={handleClose}>
-                            <Cancel sx={{color: '#eae0a4'}}/>
+                            <Cancel sx={{color: '#ffffff'}}/>
 
                         </IconButton>
                     </Box>
@@ -142,8 +150,6 @@ export default function PlayerModal(props) {
                             height='100%'
                             controls={true}
                             url={props.url}
-
-
                         >
                         </ReactPlayer>
                     </div>
@@ -155,7 +161,7 @@ export default function PlayerModal(props) {
             </Modal>
 
 
-        </React.Fragment>
+        </Box>
 
     );
 }

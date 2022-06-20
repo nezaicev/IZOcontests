@@ -4,6 +4,7 @@ import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import axios from "axios";
 import MixCard from "../MixCard";
 import {ExpandMoreCollapse} from "./ExpandMore";
+import {CircularProgress} from "@mui/material";
 
 
 export default function VisibleBoxVP(props) {
@@ -61,29 +62,33 @@ export default function VisibleBoxVP(props) {
             {items.map((item, index) => {
                 if (items.length === index + 1) {
 
-                    return (<MixCard sx={{
-                        boxShadow: 0,
-                        // border: 2.5,
-                        // borderColor: '#b7b6b6'
-                    }} key={index} ref={lastElementRef}>
-                        <ExpandMoreCollapse item={item} index={index}
-                                            key={index}/>
-                    </MixCard>)
+                    return (
+                        <Box  key={index} ref={lastElementRef}>
+                        <ExpandMoreCollapse item={item} index={index} key={index}/>
+                        </Box>
+                    )
 
                 } else {
-                    return (<MixCard sx={{
-                        boxShadow: 0,
-                        // border: 2.5,
-                        // borderColor: '#b7b6b6',
-                        // backgroundColor:'rgba(243,227,227,0.45)'
-                    }} key={index}>
-                        <ExpandMoreCollapse item={item} index={index}
-                                            key={index}/>
-                    </MixCard>)
+                    return (
+                        <Box key={index}>
+                        <ExpandMoreCollapse item={item} index={index} key={index}/>
+                        </Box>
+                    )
                 }
 
 
+
             })}
+              {isFetching && <Box sx={{
+                justifyContent: 'center',
+                height: '600',
+                display: 'flex',
+                  marginTop:' 20px'
+            }}>
+                <CircularProgress  sx={{
+                    color:'#d26666'
+                }}/>
+            </Box>}
         </Box>
     )
 }

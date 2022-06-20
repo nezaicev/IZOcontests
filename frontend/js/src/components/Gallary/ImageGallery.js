@@ -48,22 +48,20 @@ export default function ImageGallery(props) {
     return (
         <SimpleReactLightbox>
             <SRLWrapper options={options}>
-                <Box>
+                <Box sx={{display:'grid',
+                    gridTemplateColumns:'repeat(auto-fill, minmax(300px, 1fr))',
+                    gridGap:'3px',
+                    justifyItems: 'center',
+                    alignItems: 'center'
 
-                    <ImageList sx={{
-                        display: "flex",
-                        justifyItems:"center",
-                        alignItems: "center",
-                        justifyContent:"space-evenly",
-                        alignContent:"space-evenly",
-                        marginLeft: "auto",
-                        marginLight: "auto",
-                        gridTemplateColumns: "100px 100px 100px",
-                        gridTemplateRows: "auto",
-                    }} cols={3} rowHeight={180}>
+                }}>
+
+
                         {images.map((item, index) => (
 
-                            <ImageListItem key={index}>
+                            <ImageListItem key={index} sx={{marginTop:'25px'}}
+                                           >
+
                                 <a href={item['md_thumb']}>
                                     <img
                                         src={item['thumb']}
@@ -76,7 +74,7 @@ export default function ImageGallery(props) {
 
 
                         ))}
-                    </ImageList>
+
                 </Box>
 
 
