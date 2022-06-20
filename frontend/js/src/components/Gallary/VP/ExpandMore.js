@@ -10,19 +10,21 @@ import ImageGallery from "../ImageGallery";
 import Typography from "@mui/material//Typography";
 import FieldTitle from "../FieldTitle";
 import {formattingName} from "../../utils/utils";
-import PlayerModal from "../PlayerModal";
+import VideoItem from "../VideoItem";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import Tooltip from "@mui/material/Tooltip";
 import CameraIcon from '@mui/icons-material/Camera';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import ArticleIcon from '@mui/icons-material/Article';
 import ImageList from "@mui/material/ImageList";
+import Card from "@mui/material/Card";
+import {CardMedia} from "@mui/material";
 
 export const ExpandMore = styled((props) => {
     const {expand, ...other} = props;
     return <IconButton {...other} />;
 })(({theme, expand}) => ({
-    backgroundColor: 'rgb(239 236 227)',
+    backgroundColor: 'rgb(239, 236, 227)',
     '&:hover': {
         backgroundColor: "#c4b7b7",
     },
@@ -30,6 +32,7 @@ export const ExpandMore = styled((props) => {
     display: 'inline-flex',
     transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
     marginLeft: 'auto',
+
     transition: theme.transitions.create('transform', {
         duration: theme.transitions.duration.shortest,
     }),
@@ -59,96 +62,160 @@ export function ExpandMoreCollapse(props) {
 
     return (<React.Fragment>
 
-            <Box sx={{textAlign: 'center', marginTop: '18px'}}
-                 name={props.item.author_name} url={props.item.link}
-                 key={props.reg_number}
-                 ref={(props.lastElementRef) ? props.lastElementRef : undefined}>
-                <Typography variant="h6" gutterBottom
-                            component="div">{props.item.author_name} </Typography>
-            </Box>
+            <Card
+                sx={{display: 'flex', flexWrap: 'wrap', marginTop: '20px'}}
+                name={props.item.author_name} url={props.item.link}
+                key={props.reg_number}>
+                <CardMedia
+                    component="img"
+                    sx={{width: 400, display: expanded ? 'none' : 'block'}}
+                    image={props.item.images[0]['md_thumb']}
+                    alt={props.item.author_name}
+                />
+
+                <Box sx={{
+                    flexWrap: "wrap",
+                    flexGrow: 1,
+                }}>
+
+                    <CardContent>
+                        <Typography component="div" variant="h5"
+                                    sx={{
+                                        textAlign: 'center',
+                                        marginBottom: '25px'
+                                    }}>
+                            {props.item.author_name}
+                        </Typography>
+                        <Typography variant="subtitle1" color="text.secondary"
+                                    component="div"
+                                    sx={{
+                                        alignContent: 'center',
+                                        display: expanded ? 'none' : 'block',
+                                    }}>
+                            <FieldTitle title={'№ '}
+                                        content={props.item.reg_number}/>
+                            <FieldTitle
+                                title={props.item.fio.search(',') > 0 ? 'Участники: ' : 'Участник: '}
+                                content={formattingName(props.item.fio)}/>
+
+                            <FieldTitle
+                                title={props.item.fio_teacher.search(',') > 0 ? 'Педагоги: ' : 'Педагог: '}
+                                content={props.item.fio_teacher}/>
+
+                            <FieldTitle title='Направление: '
+                                        content={props.item.direction}/>
 
 
-            <Box sx={{display: expanded ? 'none' : 'block'}}>
-                <ImageGallery images={props.item.images.slice(0, 3)}
-                              titleImg={props.item.author_name}
-                              key={props.index}/>
+                        </Typography>
 
-            </Box>
-            <Box>
-                <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                    sx={{p: '5px', marginLeft: '5px'}}
-                >
-                    <ExpandMoreIcon/>
-                </ExpandMore>
-            </Box>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
 
-                <CardContent>
+                    </CardContent>
+                </Box>
 
-                    <DividerStyled/>
-                    <Box sx={{margin: '20px'}}>
-
-                        <FieldTitle title={'№ '}
-                                    content={props.item.reg_number}/>
-                        <FieldTitle title={"Регион/город: "}
-                                    content={props.item.region + (props.item.city && (props.item.city !== props.item.region) ? ", " + props.item.city : '')}/>
-                        <FieldTitle title={'Образовательное уч.: '}
-                                    content={props.item.school}/>
-                        <FieldTitle title={'Возраст: '}
-                                    content={props.item.age}/>
-
-                        <FieldTitle
-                            title={props.item.fio.search(',') > 0 ? 'Участники: ' : 'Участник: '}
-                            content={formattingName(props.item.fio)}/>
-
-                        <FieldTitle
-                            title={props.item.fio_teacher.search(',') > 0 ? 'Педагоги: ' : 'Педагог: '}
-                            content={props.item.fio_teacher}/>
-
-                        <FieldTitle title='Направление: '
-                                    content={props.item.direction}/>
-
-                        {
-                            props.item.description ?
-                                <Box sx={{marginTop: '10px'}}>
-                                    <Typography variant='body2' mt={10}>
-                                        {props.item.description}
-                                    </Typography> </Box> : ''
-
-                        }
-
-                    </Box>
+                <Box sx={{
+                    display: 'flex',
+                    justifyContent: "right",
+                    alignContent: 'flex-end'
+                }}>
                     <Box>
-                        <Tooltip title="Фото">
-                            <IconButton>
-                                <CameraIcon sx={{
-                                    fontSize: '2rem',
-                                    color: 'rgb(128,110,110)',
-                                    padding: '2px'
-                                }}/>
-                            </IconButton>
-                        </Tooltip>
-                        <DividerStyled/>
+                        <ExpandMore
+                            expand={expanded}
+                            onClick={handleExpandClick}
+                            aria-expanded={expanded}
+                            aria-label="show more"
+                            sx={{p: '5px', marginLeft: '5px'}}
+                        >
+                            <ExpandMoreIcon/>
+                        </ExpandMore>
                     </Box>
+                </Box>
+
+            </Card>
 
 
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <Card sx={{marginBottom: '35px'}}>
 
-                            <ImageGallery images={props.item.images}
+                    <CardContent>
+
+                        <Box sx={{margin: '20px'}}>
+
+                            <FieldTitle title={'№ '}
+                                        content={props.item.reg_number}/>
+                            <FieldTitle title={"Регион/город: "}
+                                        content={props.item.region + (props.item.city && (props.item.city !== props.item.region) ? ", " + props.item.city : '')}/>
+                            <FieldTitle title={'Образовательное уч.: '}
+                                        content={props.item.school}/>
+                            <FieldTitle title={'Возраст: '}
+                                        content={props.item.age}/>
+
+                            <FieldTitle
+                                title={props.item.fio.search(',') > 0 ? 'Участники: ' : 'Участник: '}
+                                content={formattingName(props.item.fio)}/>
+
+                            <FieldTitle
+                                title={props.item.fio_teacher.search(',') > 0 ? 'Педагоги: ' : 'Педагог: '}
+                                content={props.item.fio_teacher}/>
+
+                            <FieldTitle title='Направление: '
+                                        content={props.item.direction}/>
+
+                            {
+                                props.item.description ?
+                                    <Box sx={{marginTop: '10px'}}>
+                                        <Typography variant='body2' mt={10}>
+                                            {props.item.description}
+                                        </Typography> </Box> : ''
+
+                            }
+
+                        </Box>
+                        <Box>
+                            <Tooltip title="Фото">
+                                <IconButton>
+                                    <CameraIcon sx={{
+                                        fontSize: '2rem',
+                                        color: 'rgb(128,110,110)',
+                                        padding: '2px'
+                                    }}/>
+                                </IconButton>
+                            </Tooltip>
+                            <DividerStyled/>
+                        </Box>
+
+
+                        <ImageGallery images={props.item.images}
                                       titleImg={props.item.author_name}
                                       key={props.index}/>
 
 
+                        {props.item.videos.length > 0 ?
+                            <React.Fragment><Tooltip title="Видео">
+                                <IconButton>
+                                    <OndemandVideoIcon sx={{
+                                        fontSize: '2rem',
+                                        color: 'rgb(128,110,110)',
+                                        padding: '2px'
+                                    }}/>
+                                </IconButton>
+                            </Tooltip> <DividerStyled/> </React.Fragment> : ''}
+
+                            {
+                                props.item.videos.map((item, index) => (
+                                    <VideoItem name={item.name}
+                                               url={item.link}
+                                               key={index}/>))
+
+                            }
 
 
 
-                    {props.item.videos.length > 0 ?
-                        <React.Fragment><Tooltip title="Видео">
+
+
+                        {props.item.files.length > 0 ? <React.Fragment><Tooltip
+                            title="Дополнительные материалы">
                             <IconButton>
-                                <OndemandVideoIcon sx={{
+                                <ArticleIcon sx={{
                                     fontSize: '2rem',
                                     color: 'rgb(128,110,110)',
                                     padding: '2px'
@@ -156,76 +223,49 @@ export function ExpandMoreCollapse(props) {
                             </IconButton>
                         </Tooltip> <DividerStyled/> </React.Fragment> : ''}
 
-                        <ImageList sx={{justifyContent: 'space-between'}}
-                                         cols={3} rowHeight={250}>
-                            {
-                                props.item.videos.map((item, index) => (
-                                    <PlayerModal name={item.name}
-                                                 url={item.link}
-                                                 key={index}/>))
+                        <Box sx={{
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            display: 'block',
+                            width: [250, 500, 1100]
+                        }}>
 
+                            {
+                                props.item.files.map((item, index) => (
+
+
+                                        <Box sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            marginTop: '10px'
+                                        }} key={index}>
+                                            <a href={item.link}
+                                               download={item.name}>
+                                                <IconButton>
+                                                    <PictureAsPdfIcon sx={{
+                                                        fontSize: '2rem',
+                                                        color: '#d08686',
+                                                        padding: '2px'
+                                                    }}/>
+                                                </IconButton>
+                                            </a>
+                                            <Typography>
+                                                {item.name}
+                                            </Typography>
+                                        </Box>
+
+
+
+
+
+                                ))
                             }
 
 
+                        </Box>
 
-                        </ImageList>
-
-
-
-                    {props.item.files.length > 0 ? <React.Fragment><Tooltip
-                        title="Дополнительные материалы">
-                        <IconButton>
-                            <ArticleIcon sx={{
-                                fontSize: '2rem',
-                                color: 'rgb(128,110,110)',
-                                padding: '2px'
-                            }}/>
-                        </IconButton>
-                    </Tooltip> <DividerStyled/> </React.Fragment> : ''}
-
-                    <Box sx={{
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        display: 'block',
-                        width: [250, 500, 1100]
-                    }}>
-
-                        {
-                            props.item.files.map((item, index) => (
-
-                                <React.Fragment>
-                                    <Box sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        marginTop: '10px'
-                                    }}>
-                                        <a href={item.link}
-                                           download={item.name}>
-                                            <IconButton>
-                                                <PictureAsPdfIcon sx={{
-                                                    fontSize: '2rem',
-                                                    color: '#d08686',
-                                                    padding: '2px'
-                                                }}/>
-                                            </IconButton>
-                                        </a>
-                                        <Typography>
-                                            {item.name}
-                                        </Typography>
-                                    </Box>
-
-
-                                </React.Fragment>
-
-
-                            ))
-                        }
-
-
-                    </Box>
-
-                </CardContent>
-
+                    </CardContent>
+                </Card>
             </Collapse>
         </React.Fragment>
     )

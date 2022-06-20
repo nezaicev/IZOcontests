@@ -11,6 +11,7 @@ import {styled} from "@mui/material/styles";
     padding: '20px',
     height: 'fit-content',
 
+
 }))
 
 export default MixCard
