@@ -23,5 +23,4 @@ const dataFetch = (url, params, callback) => {
         });
 
 }
-
 export default dataFetch
