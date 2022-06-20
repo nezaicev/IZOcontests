@@ -68,7 +68,7 @@ export function ExpandMoreCollapse(props) {
                 key={props.reg_number}>
                 <CardMedia
                     component="img"
-                    sx={{width: 400, display: expanded ? 'none' : 'block'}}
+                    sx={{width: 300, display: expanded ? 'none' : 'block'}}
                     image={props.item.images[0]['md_thumb']}
                     alt={props.item.author_name}
                 />
@@ -76,6 +76,7 @@ export function ExpandMoreCollapse(props) {
                 <Box sx={{
                     flexWrap: "wrap",
                     flexGrow: 1,
+                    width:400
                 }}>
 
                     <CardContent>

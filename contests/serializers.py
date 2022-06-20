@@ -2,12 +2,9 @@ from sorl.thumbnail import get_thumbnail
 
 from rest_framework import serializers
 from .models import ModxDbimgMuz, Archive, Level, ExtraImageArchive, \
-<<<<<<< HEAD
-    NominationVP, DirectionVP, VideoArchive, FileArchive, Region, ThemeART, ThemeRUSH, NominationMYMSK
-=======
-    NominationVP, DirectionVP, VideoArchive, FileArchive, Region, ThemeART, \
-    ThemeRUSH, Artakiada, NRusheva
->>>>>>> frontend
+NominationVP, DirectionVP, VideoArchive, FileArchive, Region, ThemeART, ThemeRUSH, NominationMYMSK
+
+
 
 
 class ModxDbimgMuzSerializer(serializers.ModelSerializer):
