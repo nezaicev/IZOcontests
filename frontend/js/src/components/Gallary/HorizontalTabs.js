@@ -18,7 +18,8 @@ export default function HorizontalTabs(props) {
     return (
         <Box
             sx={{
-                maxWidth: {xs: 420, sm: 800},
+                 // flexGrow: 1,
+        maxWidth: { xs: 300, sm: 800, md:900 },
                 bgcolor: 'background.paper',
             }}
         >
@@ -27,6 +28,7 @@ export default function HorizontalTabs(props) {
                 onChange={handleChange}
                 variant="scrollable"
                 scrollButtons
+                allowScrollButtonsMobile
                 textColor="inherit"
                 aria-label="visible arrows tabs example"
                 sx={{

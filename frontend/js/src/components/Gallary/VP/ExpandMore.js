@@ -68,7 +68,13 @@ export function ExpandMoreCollapse(props) {
                 key={props.reg_number}>
                 <CardMedia
                     component="img"
-                    sx={{width: 300, display: expanded ? 'none' : 'block'}}
+                    sx={{
+                        width: 350,
+                        display: expanded ? 'none' : 'block',
+                        justifyContent: 'center',
+                        marginLeft: 'auto',
+                        marginRight: 'auto'
+                    }}
                     image={props.item.images[0]['md_thumb']}
                     alt={props.item.author_name}
                 />
@@ -76,7 +82,7 @@ export function ExpandMoreCollapse(props) {
                 <Box sx={{
                     flexWrap: "wrap",
                     flexGrow: 1,
-                    width:400
+                    width: 350
                 }}>
 
                     <CardContent>
@@ -201,16 +207,13 @@ export function ExpandMoreCollapse(props) {
                                 </IconButton>
                             </Tooltip> <DividerStyled/> </React.Fragment> : ''}
 
-                            {
-                                props.item.videos.map((item, index) => (
-                                    <VideoItem name={item.name}
-                                               url={item.link}
-                                               key={index}/>))
+                        {
+                            props.item.videos.map((item, index) => (
+                                <VideoItem name={item.name}
+                                           url={item.link}
+                                           key={index}/>))
 
-                            }
-
-
-
+                        }
 
 
                         {props.item.files.length > 0 ? <React.Fragment><Tooltip
@@ -235,28 +238,25 @@ export function ExpandMoreCollapse(props) {
                                 props.item.files.map((item, index) => (
 
 
-                                        <Box sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            marginTop: '10px'
-                                        }} key={index}>
-                                            <a href={item.link}
-                                               download={item.name}>
-                                                <IconButton>
-                                                    <PictureAsPdfIcon sx={{
-                                                        fontSize: '2rem',
-                                                        color: '#d08686',
-                                                        padding: '2px'
-                                                    }}/>
-                                                </IconButton>
-                                            </a>
-                                            <Typography>
-                                                {item.name}
-                                            </Typography>
-                                        </Box>
-
-
-
+                                    <Box sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        marginTop: '10px'
+                                    }} key={index}>
+                                        <a href={item.link}
+                                           download={item.name}>
+                                            <IconButton>
+                                                <PictureAsPdfIcon sx={{
+                                                    fontSize: '2rem',
+                                                    color: '#d08686',
+                                                    padding: '2px'
+                                                }}/>
+                                            </IconButton>
+                                        </a>
+                                        <Typography>
+                                            {item.name}
+                                        </Typography>
+                                    </Box>
 
 
                                 ))

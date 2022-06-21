@@ -28,6 +28,7 @@ export default function VerticalTabs(props) {
                 orientation="vertical"
                 variant="scrollable"
                 scrollButtons
+                 allowScrollButtonsMobile
                 textColor="inherit"
                 aria-label="visible arrows tabs example"
                 sx={{
