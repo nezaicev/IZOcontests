@@ -52,7 +52,8 @@ export default function ImageGallery(props) {
                     gridTemplateColumns:'repeat(auto-fill, minmax(300px, 1fr))',
                     gridGap:'3px',
                     justifyItems: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    marginBottom:'30px',
 
                 }}>
 

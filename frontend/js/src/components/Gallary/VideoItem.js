@@ -31,6 +31,7 @@ const style = {
 
 const CustomItemBar = styled(ImageListItemBar)(({theme}) => ({
     backgroundColor: "rgb(129 110 110 / 76%)",
+
     "& .MuiImageListItemBar-title": {
         fontSize: '14px'
     }
@@ -77,14 +78,21 @@ export default function VideoItem(props) {
                 }} onClick={handleOpen}>
 
                     <ImageListItem>
-                        <Box>
-                            <img src={getThumbYoutube(props.url, 'mqdefault')}
-                                 alt={props.name}
-                                 loading="lazy"/>
 
-                            <CustomItemBar
-                                sx={{position: 'relative', bottom:'50px'}}
-                                title={props.name}
+                        <Box>
+                            <a href='#'>
+                                <img
+                                    src={getThumbYoutube(props.url, 'mqdefault')}
+                                    alt={props.name}
+                                    loading="lazy"/>
+                            </a>
+
+
+                            <ImageListItemBar
+                                sx={{
+                                    backgroundColor: "rgb(129 110 110 / 76%)"
+                                }}
+                                title={props.name.toUpperCase()}
                                 actionIcon={
                                     <Tooltip title="Видео">
                                         <IconButton>
@@ -97,10 +105,11 @@ export default function VideoItem(props) {
                                 }
                             >
 
-                            </CustomItemBar>
+                            </ImageListItemBar>
 
 
                         </Box>
+
                     </ImageListItem>
 
                 </Box>
@@ -122,6 +131,7 @@ export default function VideoItem(props) {
                 {/*    </CardContent>*/}
                 {/*</Collapse>*/}
             </CardVideo>
+
 
             <Modal
                 open={open}
