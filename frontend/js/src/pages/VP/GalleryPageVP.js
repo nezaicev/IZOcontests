@@ -3,6 +3,7 @@ import Container from "@mui/material/Container";
 import React from "react";
 import Header from "../../components/Header/Header";
 import GalleryVP from "../../components/Gallary/VP/GalleryVP";
+import VisibleBox from "../../components/Gallary/VisibleBox";
 
 
 
@@ -18,8 +19,10 @@ function GalleryPageVP(props){
                     contestName={process.env.REACT_APP_VP}
                     urlVerticalTabs={`${host}/frontend/api/archive/contest/years/`}
                     urlHorizontalTabs={`${host}/frontend/api/archive/contest/nominations/`}
-                    urlContent={`${host}/frontend/api/archive/`}
-                />
+                    urlContent={`${host}/frontend/api/archive/`}>
+
+                </GalleryVP>
+
             </Container>
         </Box>
 

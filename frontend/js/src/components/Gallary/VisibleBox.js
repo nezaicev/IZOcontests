@@ -1,13 +1,13 @@
 import Box from "@mui/material/Box";
 import React, {useEffect, useState} from "react";
-import useInfiniteScroll from "../../hooks/useInfiniteScroll";
+import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import axios from "axios";
-import MixCard from "../MixCard";
-import {ExpandMoreCollapse} from "./ExpandMore";
+import MixCard from "./MixCard";
+import {ExpandMoreCollapse} from "./VP/ItemVisibleVP";
 import {CircularProgress} from "@mui/material";
 
 
-export default function VisibleBoxVP(props) {
+export default function VisibleBox(props) {
     const [items, setItems] = useState([])
     const [isFetching, setIsFetching] = useState(false);
     const [HasMore, setHasMore] = useState(true);
@@ -64,14 +64,14 @@ export default function VisibleBoxVP(props) {
 
                     return (
                         <Box  key={index} ref={lastElementRef}>
-                        <ExpandMoreCollapse item={item} index={index} key={index}/>
+                            {props.visualComponent(index, item)}
                         </Box>
                     )
 
                 } else {
                     return (
                         <Box key={index}>
-                        <ExpandMoreCollapse item={item} index={index} key={index}/>
+                        {props.visualComponent(index, item)}
                         </Box>
                     )
                 }

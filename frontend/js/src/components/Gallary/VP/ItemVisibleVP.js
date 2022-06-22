@@ -20,7 +20,7 @@ import ImageList from "@mui/material/ImageList";
 import Card from "@mui/material/Card";
 import {CardMedia} from "@mui/material";
 
-export const ExpandMore = styled((props) => {
+export const ItemVisibleVP = styled((props) => {
     const {expand, ...other} = props;
     return <IconButton {...other} />;
 })(({theme, expand}) => ({
@@ -125,7 +125,7 @@ export function ExpandMoreCollapse(props) {
                     alignContent: 'flex-end'
                 }}>
                     <Box>
-                        <ExpandMore
+                        <ItemVisibleVP
                             expand={expanded}
                             onClick={handleExpandClick}
                             aria-expanded={expanded}
@@ -133,7 +133,7 @@ export function ExpandMoreCollapse(props) {
                             sx={{p: '5px', marginLeft: '5px'}}
                         >
                             <ExpandMoreIcon/>
-                        </ExpandMore>
+                        </ItemVisibleVP>
                     </Box>
                 </Box>
 

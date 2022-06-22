@@ -15,7 +15,7 @@ import CardContent from "@mui/material/CardContent";
 import Card from "@mui/material/Card";
 import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import {ImageButton} from "../styled";
-import {ExpandMore} from "./VP/ExpandMore";
+import {ItemVisibleVP} from "./VP/ItemVisibleVP";
 
 const style = {
 
@@ -113,7 +113,7 @@ export default function VideoItem(props) {
                     </ImageListItem>
 
                 </Box>
-                {/*<ExpandMore*/}
+                {/*<ItemVisibleVP*/}
                 {/*    expand={expanded}*/}
                 {/*    onClick={handleExpandClick}*/}
                 {/*    aria-expanded={expanded}*/}
@@ -121,7 +121,7 @@ export default function VideoItem(props) {
                 {/*    sx={{p: '2px'}}*/}
                 {/*>*/}
                 {/*    <ExpandMoreIcon/>*/}
-                {/*</ExpandMore>*/}
+                {/*</ItemVisibleVP>*/}
                 {/*<Collapse in={expanded} timeout="auto" unmountOnExit>*/}
                 {/*    <CardContent>*/}
                 {/*        <Typography>*/}

@@ -1,10 +1,8 @@
 import VerticalTabs from "../VerticalTabs";
 import HorizontalTabs from "../HorizontalTabs";
 import React, {useEffect, useState} from "react";
-import VisibleBox from "../VisibleBox";
 import {Box} from "@mui/material";
 import dataFetch from "../../utils/dataFetch";
-import {ExpandMoreCollapse} from "./ItemVisibleVP";
 
 
 export default function GalleryVP(props) {
@@ -30,13 +28,6 @@ export default function GalleryVP(props) {
     }, [valueVerticalTabs])
 
 
-    const visualComponent=(index, item)=>{
-
-             return <ExpandMoreCollapse item={item} index={index} key={index}/>
-
-    }
-
-
     return (<React.Fragment>
             <Box sx={{
                 display: 'flex',
@@ -59,17 +50,15 @@ export default function GalleryVP(props) {
             </Box>
             <Box sx={{}}>
 
-                <VisibleBox
-                    visualComponent={visualComponent}
-                    url={props.urlContent}
-                    contestName={props.contestName}
-                    year={dataVerticalTabs[valueVerticalTabs]}
-                    nomination={dataHorizontalTabs[valueHorizontalTabs]}
-                    page={page}
-                    setPage={(newValue) => {
-                        setPage(newValue)
-                    }}
-                />
+                {/*<VisibleBox*/}
+                {/*    url={props.urlContent}*/}
+                {/*    contestName={props.contestName}*/}
+                {/*    year={dataVerticalTabs[valueVerticalTabs]}*/}
+                {/*    nomination={dataHorizontalTabs[valueHorizontalTabs]}*/}
+                {/*    page={page}*/}
+                {/*    setPage={(newValue) => {*/}
+                {/*        setPage(newValue)*/}
+                {/*    }}/>*/}
 
             </Box>
         </React.Fragment>
