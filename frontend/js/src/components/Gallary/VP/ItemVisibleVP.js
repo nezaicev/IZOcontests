@@ -20,7 +20,7 @@ import ImageList from "@mui/material/ImageList";
 import Card from "@mui/material/Card";
 import {CardMedia} from "@mui/material";
 
-export const ItemVisibleVP = styled((props) => {
+export const ButtonCollapseVP = styled((props) => {
     const {expand, ...other} = props;
     return <IconButton {...other} />;
 })(({theme, expand}) => ({
@@ -63,69 +63,28 @@ export function ExpandMoreCollapse(props) {
     return (<React.Fragment>
 
             <Card
-                sx={{display: 'flex', flexWrap: 'wrap', marginTop: '20px'}}
+                sx={{display: 'block', flexWrap: 'wrap', marginTop: '20px'}}
                 name={props.item.author_name} url={props.item.link}
                 key={props.reg_number}>
-                <CardMedia
-                    component="img"
+                <Box
                     sx={{
-                        width: 350,
-                        display: expanded ? 'none' : 'block',
-                        justifyContent: 'center',
-                        marginLeft: 'auto',
-                        marginRight: 'auto'
-                    }}
-                    image={props.item.images[0]['md_thumb']}
-                    alt={props.item.author_name}
-                />
-
-                <Box sx={{
-                    flexWrap: "wrap",
-                    flexGrow: 1,
-                    width: 350
-                }}>
-
-                    <CardContent>
+                        height: {xs: "auto", sx: 'auto', md: 'auto'},
+                        margin: '20px'
+                    }}>
+                    <Box sx={{
+                        display: 'flex',
+                        justifyContent: "space-between"
+                    }}>
                         <Typography component="div" variant="h5"
                                     sx={{
                                         textAlign: 'center',
-                                        marginBottom: '25px'
+                                        marginLeft: '20px'
                                     }}>
                             {props.item.author_name}
                         </Typography>
-                        <Typography variant="subtitle1" color="text.secondary"
-                                    component="div"
-                                    sx={{
-                                        alignContent: 'center',
-                                        display: expanded ? 'none' : 'block',
-                                    }}>
-                            <FieldTitle title={'№ '}
-                                        content={props.item.reg_number}/>
-                            <FieldTitle
-                                title={props.item.fio.search(',') ||!validContestName(props.item.fio) > 0 ? 'Участники: ' : 'Участник: '}
-                                content={validContestName(props.item.fio)?formattingName(props.item.fio):props.item.fio}/>
-
-                            <FieldTitle
-                                title={props.item.fio_teacher.search(',') > 0 ? 'Педагоги: ' : 'Педагог: '}
-                                content={props.item.fio_teacher}/>
-
-                            <FieldTitle title='Направление: '
-                                        content={props.item.direction}/>
 
 
-                        </Typography>
-
-
-                    </CardContent>
-                </Box>
-
-                <Box sx={{
-                    display: 'flex',
-                    justifyContent: "right",
-                    alignContent: 'flex-end'
-                }}>
-                    <Box>
-                        <ItemVisibleVP
+                        <ButtonCollapseVP
                             expand={expanded}
                             onClick={handleExpandClick}
                             aria-expanded={expanded}
@@ -133,142 +92,161 @@ export function ExpandMoreCollapse(props) {
                             sx={{p: '5px', marginLeft: '5px'}}
                         >
                             <ExpandMoreIcon/>
-                        </ItemVisibleVP>
+                        </ButtonCollapseVP>
+
                     </Box>
+                    <DividerStyled/>
+                    <Box sx={{
+                        display: expanded ? 'none' : 'block',
+                        textAlign: 'center'
+                    }}>
+                        <ImageGallery
+
+                            images={props.item.images.slice(0, 3)}
+                            titleImg={props.item.author_name}
+                            key={props.index}/>
+
+
+                    </Box>
+
+
                 </Box>
 
+
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <Box sx={{marginBottom: '35px'}}>
+
+                        <CardContent>
+
+                            <Box sx={{margin: '20px'}}>
+
+                                <FieldTitle title={'№ '}
+                                            content={props.item.reg_number}/>
+                                <FieldTitle title={"Регион/город: "}
+                                            content={props.item.region + (props.item.city && (props.item.city !== props.item.region) ? ", " + props.item.city : '')}/>
+                                <FieldTitle title={'Образовательное уч.: '}
+                                            content={props.item.school}/>
+                                <FieldTitle title={'Возраст: '}
+                                            content={props.item.age}/>
+
+                                <FieldTitle
+                                    title={props.item.fio.search(',') || !validContestName(props.item.fio) > 0 ? 'Участники: ' : 'Участник: '}
+                                    content={validContestName(props.item.fio) ? formattingName(props.item.fio) : props.item.fio}/>
+
+                                <FieldTitle
+                                    title={props.item.fio_teacher.search(',') > 0 ? 'Педагоги: ' : 'Педагог: '}
+                                    content={props.item.fio_teacher}/>
+
+
+                                <FieldTitle title='Направление: '
+                                            content={props.item.direction}/>
+
+                                {
+                                    props.item.description ?
+                                        <Box sx={{marginTop: '10px'}}>
+                                            <Typography variant='body2'
+                                                        mt={10}>
+                                                {props.item.description}
+                                            </Typography> </Box> : ''
+
+                                }
+
+                            </Box>
+                            <Box>
+                                <Tooltip title="Фото">
+                                    <IconButton>
+                                        <CameraIcon sx={{
+                                            fontSize: '2rem',
+                                            color: 'rgb(128,110,110)',
+                                            padding: '2px'
+                                        }}/>
+                                    </IconButton>
+                                </Tooltip>
+                                <DividerStyled/>
+                            </Box>
+
+
+                            <ImageGallery images={props.item.images}
+                                          titleImg={props.item.author_name}
+                                          key={props.index}/>
+
+
+                            {props.item.videos.length > 0 ?
+                                <React.Fragment><Tooltip title="Видео">
+                                    <IconButton>
+                                        <OndemandVideoIcon sx={{
+                                            fontSize: '2rem',
+                                            color: 'rgb(128,110,110)',
+                                            padding: '2px'
+                                        }}/>
+                                    </IconButton>
+                                </Tooltip> <DividerStyled/>
+                                </React.Fragment> : ''}
+
+                            {
+                                props.item.videos.map((item, index) => (
+                                    <VideoItem name={item.name}
+                                               url={item.link}
+                                               key={index}/>))
+
+                            }
+
+
+                            {props.item.files.length > 0 ?
+                                <React.Fragment><Tooltip
+                                    title="Дополнительные материалы">
+                                    <IconButton>
+                                        <ArticleIcon sx={{
+                                            fontSize: '2rem',
+                                            color: 'rgb(128,110,110)',
+                                            padding: '2px'
+                                        }}/>
+                                    </IconButton>
+                                </Tooltip> <DividerStyled/>
+                                </React.Fragment> : ''}
+
+                            <Box sx={{
+                                marginLeft: 'auto',
+                                marginRight: 'auto',
+                                display: 'block',
+                                width: [250, 500, 1100]
+                            }}>
+
+                                {
+                                    props.item.files.map((item, index) => (
+
+
+                                        <Box sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            marginTop: '10px'
+                                        }} key={index}>
+                                            <a href={item.link}
+                                               download={item.name}>
+                                                <IconButton>
+                                                    <PictureAsPdfIcon sx={{
+                                                        fontSize: '2rem',
+                                                        color: '#d08686',
+                                                        padding: '2px'
+                                                    }}/>
+                                                </IconButton>
+                                            </a>
+                                            <Typography>
+                                                {item.name}
+                                            </Typography>
+                                        </Box>
+
+
+                                    ))
+                                }
+
+
+                            </Box>
+
+                        </CardContent>
+                    </Box>
+                </Collapse>
             </Card>
-
-
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <Card sx={{marginBottom: '35px'}}>
-
-                    <CardContent>
-
-                        <Box sx={{margin: '20px'}}>
-
-                            <FieldTitle title={'№ '}
-                                        content={props.item.reg_number}/>
-                            <FieldTitle title={"Регион/город: "}
-                                        content={props.item.region + (props.item.city && (props.item.city !== props.item.region) ? ", " + props.item.city : '')}/>
-                            <FieldTitle title={'Образовательное уч.: '}
-                                        content={props.item.school}/>
-                            <FieldTitle title={'Возраст: '}
-                                        content={props.item.age}/>
-
-                            <FieldTitle
-                                title={props.item.fio.search(',') ||!validContestName(props.item.fio) > 0 ? 'Участники: ' : 'Участник: '}
-                                content={validContestName(props.item.fio)?formattingName(props.item.fio):props.item.fio}/>
-
-                            <FieldTitle
-                                title={props.item.fio_teacher.search(',') > 0 ? 'Педагоги: ' : 'Педагог: '}
-                                content={props.item.fio_teacher}/>
-
-
-                            <FieldTitle title='Направление: '
-                                        content={props.item.direction}/>
-
-                            {
-                                props.item.description ?
-                                    <Box sx={{marginTop: '10px'}}>
-                                        <Typography variant='body2' mt={10}>
-                                            {props.item.description}
-                                        </Typography> </Box> : ''
-
-                            }
-
-                        </Box>
-                        <Box>
-                            <Tooltip title="Фото">
-                                <IconButton>
-                                    <CameraIcon sx={{
-                                        fontSize: '2rem',
-                                        color: 'rgb(128,110,110)',
-                                        padding: '2px'
-                                    }}/>
-                                </IconButton>
-                            </Tooltip>
-                            <DividerStyled/>
-                        </Box>
-
-
-                        <ImageGallery images={props.item.images}
-                                      titleImg={props.item.author_name}
-                                      key={props.index}/>
-
-
-                        {props.item.videos.length > 0 ?
-                            <React.Fragment><Tooltip title="Видео">
-                                <IconButton>
-                                    <OndemandVideoIcon sx={{
-                                        fontSize: '2rem',
-                                        color: 'rgb(128,110,110)',
-                                        padding: '2px'
-                                    }}/>
-                                </IconButton>
-                            </Tooltip> <DividerStyled/> </React.Fragment> : ''}
-
-                        {
-                            props.item.videos.map((item, index) => (
-                                <VideoItem name={item.name}
-                                           url={item.link}
-                                           key={index}/>))
-
-                        }
-
-
-                        {props.item.files.length > 0 ? <React.Fragment><Tooltip
-                            title="Дополнительные материалы">
-                            <IconButton>
-                                <ArticleIcon sx={{
-                                    fontSize: '2rem',
-                                    color: 'rgb(128,110,110)',
-                                    padding: '2px'
-                                }}/>
-                            </IconButton>
-                        </Tooltip> <DividerStyled/> </React.Fragment> : ''}
-
-                        <Box sx={{
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            display: 'block',
-                            width: [250, 500, 1100]
-                        }}>
-
-                            {
-                                props.item.files.map((item, index) => (
-
-
-                                    <Box sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        marginTop: '10px'
-                                    }} key={index}>
-                                        <a href={item.link}
-                                           download={item.name}>
-                                            <IconButton>
-                                                <PictureAsPdfIcon sx={{
-                                                    fontSize: '2rem',
-                                                    color: '#d08686',
-                                                    padding: '2px'
-                                                }}/>
-                                            </IconButton>
-                                        </a>
-                                        <Typography>
-                                            {item.name}
-                                        </Typography>
-                                    </Box>
-
-
-                                ))
-                            }
-
-
-                        </Box>
-
-                    </CardContent>
-                </Card>
-            </Collapse>
         </React.Fragment>
     )
 

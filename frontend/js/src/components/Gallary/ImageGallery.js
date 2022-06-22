@@ -45,36 +45,36 @@ const options = {
 export default function ImageGallery(props) {
     const images = props.images
     const title = props.titleImg
+
     return (
         <SimpleReactLightbox>
             <SRLWrapper options={options}>
-                <Box sx={{display:'grid',
-                    gridTemplateColumns:'repeat(auto-fill, minmax(300px, 1fr))',
-                    gridGap:'3px',
+                <Box sx={{
+                    display: 'grid',
+                    gridTemplateColumns: `repeat(auto-fill, minmax(300px, 1fr))`,
                     justifyItems: 'center',
                     alignItems: 'center',
-                    marginBottom:'30px',
+                    marginBottom: '30px',
 
                 }}>
 
+                    {images.map((item, index) => (
 
-                        {images.map((item, index) => (
+                        <ImageListItem key={index} sx={{marginTop: '25px'}}
+                        >
 
-                            <ImageListItem key={index} sx={{marginTop:'25px'}}
-                                           >
+                            <a href={item['md_thumb']}>
+                                <img
+                                    src={item['thumb']}
+                                    alt={title}
+                                    loading="lazy"
+                                />
 
-                                <a href={item['md_thumb']}>
-                                    <img
-                                        src={item['thumb']}
-                                        alt={title}
-                                        loading="lazy"
-                                    />
-
-                                </a>
-                            </ImageListItem>
+                            </a>
+                        </ImageListItem>
 
 
-                        ))}
+                    ))}
 
                 </Box>
 
