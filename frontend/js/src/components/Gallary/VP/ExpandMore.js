@@ -9,7 +9,7 @@ import {DividerStyled, ImageListStyled, TypographyStyled} from "../../styled";
 import ImageGallery from "../ImageGallery";
 import Typography from "@mui/material//Typography";
 import FieldTitle from "../FieldTitle";
-import {formattingName} from "../../utils/utils";
+import {formattingName, validContestName} from "../../utils/utils";
 import VideoItem from "../VideoItem";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import Tooltip from "@mui/material/Tooltip";
@@ -102,8 +102,8 @@ export function ExpandMoreCollapse(props) {
                             <FieldTitle title={'№ '}
                                         content={props.item.reg_number}/>
                             <FieldTitle
-                                title={props.item.fio.search(',') > 0 ? 'Участники: ' : 'Участник: '}
-                                content={formattingName(props.item.fio)}/>
+                                title={props.item.fio.search(',') ||!validContestName(props.item.fio) > 0 ? 'Участники: ' : 'Участник: '}
+                                content={validContestName(props.item.fio)?formattingName(props.item.fio):props.item.fio}/>
 
                             <FieldTitle
                                 title={props.item.fio_teacher.search(',') > 0 ? 'Педагоги: ' : 'Педагог: '}
@@ -157,12 +157,13 @@ export function ExpandMoreCollapse(props) {
                                         content={props.item.age}/>
 
                             <FieldTitle
-                                title={props.item.fio.search(',') > 0 ? 'Участники: ' : 'Участник: '}
-                                content={formattingName(props.item.fio)}/>
+                                title={props.item.fio.search(',') ||!validContestName(props.item.fio) > 0 ? 'Участники: ' : 'Участник: '}
+                                content={validContestName(props.item.fio)?formattingName(props.item.fio):props.item.fio}/>
 
                             <FieldTitle
                                 title={props.item.fio_teacher.search(',') > 0 ? 'Педагоги: ' : 'Педагог: '}
                                 content={props.item.fio_teacher}/>
+
 
                             <FieldTitle title='Направление: '
                                         content={props.item.direction}/>
