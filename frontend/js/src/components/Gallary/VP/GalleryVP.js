@@ -30,12 +30,20 @@ export default function GalleryVP(props) {
     }, [valueVerticalTabs])
 
 
-    const visualComponent=(index, item)=>{
+    const visualComponent = (items, ref) => {
+        return(
+            items.map((item, index) => {
 
-             return <ExpandMoreCollapse item={item} index={index} key={index}/>
+                return (
+                    <Box key={index} ref={(items.length === index + 1)?ref:null}>
+                        <ExpandMoreCollapse item={item}    index={index} key={index}/>
+                    </Box>
+                )
+
+            }
+        ))
 
     }
-
 
     return (<React.Fragment>
             <Box sx={{

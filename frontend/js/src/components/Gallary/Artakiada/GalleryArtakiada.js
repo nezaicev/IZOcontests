@@ -1,11 +1,13 @@
 import VerticalTabs from "../VerticalTabs";
 import HorizontalTabs from "../HorizontalTabs";
 import React, {useEffect, useState} from "react";
+import VisibleBox from "../VisibleBox";
 import {Box} from "@mui/material";
 import dataFetch from "../../utils/dataFetch";
 
 
-export default function GalleryVP(props) {
+
+export default function GalleryArtakiada(props) {
     const [dataVerticalTabs, setDataVerticalTabs] = React.useState([])
     const [valueVerticalTabs, setValueVerticalTabs] = React.useState('')
     const [dataHorizontalTabs, setDataHorizontalTabs] = React.useState([])
@@ -26,6 +28,21 @@ export default function GalleryVP(props) {
             setDataHorizontalTabs(data, [setValueHorizontalTabs(0)])
         })
     }, [valueVerticalTabs])
+
+
+    const visualComponent=(index, item, ref)=>{
+
+             // return <ExpandMoreCollapse item={item} index={index} key={index}/>
+
+
+
+
+
+
+
+
+
+    }
 
 
     return (<React.Fragment>
@@ -50,15 +67,17 @@ export default function GalleryVP(props) {
             </Box>
             <Box sx={{}}>
 
-                {/*<VisibleBox*/}
-                {/*    url={props.urlContent}*/}
-                {/*    contestName={props.contestName}*/}
-                {/*    year={dataVerticalTabs[valueVerticalTabs]}*/}
-                {/*    nomination={dataHorizontalTabs[valueHorizontalTabs]}*/}
-                {/*    page={page}*/}
-                {/*    setPage={(newValue) => {*/}
-                {/*        setPage(newValue)*/}
-                {/*    }}/>*/}
+                <VisibleBox
+                    visualComponent={visualComponent}
+                    url={props.urlContent}
+                    contestName={props.contestName}
+                    year={dataVerticalTabs[valueVerticalTabs]}
+                    nomination={dataHorizontalTabs[valueHorizontalTabs]}
+                    page={page}
+                    setPage={(newValue) => {
+                        setPage(newValue)
+                    }}
+                />
 
             </Box>
         </React.Fragment>

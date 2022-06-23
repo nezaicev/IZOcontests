@@ -6,6 +6,47 @@ import ImageListItem, {imageListItemClasses} from "@mui/material/ImageListItem";
 import Divider from "@mui/material/Divider";
 
 
+
+export const optionsSRLWrapper = {
+    settings: {
+        autoplaySpeed: 3000,
+        boxShadow: 'none',
+        disableKeyboardControls: false,
+        disablePanzoom: false,
+        disableWheelControls: false,
+        hideControlsAfter: false,
+        lightboxTransitionSpeed: 0.3,
+        lightboxTransitionTimingFunction: 'linear',
+        overlayColor: 'rgb(38 30 27 /98%)',
+        slideAnimationType: 'fade',
+        slideSpringValues: [300, 50],
+        slideTransitionSpeed: 0.6,
+        slideTransitionTimingFunction: 'linear',
+        usingPreact: false
+    },
+    buttons: {
+        backgroundColor: "rgb(104 99 97)",
+        iconColor: "#dcd9d9",
+    },
+    caption: {
+        captionColor: "#ffffff",
+        fontFamily: "Roboto",
+        captionContainerPadding: '0px 0 0px 0',
+        showCaption: true
+
+    },
+    thumbnails: {
+        showThumbnails: false
+    }
+
+};
+
+
+
+
+
+
+
 export const DividerStyled=styled(Divider)(()=>({
     backgroundColor:'#efece3',
     height:'2px',

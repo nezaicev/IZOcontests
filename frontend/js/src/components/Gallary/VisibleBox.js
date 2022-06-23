@@ -59,26 +59,9 @@ export default function VisibleBox(props) {
 
     return (
         <Box>
-            {items.map((item, index) => {
-                if (items.length === index + 1) {
 
-                    return (
-                        <Box  key={index} ref={lastElementRef}>
-                            {props.visualComponent(index, item)}
-                        </Box>
-                    )
+            { items.length===0?'':props.visualComponent(items, lastElementRef)}
 
-                } else {
-                    return (
-                        <Box key={index}>
-                        {props.visualComponent(index, item)}
-                        </Box>
-                    )
-                }
-
-
-
-            })}
               {isFetching && <Box sx={{
                 justifyContent: 'center',
                 height: '600',
