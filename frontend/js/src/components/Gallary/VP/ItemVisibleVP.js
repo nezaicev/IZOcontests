@@ -83,7 +83,7 @@ export function ExpandMoreCollapse(props) {
                             {props.item.author_name}
                         </Typography>
 
-
+                        <Box>
                         <ButtonCollapseVP
                             expand={expanded}
                             onClick={handleExpandClick}
@@ -93,6 +93,7 @@ export function ExpandMoreCollapse(props) {
                         >
                             <ExpandMoreIcon/>
                         </ButtonCollapseVP>
+                            </Box>
 
                     </Box>
                     <DividerStyled/>
