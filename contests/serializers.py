@@ -53,7 +53,7 @@ class ImagesSerializer(serializers.RelatedField):
         model = ExtraImageArchive
 
     def to_representation(self, value):
-        return {'thumb': get_thumbnail(value.image, '320x180', crop='center',
+        return {'thumb': get_thumbnail(value.image, '320x220', crop='center',
                                        quality=99).url,
 
 

@@ -2,8 +2,6 @@ import Box from "@mui/material/Box";
 import React, {useEffect, useState} from "react";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import axios from "axios";
-import MixCard from "./MixCard";
-import {ExpandMoreCollapse} from "./VP/ItemVisibleVP";
 import {CircularProgress} from "@mui/material";
 
 
