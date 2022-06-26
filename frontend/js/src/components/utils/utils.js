@@ -17,9 +17,6 @@ export function validContestName(name){
 }
 
 
-
-
-
 export function formattingName(name) {
     if (name) {
         let data = name.split(', ')
@@ -40,6 +37,7 @@ export function createLabel(obj) {
     let fio = obj.fio ? `${formattingName(obj.fio)}, ` : ''
     let school = obj.school ? `${obj.school}, ` : ''
     let fioTeacher = obj.fio_teacher ? `пед. ${obj.fio_teacher}, ` : ''
-    return `${authorName}${material}${age}${fio}${school}${fioTeacher} `
+    let regNumber = obj.reg_number ? `${obj.reg_number}` : ''
+    return `${authorName}${material}${age}${fio}${school}${fioTeacher}${regNumber}`
 
 }

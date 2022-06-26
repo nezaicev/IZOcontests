@@ -3,15 +3,16 @@ import HorizontalTabs from "../HorizontalTabs";
 import React, {useEffect, useState} from "react";
 import {Box} from "@mui/material";
 import dataFetch from "../../utils/dataFetch";
-import {ExpandMoreCollapse} from "./ItemVisibleVP";
-import VisibleBoxVP from "./VisibleBoxVP";
+import VisibleBoxImages from "../VisibleBoxImages";
+import CreativeTack from "../CreativeTack";
 
 
-export default function GalleryVP(props) {
+export default function GalleryNRusheva(props) {
     const [dataVerticalTabs, setDataVerticalTabs] = React.useState([])
     const [valueVerticalTabs, setValueVerticalTabs] = React.useState('')
     const [dataHorizontalTabs, setDataHorizontalTabs] = React.useState([])
     const [valueHorizontalTabs, setValueHorizontalTabs] = React.useState(0)
+    const [valueCreativeTack, setValueCreativeTack] = React.useState('')
     const [params, setParams] = React.useState({contest_name: props.contestName})
     const [page, setPage] = useState(1)
 
@@ -28,6 +29,14 @@ export default function GalleryVP(props) {
             setDataHorizontalTabs(data, [setValueHorizontalTabs(0)])
         })
     }, [valueVerticalTabs])
+
+    useEffect(() => {
+        params['year_contest'] = dataVerticalTabs[valueVerticalTabs]
+        params['theme'] = dataHorizontalTabs[valueHorizontalTabs]
+        dataFetch(props.urlCreativeTack, params, (data) => {
+            setValueCreativeTack(data)
+        })
+    }, [valueHorizontalTabs])
 
 
     return (<React.Fragment>
@@ -50,13 +59,16 @@ export default function GalleryVP(props) {
 
                 />
             </Box>
+
+            <CreativeTack data={valueCreativeTack}/>
+
             <Box sx={{}}>
 
-                <VisibleBoxVP
+                <VisibleBoxImages
                     url={props.urlContent}
                     contestName={props.contestName}
                     year={dataVerticalTabs[valueVerticalTabs]}
-                    nomination={dataHorizontalTabs[valueHorizontalTabs]}
+                    theme={dataHorizontalTabs[valueHorizontalTabs]}
                     page={page}
                     setPage={(newValue) => {
                         setPage(newValue)

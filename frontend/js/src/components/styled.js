@@ -4,6 +4,8 @@ import Button from "@mui/material/Button";
 import {Typography} from "@mui/material";
 import ImageListItem, {imageListItemClasses} from "@mui/material/ImageListItem";
 import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import * as React from "react";
 
 
 
@@ -84,3 +86,21 @@ export const ImageButton = styled(Button)(() => ({
 
 
 }))
+
+export const ButtonCollapse = styled((props) => {
+    const {expand, ...other} = props;
+    return <IconButton {...other} />;
+})(({theme, expand}) => ({
+    backgroundColor: 'rgb(239, 236, 227)',
+    '&:hover': {
+        backgroundColor: "#c4b7b7",
+    },
+    margin: '5px',
+    display: 'inline-flex',
+    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+    marginLeft: 'auto',
+
+    transition: theme.transitions.create('transform', {
+        duration: theme.transitions.duration.shortest,
+    }),
+}));

@@ -32,7 +32,7 @@ export default function HorizontalTabs(props) {
                 textColor="inherit"
                 aria-label="visible arrows tabs example"
                 sx={{
-
+                    height:48,
                     '&.MuiButtonBase-root-MuiTab-root.Mui-selected':{color:'#33a4a4'},
                    [`& .${tabsClasses.indicator}`]:{
                           backgroundColor:'#d36666'

@@ -14,8 +14,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CardContent from "@mui/material/CardContent";
 import Card from "@mui/material/Card";
 import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
-import {ImageButton} from "../styled";
+import {ButtonCollapse, ImageButton} from "../styled";
 import {ItemVisibleVP} from "./VP/ItemVisibleVP";
+import FieldTitle from "./FieldTitle";
 
 const style = {
 
@@ -66,6 +67,7 @@ export default function VideoItem(props) {
         setExpanded(!expanded);
     };
 
+
     return (
 
         <Box>
@@ -113,23 +115,56 @@ export default function VideoItem(props) {
                     </ImageListItem>
 
                 </Box>
-                {/*<ItemVisibleVP*/}
-                {/*    expand={expanded}*/}
-                {/*    onClick={handleExpandClick}*/}
-                {/*    aria-expanded={expanded}*/}
-                {/*    aria-label="show more"*/}
-                {/*    sx={{p: '2px'}}*/}
-                {/*>*/}
-                {/*    <ExpandMoreIcon/>*/}
-                {/*</ItemVisibleVP>*/}
-                {/*<Collapse in={expanded} timeout="auto" unmountOnExit>*/}
-                {/*    <CardContent>*/}
-                {/*        <Typography>*/}
-                {/*            {props.name}*/}
-                {/*        </Typography>*/}
+                {props.item ?
+                    <Box>
 
-                {/*    </CardContent>*/}
-                {/*</Collapse>*/}
+                        <Box sx={{padding: '10px'}}>
+                            <Box sx={{ display: expanded ? 'none' : 'block'}}>
+                            <FieldTitle
+                                title={props.item.fio_teacher.search(',') > 0 ? 'Педагоги: ' : 'Педагог: '}
+                                content={props.item.fio_teacher}/>
+                            <FieldTitle title={"Регион/город: "}
+                                        content={props.item.region + (props.item.city && (props.item.city !== props.item.region) ? ", " + props.item.city : '')}/>
+                            <FieldTitle title={'Образовательное уч.: '}
+                                        content={props.item.school}/>
+                                </Box>
+                            <Box sx={{
+                                textAlign: 'right',
+                                marginRight: '-10px',
+                                marginBottom: '-10px'
+                            }}>
+                                <ButtonCollapse
+                                    expand={expanded}
+                                    onClick={handleExpandClick}
+                                    aria-expanded={expanded}
+                                    aria-label="show more"
+                                    sx={{p: '2px'}}>
+                                    <ExpandMoreIcon/>
+                                </ButtonCollapse>
+                            </Box>
+
+                        </Box>
+                        <Collapse in={expanded} timeout="auto" unmountOnExit>
+                            <CardContent sx={{padding:'8px'}}>
+                                <FieldTitle title={'Название: '}
+                                            content={props.item.author_name}/>
+                                <FieldTitle
+                                    title={props.item.fio_teacher.search(',') > 0 ? 'Педагоги: ' : 'Педагог: '}
+                                    content={props.item.fio_teacher}/>
+                                <FieldTitle title={"Регион/город: "}
+                                            content={props.item.region + (props.item.city && (props.item.city !== props.item.region) ? ", " + props.item.city : '')}/>
+                                <FieldTitle title={'Образовательное уч.: '}
+                                            content={props.item.school}/>
+                                {
+                                    props.item.description ?
+                                        <FieldTitle title={'Описание: '}
+                                            content={props.item.description}/>: ''
+
+                                }
+
+                            </CardContent>
+                        </Collapse>
+                    </Box> : ''}
             </CardVideo>
 
 

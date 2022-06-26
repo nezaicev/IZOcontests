@@ -3,7 +3,7 @@ import Container from "@mui/material/Container";
 import React from "react";
 import Header from "../../components/Header/Header";
 import GalleryVP from "../../components/Gallary/VP/GalleryVP";
-import VisibleBox from "../../components/Gallary/VisibleBox";
+
 
 
 

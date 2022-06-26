@@ -1,11 +1,12 @@
 import Box from "@mui/material/Box";
 import React, {useEffect, useState} from "react";
-import useInfiniteScroll from "../hooks/useInfiniteScroll";
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import axios from "axios";
 import {CircularProgress} from "@mui/material";
+import {ExpandMoreCollapse} from "./ItemVisibleVP";
 
 
-export default function VisibleBox(props) {
+export default function VisibleBoxVP(props) {
     const [items, setItems] = useState([])
     const [isFetching, setIsFetching] = useState(false);
     const [HasMore, setHasMore] = useState(true);
@@ -59,16 +60,28 @@ export default function VisibleBox(props) {
     return (
         <Box>
 
-            { items.length===0?'':props.visualComponent(items, lastElementRef)}
+            {
+                items.map((item, index) => {
 
-              {isFetching && <Box sx={{
+                    return (
+                        <Box key={index}
+                             ref={(items.length === index + 1) ? lastElementRef : null}>
+                            <ExpandMoreCollapse item={item} index={index}
+                                                key={index}/>
+                        </Box>
+                    )
+
+                })
+            }
+
+            {isFetching && <Box sx={{
                 justifyContent: 'center',
                 height: '600',
                 display: 'flex',
-                  marginTop:' 20px'
+                marginTop: ' 20px'
             }}>
-                <CircularProgress  sx={{
-                    color:'#d26666'
+                <CircularProgress sx={{
+                    color: '#d26666'
                 }}/>
             </Box>}
         </Box>

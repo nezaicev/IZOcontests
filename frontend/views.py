@@ -3,14 +3,16 @@ import django_filters
 from frontend.apps import StandardResultsSetPagination
 from django.shortcuts import render
 
-from contests.models import Archive, NominationVP, DirectionVP, ThemeART,NominationMYMSK, \
-    ThemeRUSH, Artakiada
+from contests.models import Archive, NominationVP, DirectionVP, ThemeART, \
+    NominationMYMSK, \
+    ThemeRUSH, CreativeTack
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from contests.serializers import ArchiveSerializer, NominationVPSerializer, \
-    DirectionVPSerializer, ThemeNRushevaSerializer, ThemeArtakiadaSerializer, NominationMymoskvichiSerializer
+    DirectionVPSerializer, ThemeNRushevaSerializer, ThemeArtakiadaSerializer, \
+    NominationMymoskvichiSerializer
 
 
 def index(request):
@@ -77,3 +79,32 @@ class NominationContestAPIView(APIView):
         nominations = list(nominations)
         nominations.sort(reverse=True)
         return Response(nominations)
+
+
+class ThemeContestAPIView(APIView):
+
+    def get(self, request):
+        contest_name = request.query_params.get('contest_name')
+        year = request.query_params.get('year_contest')
+        themes = set(
+            Archive.objects.filter(contest_name=contest_name,
+                                   year_contest=year).values_list(
+                'theme', flat=True))
+        themes = list(themes)
+        themes.sort(reverse=True)
+        return Response(themes)
+
+
+class CreativeTackAPIView(APIView):
+
+    def get(self, request):
+        contest_name = request.query_params.get('contest_name')
+        year = request.query_params.get('year_contest')
+        theme = request.query_params.get('theme')
+        content = set(
+            CreativeTack.objects.filter(contest_name=contest_name,
+                                        year_contest=year,
+                                        theme=theme).values_list(
+                'content', flat=True))
+
+        return Response(content)

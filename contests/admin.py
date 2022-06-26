@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from contests.models import Artakiada, NRusheva, Mymoskvichi, \
     ParticipantMymoskvichi, \
     TeacherExtraMymoskvichi, Archive, ShowEvent, VP, ParticipantVP, \
-    TeacherExtraVP, ExtraImageVP, ExtraImageArchive, VideoArchive, VideoVP, FileArchive
+    TeacherExtraVP, ExtraImageVP, ExtraImageArchive, VideoArchive, VideoVP, FileArchive, CreativeTack
 from contests.directory import NominationNR, NominationART, NominationMYMSK, \
     ThemeART, \
     ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level, AgeVP, \
@@ -15,7 +15,7 @@ from contests.directory import NominationNR, NominationART, NominationMYMSK, \
 from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm
 from django.conf import settings
-from contests.forms import PageContestsFrom, ConfStorageForm
+from contests.forms import PageContestsFrom, ConfStorageForm, CreativeTackAdminForm
 from contests.models import PageContest, Message, ModxDbimgMuz, Events
 from contests import utils
 from contests import tasks
@@ -534,6 +534,9 @@ class PageContestAdmin(admin.ModelAdmin):
     form = PageContestsFrom
 
 
+class CreativeTackAdmin(admin.ModelAdmin):
+    form=CreativeTackAdminForm
+
 class MessageAdmin(admin.ModelAdmin):
     model = Message
     list_display = ['name']
@@ -653,3 +656,4 @@ admin.site.register(NominationVP)
 admin.site.register(NominationNR)
 admin.site.register(DirectionVP)
 admin.site.register(AgeART)
+admin.site.register(CreativeTack, CreativeTackAdmin)

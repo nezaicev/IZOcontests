@@ -105,9 +105,9 @@ class ThumbnailSerializer(serializers.ImageField):
 
     def to_representation(self, value):
         if value:
-            return {'thumb': get_thumbnail(value.url, '320x180', crop='center',
+            return {'thumb': get_thumbnail(value.url, '320x220', crop='center',
                                            quality=99).url,
-                    'md_thumb': get_thumbnail(value.url, '1152',
+                    'md_thumb': get_thumbnail(value.url, '2000',
                                               quality=99).url,
                     'original': value.url,
                     }

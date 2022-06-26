@@ -1,12 +1,10 @@
 import VerticalTabs from "../VerticalTabs";
 import HorizontalTabs from "../HorizontalTabs";
 import React, {useEffect, useState} from "react";
-import VisibleBox from "../VisibleBox";
 import {Box} from "@mui/material";
 import dataFetch from "../../utils/dataFetch";
-import SimpleReactLightbox, {SRLWrapper} from "simple-react-lightbox";
-import {optionsSRLWrapper} from "../../styled";
-import ImageListItem from "@mui/material/ImageListItem";
+import VisibleBoxImages from "../VisibleBoxImages";
+import CreativeTack from "../CreativeTack";
 
 
 export default function GalleryArtakiada(props) {
@@ -14,6 +12,7 @@ export default function GalleryArtakiada(props) {
     const [valueVerticalTabs, setValueVerticalTabs] = React.useState('')
     const [dataHorizontalTabs, setDataHorizontalTabs] = React.useState([])
     const [valueHorizontalTabs, setValueHorizontalTabs] = React.useState(0)
+    const [valueCreativeTack, setValueCreativeTack] = React.useState('')
     const [params, setParams] = React.useState({contest_name: props.contestName})
     const [page, setPage] = useState(1)
 
@@ -31,49 +30,13 @@ export default function GalleryArtakiada(props) {
         })
     }, [valueVerticalTabs])
 
-
-    const visualComponent = (items, ref) => {
-
-        return (
-
-            <SimpleReactLightbox>
-                <SRLWrapper options={optionsSRLWrapper}>
-                    <Box sx={{
-                        display: 'grid',
-                        gridTemplateColumns: `repeat(auto-fill, minmax(300px, 1fr))`,
-                        justifyItems: 'center',
-                        alignItems: 'center',
-                        marginBottom: '30px',
-
-                    }}>
-
-                        {items.images.map((item, index) => (
-
-                            <ImageListItem key={index} sx={{marginTop: '25px'}}
-                            >
-
-                                <a href={item['md_thumb']}>
-                                    <img
-                                        src={item['thumb']}
-                                        alt={title}
-                                        loading="lazy"
-                                    />
-
-                                </a>
-                            </ImageListItem>
-
-
-                        ))}
-
-                    </Box>
-
-
-                </SRLWrapper>
-            </SimpleReactLightbox>
-        )
-
-
-    }
+    useEffect(() => {
+        params['year_contest'] = dataVerticalTabs[valueVerticalTabs]
+        params['theme'] = dataHorizontalTabs[valueHorizontalTabs]
+        dataFetch(props.urlCreativeTack, params, (data) => {
+            setValueCreativeTack(data)
+        })
+    }, [valueHorizontalTabs])
 
 
     return (<React.Fragment>
@@ -96,14 +59,16 @@ export default function GalleryArtakiada(props) {
 
                 />
             </Box>
+
+            <CreativeTack data={valueCreativeTack}/>
+
             <Box sx={{}}>
 
-                <VisibleBox
-                    visualComponent={visualComponent}
+                <VisibleBoxImages
                     url={props.urlContent}
                     contestName={props.contestName}
                     year={dataVerticalTabs[valueVerticalTabs]}
-                    nomination={dataHorizontalTabs[valueHorizontalTabs]}
+                    theme={dataHorizontalTabs[valueHorizontalTabs]}
                     page={page}
                     setPage={(newValue) => {
                         setPage(newValue)

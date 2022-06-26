@@ -19,24 +19,8 @@ import ArticleIcon from '@mui/icons-material/Article';
 import ImageList from "@mui/material/ImageList";
 import Card from "@mui/material/Card";
 import {CardMedia} from "@mui/material";
+import {ButtonCollapse} from "../../styled";
 
-export const ButtonCollapseVP = styled((props) => {
-    const {expand, ...other} = props;
-    return <IconButton {...other} />;
-})(({theme, expand}) => ({
-    backgroundColor: 'rgb(239, 236, 227)',
-    '&:hover': {
-        backgroundColor: "#c4b7b7",
-    },
-    margin: '5px',
-    display: 'inline-flex',
-    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-    marginLeft: 'auto',
-
-    transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
-    }),
-}));
 
 function createMarkup() {
     return {__html: 'Первый &middot; Второй'};
@@ -84,7 +68,7 @@ export function ExpandMoreCollapse(props) {
                         </Typography>
 
                         <Box>
-                        <ButtonCollapseVP
+                        <ButtonCollapse
                             expand={expanded}
                             onClick={handleExpandClick}
                             aria-expanded={expanded}
@@ -92,7 +76,7 @@ export function ExpandMoreCollapse(props) {
                             sx={{p: '5px', marginLeft: '5px'}}
                         >
                             <ExpandMoreIcon/>
-                        </ButtonCollapseVP>
+                        </ButtonCollapse>
                             </Box>
 
                     </Box>

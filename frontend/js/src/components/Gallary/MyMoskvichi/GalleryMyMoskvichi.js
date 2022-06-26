@@ -1,13 +1,13 @@
+
 import VerticalTabs from "../VerticalTabs";
 import HorizontalTabs from "../HorizontalTabs";
 import React, {useEffect, useState} from "react";
 import {Box} from "@mui/material";
 import dataFetch from "../../utils/dataFetch";
-import {ExpandMoreCollapse} from "./ItemVisibleVP";
-import VisibleBoxVP from "./VisibleBoxVP";
+import VisibleBoxMyMoskvichi from "./VisibleBoxMyMoskvichi";
 
 
-export default function GalleryVP(props) {
+export default function GalleryMyMoskvichi(props) {
     const [dataVerticalTabs, setDataVerticalTabs] = React.useState([])
     const [valueVerticalTabs, setValueVerticalTabs] = React.useState('')
     const [dataHorizontalTabs, setDataHorizontalTabs] = React.useState([])
@@ -32,6 +32,7 @@ export default function GalleryVP(props) {
 
     return (<React.Fragment>
             <Box sx={{
+
                 display: 'flex',
                 flexWrap: 'wrap',
                 justifyContent: 'center',
@@ -49,10 +50,11 @@ export default function GalleryVP(props) {
                               setValueVerticalTabs={(newValue) => (setValueVerticalTabs(newValue, [setPage(1)]))}
 
                 />
+
             </Box>
             <Box sx={{}}>
 
-                <VisibleBoxVP
+                <VisibleBoxMyMoskvichi
                     url={props.urlContent}
                     contestName={props.contestName}
                     year={dataVerticalTabs[valueVerticalTabs]}

@@ -1,5 +1,5 @@
 from django import forms
-from contests.models import PageContest, Events
+from contests.models import PageContest, Events, CreativeTack
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 
@@ -28,6 +28,18 @@ class PageContestsFrom(forms.ModelForm):
         model = PageContest
 
 
+class CreativeTackAdminForm(forms.ModelForm):
+    content = forms.CharField(widget=CKEditorUploadingWidget(),
+                              label='Контент')
+
+    class Meta:
+        fields= ('contest_name', 'year_contest', 'theme')
+        model= CreativeTack
+
+
+
+
+
 def get_my_choices(model, field):
     choices_list = tuple((i, i) for i in
                          model.objects.filter(field=field,access=True).values_list('data',
@@ -37,22 +49,4 @@ def get_my_choices(model, field):
 
 
 
-
-# class MymoskvichiForm(forms.ModelForm):
-#     model = Mymoskvichi
-#
-#     def __init__(self, *args, **kwargs):
-#         super(MymoskvichiForm, self).__init__(*args, **kwargs)
-#         self.fields['nomination'] = forms.ChoiceField(label='Номинация',
-#                                                       choices=get_my_choices(
-#                                                           MymoskvichiSelect,
-#                                                           'nomination'))
-#         self.fields['nomination_extra'] = forms.ChoiceField(label='Доп. номинация',
-#                                                             choices=get_my_choices(
-#                                                                 MymoskvichiSelect,
-#                                                                 'nomination'))
-#         self.fields['age'] = forms.ChoiceField(label='Возрастная категория',
-#             choices=get_my_choices(MymoskvichiSelect, 'age'))
-#
-#
 

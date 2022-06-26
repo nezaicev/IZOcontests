@@ -39,6 +39,7 @@ export default function VerticalTabs(props) {
                        '&.Mui-selected':{
                           color:'#d36666'}
                     },
+
                     [`& .${tabsClasses.scrollButtons}`]: {
                         '&.Mui-disabled': {
                             opacity: 1,

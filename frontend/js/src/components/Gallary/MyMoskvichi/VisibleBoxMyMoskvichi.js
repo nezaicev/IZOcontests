@@ -1,11 +1,13 @@
 import Box from "@mui/material/Box";
 import React, {useEffect, useState} from "react";
-import useInfiniteScroll from "../hooks/useInfiniteScroll";
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import axios from "axios";
 import {CircularProgress} from "@mui/material";
+// import {ExpandMoreCollapse} from "./ItemVisibleVP";
+import VideoItem from "../VideoItem";
 
 
-export default function VisibleBox(props) {
+export default function VisibleBoxMyMoskvichi(props) {
     const [items, setItems] = useState([])
     const [isFetching, setIsFetching] = useState(false);
     const [HasMore, setHasMore] = useState(true);
@@ -32,13 +34,12 @@ export default function VisibleBox(props) {
             method: "GET",
             url: props.url,
             params: {
-                page_size: 1,
+                page_size: 3,
                 publish: true,
                 contest_name: props.contestName,
                 year: props.year,
                 page: props.page,
                 nomination: props.nomination,
-                // theme:props.theme,
                 ordering: '-rating',
             },
         })
@@ -58,17 +59,33 @@ export default function VisibleBox(props) {
 
     return (
         <Box>
+            <Box sx={{display:'flex', flexWrap:'wrap'}}>
+                {
+                    items.map((item, index) => {
 
-            { items.length===0?'':props.visualComponent(items, lastElementRef)}
+                        return (
+                            <Box key={index}
+                                 ref={(items.length === index + 1) ? lastElementRef : null}>
+                                <VideoItem name={item.author_name}
+                                           item={item}
+                                           url={item.link}
+                                           key={index}/>
 
-              {isFetching && <Box sx={{
+                            </Box>
+                        )
+
+                    })
+                }
+            </Box>
+
+            {isFetching && <Box sx={{
                 justifyContent: 'center',
                 height: '600',
                 display: 'flex',
-                  marginTop:' 20px'
+                marginTop: ' 20px'
             }}>
-                <CircularProgress  sx={{
-                    color:'#d26666'
+                <CircularProgress sx={{
+                    color: '#d26666'
                 }}/>
             </Box>}
         </Box>

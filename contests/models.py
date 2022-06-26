@@ -85,7 +85,6 @@ def get_info_contests(alias_contest):
 
 
 class Events(models.Model):
-
     name = models.CharField(verbose_name='Название (конкурс/мероприятие)',
                             max_length=100, blank=False)
     event = models.ForeignKey('PageContest', verbose_name='Мероприятие',
@@ -573,8 +572,6 @@ class Archive(BaseContest):
     def save(self, *args, **kwargs):
         super(BaseContest, self).save(*args, **kwargs)
 
-
-
     class Meta:
         verbose_name = 'Архив'
         verbose_name_plural = 'Архив'
@@ -592,10 +589,12 @@ class Archive(BaseContest):
         try:
             contest = Events.objects.get(
                 event=PageContest.objects.get(name=self.contest_name).id)
-            blank = Cert.objects.get(contest=contest.id, status=self.status, year_contest=self.year_contest)
+            blank = Cert.objects.get(contest=contest.id, status=self.status,
+                                     year_contest=self.year_contest)
             if blank:
                 return mark_safe(
-                    '<a target="_blank" href="/certs/?reg_number={}&event={}">Сертификат</a>'.format(self.reg_number,contest.id)
+                    '<a target="_blank" href="/certs/?reg_number={}&event={}">Сертификат</a>'.format(
+                        self.reg_number, contest.id)
                 )
             else:
                 return '-'
@@ -718,3 +717,18 @@ class FileArchive(File):
     class Meta:
         verbose_name = 'Файлы архив'
         verbose_name_plural = 'Файлы архив'
+
+
+class CreativeTack(models.Model):
+    contest_name = models.CharField('Конкурс', max_length=50)
+    year_contest = models.CharField('Год', max_length=50)
+    theme = models.CharField('Тема|Номинация', max_length=50)
+    content = RichTextField(verbose_name='Контент')
+
+    class Meta:
+        unique_together = ['contest_name', 'year_contest', 'theme']
+        verbose_name = 'Творческое задание'
+        verbose_name_plural = 'Творческие задания'
+
+    def __str__(self):
+        return f"{self.theme} {self.contest_name} {self.year_contest}"
