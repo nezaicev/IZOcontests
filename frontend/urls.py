@@ -5,6 +5,8 @@ urlpatterns = [
     path('', views.index),
     path('vp/', views.index),
     path('artakiada/', views.index),
+    path('nrusheva/', views.index),
+    path('mymoskvichi/', views.index),
     path('api/archive/', views.ArchiveAPIView.as_view({'get': 'list'})),
     path('api/archive/nominationvp/', views.NominationVPAPIView.as_view()),
     path('api/archive/nomination/mymoskvichi',
