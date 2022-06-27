@@ -1,7 +1,7 @@
 import {styled} from "@mui/material/styles";
 import ImageList from "@mui/material/ImageList";
 import Button from "@mui/material/Button";
-import {Typography} from "@mui/material";
+import {createTheme, Typography} from "@mui/material";
 import ImageListItem, {imageListItemClasses} from "@mui/material/ImageListItem";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
@@ -104,3 +104,15 @@ export const ButtonCollapse = styled((props) => {
         duration: theme.transitions.duration.shortest,
     }),
 }));
+
+export  const customThemeTab = createTheme({
+  components:{
+      MuiButtonBase:{
+          styleOverrides:{
+              root:
+                  {height:'60px'},
+
+          }
+      }
+  }
+});

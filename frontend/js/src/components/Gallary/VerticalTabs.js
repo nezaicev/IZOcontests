@@ -2,6 +2,15 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Tabs, {tabsClasses} from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import {createTheme} from "@mui/material";
+import {ThemeProvider} from "@emotion/react";
+import {customThemeTab} from "../styled";
+
+
+
+
+
+
 
 export default function VerticalTabs(props) {
     const [value, setValue]= React.useState(0);
@@ -21,6 +30,7 @@ export default function VerticalTabs(props) {
                 display: 'flex',
             }}
         >
+            <ThemeProvider theme={customThemeTab}>
 
             <Tabs
                 value={value}
@@ -32,7 +42,10 @@ export default function VerticalTabs(props) {
                 textColor="inherit"
                 aria-label="visible arrows tabs example"
                 sx={{
+
+
                    [`& .${tabsClasses.indicator}`]:{
+
                           backgroundColor:'#d36666'
                     },
                     [`& .${tabsClasses.root}`]:{
@@ -45,7 +58,7 @@ export default function VerticalTabs(props) {
                             opacity: 1,
                             'background-color': '#efece3'
                         },
-                        'height': 20,
+                        'height': 14,
                         'background-color': '#efece3',
                         opacity: 1,
                     },
@@ -53,12 +66,14 @@ export default function VerticalTabs(props) {
 
                 {
                     props.data.map((item, index) => (
-                        <Tab label={item} value={index}
+                        <Tab  label={item} value={index}
                              key={index}/>
                     ))
                 }
 
             </Tabs>
+</ThemeProvider>
+
 
         </Box>
     );

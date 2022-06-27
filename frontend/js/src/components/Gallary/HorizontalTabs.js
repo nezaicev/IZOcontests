@@ -3,6 +3,8 @@ import Box from '@mui/material/Box';
 import Tabs, {tabsClasses} from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import {useEffect} from "react";
+import {customThemeTab} from "../styled";
+import {ThemeProvider} from "@emotion/react";
 
 export default function HorizontalTabs(props) {
     const [value, setValue] = React.useState(0);
@@ -23,6 +25,7 @@ export default function HorizontalTabs(props) {
                 bgcolor: 'background.paper',
             }}
         >
+            <ThemeProvider theme={customThemeTab}>
             <Tabs
                 value={value}
                 onChange={handleChange}
@@ -32,7 +35,7 @@ export default function HorizontalTabs(props) {
                 textColor="inherit"
                 aria-label="visible arrows tabs example"
                 sx={{
-                    height:48,
+
                     '&.MuiButtonBase-root-MuiTab-root.Mui-selected':{color:'#33a4a4'},
                    [`& .${tabsClasses.indicator}`]:{
                           backgroundColor:'#d36666'
@@ -50,6 +53,7 @@ export default function HorizontalTabs(props) {
                     ))
                 }
             </Tabs>
+                </ThemeProvider>
         </Box>
     );
 }
