@@ -5,6 +5,9 @@ import {Box} from "@mui/material";
 import dataFetch from "../../utils/dataFetch";
 import VisibleBoxImages from "../VisibleBoxImages";
 import CreativeTack from "../CreativeTack";
+import {getExcludeData} from "../../utils/utils";
+
+const excludeYears=['2020-2021 год']
 
 
 export default function GalleryNRusheva(props) {
@@ -19,7 +22,7 @@ export default function GalleryNRusheva(props) {
 
     useEffect(() => {
         dataFetch(props.urlVerticalTabs, params, (data) => {
-            setDataVerticalTabs(data, [setValueVerticalTabs(0)]);
+            setDataVerticalTabs(getExcludeData(data, excludeYears), [setValueVerticalTabs(0)]);
         })
     }, [])
 

@@ -41,3 +41,7 @@ export function createLabel(obj) {
     return `${authorName}${material}${age}${fio}${school}${fioTeacher}${regNumber}`
 
 }
+
+export function getExcludeData(data, exclude){
+    return data.filter((n)=>{return !exclude.includes(n)})
+}
