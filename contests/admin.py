@@ -579,7 +579,7 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
                     'teacher',
                     'rating','status', 'year_contest','certificate']
     list_filter = ('contest_name', 'publish','year_contest', 'status')
-    search_fields = ('reg_number', 'fio')
+    search_fields = ('reg_number', 'fio',  'fio_teacher')
     exclude = ('info','reg_number', 'barcode', 'content')
 
     def get_queryset(self, request):
@@ -593,7 +593,7 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     def get_list_display(self, request):
         if request.user.is_superuser or request.user.groups.filter(
                 name='Manager').exists():
-            self.list_editable = ('status','publish', 'rating')
+            self.list_editable = ('publish', 'rating')
             self.list_filter = self.__class__.list_filter
             return self.__class__.list_display
         else:
