@@ -579,7 +579,11 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
                     'teacher',
                     'rating','status', 'year_contest','certificate']
     list_filter = ('contest_name', 'publish','year_contest', 'status')
+
     search_fields = ('reg_number', 'fio',  'fio_teacher')
+
+
+
     exclude = ('info','reg_number', 'barcode', 'content')
 
     def get_queryset(self, request):
