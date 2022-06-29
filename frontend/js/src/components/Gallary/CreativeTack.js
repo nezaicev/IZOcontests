@@ -11,14 +11,15 @@ export default function CreativeTack(props) {
     if (props.data.length !== 0) {
         return (
             <Card sx={{
-                    padding: '20px',
+                    margin:'25px',
+                    padding: '45px',
                     boxShadow: 0,
                     border: 2,
                     borderColor: '#dad2d2'
                 }}>
 
 
-                    <Tooltip title="Творческое задание" sx={{marginLeft:'-15px', marginTop:'-15px'}}>
+                    <Tooltip title="Творческое задание" sx={{marginLeft:'-40px', marginTop:'-40px'}}>
                         <IconButton>
                             <AssignmentIcon sx={{
                                 fontSize: '2rem',
