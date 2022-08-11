@@ -523,16 +523,32 @@ class ModxDbimgMuz(models.Model):
 from cert.models import Cert
 
 
-class Archive(BaseContest):
+class Archive(models.Model):
+    reg_number = models.CharField(max_length=20, blank=False, null=False,
+                                  unique=True,
+                                  verbose_name='Регистрационный номер')
+    barcode = models.CharField(verbose_name='Штрих-код', max_length=15,
+                               blank=False, null=False)
+
+    teacher = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
+    fio = models.CharField('Участник', max_length=700, blank=True, null=True, default='')
+    fio_teacher = models.CharField('Педагог', max_length=300,blank=True, null=True)
+    school = models.CharField('Образовательная организация', max_length=150,blank=True, null=True)
+    city = models.CharField('Город', max_length=101, blank=True , null=True)
+    year_contest = models.CharField('Год проведения', max_length=20, blank=True, null=True)
+    status = models.ForeignKey(Status, verbose_name='Статус',
+                               on_delete=models.PROTECT, null=True, default=1)
+    region = models.ForeignKey(Region, verbose_name='Регион',
+                               on_delete=models.PROTECT,  blank=True , null=True)
+    date_reg = models.DateTimeField(blank=True, null=True)
+    district = models.ForeignKey(District, verbose_name='Округ',
+                                 on_delete=models.PROTECT, null=True,
+                                 blank=True)
+
     rating = models.FloatField('Рейтинг', default=0)
-    fio = models.CharField('Участник', max_length=700, blank=True, default='')
-    content = RichTextField(verbose_name='Контент', blank=True, null=True)
     publish = models.BooleanField(verbose_name='Опубликовать', default=False)
-    date_reg = models.DateTimeField(blank=True)
-    contest_name = models.CharField(max_length=200, null=False,
-                                    verbose_name='Конкурс', blank=False)
-    year_contest = models.CharField('Год проведения', max_length=20,
-                                    blank=False, null=False)
+    contest_name = models.CharField(max_length=200, null=True,
+                                    verbose_name='Конкурс', blank=True)
     image = models.ImageField(upload_to=PathAndRename('all_contests/'),
                               max_length=200, verbose_name='Изображение',
                               blank=True, null=True)
@@ -567,10 +583,7 @@ class Archive(BaseContest):
                             blank=True, verbose_name='Ссылка на файл (облако)',
                             null=True)
 
-    city = models.CharField('Город', max_length=101, blank=True, null=True)
 
-    def save(self, *args, **kwargs):
-        super(BaseContest, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Архив'
