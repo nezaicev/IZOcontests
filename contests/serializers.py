@@ -115,6 +115,8 @@ class ThumbnailSerializer(serializers.ImageField):
             return {}
 
 
+
+
 class ArchiveSerializer(serializers.ModelSerializer):
     image = ThumbnailSerializer()
     images = ImagesSerializer(many=True, read_only=True)
