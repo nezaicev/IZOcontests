@@ -93,7 +93,7 @@ export default function VisibleBoxImages(props) {
                                 </Card>
                                 {isFetching && <Box sx={{
                                     justifyContent: 'center',
-                                    height: '600',
+                                    // height: '600',
                                     display: 'flex',
                                     marginTop: ' 20px'
                                 }}>
