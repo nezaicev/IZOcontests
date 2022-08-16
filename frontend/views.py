@@ -87,12 +87,16 @@ class ThemeContestAPIView(APIView):
         contest_name = request.query_params.get('contest_name')
         year = request.query_params.get('year_contest')
         themes = set(
-            Archive.objects.filter(contest_name=contest_name,
+            Archive.objects.filter(theme__gt='', theme__isnull=False,
+                                   contest_name=contest_name,
                                    year_contest=year).values_list(
                 'theme', flat=True))
+
         themes = list(themes)
         themes.sort(reverse=True)
         return Response(themes)
+
+
 
 
 class CreativeTackAPIView(APIView):
