@@ -39,7 +39,7 @@ export default function GalleryNRusheva(props) {
         dataFetch(props.urlCreativeTack, params, (data) => {
             setValueCreativeTack(data)
         })
-    }, [valueHorizontalTabs])
+    }, [dataHorizontalTabs, valueHorizontalTabs])
 
 
     return (<React.Fragment>
