@@ -91,12 +91,12 @@ class ThemeContestAPIView(APIView):
                                    contest_name=contest_name,
                                    year_contest=year).values_list(
                 'theme', flat=True))
-
+       
         themes = list(themes)
         themes.sort(reverse=True)
         return Response(themes)
-
-
+      
+      
 
 
 class CreativeTackAPIView(APIView):

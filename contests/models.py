@@ -530,16 +530,21 @@ class Archive(models.Model):
     barcode = models.CharField(verbose_name='Штрих-код', max_length=15,
                                blank=False, null=False)
 
-    teacher = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
-    fio = models.CharField('Участник', max_length=700, blank=True, null=True, default='')
-    fio_teacher = models.CharField('Педагог', max_length=300,blank=True, null=True)
-    school = models.CharField('Образовательная организация', max_length=150,blank=True, null=True)
-    city = models.CharField('Город', max_length=101, blank=True , null=True)
-    year_contest = models.CharField('Год проведения', max_length=20, blank=True, null=True)
+    teacher = models.ForeignKey(CustomUser, on_delete=models.CASCADE,
+                                blank=True, null=True)
+    fio = models.CharField('Участник', max_length=700, blank=True, null=True,
+                           default='')
+    fio_teacher = models.CharField('Педагог', max_length=300, blank=True,
+                                   null=True)
+    school = models.CharField('Образовательная организация', max_length=150,
+                              blank=True, null=True)
+    city = models.CharField('Город', max_length=101, blank=True, null=True)
+    year_contest = models.CharField('Год проведения', max_length=20,
+                                    blank=True, null=True)
     status = models.ForeignKey(Status, verbose_name='Статус',
                                on_delete=models.PROTECT, null=True, default=1)
     region = models.ForeignKey(Region, verbose_name='Регион',
-                               on_delete=models.PROTECT,  blank=True , null=True)
+                               on_delete=models.PROTECT, blank=True, null=True)
     date_reg = models.DateTimeField(blank=True, null=True)
     district = models.ForeignKey(District, verbose_name='Округ',
                                  on_delete=models.PROTECT, null=True,
@@ -552,6 +557,13 @@ class Archive(models.Model):
     image = models.ImageField(upload_to=PathAndRename('all_contests/'),
                               max_length=200, verbose_name='Изображение',
                               blank=True, null=True)
+    crop_orientation_img = models.CharField(max_length=50,
+                                            verbose_name='Ориентация превью',
+                                            choices=(('top', 'Верх'),
+                                                     ('center', 'Центр'),
+                                                     ('bottom', 'Низ')),
+                                            default='center',
+                                            )
     material = models.CharField(max_length=200, verbose_name='Материал',
                                 null=True,
                                 blank=True)
@@ -582,8 +594,6 @@ class Archive(models.Model):
     link = models.CharField(max_length=200,
                             blank=True, verbose_name='Ссылка на файл (облако)',
                             null=True)
-
-
 
     class Meta:
         verbose_name = 'Архив'
