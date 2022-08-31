@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+import logging
 import os
 
 from pathlib import Path
@@ -166,6 +167,9 @@ STATICFILES_DIRS = [
 
 # STATIC_ROOT=os.getenv('STATIC_ROOT',os.path.join(BASE_DIR,'static'))
 
+PATH_IMG_UPLOAD = 'all_contests/'
+TMP_DIR = os.path.join(BASE_DIR, 'media', 'tmp')
+
 MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
 MEDIA_ROOT = os.getenv('MRDIA_ROOT', os.path.join(BASE_DIR, 'media'))
 BARCODE_MEDIA_ROOT = os.getenv('BARCODE_URL',
@@ -201,6 +205,9 @@ SELECTEL_STORAGES = {
     },
 
 }
+PROTOCOL='http://'
+
+
 YOUTUBE_POSTER = 'https://img.youtube.com/vi/{}/mqdefault.jpg'
 POSTER_DIR = 'posters'
 POSTER_TMP_NAME = 'tmp_poster.jpg'
@@ -292,3 +299,4 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 100,
 
 }
+

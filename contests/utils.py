@@ -1,9 +1,13 @@
+import json
 import re
 import uuid
 import os
 import time
+
+import urllib3
 from PIL import Image, ImageOps
 from django.conf import settings
+from django.core.exceptions import RequestAborted
 from django.core.mail import EmailMultiAlternatives, get_connection
 from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
@@ -45,18 +49,80 @@ def formatting_fio_teacher(fio):
         return fio
 
 
-def upload_img(local_url_image, path_in_container):
-    storage = SelectelStorage()
-    name_img = '{}.jpg'.format(uuid.uuid1())
-    with open(local_url_image, 'rb') as image:
-        (storage._save(os.path.join(path_in_container, name_img),
-                       image.read()))
-        if os.path.exists(os.path.join(settings.MEDIA_ROOT, 'tmp', name_img)):
-            os.remove(os.path.join(settings.MEDIA_ROOT, 'tmp', name_img))
-    if storage.exists(os.path.join(path_in_container, name_img)):
-        return storage.url(os.path.join(path_in_container, name_img))
+def handle_uploaded_file(f, extension):
+    name_file = '{}.{}'.format(uuid.uuid1(), extension)
+    with open(os.path.join(settings.TMP_DIR, name_file), 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+    if os.path.exists(os.path.join(settings.TMP_DIR, name_file)):
+        return os.path.join(settings.TMP_DIR, name_file)
     else:
         return None
+
+
+def post_json_data_from_session(api_url, path_file_data):
+    with open(path_file_data) as file:
+        data = json.load(file)
+    session, response = authenticate_user(os.getenv('USERNAME'),
+                                          os.getenv('PASSWORD'))
+
+    for item in data:
+        result = session.post(api_url, item)
+        result.raise_for_status()
+
+
+def authenticate_user(username, password):
+    url = '{}{}/'.format(settings.PROTOCOL,
+        os.path.join(os.getenv('HOSTNAME'),'users/login' ))
+    session = requests.session()
+    r = session.get(url)
+    token = r.cookies['csrftoken']
+    data = {'username': username,
+            'password': password,
+            'csrfmiddlewaretoken': token}
+    response = session.post(url, data)
+    return session, response
+
+
+def upload_file(local_url_file, path_in_container, extension):
+    storage = SelectelStorage()
+    new_file = '{}.{}'.format(uuid.uuid1(), extension)
+    with open(local_url_file, 'rb') as file:
+        (storage._save(os.path.join(path_in_container, new_file),
+                       file.read()))
+        if storage.exists(os.path.join(path_in_container, new_file)):
+            if os.path.exists(local_url_file):
+                os.remove(local_url_file)
+
+            return os.path.join(path_in_container, new_file)
+        else:
+            return None
+
+
+def download_file(url, name_file, extension):
+    urllib3.disable_warnings()
+    result = requests.get(url, verify=False)
+    result.raise_for_status()
+    os.makedirs(settings.TMP_DIR, exist_ok=True)
+    with open(os.path.join(settings.TMP_DIR,
+                           '{}.{}'.format(name_file, extension)),
+              'wb') as file:
+        file.write(result.content)
+    return os.path.join(settings.TMP_DIR,
+                        '{}.{}'.format(name_file, extension))
+
+
+def parse_path_file(path):
+    result = {
+        'http': True,
+        'extension': path.split('/')[-1].split('.')[-1],
+        'file_name': path.split('/')[-1].split('.')[-2],
+        'path': path
+    }
+    if 'http' not in path:
+        result['http'] = False
+
+    return result
 
 
 def generate_thumb(url, size='md'):
@@ -106,7 +172,8 @@ def generate_xls(queryset, path):
     font_style.font.bold = True
     for col_num in range(len(queryset[0]._meta.fields)):
         ws.write(row_num, col_num,
-                 _(queryset[0]._meta.fields[col_num].verbose_name), font_style)
+                 _(queryset[0]._meta.fields[col_num].verbose_name),
+                 font_style)
     font_style = xlwt.XFStyle()
     for ridx, obj in enumerate(queryset):
         ridx += 1
@@ -145,18 +212,21 @@ def generate_pdf(list, contest_name, alias, reg_number):
     width, height = A4
     styles = getSampleStyleSheet()
     styles.add(
-        ParagraphStyle(name='Yandex', alignment=TA_JUSTIFY, fontName='Yandex',
+        ParagraphStyle(name='Yandex', alignment=TA_JUSTIFY,
+                       fontName='Yandex',
                        fontSize=12))
     styles.add(ParagraphStyle(name='YandexBold', alignment=TA_JUSTIFY,
                               fontName='YandexBold', fontSize=12))
     pdfmetrics.registerFont(
-        TTFont('Yandex', os.path.join(settings.STATICFILES_DIRS[0], 'fonts',
-                                      'YandexSansDisplay-Regular.ttf'))
+        TTFont('Yandex',
+               os.path.join(settings.STATICFILES_DIRS[0], 'fonts',
+                            'YandexSansDisplay-Regular.ttf'))
     )
     normal_style = styles['Yandex']
     bold_style = styles['Yandex']
     data = [[Paragraph(list[i][0], normal_style),
-             Paragraph(list[i][1], normal_style)] for i in range(0, len(list))]
+             Paragraph(list[i][1], normal_style)] for i in
+            range(0, len(list))]
     table = Table(data, colWidths=[4 * cm, 14 * cm])
 
     table.setStyle(TableStyle([
@@ -166,15 +236,17 @@ def generate_pdf(list, contest_name, alias, reg_number):
     if not os.path.exists(os.path.join(settings.MEDIA_ROOT, 'pdf', alias)):
         os.mkdir(os.path.join(settings.MEDIA_ROOT, 'pdf', alias))
     c = canvas.Canvas(
-        os.path.join(settings.MEDIA_ROOT, 'pdf', alias, f'{reg_number}.pdf'),
+        os.path.join(settings.MEDIA_ROOT, 'pdf', alias,
+                     f'{reg_number}.pdf'),
         pagesize=A4)
     c.setFont('Yandex', 20)
     c.drawString(20, 810, contest_name)
     if not os.path.exists(os.path.join(settings.BARCODE_MEDIA_ROOT,
                                        '{}.png'.format(reg_number))):
         generate_barcode(reg_number)
-    c.drawImage(os.path.join(settings.BARCODE_MEDIA_ROOT, f'{reg_number}.png'),
-                340, 715)
+    c.drawImage(
+        os.path.join(settings.BARCODE_MEDIA_ROOT, f'{reg_number}.png'),
+        340, 715)
 
     width2, height2 = table.wrapOn(c, width, height)
     table.drawOn(c, 1.2 * cm, A4[1] - height2 - 125, 0)
@@ -190,8 +262,10 @@ def send_mail_contest(secret, email, reg_number, message_template,
                                 username=secret['user'],
                                 password=secret['password'],
                                 use_tls=settings.EMAIL_CONTEST['use_tls'])
-    subject, from_email = name_contest, settings.EMAIL_CONTEST['from_contest']
-    message = render_to_string(message_template, {'reg_number': reg_number})
+    subject, from_email = name_contest, settings.EMAIL_CONTEST[
+        'from_contest']
+    message = render_to_string(message_template,
+                               {'reg_number': reg_number})
     msg = EmailMultiAlternatives(subject, message, from_email, list_emails,
                                  connection=connection)
     msg.content_subtype = "html"
@@ -225,7 +299,7 @@ def send_mail_from_admin(secret, list_emails, message, subject):
 
 
 def generate_year():
-    if int(time.strftime('%m', time.localtime())) <=7:
+    if int(time.strftime('%m', time.localtime())) <= 7:
         year_contest = '{}-{} год'.format(
             int(time.strftime("%Y", time.localtime())) - 1,
             int(time.strftime("%Y", time.localtime())) + 1 - 1)
@@ -245,9 +319,11 @@ def get_dependent_data_for_obj(obj, field_name):
             return None
 
 
-def generate_enumeration_field_by_id(obj_id, model_participant_id, field_name_generate,):
+def generate_enumeration_field_by_id(obj_id, model_participant_id,
+                                     field_name_generate, ):
     enumeration = list(
-        model_participant_id.objects.filter(participants_id=obj_id).values_list(
+        model_participant_id.objects.filter(
+            participants_id=obj_id).values_list(
             field_name_generate, flat=True))
 
     return enumeration

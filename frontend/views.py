@@ -1,5 +1,10 @@
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import filters
 import django_filters
+from rest_framework.authentication import SessionAuthentication, \
+    BasicAuthentication
+from rest_framework.permissions import BasePermission, SAFE_METHODS
+
 from frontend.apps import StandardResultsSetPagination
 from django.shortcuts import render
 
@@ -19,7 +24,26 @@ def index(request):
     return render(request, 'frontend/index.html')
 
 
+class AdminOnly(BasePermission):
+    def has_permission(self, request, view):
+        if request.method not in SAFE_METHODS:
+            if request.user.is_superuser:
+                return True
+            else:
+                return False
+        else:
+            return True
+
+
+class CsrfExemptSessionAuthentication(SessionAuthentication):
+
+    def enforce_csrf(self, request):
+        return
+
+
 class ArchiveAPIView(ModelViewSet):
+    authentication_classes = [CsrfExemptSessionAuthentication, BasicAuthentication]
+    permission_classes = [AdminOnly]
     queryset = Archive.objects.all()
     serializer_class = ArchiveSerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
@@ -95,8 +119,6 @@ class ThemeContestAPIView(APIView):
         themes = list(themes)
         themes.sort(reverse=True)
         return Response(themes)
-      
-      
 
 
 class CreativeTackAPIView(APIView):

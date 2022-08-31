@@ -3,6 +3,11 @@ from contests.models import PageContest, Events, CreativeTack
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 
+class InputFile(forms.Form):
+    _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
+    data_file=forms.FileField(widget=forms.FileInput)
+
+
 class SubscribeShowEventForm(forms.Form):
     teacher=forms.CharField(max_length=20)
     page_contest=forms.CharField(max_length=20)

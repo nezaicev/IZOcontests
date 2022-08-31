@@ -9,6 +9,7 @@ db.sqlite3
 *.pyo
 media/
 data.json
+upload_data_from_file.log
 .idea/
 node_modules/
 frontend/node_modules/

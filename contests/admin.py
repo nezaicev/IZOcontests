@@ -7,7 +7,8 @@ from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from contests.models import Artakiada, NRusheva, Mymoskvichi, \
     ParticipantMymoskvichi, \
     TeacherExtraMymoskvichi, Archive, ShowEvent, VP, ParticipantVP, \
-    TeacherExtraVP, ExtraImageVP, ExtraImageArchive, VideoArchive, VideoVP, FileArchive, CreativeTack
+    TeacherExtraVP, ExtraImageVP, ExtraImageArchive, VideoArchive, VideoVP, \
+    FileArchive, CreativeTack
 from contests.directory import NominationNR, NominationART, NominationMYMSK, \
     ThemeART, \
     ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level, AgeVP, \
@@ -15,7 +16,8 @@ from contests.directory import NominationNR, NominationART, NominationMYMSK, \
 from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm
 from django.conf import settings
-from contests.forms import PageContestsFrom, ConfStorageForm, CreativeTackAdminForm
+from contests.forms import PageContestsFrom, ConfStorageForm, \
+    CreativeTackAdminForm, InputFile
 from contests.models import PageContest, Message, ModxDbimgMuz, Events
 from contests import utils
 from contests import tasks
@@ -108,7 +110,8 @@ class ArchiveInterface:
                      in obj.images.select_related()])
             if hasattr(obj, 'videos'):
                 vm_record.videos.set(
-                    [VideoArchive.objects.create(video=video.video, name=video.name) for
+                    [VideoArchive.objects.create(video=video.video,
+                                                 name=video.name) for
                      video
                      in obj.videos.select_related()])
 
@@ -132,56 +135,56 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
         'reg_number', 'fio', 'status', 'school', 'region', 'district',
         'fio_teacher')
     list_filter = ('status', 'district', 'region')
-    actions = ['export_list_info', 'export_as_xls', 'create_thumbs', 'send_vm',
+    actions = ['export_list_info', 'export_as_xls', 'create_thumbs',
                'archived', 'send_selected_letter', ]
     exclude = (
         'reg_number', 'teacher', 'barcode', 'status', 'info', 'year_contest',
         'extraImage')
 
-    def send_vm(self, request, queryset):
-
-        for obj in queryset:
-            path_thumb = utils.generate_thumb(obj.image.url)
-            if path_thumb:
-                path_file_selectel = utils.upload_img(path_thumb, 'thumbs')
-
-                values_for_update = {
-                    'competition1': obj.__class__.alias,
-                    'material': obj.material.name,
-                    'fiocompetitor': utils.formatting_fio_participant(obj.fio),
-                    'agecompetitor': obj.level.name,
-                    'pathfile': path_file_selectel,
-                    'fioteacher': utils.formatting_fio_teacher(
-                        obj.fio_teacher),
-                    'shcoolname': obj.school,
-                    'cityname': obj.teacher.region.name,
-                    'picturename': obj.author_name if hasattr(obj,
-                                                              'author_name') else obj.theme.name if (
-                            hasattr(obj, 'theme') and hasattr(obj.theme,
-                                                              'name')) else '',
-                    'year': obj.year_contest.split('-')[1].split(' ')[0],
-                    'temaname': obj.theme.name if (
-                            hasattr(obj, 'theme') and hasattr(obj.theme,
-                                                              'name')) else obj.nomination if hasattr(
-                        obj, 'nomination') else ''
-
-                }
-                vm_record, created = ModxDbimgMuz.objects.using(
-                    'vm').update_or_create(
-                    oldname=obj.reg_number, defaults=values_for_update
-                )
-                if created:
-                    messages.add_message(request, messages.INFO,
-                                         'Запись "{}" отправленна в ВМ'.format(
-                                             obj.reg_number))
-                else:
-                    messages.add_message(request, messages.INFO,
-                                         'Запись "{}" обновлена в ВМ'.format(
-                                             obj.reg_number))
-
-                os.remove(path_thumb)
-
-    send_vm.short_description = 'Отправить в ВМ'
+    # def send_vm(self, request, queryset):
+    #
+    #     for obj in queryset:
+    #         path_thumb = utils.generate_thumb(obj.image.url)
+    #         if path_thumb:
+    #             path_file_selectel = utils.upload_img(path_thumb, 'thumbs')
+    #
+    #             values_for_update = {
+    #                 'competition1': obj.__class__.alias,
+    #                 'material': obj.material.name,
+    #                 'fiocompetitor': utils.formatting_fio_participant(obj.fio),
+    #                 'agecompetitor': obj.level.name,
+    #                 'pathfile': path_file_selectel,
+    #                 'fioteacher': utils.formatting_fio_teacher(
+    #                     obj.fio_teacher),
+    #                 'shcoolname': obj.school,
+    #                 'cityname': obj.teacher.region.name,
+    #                 'picturename': obj.author_name if hasattr(obj,
+    #                                                           'author_name') else obj.theme.name if (
+    #                         hasattr(obj, 'theme') and hasattr(obj.theme,
+    #                                                           'name')) else '',
+    #                 'year': obj.year_contest.split('-')[1].split(' ')[0],
+    #                 'temaname': obj.theme.name if (
+    #                         hasattr(obj, 'theme') and hasattr(obj.theme,
+    #                                                           'name')) else obj.nomination if hasattr(
+    #                     obj, 'nomination') else ''
+    #
+    #             }
+    #             vm_record, created = ModxDbimgMuz.objects.using(
+    #                 'vm').update_or_create(
+    #                 oldname=obj.reg_number, defaults=values_for_update
+    #             )
+    #             if created:
+    #                 messages.add_message(request, messages.INFO,
+    #                                      'Запись "{}" отправленна в ВМ'.format(
+    #                                          obj.reg_number))
+    #             else:
+    #                 messages.add_message(request, messages.INFO,
+    #                                      'Запись "{}" обновлена в ВМ'.format(
+    #                                          obj.reg_number))
+    #
+    #             os.remove(path_thumb)
+    #
+    # send_vm.short_description = 'Отправить в ВМ'
 
     def create_thumbs(self, request, queryset):
         config = {}
@@ -285,7 +288,6 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
             else:
                 self.list_display = utils.remove_field_in_list(
                     self.list_display, 'status')
-
 
                 return self.list_display
 
@@ -460,10 +462,12 @@ class VideoVPInline(admin.StackedInline):
 class VPAdmin(BaseAdmin):
     model = VP
     name = 'vp'
-    inlines = [ParticipantVPInline, TeacherExtraVPInline, ImageExtraVPInline, VideoVPInline]
+    inlines = [ParticipantVPInline, TeacherExtraVPInline, ImageExtraVPInline,
+               VideoVPInline]
     exclude = (
         'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher',
-        'participants', 'teachers', 'info', 'year_contest', 'extraImage', 'video')
+        'participants', 'teachers', 'info', 'year_contest', 'extraImage',
+        'video')
 
     def response_add(self, request, obj, post_url_continue=None):
 
@@ -535,7 +539,8 @@ class PageContestAdmin(admin.ModelAdmin):
 
 
 class CreativeTackAdmin(admin.ModelAdmin):
-    form=CreativeTackAdminForm
+    form = CreativeTackAdminForm
+
 
 class MessageAdmin(admin.ModelAdmin):
     model = Message
@@ -559,12 +564,11 @@ class ImageExtraArchiveInline(admin.StackedInline):
 
 
 class VideoArchiveInline(admin.StackedInline):
-
     model = VideoArchive
     extra = 0
 
-class FileArchiveInline(admin.StackedInline):
 
+class FileArchiveInline(admin.StackedInline):
     model = FileArchive
     extra = 0
 
@@ -573,16 +577,18 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     list_per_page = 50
     inlines = [ImageExtraArchiveInline, VideoArchiveInline, FileArchiveInline]
     model = Archive
-    actions = ['export_as_xls', 'send_selected_letter', ]
+    actions = ['export_as_xls', 'send_selected_letter',
+               'load_json_data_from_file']
     list_editable = []
-    list_display = ['reg_number','publish', 'contest_name', 'author_name', 'fio_teacher',
+    list_display = ['reg_number', 'publish', 'contest_name', 'author_name',
+                    'fio_teacher',
                     'teacher',
-                    'rating','status', 'year_contest','certificate']
-    list_filter = ('contest_name', 'publish','year_contest', 'status')
+                    'rating', 'status', 'year_contest', 'certificate']
+    list_filter = ('contest_name', 'publish', 'year_contest', 'status')
 
-    search_fields = ('reg_number', 'fio',  'fio_teacher')
+    search_fields = ('reg_number', 'fio', 'fio_teacher')
 
-    exclude = ('info','reg_number', 'barcode', 'content')
+    exclude = ('info', 'reg_number', 'barcode', 'content')
 
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.groups.filter(
@@ -611,6 +617,38 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
                     self.list_display, 'rating')
                 # self.list_display=utils.add_field_in_list(self.list_display, 'certificate')
                 return self.list_display
+
+    def load_json_data_from_file(self, request, queryset):
+
+        if 'apply' in request.POST:
+            form = InputFile(request.POST, request.FILES)
+            if form.is_valid():
+                path_local_file = utils.handle_uploaded_file(
+                    request.FILES['data_file'],
+                    'json')
+                messages.add_message(request, messages.INFO,
+                                     'Загрузка данных из {}'.format(
+                                         path_local_file))
+
+                print(tasks.upload_data_from_file.delay(path_local_file, os.path.join(
+                    '{}{}'.format(settings.PROTOCOL, os.getenv('HOSTNAME')),
+                    'frontend/api/archive/')))
+
+                return HttpResponseRedirect('/admin/contests/archive/')
+            else:
+                messages.add_message(request, messages.DEBUG,
+                                     'Ошибка {}'.format(
+                                         form.errors))
+
+                return HttpResponseRedirect('/admin/contests/archive/')
+
+        form = InputFile(initial={
+            '_selected_action': queryset.values_list('id',
+                                                     flat=True), })
+        return TemplateResponse(request, "admin/select_file.html",
+                                {'items': queryset, 'form': form})
+
+    load_json_data_from_file.short_description = 'Загрузить данные из JSON файла'
 
 
 class ShowEventAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):

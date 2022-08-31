@@ -1,5 +1,7 @@
 import os
+import json
 import math
+import logging
 from contests import utils
 
 from django.conf import settings
@@ -8,7 +10,38 @@ from django.template.loader import render_to_string
 from celery import shared_task
 from django_selectel_storage.storage import SelectelStorage, Container
 from contests import models
-from contests.utils import generate_thumb
+from contests.utils import generate_thumb, authenticate_user
+
+logger = logging.getLogger(__name__)
+
+f_handler = logging.FileHandler('upload_data_from_file.log')
+f_handler.setLevel(logging.DEBUG)
+f_format = logging.Formatter(
+    "%(asctime)s - %(module)s - %(levelname)s - %(funcName)s: %(lineno)d - %(message)s")
+f_handler.setFormatter(f_format)
+logger.addHandler(f_handler)
+
+
+@shared_task
+def upload_data_from_file(path_file_data, api_url):
+    count_uploaded_files = 0
+    logger.info('file - {}, url - {}'.format(path_file_data, api_url))
+
+    with open(path_file_data) as file:
+        data = json.load(file)
+    session, response = authenticate_user(os.getenv('USERNAME'),
+                                          os.getenv('PASSWORD'))
+    logger.info('authenticate_status - {}'.format(response.status_code))
+
+    for item in data:
+        result = session.post(api_url, item)
+        if result:
+            count_uploaded_files += 1
+
+        logger.info('result - {}'.format(result.content))
+        result.raise_for_status()
+    logger.warning('report: input - {} result - {}'.format(len(data),
+                                                        count_uploaded_files))
 
 
 @shared_task

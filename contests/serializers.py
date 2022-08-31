@@ -1,9 +1,12 @@
-from sorl.thumbnail import get_thumbnail
+import os.path
 
+from sorl.thumbnail import get_thumbnail
+from django.conf import settings
 from rest_framework import serializers
 from .models import ModxDbimgMuz, Archive, Level, ExtraImageArchive, \
     NominationVP, DirectionVP, VideoArchive, FileArchive, Region, ThemeART, \
     ThemeRUSH, NominationMYMSK
+from contests.utils import upload_file, parse_path_file, download_file
 
 
 class ModxDbimgMuzSerializer(serializers.ModelSerializer):
@@ -100,32 +103,49 @@ class FilesSerializer(serializers.RelatedField):
                 }
 
 
-#
-# class ThumbnailSerializer(serializers.ImageField):
-#
-#     def __init__(self, *args, **kwargs):
-#         self.params = kwargs
-#         super(ThumbnailSerializer, self).__init__()
-#
-#     def to_representation(self, value):
-#         print(self.params)
-#         crop_orientation = 'center'
-#         if self.params.get('crop_orientation'):
-#             crop_orientation = self.params['crop_orientation']
-#         if value:
-#             return {'thumb': get_thumbnail(value.url, '320x220',
-#                                            crop=crop_orientation,
-#                                            quality=99).url,
-#                     'md_thumb': get_thumbnail(value.url, '2000',
-#                                               quality=99).url,
-#                     'original': value.url,
-#                     }
-#         else:
-#             return {}
+class CustomImageField(serializers.Field):
+
+    def to_internal_value(self, data):
+        file = parse_path_file(data)
+        if file['http']:
+            downloaded_path_file = download_file(file['path'],
+                                                 file['file_name'],
+                                                 file['extension'])
+
+            if os.path.exists(downloaded_path_file):
+                return upload_file(downloaded_path_file,
+                                   settings.PATH_IMG_UPLOAD, file['extension'])
+        else:
+            if os.path.exists(file['path']):
+                return upload_file(file['path'], settings.PATH_IMG_UPLOAD,
+                                   file['extension'])
+
+        if 'http' not in data:
+            return upload_file(data, settings.PATH_IMG_UPLOAD,
+                               file['extension'])
+
+    def get_attribute(self, instance):
+        return instance
+
+    def to_representation(self, value):
+        crop_orientation = 'center'
+        if value.crop_orientation_img:
+            crop_orientation = value.crop_orientation_img
+        if value.image:
+            return {'thumb': get_thumbnail(value.image.url, '320x220',
+                                           crop=crop_orientation,
+                                           quality=99).url,
+                    'md_thumb': get_thumbnail(value.image.url, '2000',
+                                              quality=99).url,
+                    'original': value.image.url,
+                    }
+        else:
+            return None
 
 
 class ArchiveSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()
+    reg_number = serializers.CharField(required=True)
+    image = CustomImageField()
     images = ImagesSerializer(many=True, read_only=True)
     videos = VideosSerializer(many=True, read_only=True)
     files = FilesSerializer(many=True, read_only=True)
@@ -141,18 +161,5 @@ class ArchiveSerializer(serializers.ModelSerializer):
                   'direction', 'images', 'videos', 'files', 'region', 'city',
                   'rating', 'year_contest')
 
-    def get_image(self, obj):
-        crop_orientation = 'center'
-        if obj.crop_orientation_img:
-            crop_orientation = obj.crop_orientation_img
-        if obj.image:
-            return {'thumb': get_thumbnail(obj.image.url, '320x220',
-                                           crop=crop_orientation,
-                                           quality=99).url,
-                    'md_thumb': get_thumbnail(obj.image.url, '2000',
-                                              quality=99).url,
-                    'original': obj.image.url,
-                    }
-        else:
-            return {}
-
+    def create(self, validated_data):
+        return Archive.objects.create(**validated_data)
