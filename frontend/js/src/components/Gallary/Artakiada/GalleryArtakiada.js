@@ -42,7 +42,6 @@ export default function GalleryArtakiada(props) {
         })
     }, [dataHorizontalTabs, valueHorizontalTabs])
 
-
     return (<React.Fragment>
             <Box sx={{
                 display: 'flex',

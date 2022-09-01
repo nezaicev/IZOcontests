@@ -56,7 +56,7 @@ class ImagesSerializer(serializers.RelatedField):
         model = ExtraImageArchive
 
     def to_representation(self, value):
-        return {'thumb': get_thumbnail(value.image, '320x220', crop='center',
+        return {'thumb': get_thumbnail(value.image, '320x320', crop='center',
                                        quality=99).url,
 
                 'md_thumb': get_thumbnail(value.image, '2000',
@@ -132,7 +132,7 @@ class CustomImageField(serializers.Field):
         if value.crop_orientation_img:
             crop_orientation = value.crop_orientation_img
         if value.image:
-            return {'thumb': get_thumbnail(value.image.url, '320x220',
+            return {'thumb': get_thumbnail(value.image.url, '320x320',
                                            crop=crop_orientation,
                                            quality=99).url,
                     'md_thumb': get_thumbnail(value.image.url, '2000',

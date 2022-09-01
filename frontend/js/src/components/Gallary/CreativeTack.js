@@ -34,8 +34,7 @@ export default function CreativeTack(props) {
                 </Tooltip>
 
                 <Paper
-                     // overflow={'auto'}
-                     // maxHeight={600}
+
                      dangerouslySetInnerHTML={{__html: props.data}}
                      scroll={'body'}
                      sx={{
