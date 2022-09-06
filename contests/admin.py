@@ -69,12 +69,17 @@ class ArchiveInterface:
                     obj, 'page_contest') else obj.info.name,
                 'year_contest': obj.year_contest,
                 'image': utils.get_dependent_data_for_obj(obj, 'image'),
-                'material': utils.get_dependent_data_for_obj(obj, 'material'),
-                'level': utils.get_dependent_data_for_obj(obj, 'level'),
-                'theme': utils.get_dependent_data_for_obj(obj, 'theme'),
+                'material': utils.get_dependent_data_for_obj(obj, 'material',
+                                                             instance=False),
+                'level': utils.get_dependent_data_for_obj(obj, 'level',
+                                                          instance=False),
+                'theme': utils.get_dependent_data_for_obj(obj, 'theme',
+                                                          instance=False),
                 'nomination': utils.get_dependent_data_for_obj(obj,
-                                                               'nomination'),
-                'age': utils.get_dependent_data_for_obj(obj, 'age'),
+                                                               'nomination',
+                                                               instance=False),
+                'age': utils.get_dependent_data_for_obj(obj, 'age',
+                                                        instance=False),
                 'author_name': utils.get_dependent_data_for_obj(obj,
                                                                 'author_name'),
                 'format': utils.get_dependent_data_for_obj(obj, 'format'),
@@ -96,13 +101,16 @@ class ArchiveInterface:
                 'date_reg': utils.get_dependent_data_for_obj(obj, 'date_reg'),
                 'district': utils.get_dependent_data_for_obj(obj, 'district'),
                 'direction': utils.get_dependent_data_for_obj(obj,
-                                                              'direction'),
+                                                              'direction', instance=False),
+                'participants': utils.get_dependent_data_for_obj(obj,
+                                                                 'id'),
 
             }
-            vm_record, created = Archive.objects.get_or_create(
+            vm_record, created = Archive.objects.update_or_create(
 
                 reg_number=obj.reg_number, defaults=values_for_record,
             )
+
             if hasattr(obj, 'images'):
                 vm_record.images.set(
                     [ExtraImageArchive.objects.create(image=image.image) for
@@ -118,6 +126,8 @@ class ArchiveInterface:
             if created:
                 count_created_obj += 1
             else:
+
+                vm_record.save()
                 count_updated_obj += 1
 
         messages.add_message(request, messages.INFO,
@@ -588,7 +598,7 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
 
     search_fields = ('reg_number', 'fio', 'fio_teacher')
 
-    exclude = ('info', 'reg_number', 'barcode', 'content')
+    exclude = ('info', 'reg_number', 'barcode', 'content', 'participants')
 
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.groups.filter(
@@ -630,9 +640,13 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
                                      'Загрузка данных из {}'.format(
                                          path_local_file))
 
-                print(tasks.upload_data_from_file.delay(path_local_file, os.path.join(
-                    '{}{}'.format(settings.PROTOCOL, os.getenv('HOSTNAME')),
-                    'frontend/api/archive/')))
+                print(tasks.upload_data_from_file.delay(path_local_file,
+                                                        os.path.join(
+                                                            '{}{}'.format(
+                                                                settings.PROTOCOL,
+                                                                os.getenv(
+                                                                    'HOSTNAME')),
+                                                            'frontend/api/archive/')))
 
                 return HttpResponseRedirect('/admin/contests/archive/')
             else:

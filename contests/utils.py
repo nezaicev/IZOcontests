@@ -73,7 +73,7 @@ def post_json_data_from_session(api_url, path_file_data):
 
 def authenticate_user(username, password):
     url = '{}{}/'.format(settings.PROTOCOL,
-        os.path.join(os.getenv('HOSTNAME'),'users/login' ))
+                         os.path.join(os.getenv('HOSTNAME'), 'users/login'))
     session = requests.session()
     r = session.get(url)
     token = r.cookies['csrftoken']
@@ -310,11 +310,15 @@ def generate_year():
     return year_contest
 
 
-def get_dependent_data_for_obj(obj, field_name):
+def get_dependent_data_for_obj(obj, field_name, instance=True):
     if hasattr(obj, field_name):
         if getattr(obj, field_name):
-
-            return getattr(obj, field_name)
+            field_instance = getattr(obj, field_name)
+            if not instance:
+                if hasattr(field_instance, 'name'):
+                    return field_instance.name
+            else:
+                return field_instance
         else:
             return None
 

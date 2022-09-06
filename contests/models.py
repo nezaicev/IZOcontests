@@ -595,6 +595,9 @@ class Archive(models.Model):
                             blank=True, verbose_name='Ссылка на файл (облако)',
                             null=True)
 
+    participants=models.IntegerField(verbose_name='participants', blank=True, null=True)
+
+
     class Meta:
         verbose_name = 'Архив'
         verbose_name_plural = 'Архив'
