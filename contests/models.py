@@ -524,6 +524,11 @@ from cert.models import Cert
 
 
 class Archive(models.Model):
+    CROP_ORIENTATION = (('top', 'Верх'),
+                        ('center', 'Центр'),
+                        ('bottom', 'Низ'),
+                        ('left', 'Лево'),
+                        ('right', 'Право'))
     reg_number = models.CharField(max_length=20, blank=False, null=False,
                                   unique=True,
                                   verbose_name='Регистрационный номер')
@@ -559,9 +564,7 @@ class Archive(models.Model):
                               blank=True, null=True)
     crop_orientation_img = models.CharField(max_length=50,
                                             verbose_name='Ориентация превью',
-                                            choices=(('top', 'Верх'),
-                                                     ('center', 'Центр'),
-                                                     ('bottom', 'Низ')),
+                                            choices=CROP_ORIENTATION,
                                             default='center',
                                             )
     material = models.CharField(max_length=200, verbose_name='Материал',
@@ -595,8 +598,8 @@ class Archive(models.Model):
                             blank=True, verbose_name='Ссылка на файл (облако)',
                             null=True)
 
-    participants=models.IntegerField(verbose_name='participants', blank=True, null=True)
-
+    participants = models.IntegerField(verbose_name='participants', blank=True,
+                                       null=True)
 
     class Meta:
         verbose_name = 'Архив'
@@ -663,6 +666,11 @@ class ExtraImageArchive(ExtraImage):
                                      null=True, related_name='images')
     order_number = models.IntegerField(verbose_name='Порядковый номер',
                                        null=True, blank=True)
+    crop_orientation_img = models.CharField(max_length=50,
+                                            verbose_name='Ориентация превью',
+                                            choices=Archive.CROP_ORIENTATION,
+                                            default='center',
+                                            )
 
     class Meta:
         ordering = ['order_number', ]
