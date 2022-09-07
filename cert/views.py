@@ -9,9 +9,11 @@ from django.http import FileResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.views import generic, View
 from cert.forms import SearchRegNumForm, ConfirmationUserDataForm, \
-    BaseConfirmationUserDataForm, ConfirmationUserDataExtraForm
+    BaseConfirmationUserDataForm, ConfirmationUserDataExtraForm, \
+    ConfirmationUserDataEventForm
 from cert.services import get_obj_by_reg_num_from_archive, get_blank_cert
 from cert.utils import generate_cert
+from event.models import ParticipantEvent
 
 
 # Create your views here.
@@ -23,6 +25,7 @@ class SearchRegNumView(generic.FormView):
 
     def get(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
+            # Поиск участника в Архиве
             if request.GET.get('reg_number') and request.GET.get('event'):
                 self.request.session['reg_number'] = request.GET.get(
                     'reg_number')
@@ -77,17 +80,20 @@ class ConfirmationUserDataView(View):
                              }
         if participant:
             if participant.contest_name != os.getenv('MYMOSKVICHI'):
-                self.initial_data['fio'] = participant.fio if len(participant.fio)<=100 else 'Творческий коллектив'
+                self.initial_data['fio'] = participant.fio if len(
+                    participant.fio) <= 100 else 'Творческий коллектив'
                 self.initial_data['position'] = participant.level
                 self.initial_data['author_name'] = participant.author_name
                 self.initial_data['city'] = '{}, {}'.format(participant.region,
                                                             participant.city)
                 self.initial_data['teacher'] = participant.fio_teacher
             else:
-                self.initial_data['fio'] = participant.fio if len(participant.fio)<=100 else 'Творческий коллектив'
-                self.initial_data['author_name']=participant.author_name
-                self.initial_data['city']='{}, {}'.format(participant.region,participant.city)
-                self.initial_data['teacher']=participant.fio_teacher
+                self.initial_data['fio'] = participant.fio if len(
+                    participant.fio) <= 100 else 'Творческий коллектив'
+                self.initial_data['author_name'] = participant.author_name
+                self.initial_data['city'] = '{}, {}'.format(participant.region,
+                                                            participant.city)
+                self.initial_data['teacher'] = participant.fio_teacher
                 self.form = ConfirmationUserDataExtraForm
 
         if request.method == 'GET':
@@ -106,8 +112,7 @@ class ConfirmationUserDataView(View):
                     blank = get_blank_cert(event, status, year)
                     form_values = self.form.cleaned_data
                     path_cert = generate_cert(reg_number, blank,
-                                              self.request.user,
-                                              form_values, event)
+                                              form_values)
                     if path_cert:
                         return HttpResponseRedirect(
                             os.path.join(settings.MEDIA_URL, 'certs',
@@ -130,3 +135,67 @@ class ConfirmationUserDataView(View):
                                  'Участник с номером {} не найден'.format(
                                      request.session.get('reg_number')))
             return HttpResponseRedirect(reverse('search_cert'))
+
+
+class ConfirmationParticipantCertEvent(View):
+
+    def dispatch(self, request, *args, **kwargs):
+        self.form = ConfirmationUserDataEventForm
+        context = {}
+        if request.method == 'GET':
+            record_event = ParticipantEvent.objects.get(
+                reg_number=request.GET.get('reg_number'))
+            request.session['reg_number']=request.GET.get('reg_number')
+            self.form = self.form(
+                {
+                    'fio': record_event.participant.fio,
+                    'reg_number': record_event.reg_number,
+                    'school': record_event.participant.school,
+                    'city': '{}, {}'.format(record_event.participant.region,
+                                            record_event.participant.city),
+
+                }
+            )
+            context['form'] = self.form
+            return render(request, 'cert/cert_confirmation.html', context)
+
+        if request.method == 'POST':
+            record_event=ParticipantEvent.objects.get(reg_number=request.session.get('reg_number'))
+            self.form = self.form(request.POST)
+            print(self.form.errors)
+            if self.form.is_valid():
+                form_values = self.form.cleaned_data
+                path_cert=generate_cert(record_event.reg_number, record_event.event.certificate, form_values, )
+                if path_cert:
+                        return HttpResponseRedirect(
+                            os.path.join(settings.MEDIA_URL, 'certs',
+                                         path_cert.split('/')[-1]))
+            else:
+                messages.add_message(self.request, messages.ERROR,
+                                     'Ошибка! {}'.format(self.form.errors))
+
+            #     event = request.session.get('event')
+            #     status = self.form.cleaned_data['status']
+            #     year = self.form.cleaned_data['year']
+            #     reg_number = self.form.cleaned_data['reg_number']
+            #     try:
+            #         blank = get_blank_cert(event, status, year)
+            #         form_values = self.form.cleaned_data
+            #         path_cert = generate_cert(reg_number, blank,
+            #                                   self.request.user,
+            #                                   form_values, event)
+            #         if path_cert:
+            #             return HttpResponseRedirect(
+            #                 os.path.join(settings.MEDIA_URL, 'certs',
+            #                              path_cert.split('/')[-1]))
+            #
+            #     except ObjectDoesNotExist:
+            #         messages.add_message(self.request, messages.ERROR,
+            #                              'Для участника с номером {} нет доступных сертификатов'.format(
+            #                                  request.session.get(
+            #                                      'reg_number')))
+            #         return HttpResponseRedirect(reverse('search_cert'))
+            # else:
+            #     messages.add_message(self.request, messages.ERROR,
+            #                          'Одно из полей ввода прывысило максимальную длинну')
+            #     return HttpResponseRedirect(reverse('confirmation_data_view'))

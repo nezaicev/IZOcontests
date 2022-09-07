@@ -5,6 +5,8 @@ from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
 
+import contests.utils
+
 
 class Migration(migrations.Migration):
 
@@ -43,7 +45,7 @@ class Migration(migrations.Migration):
                 ('date_reg', models.DateTimeField(auto_now=True)),
                 ('contest', models.CharField(max_length=200, verbose_name='Конкурс')),
                 ('year_contest', models.CharField(max_length=20, verbose_name='Год проведения')),
-                ('image', models.ImageField(blank=True, max_length=200, null=True, upload_to=contests.models.PathAndRename('all_contests/'), verbose_name='Изображение')),
+                ('image', models.ImageField(blank=True, max_length=200, null=True, upload_to=contests.utils.PathAndRename('all_contests/'), verbose_name='Изображение')),
                 ('author_name', models.CharField(blank=True, max_length=50, null=True, verbose_name='Авторское название')),
                 ('format', models.CharField(blank=True, choices=[('A1', 'A1'), ('A2', 'A2'), ('A3', 'A3')], max_length=2, null=True, verbose_name='Формат работы')),
                 ('description', models.TextField(blank=True, max_length=500, null=True, verbose_name='Аннотация')),

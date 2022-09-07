@@ -4,6 +4,8 @@ import ckeditor.fields
 import contests.models
 from django.db import migrations, models
 
+import contests.utils
+
 
 class Migration(migrations.Migration):
 
@@ -20,6 +22,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='pagecontest',
             name='logo',
-            field=models.ImageField(blank=True, null=True, upload_to=contests.models.PathAndRename('PageContests/'), verbose_name='Логотип'),
+            field=models.ImageField(blank=True, null=True, upload_to=contests.utils.PathAndRename('PageContests/'), verbose_name='Логотип'),
         ),
     ]

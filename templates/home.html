@@ -16,7 +16,7 @@
         <p>{{ user.email }}</p>
         <p class="mb-0"><a href="{% url 'admin:index' %}">Личный кабинет</a>
         </p>
-        <p class="mb-0"><a href="{% url 'search_cert' %}">Сертификаты</a></p>
+{#        <p class="mb-0"><a href="{% url 'search_cert' %}">Сертификаты</a></p>#}
 
         {% for group in request.user.groups.all %}
           {% if group.name == 'Manager' %}

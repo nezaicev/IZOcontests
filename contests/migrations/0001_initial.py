@@ -6,6 +6,8 @@ from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
 
+import contests.utils
+
 
 class Migration(migrations.Migration):
 
@@ -116,7 +118,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(blank=True, max_length=150, verbose_name='Название конкурса')),
-                ('logo', models.ImageField(upload_to=contests.models.PathAndRename('PageContests/'), verbose_name='Логотип')),
+                ('logo', models.ImageField(upload_to=contests.utils.PathAndRename('PageContests/'), verbose_name='Логотип')),
                 ('content', ckeditor.fields.RichTextField(verbose_name='Контент')),
             ],
             options={
@@ -182,7 +184,7 @@ class Migration(migrations.Migration):
                 ('city', models.CharField(blank=True, max_length=101, verbose_name='Город')),
                 ('year_contest', models.CharField(default='2020-2021 год', max_length=20, verbose_name='Год проведения')),
                 ('date_reg', models.DateTimeField(auto_now=True)),
-                ('image', models.ImageField(upload_to=contests.models.PathAndRename('nrusheva/'), verbose_name='Изображение')),
+                ('image', models.ImageField(upload_to=contests.utils.PathAndRename('nrusheva/'), verbose_name='Изображение')),
                 ('author_name', models.CharField(max_length=50, verbose_name='Авторское название')),
                 ('format', models.CharField(choices=[('A1', 'A1'), ('A2', 'A2'), ('A3', 'A3')], max_length=2, verbose_name='Формат работы')),
                 ('description', models.TextField(max_length=500, verbose_name='Аннотация')),
@@ -222,7 +224,7 @@ class Migration(migrations.Migration):
                 ('city', models.CharField(blank=True, max_length=101, verbose_name='Город')),
                 ('year_contest', models.CharField(default='2020-2021 год', max_length=20, verbose_name='Год проведения')),
                 ('date_reg', models.DateTimeField(auto_now=True)),
-                ('image', models.ImageField(upload_to=contests.models.PathAndRename('artakiada/'), verbose_name='Изображение')),
+                ('image', models.ImageField(upload_to=contests.utils.PathAndRename('artakiada/'), verbose_name='Изображение')),
                 ('district', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='users.district', verbose_name='Округ')),
                 ('level', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='contests.level', verbose_name='Класс')),
                 ('material', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='contests.material', verbose_name='Материал')),

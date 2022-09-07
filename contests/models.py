@@ -1,18 +1,14 @@
 import time
-import os
-from uuid import uuid4
 
-import requests
 from django.db import models
-from django.middleware.csrf import get_token
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
-from django.utils.deconstruct import deconstructible
 from django.utils.safestring import mark_safe
 from model_utils.managers import InheritanceManager
 from ckeditor.fields import RichTextField
 from sorl.thumbnail import get_thumbnail
 
+from contests.utils import PathAndRename
 from users.models import CustomUser, Region, District
 from contests import utils
 from contests.directory import NominationART, NominationMYMSK, ThemeART, \
@@ -23,23 +19,6 @@ from contests.validators import validate_file_extension
 
 # Create your models here.
 # Заявки на конкурсы
-
-@deconstructible
-class PathAndRename(object):
-    def __init__(self, sub_path):
-        self.path = sub_path
-
-    def __call__(self, instance, filename):
-        ext = filename.split('.')[-1]
-        if instance:
-            if hasattr(instance, 'reg_number'):
-                filename = '{}.{}'.format(instance.reg_number, ext)
-            else:
-                filename = '{}.{}'.format(int(time.time()), ext)
-
-        else:
-            filename = '{}.{}'.format(uuid4().hex, ext)
-        return os.path.join(self.path, filename)
 
 
 class PageContest(models.Model):

@@ -23,6 +23,34 @@ class SearchRegNumForm(forms.Form):
                                                  label='Конкурс|Мероприятие')
 
 
+class ConfirmationUserDataEventForm(forms.Form):
+
+    reg_number = forms.CharField(label='Регистрационный номер',
+                                     max_length=20,
+                                     widget=forms.TextInput(
+                                         attrs={'readonly': 'readonly',
+                                                'class': 'form-control'}
+                                     )
+                                     )
+    fio = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
+        label='Участник',
+        max_length=100)
+    position = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control col-8',
+                                      'placeholder': "Педагог ИЗО"}),
+        label='Должность',
+        max_length=100)
+    school = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
+        label='Организация',
+        max_length=80)
+    city = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
+        label='Регион|Город',
+        max_length=80)
+
+
 class BaseConfirmationUserDataForm(forms.Form):
     field_order = ('reg_number', 'fio', 'school', 'position',)
     reg_number = forms.CharField(label='Регистрационный номер',
