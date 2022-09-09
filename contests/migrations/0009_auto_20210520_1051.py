@@ -3,6 +3,8 @@
 import contests.models
 from django.db import migrations, models
 
+import contests.utils
+
 
 class Migration(migrations.Migration):
 
@@ -14,11 +16,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='artakiada',
             name='image',
-            field=models.ImageField(max_length=200, upload_to=contests.models.PathAndRename('artakiada/'), verbose_name='Изображение'),
+            field=models.ImageField(max_length=200, upload_to=contests.utils.PathAndRename('artakiada/'), verbose_name='Изображение'),
         ),
         migrations.AlterField(
             model_name='nrusheva',
             name='image',
-            field=models.ImageField(max_length=200, upload_to=contests.models.PathAndRename('nrusheva/'), verbose_name='Изображение'),
+            field=models.ImageField(max_length=200, upload_to=contests.utils.PathAndRename('nrusheva/'), verbose_name='Изображение'),
         ),
     ]

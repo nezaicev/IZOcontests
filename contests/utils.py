@@ -3,12 +3,14 @@ import re
 import uuid
 import os
 import time
+from uuid import uuid4
 
 import urllib3
 from PIL import Image, ImageOps
 from django.conf import settings
 from django.core.exceptions import RequestAborted
 from django.core.mail import EmailMultiAlternatives, get_connection
+from django.utils.deconstruct import deconstructible
 from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
 import barcode
@@ -344,3 +346,19 @@ def generate_enumeration_field_by_id(obj_id, model_participant_id,
 #             else:
 #                 fios += participant
 #         return fios
+@deconstructible
+class PathAndRename(object):
+    def __init__(self, sub_path):
+        self.path = sub_path
+
+    def __call__(self, instance, filename):
+        ext = filename.split('.')[-1]
+        if instance:
+            if hasattr(instance, 'reg_number'):
+                filename = '{}.{}'.format(instance.reg_number, ext)
+            else:
+                filename = '{}.{}'.format(int(time.time()), ext)
+
+        else:
+            filename = '{}.{}'.format(uuid4().hex, ext)
+        return os.path.join(self.path, filename)

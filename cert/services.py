@@ -2,6 +2,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from cert.models import Cert
 from contests.models import Events
+from event.models import Event
 from contests.models import Archive
 from users.models import CustomUser
 

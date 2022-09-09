@@ -51,15 +51,17 @@ def insert_text(font_url, size, text, width, align_value, position, color,
         return None
 
 
-def generate_cert(reg_num, blank_cert, teacher, form_values, event):
+def generate_cert(reg_number, blank_cert, form_values):
     font_default = os.path.join(BASE_DIR, 'static',
                                 'fonts/YandexSansDisplay-Light.ttf')
     prev_field_position=None
     fio, position, school, nomination, author_name = None, None, None, None, None
     module_dir = os.getcwd()
-    obj = get_obj_by_reg_num_from_archive(reg_num, teacher, event)
+
+    # obj = get_obj_by_reg_num_from_archive(reg_num, teacher, event)
+
     path_file = os.path.join(module_dir, settings.MEDIA_URL[1:], 'certs',
-                             '{}_cert.jpg'.format(obj.reg_number))
+                             '{}_cert.jpg'.format(reg_number))
 
     img = Image.open(os.path.join(module_dir, blank_cert.blank.url[1:]))
     draw = ImageDraw.Draw(img)
