@@ -51,7 +51,7 @@ class ParticipantEvent(models.Model):
     event = models.ForeignKey(Event, on_delete=models.PROTECT,
                               verbose_name='Мероприятие', max_length=300)
 
-    participant = models.ForeignKey(CustomUser, verbose_name='Участник',
+    participant = models.ForeignKey( CustomUser, verbose_name='Участник',
                                     null=False, on_delete=models.CASCADE)
     date_reg = models.DateTimeField(verbose_name='Дата регистрации',
                                     auto_now=True)
@@ -78,3 +78,6 @@ class ParticipantEvent(models.Model):
     class Meta:
         verbose_name = 'Участник'
         verbose_name_plural = 'Участники'
+        permissions = [
+            ("export_participants", "Выгрузить список участников"),
+        ]

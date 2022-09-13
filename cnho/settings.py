@@ -59,6 +59,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'sorl.thumbnail',
+    'django_static_fontawesome',
+    'django_changelist_toolbar_admin',
+    'django_simple_export_admin',
 
 ]
 
@@ -205,8 +208,7 @@ SELECTEL_STORAGES = {
     },
 
 }
-PROTOCOL='http://'
-
+PROTOCOL = 'http://'
 
 YOUTUBE_POSTER = 'https://img.youtube.com/vi/{}/mqdefault.jpg'
 POSTER_DIR = 'posters'
@@ -299,4 +301,3 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 100,
 
 }
-

@@ -22,6 +22,7 @@ from contests.models import PageContest, Message, ModxDbimgMuz, Events
 from contests import utils
 from contests import tasks
 from mailing.admin import SendEmail
+from event.models import Event, ParticipantEvent
 
 
 # Register your models here.
@@ -43,6 +44,38 @@ class RegionsListFilter(admin.SimpleListFilter):
 
 
 class ArchiveInterface:
+
+    def transfer_data(self, request, queryset):
+        count_created_obj = 0
+        count_updated_obj = 0
+        for obj in queryset:
+            event = Event.objects.filter(
+                name=utils.get_dependent_data_for_obj(obj, 'contest_name'))
+            if event:
+                values_for_record = {
+                    'event': event[0],
+                    'participant': utils.get_dependent_data_for_obj(obj,
+                                                                    'teacher'),
+                }
+                vm_record, created = ParticipantEvent.objects.update_or_create(
+
+                    participant=obj.teacher, defaults=values_for_record,
+                )
+                vm_record.save()
+                if created:
+                    count_created_obj += 1
+                else:
+                    count_updated_obj += 1
+
+            else:
+                messages.add_message(request, messages.INFO, "Не найдено мероприятие {}".format(
+                    utils.get_dependent_data_for_obj(obj, 'contest_name')))
+        if count_updated_obj or count_created_obj:
+            messages.add_message(request, messages.INFO,
+                                 "Добавлено {}, обнавлено {}".format(
+                                     count_created_obj, count_updated_obj))
+
+    transfer_data.short_description = 'Перенести данные о мероприятие'
 
     def export_as_xls(self, request, queryset):
         meta = self.model._meta
@@ -101,7 +134,8 @@ class ArchiveInterface:
                 'date_reg': utils.get_dependent_data_for_obj(obj, 'date_reg'),
                 'district': utils.get_dependent_data_for_obj(obj, 'district'),
                 'direction': utils.get_dependent_data_for_obj(obj,
-                                                              'direction', instance=False),
+                                                              'direction',
+                                                              instance=False),
                 'participants': utils.get_dependent_data_for_obj(obj,
                                                                  'id'),
 
@@ -588,7 +622,7 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     inlines = [ImageExtraArchiveInline, VideoArchiveInline, FileArchiveInline]
     model = Archive
     actions = ['export_as_xls', 'send_selected_letter',
-               'load_json_data_from_file']
+               'load_json_data_from_file', 'transfer_data']
     list_editable = []
     list_display = ['reg_number', 'publish', 'contest_name', 'author_name',
                     'fio_teacher',
@@ -607,6 +641,15 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
         else:
             qs = super(admin.ModelAdmin, self).get_queryset(request)
             return qs.filter(teacher=request.user)
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if not request.user.is_superuser:
+            if 'load_json_data_from_file' in actions:
+                del actions['load_json_data_from_file']
+            if 'transfer_data' in actions:
+                del actions['transfer_data']
+        return actions
 
     def get_list_display(self, request):
         if request.user.is_superuser or request.user.groups.filter(

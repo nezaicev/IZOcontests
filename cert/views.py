@@ -174,28 +174,4 @@ class ConfirmationParticipantCertEvent(View):
                 messages.add_message(self.request, messages.ERROR,
                                      'Ошибка! {}'.format(self.form.errors))
 
-            #     event = request.session.get('event')
-            #     status = self.form.cleaned_data['status']
-            #     year = self.form.cleaned_data['year']
-            #     reg_number = self.form.cleaned_data['reg_number']
-            #     try:
-            #         blank = get_blank_cert(event, status, year)
-            #         form_values = self.form.cleaned_data
-            #         path_cert = generate_cert(reg_number, blank,
-            #                                   self.request.user,
-            #                                   form_values, event)
-            #         if path_cert:
-            #             return HttpResponseRedirect(
-            #                 os.path.join(settings.MEDIA_URL, 'certs',
-            #                              path_cert.split('/')[-1]))
-            #
-            #     except ObjectDoesNotExist:
-            #         messages.add_message(self.request, messages.ERROR,
-            #                              'Для участника с номером {} нет доступных сертификатов'.format(
-            #                                  request.session.get(
-            #                                      'reg_number')))
-            #         return HttpResponseRedirect(reverse('search_cert'))
-            # else:
-            #     messages.add_message(self.request, messages.ERROR,
-            #                          'Одно из полей ввода прывысило максимальную длинну')
-            #     return HttpResponseRedirect(reverse('confirmation_data_view'))
+

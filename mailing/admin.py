@@ -13,7 +13,6 @@ from contests import tasks
 
 
 class SendEmail():
-
     def send_selected_letter(self, request, queryset):
 
         if 'apply' in request.POST:
