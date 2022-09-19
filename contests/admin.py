@@ -65,8 +65,9 @@ class ArchiveInterface:
             values_for_record = {
 
                 'contest_name': utils.get_dependent_data_for_obj(obj,
-                                                                 'page_contest') if utils.get_dependent_data_for_obj(
-                    obj, 'page_contest') else obj.info.name,
+                                                                 'page_contest',
+                                                                 instance=False) if utils.get_dependent_data_for_obj(
+                    obj, 'page_contest', instance=False) else obj.info.name,
                 'year_contest': obj.year_contest,
                 'image': utils.get_dependent_data_for_obj(obj, 'image'),
                 'material': utils.get_dependent_data_for_obj(obj, 'material',
@@ -101,7 +102,8 @@ class ArchiveInterface:
                 'date_reg': utils.get_dependent_data_for_obj(obj, 'date_reg'),
                 'district': utils.get_dependent_data_for_obj(obj, 'district'),
                 'direction': utils.get_dependent_data_for_obj(obj,
-                                                              'direction', instance=False),
+                                                              'direction',
+                                                              instance=False),
                 'participants': utils.get_dependent_data_for_obj(obj,
                                                                  'id'),
 
