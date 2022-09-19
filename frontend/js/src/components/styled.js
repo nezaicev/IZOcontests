@@ -6,6 +6,7 @@ import ImageListItem, {imageListItemClasses} from "@mui/material/ImageListItem";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import * as React from "react";
+import {brown} from "@mui/material/colors";
 
 
 
@@ -116,3 +117,13 @@ export  const customThemeTab = createTheme({
       }
   }
 });
+
+export const ButtonDefault = styled(Button)(({ theme }) => ({
+  color: theme.palette.getContrastText(brown[100]),
+  backgroundColor: brown[100],
+    border:brown[200],
+  '&:hover': {
+    backgroundColor: brown[200],
+      border:brown[200],
+  },
+}));

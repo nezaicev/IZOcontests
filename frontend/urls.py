@@ -7,6 +7,7 @@ urlpatterns = [
     path('artakiada/', views.index),
     path('nrusheva/', views.index),
     path('mymoskvichi/', views.index),
+    path('event/', views.index),
     path('api/archive/', views.ArchiveAPIView.as_view({'get': 'list', 'post': 'create'})),
     path('api/archive/nominationvp/', views.NominationVPAPIView.as_view()),
     path('api/archive/nomination/mymoskvichi',

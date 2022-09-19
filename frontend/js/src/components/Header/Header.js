@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from "./HomeIcon";
 
-const Header = () => {
+const Header = (props) => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -79,13 +79,13 @@ const Header = () => {
                                 display: {xs: 'block', md: 'none'},
                             }}
                         >
-                            {/*{pages.map((page) => (*/}
-                            {/*    <MenuItem key={page}*/}
-                            {/*              onClick={handleCloseNavMenu}>*/}
-                            {/*        <Typography*/}
-                            {/*            textAlign="center">{page}</Typography>*/}
-                            {/*    </MenuItem>*/}
-                            {/*))}*/}
+                            {props.pages.map((page) => (
+                                <MenuItem key={page['name']}
+                                          onClick={handleCloseNavMenu}>
+                                    <Typography component='a'
+                                        textAlign="center">{page['name']}</Typography>
+                                </MenuItem>
+                            ))}
                         </Menu>
                     </Box>
                     <Typography
