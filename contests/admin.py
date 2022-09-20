@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
+from django_simple_export_admin.admin import DjangoSimpleExportAdmin
+
 from contests.models import Artakiada, NRusheva, Mymoskvichi, \
     ParticipantMymoskvichi, \
     TeacherExtraMymoskvichi, Archive, ShowEvent, VP, ParticipantVP, \
@@ -709,7 +711,7 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     load_json_data_from_file.short_description = 'Загрузить данные из JSON файла'
 
 
-class ShowEventAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
+class ShowEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin, ArchiveInterface, SendEmail):
     model = ShowEvent
     search_fields = ('reg_number', 'fio')
 
@@ -718,8 +720,28 @@ class ShowEventAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
         'district',
     )
     list_filter = ('page_contest',)
-    actions = ['archived', 'export_as_xls', 'send_selected_letter']
+    actions = ['archived','send_selected_letter']
     exclude = ('reg_number', 'teacher', 'barcode', 'status', 'info')
+
+    django_simple_export_admin_exports = {
+        "filtered-books": {
+            "label": "Выгрузить список",
+            "icon": "fas fa-book",
+            "fields": [
+                {"field": "reg_number", "label": "Номер",
+                 },
+                {"field": "page_contest__name", "label": "Мероприятие"},
+                {"field": "teacher__fio", "label": "ФИО"},
+                {"field": "school", "label": "Организация"},
+                {"field": "teacher__city", "label": "Город"},
+                {"field": "region__name", "label": "Регион"},
+
+            ],
+            "export-filtered": True,
+            # "permissions": [
+            #     "django_simple_export_admin_example.export_filtered_books"],
+        }
+    }
 
     def get_city(self, obj):
         return obj.teacher.city
