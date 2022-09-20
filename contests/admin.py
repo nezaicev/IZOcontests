@@ -672,18 +672,18 @@ class ShowEventAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     search_fields = ('reg_number', 'fio')
 
     list_display = (
-        'reg_number', 'page_contest', 'fio', 'status', 'school', 'region',
+        'reg_number', 'page_contest', 'fio', 'status', 'school','get_city', 'region',
         'district',
     )
     list_filter = ('page_contest',)
     actions = ['archived', 'export_as_xls', 'send_selected_letter']
     exclude = ('reg_number', 'teacher', 'barcode', 'status', 'info')
 
-    def get_name(self, obj):
-        if obj.info:
-            return obj.info.name
-        else:
-            return ''
+    def get_city(self, obj):
+        return obj.teacher.city
+
+    get_city.short_description = 'Город'
+
 
 
 admin.site.register(ShowEvent, ShowEventAdmin)
