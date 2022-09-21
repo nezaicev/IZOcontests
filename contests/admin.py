@@ -738,8 +738,8 @@ class ShowEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin, ArchiveInterface
 
             ],
             "export-filtered": True,
-            # "permissions": [
-            #     "django_simple_export_admin_example.export_filtered_books"],
+            "permissions": [
+                "contests.export_participants"],
         }
     }
 
