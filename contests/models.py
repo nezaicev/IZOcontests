@@ -189,6 +189,9 @@ class ShowEvent(BaseContest):
     class Meta:
         verbose_name = 'Мероприятие'
         verbose_name_plural = 'Мероприятия'
+        permissions = [
+            ("export_participants", "Выгрузить список участников"),
+        ]
 
 
 class Artakiada(BaseContest):
