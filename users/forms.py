@@ -25,7 +25,7 @@ class CustomUserCreationForm(UserCreationForm):
                                           'onchange': 'regionChanged(this)',
                                           'initial':1}),
             'district':forms.Select(attrs={'class': 'form-select',}),
-            'city':forms.TextInput(attrs={'class': 'form-control', }),
+            'city':forms.TextInput(attrs={'class': 'form-control','required':'true' }),
             'school': forms.TextInput(attrs={'class': 'form-control', }),
             'phone': forms.TextInput(attrs={'class': 'form-control' }),
             'position': forms.Select(attrs={'class': 'form-select', }),
