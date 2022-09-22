@@ -7,12 +7,12 @@ import FieldTitle from "../Gallary/FieldTitle";
 import React from "react";
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import Button from "@mui/material/Button";
-import {brown } from '@mui/material/colors';
+import {brown} from '@mui/material/colors';
 import {ButtonDefault} from "../styled";
 
-const buttonColor=brown.A400
+const buttonColor = brown.A400
 
-function CardEvent() {
+function CardEvent(props) {
     return (
 
         <Card
@@ -28,7 +28,7 @@ function CardEvent() {
                     width: 350,
                     display: 'block',
                 }}
-                image={'http://cnho.ru/art-teach/kult_nasled_2022-23/gelikon.png'}
+                image={props.data['logo']}
                 alt=''
             />
 
@@ -40,17 +40,14 @@ function CardEvent() {
 
                 <CardContent sx={{width: [300, 300, 300]}}>
                     <Typography variant="body1" display="block" gutterBottom>
-                        Вебинар «Подготовка к участию в Городской
-                        научно-практической конференции «АРТвектор»
+                        {props.data['name']}
                     </Typography>
                     <Box component={'div'} sx={{marginTop: '15px'}}>
                         <Chip icon={<EventNoteIcon
                             sx={{color: 'rgb(128,110,110)'}}/>}
-                              label="15 сентября 2022 г. 16:00"
+                              label={props.data['start_date']}
                               variant="outlined"/>
                     </Box>
-
-
 
 
                     <Typography variant="subtitle1" color="text.secondary"
@@ -59,15 +56,17 @@ function CardEvent() {
                                     alignContent: 'center',
                                     display: 'block',
                                     marginTop: '15px'
-                                }}>
-                        Контент
+                                }}
+
+                    >
+                        {props.data['message']}
 
                     </Typography>
                     <Box componetn={'div'} sx={{
                         justifyContent: 'right',
                         display: 'flex'
                     }}>
-                        <ButtonDefault variant="outlined"  size='small'>
+                        <ButtonDefault variant="outlined" size='small'>
                             Принять участие
                         </ButtonDefault>
                     </Box>
@@ -75,7 +74,6 @@ function CardEvent() {
 
                 </CardContent>
             </Box>
-
 
 
         </Card>

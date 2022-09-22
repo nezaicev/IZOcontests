@@ -26,7 +26,7 @@ class Event(models.Model):
     logo = models.ImageField(verbose_name='Изображение',
                              upload_to=PathAndRename('PageContests/'),
                              blank=True, null=True)
-    content = RichTextField(verbose_name='Контент', blank=True, null=True)
+    message = models.TextField(verbose_name='Информация', blank=True, null=True)
     send_letter = models.BooleanField(default=False,
                                       verbose_name='Отправить письмо')
     letter = RichTextField(verbose_name='Письмо', blank=True, null=True)
@@ -51,7 +51,7 @@ class ParticipantEvent(models.Model):
     event = models.ForeignKey(Event, on_delete=models.PROTECT,
                               verbose_name='Мероприятие', max_length=300)
 
-    participant = models.ForeignKey( CustomUser, verbose_name='Участник',
+    participant = models.ForeignKey(CustomUser, verbose_name='Участник',
                                     null=False, on_delete=models.CASCADE)
     date_reg = models.DateTimeField(verbose_name='Дата регистрации',
                                     auto_now=True)

@@ -149,6 +149,7 @@ AUTH_USER_MODEL = 'users.CustomUser'
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
+
 LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
@@ -297,6 +298,10 @@ CKEDITOR_CONFIGS = {
 }
 
 REST_FRAMEWORK = {
+    'DATETIME_FORMAT': "%Y-%m-%d",
+    'LANGUAGE_CODE': 'ru',
+
+
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100,
 

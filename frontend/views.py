@@ -18,6 +18,8 @@ from rest_framework.response import Response
 from contests.serializers import ArchiveSerializer, NominationVPSerializer, \
     DirectionVPSerializer, ThemeNRushevaSerializer, ThemeArtakiadaSerializer, \
     NominationMymoskvichiSerializer
+from event.models import Event
+from event.serializers import EventSerializer
 
 
 def index(request):
@@ -134,3 +136,12 @@ class CreativeTackAPIView(APIView):
                 'content', flat=True))
 
         return Response(content)
+
+
+class EventListView(APIView):
+
+    def get(self, request, format=None):
+        snippets = Event.objects.all()
+        serializer = EventSerializer(snippets, many=True)
+        return Response(serializer.data)
+

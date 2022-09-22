@@ -20,4 +20,6 @@ urlpatterns = [
     path('api/archive/contest/thems/', views.ThemeContestAPIView.as_view()),
     path('api/archive/contest/years/', views.YearContestAPIView.as_view()),
     path('api/contest/creative_tack/', views.CreativeTackAPIView.as_view()),
+    path('api/events/', views.EventListView.as_view()),
+
 ]
