@@ -298,9 +298,6 @@ CKEDITOR_CONFIGS = {
 }
 
 REST_FRAMEWORK = {
-    'DATETIME_FORMAT': "%Y-%m-%d",
-    'LANGUAGE_CODE': 'ru',
-
 
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100,

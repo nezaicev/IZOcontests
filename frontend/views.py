@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import filters
 import django_filters
@@ -141,7 +142,42 @@ class CreativeTackAPIView(APIView):
 class EventListView(APIView):
 
     def get(self, request, format=None):
-        snippets = Event.objects.all()
-        serializer = EventSerializer(snippets, many=True)
+        events = Event.objects.all()
+        serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
 
+
+class EventDetailView(APIView):
+    def get_object(self, pk):
+        try:
+            return Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        events = self.get_object(pk)
+        serializer = EventSerializer(events)
+        return Response(serializer.data)
+
+
+class BroadcastListView(APIView):
+
+    def get(self, request, format=None):
+        broadcasts = Event.objects.filter(broadcast_url__isnull=False)
+        serializer = EventSerializer(broadcasts, many=True)
+        return Response(serializer.data)
+
+
+class BroadcastDetailView(APIView):
+    def get_object(self, pk):
+        try:
+            event=Event.objects.get(pk=pk)
+            if event.broadcast_url:
+                return Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        broadcast = self.get_object(pk)
+        serializer = EventSerializer(broadcast)
+        return Response(serializer.data)

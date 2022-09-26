@@ -2,21 +2,18 @@ import Box from "@mui/material/Box";
 import React, {useEffect} from "react";
 import Header from "../../components/Header/Header";
 import {Grid} from "@mui/material";
-import CardEvent from "../../components/Event/CardEvent";
-import CardExposition from "../../components/Exposition/CardExposition";
 import Container from "@mui/material/Container";
 import dataFetch from  "../../components/utils/dataFetch"
+import ItemBroadcast from "../../components/Broadcast/ItemBroadcast";
 
 
 let pages = [
-    {'name': 'Мероприятия','link': '/frontend/api/events/'},
-    {'name': 'Виртуальный музей','link': '/exposition'}
-
+    {'name': 'Трансляции','link': '/frontend/api/events/'},
 ]
 
 const host=process.env.REACT_APP_HOST_NAME
 
-function MainPage() {
+function BroadcastListPage() {
     const [data, setData] = React.useState([])
     const [value, setValue] = React.useState(0);
 
@@ -47,32 +44,14 @@ function MainPage() {
                     <Grid container spacing={2}
                           sx={{justifyContent: 'space-between'}}>
                         {data.map((item, index)=>(
+                            item['broadcast_url']?
                             <Grid item xs="auto" key={index}>
-                            <CardEvent data={item}/>
-                        </Grid>
+                            <ItemBroadcast data={item}/>
+                        </Grid>:''
                         ))}
-
 
                     </Grid>
                 </Box>
-
-                {/*<Box>*/}
-                {/*    <Grid container spacing={2}*/}
-                {/*          sx={{justifyContent: 'space-between'}}>*/}
-                {/*        <Grid item xs="auto">*/}
-                {/*            <CardExposition/>*/}
-                {/*        </Grid>*/}
-                {/*        <Grid item xs="auto">*/}
-                {/*            <CardExposition/>*/}
-                {/*        </Grid>*/}
-                {/*        <Grid item xs="auto">*/}
-                {/*            <CardExposition/>*/}
-                {/*        </Grid>*/}
-                {/*        <Grid item xs="auto">*/}
-                {/*            <CardExposition/>*/}
-                {/*        </Grid>*/}
-                {/*    </Grid>*/}
-                {/*</Box>*/}
 
             </Container>
         </Box>
@@ -80,4 +59,4 @@ function MainPage() {
     )
 }
 
-export default MainPage
+export default BroadcastListPage

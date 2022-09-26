@@ -34,6 +34,7 @@ class Event(models.Model):
                                     on_delete=models.PROTECT, null=True,
                                     blank=True)
     hide = models.BooleanField(verbose_name='Скрыть', default=False)
+    broadcast_url=models.URLField(verbose_name='Трансляция', blank=True, null=True)
 
     def __str__(self):
         return '{} {}'.format(self.name, self.start_date.date())

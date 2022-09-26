@@ -1,21 +1,19 @@
-import * as React from 'react';
 import axios from "axios";
 
-
-const dataFetch = (url, params, callback) => {
+const dataSend = (url, params, callback) => {
     let status = ''
     let data = []
 
     if (!url) return;
-    status = 'fetching'
+    status = 'sending'
     axios({
-        method: "GET",
+        method: "POST",
         url: url,
         params: params,
     })
         .then((res) => {
             data = res.data
-            status = 'fetched'
+            status = 'sanded'
             return data
         }).then((data)=>{callback(data)})
         .catch((e) => {
@@ -23,5 +21,4 @@ const dataFetch = (url, params, callback) => {
         });
 
 }
-export default dataFetch
-
+export default dataSend

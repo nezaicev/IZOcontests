@@ -1,16 +1,13 @@
-
-
-export function validContestName(name){
-    if ((name.search(/\d/) !== -1)||
-        ( name.toLowerCase().indexOf('изосту')!==-1 )||
-        ( name.toLowerCase().indexOf('колл')!==-1 )||
-        ( name.toLowerCase().indexOf('клас')!==-1 )||
-        ( name.toLowerCase().indexOf('учен')!==-1 )
-    ){
+export function validContestName(name) {
+    if ((name.search(/\d/) !== -1) ||
+        (name.toLowerCase().indexOf('изосту') !== -1) ||
+        (name.toLowerCase().indexOf('колл') !== -1) ||
+        (name.toLowerCase().indexOf('клас') !== -1) ||
+        (name.toLowerCase().indexOf('учен') !== -1)
+    ) {
 
         return false
-    }
-    else {
+    } else {
         return true
     }
 
@@ -42,6 +39,42 @@ export function createLabel(obj) {
 
 }
 
-export function getExcludeData(data, exclude){
-    return data.filter((n)=>{return !exclude.includes(n)})
+export function getExcludeData(data, exclude) {
+    return data.filter((n) => {
+        return !exclude.includes(n)
+    })
 }
+
+
+export function getFormattedDate(date) {
+    let options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timezone: 'UTC',
+        hour: 'numeric',
+        minute: 'numeric',
+    };
+    let newDate = new Date(date)
+    return newDate.toLocaleString('ru', options)
+}
+
+export function getThumbYoutube(url, quality) {
+    let thumbUrl;
+    let idVideo = new URL(url)
+    idVideo = idVideo.pathname.substr(1, 12).split('&').join('')
+    thumbUrl = `http://img.youtube.com/vi/${idVideo}/${quality}.jpg`;
+    return thumbUrl
+}
+
+
+export function deleteYoutubeLogo() {
+    let logo = document.getElementsByClassName('ytp-impression-link-logo')
+    for (let i = 0; i < logo.length; i++) {
+        logo[i].outerHTML = "";
+    }
+    console.log(logo)
+}
+
+
+

@@ -8,6 +8,8 @@ import GalleryPageMyMoskvichi
     from "./pages/MYMOSKVICHI/GalleryPageMyMoskvichi";
 import MainPage from "./pages/MAIN/MainPage";
 import EventPage from "./pages/EVENT/EventPage";
+import BroadcastListPage from "./pages/BROADCAST/BroadcastListPage";
+import BroadcastPage from "./pages/BROADCAST/BroadcastPage";
 
 
 
@@ -24,6 +26,9 @@ const App = () => {
                     <Route path='/frontend/nrusheva/' element={<GallaryPageNRusheva/>}/>
                     <Route path='/frontend/mymoskvichi/' element={<GalleryPageMyMoskvichi/>}/>
                     <Route path='/frontend/event/:id/' element={<EventPage/>} />
+                    <Route path='/frontend/broadcasts/' element={<BroadcastListPage/>} />
+                    <Route path='/frontend/broadcast/:id/' element={<BroadcastPage/>} />
+
                 </Routes>
                 {/*<Switch>*/}
                 {/*     <Route path='/frontend/event/:id/' children={<EventPage/>} />*/}
