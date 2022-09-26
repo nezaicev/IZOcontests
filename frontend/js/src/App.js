@@ -15,7 +15,7 @@ import BroadcastPage from "./pages/BROADCAST/BroadcastPage";
 
 
 const App = () => {
-
+        console.log('test')
     return (
         <>
             <BrowserRouter>

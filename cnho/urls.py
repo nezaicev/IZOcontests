@@ -36,7 +36,10 @@ urlpatterns = [
          name='home'),
 
     path('event/<int:pk>/',
-         EventPageView.as_view(template_name='event/page.html'), name='event')
+         EventPageView.as_view(template_name='event/page.html'), name='event'),
+
+
+
 
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

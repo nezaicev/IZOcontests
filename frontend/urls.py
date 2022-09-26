@@ -1,16 +1,18 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
-    path('', views.index),
+
+
     path('vp/', views.index),
     path('artakiada/', views.index),
     path('nrusheva/', views.index),
     path('mymoskvichi/', views.index),
-    path('event/<int:pk>/', views.index),
-    path('broadcast/<int:pk/>', views.index),
+    path('event/', views.index),
+    path('broadcast/', views.index),
     path('broadcasts/', views.index),
-    path('api/archive/', views.ArchiveAPIView.as_view({'get': 'list', 'post': 'create'})),
+    path('api/archive/',
+         views.ArchiveAPIView.as_view({'get': 'list', 'post': 'create'})),
     path('api/archive/nominationvp/', views.NominationVPAPIView.as_view()),
     path('api/archive/nomination/mymoskvichi',
          views.NominationMymoskvichiAPIView.as_view()),
@@ -26,5 +28,9 @@ urlpatterns = [
     path('api/event/<int:pk>/', views.EventDetailView.as_view()),
     path('api/broadcasts/', views.BroadcastListView.as_view()),
     path('api/broadcast/<int:pk>/', views.BroadcastDetailView.as_view()),
+    path('', views.index),
+    re_path(r'.*', views.index),
 
 ]
+
+
