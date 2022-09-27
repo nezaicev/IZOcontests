@@ -1,8 +1,4 @@
-  // window.onload = function () {
-  //       var additional_info = document.getElementById('additional_info');
-  //       additional_info.style.display='none';
-  //       console.log('test')
-  //     };
+
  document.addEventListener("DOMContentLoaded", () => {
      var region = document.getElementById('id_region');
      var status = document.getElementById('id_status');
@@ -15,7 +11,7 @@
           var city = document.getElementById('city');
           if (obj.value === '1') {
               district.style.display = 'block';
-              city.style.display = 'none';
+              city.style.display = 'block';
           } else {
               city.style.display = 'block';
               district.style.display = 'none';
