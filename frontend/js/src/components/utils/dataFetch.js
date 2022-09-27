@@ -2,12 +2,12 @@ import * as React from 'react';
 import axios from "axios";
 
 
-const dataFetch = (url, params, callback) => {
-    let status = ''
+const dataFetch = (url, params, callback, fetching) => {
+    // status ? status = true:''
+    fetching(true)
     let data = []
 
     if (!url) return;
-    status = 'fetching'
     axios({
         method: "GET",
         url: url,
@@ -15,9 +15,8 @@ const dataFetch = (url, params, callback) => {
     })
         .then((res) => {
             data = res.data
-            status = 'fetched'
             return data
-        }).then((data)=>{callback(data)})
+        }).then((data)=>{callback(data);fetching(false)})
         .catch((e) => {
             console.log(e);
         });
