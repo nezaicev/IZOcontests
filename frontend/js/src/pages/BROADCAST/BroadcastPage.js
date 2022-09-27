@@ -27,10 +27,12 @@ function BroadcastPage() {
 
     useEffect(() => {
         dataFetch(`${host}${pages[value]['link']}${id}/`, null, (data) => {
+
             setData(data);
-        }, (value)=>(setIsFetching(value)))
-        console.log(isFetching)
-    }, [])
+            setIsFetching(false)
+        })
+
+    }, [isFetching])
 
     return (
         <Box sx={{fontFamily: 'Roboto', height: 'auto'}}>
@@ -41,7 +43,7 @@ function BroadcastPage() {
                 mt: '20px',
                 justifyContent: 'center',
             }}>
-                {isFetching ?  <Box sx={{
+                {isFetching ? <Box sx={{
                                     justifyContent: 'center',
                                     height:'600',
                                     display: 'flex',
@@ -50,7 +52,7 @@ function BroadcastPage() {
                                     <CircularProgress sx={{
                                         color: '#d26666'
                                     }}/>
-                                </Box> :  <Box>
+                                </Box> : <Box>
                     <Box sx={{}}>
                         <Typography variant="button" display="block"
                                     gutterBottom>
