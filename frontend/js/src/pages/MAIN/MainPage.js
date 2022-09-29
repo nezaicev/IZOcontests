@@ -5,39 +5,47 @@ import {Grid} from "@mui/material";
 import CardEvent from "../../components/Event/CardEvent";
 import CardExposition from "../../components/Exposition/CardExposition";
 import Container from "@mui/material/Container";
-import dataFetch from  "../../components/utils/dataFetch"
+import dataFetch from "../../components/utils/dataFetch"
 
 
 let pages = [
-    {'name': 'Мероприятия','link': '/frontend/api/events/'},
-    {'name': 'Виртуальный музей','link': '/exposition'}
+    {'name': 'Мероприятия', 'link': '/frontend/api/events/'},
+    {'name': 'Виртуальный музей', 'link': '/exposition'}
 
 ]
 
-const host=process.env.REACT_APP_HOST_NAME
+const host = process.env.REACT_APP_HOST_NAME
 
 function MainPage() {
+    const [auth, setAuth] = React.useState({
+        "user": "AnonymousUser",
+        "auth": false
+    })
+
     const [data, setData] = React.useState([])
     const [value, setValue] = React.useState(0);
 
 
     useEffect(() => {
-        dataFetch(`${host}${pages[value]['link']}`,null, (data) => {
-            setData(data);
-        })
+        dataFetch(`${host}/frontend/api/auth/`,null, (data)=>{setAuth(data)})
+        // dataFetch(`${host}${pages[value]['link']}`, null, (data) => {
+        //     setData(data);
+        // })
     }, [])
 
     useEffect(() => {
-        dataFetch(`${host}${pages[value]['link']}`,null, (data) => {
+        dataFetch(`${host}${pages[value]['link']}`, null, (data) => {
             setData(data);
         })
     }, [value])
 
 
-
     return (
         <Box sx={{fontFamily: 'Roboto', height: 'auto'}}>
-            <Header pages={pages} activePage={(newValue)=>(setValue(newValue))}/>
+            <Header pages={pages}
+                    activePage={(newValue) => (setValue(newValue))}
+                    auth={auth}
+            />
             <Container sx={{
                 fontFamily: 'Roboto',
                 mt: '20px',
@@ -46,10 +54,10 @@ function MainPage() {
                 <Box>
                     <Grid container spacing={2}
                           sx={{justifyContent: 'space-between'}}>
-                        {data.map((item, index)=>(
+                        {data.map((item, index) => (
                             <Grid item xs="auto" key={index}>
-                            <CardEvent data={item}/>
-                        </Grid>
+                                <CardEvent data={item}/>
+                            </Grid>
                         ))}
 
 

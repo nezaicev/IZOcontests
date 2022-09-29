@@ -1,6 +1,6 @@
 import './App.css';
 import React from "react";
-import {Router, Route, Routes, Switch, Link, BrowserRouter} from 'react-router-dom'
+import {Router, Route, Routes,BrowserRouter, Navigate} from 'react-router-dom'
 import GalleryPageVP from "./pages/VP/GalleryPageVP";
 import GalleryPageArtakiada from "./pages/ARTAKIADA/GalleryPageArtakiada";
 import GallaryPageNRusheva from "./pages/NRUSHEVA/GallaryPageNRusheva";
@@ -12,13 +12,15 @@ import BroadcastListPage from "./pages/BROADCAST/BroadcastListPage";
 import BroadcastPage from "./pages/BROADCAST/BroadcastPage";
 
 
-
+const host = process.env.REACT_APP_HOST_NAME
 
 const App = () => {
     return (
         <>
             <BrowserRouter>
+
                 <Routes>
+
                     <Route path='/frontend/main/' element={<MainPage/>}/>
                     <Route path='/frontend/vp/' element={<GalleryPageVP/>}/>
                     <Route path='/frontend/artakiada/' element={<GalleryPageArtakiada/>}/>

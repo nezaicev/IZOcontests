@@ -3,6 +3,7 @@ import Container from "@mui/material/Container";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import React from "react";
+
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
@@ -10,10 +11,28 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from "./HomeIcon";
 import {useNavigate} from 'react-router-dom'
+import {RedirectFunction} from "react-router-dom";
 import Tab from "@mui/material/Tab";
 import Tabs, {tabsClasses} from "@mui/material/Tabs";
+import {Avatar} from "@mui/material";
+import Tooltip from '@mui/material/Tooltip';
+import Button from "@mui/material/Button";
+import {stringAvatar} from "../utils/utils";
+import {AccountCircle} from "@mui/icons-material";
 
-const settings=['Личный кабинет','Выход']
+const host = process.env.REACT_APP_HOST_NAME
+
+const settings = [
+    {name:'Личный кабинет', link:`${host}/admin/`},
+    {name:'Выход', link: `${host}/users/logout/`}
+]
+
+const initialSettings = [
+    {name:'Вход', link:`${host}/users/login/`},
+    {name:'Забыли пароль', link: `${host}/users/password_reset/`},
+    {name:'Регистрация', link: `${host}/users/signup/`},
+
+]
 
 
 
@@ -98,7 +117,7 @@ const Header = (props) => {
                                     <Typography component='a'
                                                 textAlign="center">{page['name']}</Typography>
                                 </MenuItem>
-                            )):''}
+                            )) : ''}
                         </Menu>
                     </Box>
                     <Typography
@@ -132,36 +151,74 @@ const Header = (props) => {
 
 
                     </Box>
+                    {props.auth['auth'] ? <Box sx={{flexGrow: 0}}>
+                        <Tooltip title="Открыть меню">
+                            <IconButton onClick={handleOpenUserMenu}
+                                        sx={{p: 0}}>
+                                <Avatar {...stringAvatar(props.auth['user'])} />
+                            </IconButton>
+                        </Tooltip>
+                        <Menu
+                            sx={{mt: '45px'}}
+                            id="menu-appbar"
+                            anchorEl={anchorElUser}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(anchorElUser)}
+                            onClose={handleCloseUserMenu}
+                        >
+                            {settings.map((setting, index) => (
+                                <MenuItem key={index}
+                                          onClick={()=>{handleCloseUserMenu(); window.location.replace(setting.link)}}>
+                                    <Typography
+                                        textAlign="center">{setting.name}</Typography>
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </Box> : <div>
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleOpenUserMenu}
+                            color="inherit"
+                        >
+                            <AccountCircle/>
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorElUser}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(anchorElUser)}
+                            onClose={handleCloseUserMenu}
+                        >
+                            {initialSettings.map((setting, index)=>(
+                             <MenuItem key={setting.name}
+                                          onClick={()=>{handleCloseUserMenu(); window.location.replace(setting.link)}}>
+                                    <Typography
+                                        textAlign="center">{setting.name}</Typography>
+                                </MenuItem>))
+                            }
 
-                    {/*<Box sx={{ flexGrow: 0 }}>*/}
-                    {/*  <Tooltip title="Open settings">*/}
-                    {/*    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>*/}
-                    {/*      <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />*/}
-                    {/*    </IconButton>*/}
-                    {/*  </Tooltip>*/}
-                    {/*  <Menu*/}
-                    {/*    sx={{ mt: '45px' }}*/}
-                    {/*    id="menu-appbar"*/}
-                    {/*    anchorEl={anchorElUser}*/}
-                    {/*    anchorOrigin={{*/}
-                    {/*      vertical: 'top',*/}
-                    {/*      horizontal: 'right',*/}
-                    {/*    }}*/}
-                    {/*    keepMounted*/}
-                    {/*    transformOrigin={{*/}
-                    {/*      vertical: 'top',*/}
-                    {/*      horizontal: 'right',*/}
-                    {/*    }}*/}
-                    {/*    open={Boolean(anchorElUser)}*/}
-                    {/*    onClose={handleCloseUserMenu}*/}
-                    {/*  >*/}
-                    {/*    {settings.map((setting) => (*/}
-                    {/*      <MenuItem key={setting} onClick={handleCloseUserMenu}>*/}
-                    {/*        <Typography textAlign="center">{setting}</Typography>*/}
-                    {/*      </MenuItem>*/}
-                    {/*    ))}*/}
-                    {/*  </Menu>*/}
-                    {/*</Box>*/}
+
+                        </Menu>
+                    </div>}
                 </Toolbar>
             </Container>
 

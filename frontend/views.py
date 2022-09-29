@@ -15,12 +15,30 @@ from contests.models import Archive, NominationVP, DirectionVP, ThemeART, \
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.authentication import SessionAuthentication, \
+    BasicAuthentication
 from rest_framework.response import Response
 from contests.serializers import ArchiveSerializer, NominationVPSerializer, \
     DirectionVPSerializer, ThemeNRushevaSerializer, ThemeArtakiadaSerializer, \
     NominationMymoskvichiSerializer
 from event.models import Event
 from event.serializers import EventSerializer
+
+
+class AuthView(APIView):
+    """
+    frontend/api/auth/
+    """
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request, format=None):
+        content = {
+            'user': str(request.user),
+            'auth': request.user.is_authenticated,
+        }
+        return Response(content)
 
 
 def index(request):
@@ -45,7 +63,8 @@ class CsrfExemptSessionAuthentication(SessionAuthentication):
 
 
 class ArchiveAPIView(ModelViewSet):
-    authentication_classes = [CsrfExemptSessionAuthentication, BasicAuthentication]
+    authentication_classes = [CsrfExemptSessionAuthentication,
+                              BasicAuthentication]
     permission_classes = [AdminOnly]
     queryset = Archive.objects.all()
     serializer_class = ArchiveSerializer
@@ -118,7 +137,7 @@ class ThemeContestAPIView(APIView):
                                    contest_name=contest_name,
                                    year_contest=year).values_list(
                 'theme', flat=True))
-       
+
         themes = list(themes)
         themes.sort(reverse=True)
         return Response(themes)
@@ -171,7 +190,7 @@ class BroadcastListView(APIView):
 class BroadcastDetailView(APIView):
     def get_object(self, pk):
         try:
-            event=Event.objects.get(pk=pk)
+            event = Event.objects.get(pk=pk)
             if event.broadcast_url:
                 return Event.objects.get(pk=pk)
         except Event.DoesNotExist:

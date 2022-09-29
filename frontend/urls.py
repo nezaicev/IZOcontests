@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
 
-
+    path('', views.index),
     path('vp/', views.index),
     path('artakiada/', views.index),
     path('nrusheva/', views.index),
@@ -11,6 +11,8 @@ urlpatterns = [
     path('event/', views.index),
     path('broadcast/', views.index),
     path('broadcasts/', views.index),
+
+    path('api/auth/',views.AuthView.as_view()),
     path('api/archive/',
          views.ArchiveAPIView.as_view({'get': 'list', 'post': 'create'})),
     path('api/archive/nominationvp/', views.NominationVPAPIView.as_view()),
@@ -28,7 +30,7 @@ urlpatterns = [
     path('api/event/<int:pk>/', views.EventDetailView.as_view()),
     path('api/broadcasts/', views.BroadcastListView.as_view()),
     path('api/broadcast/<int:pk>/', views.BroadcastDetailView.as_view()),
-    path('', views.index),
+
     re_path(r'.*', views.index),
 
 ]
