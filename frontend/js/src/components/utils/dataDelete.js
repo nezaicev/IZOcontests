@@ -1,29 +1,24 @@
-import * as React from 'react';
 import axios from "axios";
 
-
-function fetching(value){
-    return ()=>{}
-}
-
-const dataFetch = (url, params, callback) => {
-
+const dataDelete = (url, params, callback) => {
+    let status = ''
     let data = []
-    let status=null
+
     if (!url) return;
+    status = 'sending'
     axios({
-        method: "GET",
+        method: "DELETE",
         url: url,
-        params: params,
+        params:params,
     })
         .then((res) => {
             data = res.data
+            status = 'sent'
             return data
         }).then((data)=>{callback(data)})
         .catch((e) => {
             console.log(e);
         });
-        return status
-}
-export default dataFetch
 
+}
+export default dataDelete

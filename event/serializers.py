@@ -5,10 +5,10 @@ from event.models import Event, ParticipantEvent
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ('name', 'logo', 'start_date', 'message', 'broadcast_url')
+        fields = ('id','name', 'logo', 'start_date', 'message', 'broadcast_url')
 
 
 class ParticipantEventSerializers(serializers.ModelSerializer):
     class Meta:
         model = ParticipantEvent
-        fields = ('reg_number','event', 'participant')
+        fields = ('event', 'participant')

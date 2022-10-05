@@ -1,15 +1,16 @@
 import axios from "axios";
 
-const dataSend = (url, params, callback) => {
+const dataPut = (url,params, jsonData, callback) => {
     let status = ''
     let data = []
 
     if (!url) return;
     status = 'sending'
     axios({
-        method: "POST",
+        method: "PUT",
         url: url,
         params: params,
+        data: jsonData,
     })
         .then((res) => {
             data = res.data
@@ -21,4 +22,4 @@ const dataSend = (url, params, callback) => {
         });
 
 }
-export default dataSend
+export default dataPut

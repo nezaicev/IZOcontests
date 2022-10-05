@@ -1,5 +1,7 @@
 from django.urls import path, re_path
 from . import views
+from django.views.decorators.csrf import csrf_exempt
+
 
 urlpatterns = [
 
@@ -30,6 +32,8 @@ urlpatterns = [
     path('api/event/<int:pk>/', views.EventDetailView.as_view()),
     path('api/broadcasts/', views.BroadcastListView.as_view()),
     path('api/broadcast/<int:pk>/', views.BroadcastDetailView.as_view()),
+    path('api/participant_event/', csrf_exempt(views.ParticipantEventDetailView.as_view())),
+    path('api/participant_event_list/', views.ParticipantEventListView.as_view()),
 
     re_path(r'.*', views.index),
 

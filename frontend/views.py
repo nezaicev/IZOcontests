@@ -1,6 +1,6 @@
 from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import filters
+from rest_framework import filters, status
 import django_filters
 from rest_framework.authentication import SessionAuthentication, \
     BasicAuthentication
@@ -8,22 +8,23 @@ from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 from frontend.apps import StandardResultsSetPagination
 from django.shortcuts import render
-
+from users.models import CustomUser
 from contests.models import Archive, NominationVP, DirectionVP, ThemeART, \
     NominationMYMSK, \
     ThemeRUSH, CreativeTack
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, \
+    IsAuthenticatedOrReadOnly
 from rest_framework.authentication import SessionAuthentication, \
     BasicAuthentication
 from rest_framework.response import Response
 from contests.serializers import ArchiveSerializer, NominationVPSerializer, \
     DirectionVPSerializer, ThemeNRushevaSerializer, ThemeArtakiadaSerializer, \
     NominationMymoskvichiSerializer
-from event.models import Event
-from event.serializers import EventSerializer
+from event.models import Event, ParticipantEvent
+from event.serializers import EventSerializer, ParticipantEventSerializers
 
 
 class AuthView(APIView):
@@ -35,6 +36,7 @@ class AuthView(APIView):
 
     def get(self, request, format=None):
         content = {
+            'id': request.user.id,
             'user': str(request.user),
             'auth': request.user.is_authenticated,
         }
@@ -49,6 +51,17 @@ class AdminOnly(BasePermission):
     def has_permission(self, request, view):
         if request.method not in SAFE_METHODS:
             if request.user.is_superuser:
+                return True
+            else:
+                return False
+        else:
+            return True
+
+
+class SelfOnly(BasePermission):
+    def has_permission(self, request, view):
+        if request.method not in SAFE_METHODS:
+            if str(request.user.id) == request.query_params.get('participant'):
                 return True
             else:
                 return False
@@ -199,4 +212,64 @@ class BroadcastDetailView(APIView):
     def get(self, request, pk, format=None):
         broadcast = self.get_object(pk)
         serializer = EventSerializer(broadcast)
+        return Response(serializer.data)
+
+
+class ParticipantEventDetailView(APIView):
+    authentication_classes = [CsrfExemptSessionAuthentication,
+                              BasicAuthentication]
+    permission_classes = [SelfOnly]
+
+    def get_object(self, participant, event):
+        try:
+            return ParticipantEvent.objects.get(event__id=event,
+                                                participant__id=participant)
+        except Event.DoesNotExist:
+            raise Http404
+
+    def get(self, request):
+        user_id = request.query_params.get('participant')
+        event_id = request.query_params.get('event')
+        participant_event = self.get_object(user_id, event_id)
+        serializer = ParticipantEventSerializers(participant_event)
+        return Response(serializer.data)
+
+    def put(self, request, format='None'):
+        """
+        {
+        event:id,
+        participant:id
+        }
+        """
+        # email = request.query_params.get('email')
+        # event_id = request.query_params.get('event_id')
+        # participant_event = self.get_object(email, event_id)
+        serializer = ParticipantEventSerializers(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        user_id = request.query_params.get('participant')
+        event_id = request.query_params.get('event')
+        participant_event = self.get_object(user_id, event_id)
+        participant_event.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ParticipantEventListView(APIView):
+
+
+    def get_list_objects(self, user_id):
+        participant_event_list = ParticipantEvent.objects.filter(
+            participant__id=user_id)
+        return participant_event_list
+
+    def get(self, request):
+        user_id = request.query_params.get('participant')
+        # event_id = request.query_params.get('event')
+        participant_event = self.get_list_objects(user_id)
+        serializer = ParticipantEventSerializers(participant_event, many=True)
         return Response(serializer.data)

@@ -6,6 +6,7 @@ import CardEvent from "../../components/Event/CardEvent";
 import CardExposition from "../../components/Exposition/CardExposition";
 import Container from "@mui/material/Container";
 import dataFetch from "../../components/utils/dataFetch"
+import useAuth from "../../components/hooks/useAuth";
 
 
 let pages = [
@@ -16,28 +17,48 @@ let pages = [
 
 const host = process.env.REACT_APP_HOST_NAME
 
-function MainPage() {
-    const [auth, setAuth] = React.useState({
-        "user": "AnonymousUser",
-        "auth": false
-    })
 
+function MainPage() {
+
+
+    const auth = useAuth()
+    const [participantEvent, setParticipantEvent] = React.useState([])
     const [data, setData] = React.useState([])
     const [value, setValue] = React.useState(0);
 
 
-    useEffect(() => {
-        dataFetch(`${host}/frontend/api/auth/`,null, (data)=>{setAuth(data)})
-        // dataFetch(`${host}${pages[value]['link']}`, null, (data) => {
-        //     setData(data);
-        // })
-    }, [])
+    // const setParticipantEventList= function (){
+    //
+    //      dataFetch(`${host}/frontend/api/participant_event_list/`,{'participant':auth['id']}, (data) => {
+    //                setParticipantEvent(data.map((item) => (Number(item['event']))))
+    //
+    //
+    // })}
+
 
     useEffect(() => {
+
         dataFetch(`${host}${pages[value]['link']}`, null, (data) => {
             setData(data);
         })
-    }, [value])
+    }, [])
+
+    useEffect(() => {
+        if (auth['id']) {
+            dataFetch(`${host}/frontend/api/participant_event_list/`, {'participant': auth['id']}, (data) => {
+                setParticipantEvent(data.map((item) => (Number(item['event']))))
+
+
+            })
+        }
+    }, [auth])
+
+
+    // useEffect(() => {
+    //     dataFetch(`${host}${pages[value]['link']}`, null, (data) => {
+    //         setData(data);
+    //     })
+    // }, [value])
 
 
     return (
@@ -53,12 +74,15 @@ function MainPage() {
             }}>
                 <Box>
                     <Grid container spacing={2}
-                          sx={{justifyContent: 'space-between'}}>
+                          sx={{justifyContent: 'center'}}>
                         {data.map((item, index) => (
                             <Grid item xs="auto" key={index}>
-                                <CardEvent data={item}/>
+                                <CardEvent data={item}
+                                           auth={auth}
+                                           participantEvent={participantEvent}/>
                             </Grid>
-                        ))}
+                        ))
+                        }
 
 
                     </Grid>

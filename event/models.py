@@ -82,3 +82,4 @@ class ParticipantEvent(models.Model):
         permissions = [
             ("export_participants", "Выгрузить список участников"),
         ]
+        unique_together = ('participant', 'event',)
