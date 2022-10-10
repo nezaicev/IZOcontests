@@ -5,6 +5,11 @@ from django_simple_export_admin.admin import DjangoSimpleExportAdmin
 from event.models import ParticipantEvent, Event
 
 
+class EventAdmin(admin.ModelAdmin):
+    model = Event
+    readonly_fields = ['event_url']
+
+
 class ParticipantEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
     model = ParticipantEvent
     list_display = ['reg_number', 'get_fio_participant', 'event',
@@ -16,11 +21,14 @@ class ParticipantEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
             "label": "Выгрузить список",
             "icon": "fas fa-book",
             "fields": [
-                {"field": "reg_number", "label": "Number",
+                {"field": "reg_number", "label": "Регистрационный номер",
                  },
-                {"field": "event__name", "label": "Event"},
+                {"field": "event__name", "label": "Мероприятие"},
 
-                {"field": "participant__fio", "label":"FIO"},
+                {"field": "participant__fio", "label": "ФИО"},
+                {"field": "participant__school", "label": "Организация"},
+                {"field": "participant__city", "label": "Город"},
+                {"field": "participant__region__name", "label": "Регион"},
             ],
             "export-filtered": True,
             "permissions": [
@@ -34,5 +42,5 @@ class ParticipantEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
     get_fio_participant.short_description = 'Участник'
 
 
-admin.site.register(Event)
+admin.site.register(Event, EventAdmin)
 admin.site.register(ParticipantEvent, ParticipantEventAdmin)

@@ -6,14 +6,16 @@ import React from "react";
 
 import GalleryMyMoskvichi
     from "../../components/Gallary/MyMoskvichi/GalleryMyMoskvichi";
+import useAuth from "../../components/hooks/useAuth";
 
 function GalleryPageMyMoskvichi(props) {
+    const auth = useAuth()
     document.title = process.env.REACT_APP_MYMOSKVICHI
     const host = process.env.REACT_APP_HOST_NAME
     return (
         <Box sx={{fontFamily: 'Roboto', height: 'auto'}}>
 
-            <Header/>
+            <Header auth={auth}/>
             <Container sx={{
                 fontFamily: 'Roboto',
                 mt: '20px',

@@ -18,6 +18,7 @@ const dataFetch = (url, params, callback) => {
     })
         .then((res) => {
             data = res.data
+            status='ok'
             return data
         }).then((data)=>{callback(data)})
         .catch((e) => {

@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import {getFormattedDate} from "../../components/utils/utils";
 import {CircularProgress, Paper} from "@mui/material";
 import Divider from "@mui/material/Divider";
+import useAuth from "../../components/hooks/useAuth";
 
 
 let pages = [
@@ -18,7 +19,7 @@ let pages = [
 const host = process.env.REACT_APP_HOST_NAME
 
 function BroadcastPage() {
-
+    const auth = useAuth()
     let {id} = useParams();
     const [data, setData] = React.useState([])
     const [value, setValue] = React.useState(0);
@@ -36,7 +37,10 @@ function BroadcastPage() {
 
     return (
         <Box sx={{fontFamily: 'Roboto', height: 'auto'}}>
-            <Header pages={pages}
+            <Header
+                mainLink={`${host}/frontend/main/`}
+                auth={auth}
+                pages={pages}
                     activePage={(newValue) => (setValue(newValue))}/>
             <Container sx={{
                 fontFamily: 'Roboto',

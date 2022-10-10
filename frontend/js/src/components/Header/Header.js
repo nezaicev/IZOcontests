@@ -24,7 +24,7 @@ const host = process.env.REACT_APP_HOST_NAME
 
 const settings = [
     {name:'Личный кабинет', link:`${host}/admin/`},
-    {name:'Выход', link: `${host}/users/logout/`}
+    {name:'Выход', link: `${host}/users/logout/?next_page=frontend/`}
 ]
 
 const initialSettings = [
@@ -74,7 +74,7 @@ const Header = (props) => {
                         component="div"
                         sx={{mr: 2, display: {xs: 'none', md: 'flex'}}}
                     >
-                        <a href='http://shkola-nemenskogo.ru/'>
+                        <a href={props.mainLink?props.mainLink:'http://shkola-nemenskogo.ru/'}>
                             <HomeIcon sx={{fontSize: 60}}/>
                         </a>
                     </Typography>

@@ -5,14 +5,16 @@ import Container from "@mui/material/Container";
 import React from "react";
 import GalleryArtakiada
     from "../../components/Gallary/Artakiada/GalleryArtakiada";
+import useAuth from "../../components/hooks/useAuth";
 
 function GalleryPageArtakiada(props){
+    const auth = useAuth()
     document.title=process.env.REACT_APP_ARTAKIADA
     const host=process.env.REACT_APP_HOST_NAME
     return(
         <Box sx={{ fontFamily: 'Roboto', height: 'auto'}}>
 
-            <Header/>
+            <Header auth={auth}/>
             <Container sx={{fontFamily: 'Roboto', mt: '20px', justifyContent: 'center'}}>
                 <GalleryArtakiada
                     contestName={process.env.REACT_APP_ARTAKIADA}

@@ -181,8 +181,8 @@ BARCODE_MEDIA_ROOT = os.getenv('BARCODE_URL',
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 20621440
 
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'home_frontend'
+LOGOUT_REDIRECT_URL = 'home_frontend'
 
 EMAIL_BACKEND = os.getenv("EMAIL_BACKEND",
                           "django.core.mail.backends.filebased.EmailBackend")

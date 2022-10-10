@@ -36,7 +36,6 @@ export default function GalleryArtakiada(props) {
     useEffect(() => {
         params['year_contest'] = dataVerticalTabs[valueVerticalTabs]
         params['theme'] = dataHorizontalTabs[valueHorizontalTabs]
-        console.log(params)
         dataFetch(props.urlCreativeTack, params, (data) => {
             setValueCreativeTack(data)
         })

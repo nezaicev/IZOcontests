@@ -19,62 +19,6 @@ import dataPut from "../utils/dataPut";
 const buttonColor = brown.A400
 
 
-// function getButtonCardEvent(userId, eventId, auth, participantEvent, setParticipantEventList) {
-//
-//
-//     if (auth) {
-//         // setParticipantEventList()
-//         if (participantEvent.includes(eventId)) {
-//
-//             return <Box>
-//                 Заявка на участие принята
-//                 <ButtonDefault onClick={() => {
-//                     dataDelete(`${host}/frontend/api/participant_event/`, {
-//                         'participant': userId,
-//                         'event': eventId
-//                     });
-//
-//
-//                 }} variant="outlined" size='small'>
-//                     Отменить
-//                 </ButtonDefault>
-//             </Box>
-//         } else {
-//             return <ButtonDefault onClick={() => {
-//                 dataPut(`${host}/frontend/api/participant_event/`,
-//                     {'participant': userId},
-//                     {'participant': userId, 'event': eventId})
-//
-//             }} variant="outlined" size='small'>
-//                 Принять участие
-//             </ButtonDefault>
-//         }
-//
-//     } else {
-//         return <ButtonDefault onClick={() => {
-//             window.location.replace(`${host}/users/login/`)
-//         }} variant="outlined" size='small'>
-//             Необходима авторизация
-//         </ButtonDefault>
-//     }
-//
-// }
-
-// function ButtonCardEvent(){
-//     const [status, setStatus]=React.useState(
-//         <ButtonDefault onClick={() => {
-//             window.location.replace(`${host}/users/login/`)
-//         }} variant="outlined" size='small'>
-//             Необходима авторизация
-//         </ButtonDefault>
-//     )
-// return(
-//
-// )
-//
-// }
-
-
 function CardEvent(props) {
 
     const statuses = [
@@ -82,19 +26,31 @@ function CardEvent(props) {
             {'auth': true, 'participation': true},
             {'auth': true, 'participation': false}
         ]
-    const [statusButton, setStatusButton] = React.useState(() => {
+    const [statusButton, setStatusButton] = React.useState( ()=>{
 
-        if (props.auth['id']) {
-            if (props.participantEvent.includes(props.data['id'])) {
+         if (props.auth['id']) {
+            if (props.participantEvent && props.participantEvent.includes(props.data['id'])) {
                 return statuses[1]
             } else {
                 return statuses[2]
             }
         } else {
             return statuses[0]
-        }
-    })
+        }}
+    )
+    useEffect(()=>{
 
+        if (props.auth['id']) {
+            if (props.participantEvent && props.participantEvent.includes(props.data['id'])) {
+                return setStatusButton(statuses[1])
+            } else {
+                return setStatusButton(statuses[2])
+            }
+        } else {
+            return setStatusButton(statuses[0])
+        }
+
+    },[])
     return (
 
         <Card
@@ -149,16 +105,16 @@ function CardEvent(props) {
                     </Box>
                     <DividerStyled/>
                     <Box componetn={'div'} sx={{
-                        justifyContent: 'right',
+                        justifyContent: 'center',
                         display: 'flex',
-                        margin: '5px'
+                        marginTop: '10px'
                     }}>
 
                         {
                            function ()  {
-                                console.log(statusButton)
-                                switch (statusButton) {
-                                    case statuses[0]:
+                                switch (JSON.stringify(statusButton)) {
+
+                                    case JSON.stringify(statuses[0]):
                                         return (
                                             <ButtonDefault onClick={() => {
                                                 window.location.replace(`${host}/users/login/`)
@@ -167,15 +123,16 @@ function CardEvent(props) {
                                             </ButtonDefault>
                                         )
 
-                                    case statuses[1]:
+                                    case JSON.stringify(statuses[1]):
                                         return (
-                                            <Box>
-                                                Заявка на участие принята
+                                            <Box sx={{display:'inline-grid', justifyContent:'center'}}>
+                                               <Typography variant="subtitle2" gutterBottom> Заявка на участие принята
+                                               </Typography>
                                                 <ButtonDefault onClick={() => {
                                                     dataDelete(`${host}/frontend/api/participant_event/`, {
                                                         'participant': props.auth['id'],
                                                         'event': props.data['id']
-                                                    });
+                                                    },()=>{});
                                                     setStatusButton(statuses[2])
                                                 }} variant="outlined"
                                                                size='small'>
@@ -184,21 +141,21 @@ function CardEvent(props) {
                                             </Box>
                                         )
 
-                                    case statuses[2]:
-                                        console.log('test')
+                                    case JSON.stringify(statuses[2]):
                                         return (
                                             <ButtonDefault onClick={() => {
                                                 dataPut(`${host}/frontend/api/participant_event/`,
                                                     {'participant': props.auth['id']},
                                                     {
                                                         'participant': props.auth['id'],
-                                                        'event': props.data['id']
-                                                    })
+                                                        'event': props.data['id'],
+                                                    }, ()=>{})
                                                 setStatusButton(statuses[1])
                                             }} variant="outlined" size='small'>
                                                 Принять участие
                                             </ButtonDefault>
                                         )
+
 
                                 }
                             }()

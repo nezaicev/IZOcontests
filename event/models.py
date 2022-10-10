@@ -1,3 +1,4 @@
+import os
 import time
 
 from django.db import models
@@ -9,6 +10,8 @@ from users.models import CustomUser
 from contests.utils import PathAndRename
 from contests.directory import Status
 from cert.models import Cert
+
+URL_EVENT = '{}/frontend/event/'.format(os.environ.get('HOSTNAME'))
 
 
 class Event(models.Model):
@@ -22,19 +25,22 @@ class Event(models.Model):
                             choices=TYPE_CONTESTS,
                             default='Мероприятие', max_length=20)
     start_date = models.DateTimeField(verbose_name='Начало мероприятия',
-                                      blank=True, null=True)
+                                      blank=False, null=True)
     logo = models.ImageField(verbose_name='Изображение',
                              upload_to=PathAndRename('PageContests/'),
                              blank=True, null=True)
-    message = models.TextField(verbose_name='Информация', blank=True, null=True)
+    message = models.TextField(verbose_name='Информация', blank=True,
+                               null=True)
     send_letter = models.BooleanField(default=False,
                                       verbose_name='Отправить письмо')
     letter = RichTextField(verbose_name='Письмо', blank=True, null=True)
     certificate = models.ForeignKey(Cert, verbose_name='Сертификат',
                                     on_delete=models.PROTECT, null=True,
                                     blank=True)
-    hide = models.BooleanField(verbose_name='Скрыть', default=False)
-    broadcast_url=models.URLField(verbose_name='Трансляция', blank=True, null=True)
+    hide = models.BooleanField(verbose_name='Архив', default=False)
+    broadcast_url = models.URLField(verbose_name='Трансляция', blank=True,
+                                    null=True)
+    event_url = models.URLField(verbose_name='Ссылка', blank=False, unique=True, null=False)
 
     def __str__(self):
         return '{} {}'.format(self.name, self.start_date.date())
@@ -43,9 +49,17 @@ class Event(models.Model):
         verbose_name = 'Мероприятие'
         verbose_name_plural = 'Мероприятия'
 
+    def save(self, *args, **kwargs):
+
+        # self.event_url = '{}{}/'.format(URL_EVENT, str(int(time.time())))
+        super(Event, self).save(*args, **kwargs)
+        print(self.pk)
+        self.event_url = '{}{}/'.format(URL_EVENT, self.pk)
+        super(Event, self).save(*args, **kwargs)
+
+
 
 class ParticipantEvent(models.Model):
-
     reg_number = models.CharField(max_length=20, blank=False, null=False,
                                   unique=True,
                                   verbose_name='Регистрационный номер')
