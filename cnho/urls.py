@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, RedirectView
 from django.conf.urls.static import static
 from django.conf import settings
 from contests.views import PageContestView, EventPageView
@@ -35,8 +35,11 @@ urlpatterns = [
     path('', PageContestView.as_view(template_name='home.html'),
          name='home'),
 
-    path('event/<int:pk>/',
-         EventPageView.as_view(template_name='event/page.html'), name='event'),
+    # path('event/5/',  RedirectView.as_view(url='/frontend/main/')),
+
+    # path('event/<int:pk>/',
+    #      EventPageView.as_view(template_name='event/page.html'), name='event'),
+
 
 
 
