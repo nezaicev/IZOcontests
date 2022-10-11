@@ -14,7 +14,8 @@ class ParticipantEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
     model = ParticipantEvent
     list_display = ['reg_number', 'get_fio_participant', 'event',
                     'certificate']
-    exclude = ['reg_number']
+    list_filter=['event',]
+    exclude = ['reg_number',]
 
     django_simple_export_admin_exports = {
         "filtered-books": {

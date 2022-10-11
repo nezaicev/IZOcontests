@@ -91,8 +91,8 @@ class ParticipantEvent(models.Model):
         return '{}'.format(self.participant.fio)
 
     class Meta:
-        verbose_name = 'Участник'
-        verbose_name_plural = 'Участники'
+        verbose_name = 'Заявка'
+        verbose_name_plural = 'Заявки'
         permissions = [
             ("export_participants", "Выгрузить список участников"),
         ]
