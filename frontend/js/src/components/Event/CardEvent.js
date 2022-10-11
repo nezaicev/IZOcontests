@@ -58,13 +58,16 @@ function CardEvent(props) {
                 display: 'flex',
                 flexWrap: 'wrap',
                 marginTop: '20px',
-                width: 350
+                width: 350,
+                height:'100%',
+
             }}>
             <CardMedia
                 component="img"
                 sx={{
                     width: 350,
                     display: 'block',
+                    height:'fit-content',
                 }}
                 image={props.data['logo']}
                 alt=''
@@ -76,6 +79,7 @@ function CardEvent(props) {
                 width: 200,
                 display: 'flex',
                 justifyContent: 'center',
+                alignItems:'center',
             }}>
 
                 <CardContent>
@@ -89,19 +93,9 @@ function CardEvent(props) {
                               variant="outlined"/>
                     </Box>
 
-                    <Box component={'div'} sx={{margin: '5px'}}>
-                        <Typography variant="subtitle1" color="text.secondary"
-                                    component="div"
-                                    sx={{
-                                        alignContent: 'center',
-                                        display: 'block',
-                                        marginTop: '15px'
-                                    }}
+                    <Box dangerouslySetInnerHTML={{__html: props.data['message']}} component={'div'} sx={{margin: '5px'}}>
 
-                        >
-                            {props.data['message']}
 
-                        </Typography>
                     </Box>
                     <DividerStyled/>
                     <Box componetn={'div'} sx={{

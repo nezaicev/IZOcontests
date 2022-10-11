@@ -263,7 +263,6 @@ class ParticipantEventDetailView(APIView):
 
 class ParticipantEventListView(APIView):
 
-
     def get_list_objects(self, user_id):
         participant_event_list = ParticipantEvent.objects.filter(
             participant__id=user_id)
