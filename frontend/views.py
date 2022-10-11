@@ -174,7 +174,7 @@ class CreativeTackAPIView(APIView):
 class EventListView(APIView):
 
     def get(self, request, format=None):
-        events = Event.objects.all()
+        events = Event.objects.filter(hide=False)
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
 
@@ -223,7 +223,9 @@ class ParticipantEventDetailView(APIView):
     def get_object(self, participant, event):
         try:
             return ParticipantEvent.objects.get(event__id=event,
-                                                participant__id=participant)
+                                                participant__id=participant,
+
+                                                )
         except Event.DoesNotExist:
             raise Http404
 
