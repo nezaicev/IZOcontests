@@ -22,6 +22,9 @@ from contests.views import PageContestView, EventPageView
 from contests.models import Message
 
 urlpatterns = [
+
+    path('', RedirectView.as_view(url='/frontend/main/'),
+         name='home'),
     path('admin/', admin.site.urls),
     path('certs/', include('cert.urls')),
     path('event/', include('event.urls')),
@@ -32,8 +35,11 @@ urlpatterns = [
     path('contests/', include('contests.urls')),
     path('users/', include('django.contrib.auth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('', PageContestView.as_view(template_name='home.html'),
-         name='home'),
+    # path('', PageContestView.as_view(template_name='home.html'),
+    #      name='home'),
+
+
+
 
     # path('event/5/',  RedirectView.as_view(url='/frontend/main/')),
     re_path(r'^event/\d', RedirectView.as_view(url='/frontend/main/')),
