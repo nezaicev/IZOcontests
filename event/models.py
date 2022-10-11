@@ -29,7 +29,7 @@ class Event(models.Model):
     logo = models.ImageField(verbose_name='Изображение',
                              upload_to=PathAndRename('PageContests/'),
                              blank=True, null=True)
-    message = models.TextField(verbose_name='Информация', blank=True,
+    message = RichTextField(verbose_name='Информация', blank=True,
                                null=True)
     send_letter = models.BooleanField(default=False,
                                       verbose_name='Отправить письмо')
@@ -46,6 +46,7 @@ class Event(models.Model):
         return '{} {}'.format(self.name, self.start_date.date())
 
     class Meta:
+        ordering = ['start_date']
         verbose_name = 'Мероприятие'
         verbose_name_plural = 'Мероприятия'
 

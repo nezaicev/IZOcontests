@@ -56,12 +56,12 @@ function MainPage() {
             }}>
                 <Box>
                     <Grid container spacing={2}
-                          sx={{justifyContent: 'center'}}>
+                          sx={{display:'grid',gridTemplateColumns: 'repeat(3, 1fr)'}}>
                         {function () {
                             if (fetchAll || !auth['auth']) {
                                 return (
                                     data.map((item, index) => (
-                                        <Grid item xs="auto" key={index}>
+                                        <Grid item xs="auto"  key={index}>
                                             <CardEvent data={item}
                                                        auth={auth}
                                                        participantEvent={participantEvent}/>
