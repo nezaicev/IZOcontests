@@ -18,7 +18,7 @@ class ParticipantEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
     exclude = ['reg_number',]
 
     django_simple_export_admin_exports = {
-        "filtered-books": {
+        "filtered-participant": {
             "label": "Выгрузить список",
             "icon": "fas fa-book",
             "fields": [
@@ -33,7 +33,7 @@ class ParticipantEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
             ],
             "export-filtered": True,
             "permissions": [
-                "django_simple_export_admin_example.export_filtered_books"],
+                "event.export_participants"],
         }
     }
 
