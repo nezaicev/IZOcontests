@@ -39,7 +39,6 @@ export default function VisibleBoxVP(props) {
                 year: props.year,
                 page: props.page,
                 nomination: props.nomination,
-                // theme:props.theme,
                 ordering: '-rating',
             },
         })
