@@ -38,6 +38,7 @@ class Event(models.Model):
                                     on_delete=models.PROTECT, null=True,
                                     blank=True)
     hide = models.BooleanField(verbose_name='Архив', default=False)
+    reset_registration= models.BooleanField(verbose_name='Отмена регистрации', default=False )
     broadcast_url = models.URLField(verbose_name='Трансляция', blank=True,
                                     null=True)
     event_url = models.URLField(verbose_name='Ссылка', blank=False, unique=True, null=False)

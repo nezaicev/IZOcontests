@@ -37,6 +37,14 @@ class ParticipantEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
         }
     }
 
+    def get_queryset(self, request):
+        if request.user.is_superuser or request.user.groups.filter(
+                name='Manager').exists():
+            return super(admin.ModelAdmin, self).get_queryset(request)
+        else:
+            qs = super(admin.ModelAdmin, self).get_queryset(request)
+            return qs.filter(teacher=request.user)
+
     def get_fio_participant(self, obj):
         return '{} - {}'.format(obj.participant.fio, obj.participant.email)
 
