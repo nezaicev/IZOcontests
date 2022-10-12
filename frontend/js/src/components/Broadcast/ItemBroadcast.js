@@ -52,7 +52,7 @@ const CardBroadcast = styled(Card)(() => ({
 
 export default function ItemBroadcast(props) {
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => {setOpen(true); setTimeout(deleteYoutubeLogo,5000)}
+    const handleOpen = () => {setOpen(true)};
     const handleClose = () => setOpen(false);
     const [expanded, setExpanded] = React.useState(false);
 

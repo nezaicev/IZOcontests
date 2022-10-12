@@ -6,11 +6,12 @@ import CardEvent from "../../components/Event/CardEvent";
 import Container from "@mui/material/Container";
 import dataFetch from "../../components/utils/dataFetch"
 import useAuth from "../../components/hooks/useAuth";
+import ItemBroadcast from "../../components/Broadcast/ItemBroadcast";
 
 
 let pages = [
     {'name': 'Мероприятия', 'link': '/frontend/api/events/'},
-    // {'name': 'Виртуальный музей', 'link': '/exposition'}
+    {'name': 'Вебинары', 'link': '/frontend/api/broadcasts/'}
 
 ]
 
@@ -30,6 +31,13 @@ function MainPage() {
             setData(data);
         })
     }, [])
+
+    useEffect(() => {
+        dataFetch(`${host}${pages[value]['link']}`, null, (data) => {
+            setData(data);
+        })
+    }, [value])
+
 
     useEffect(() => {
         if (auth['id']) {
@@ -55,26 +63,52 @@ function MainPage() {
                 justifyContent: 'center',
             }}>
                 <Box>
-                    <Grid container spacing={2}
-                          sx={{display:'grid',gridTemplateColumns: 'repeat(3, 1fr)'}}>
-                        {function () {
-                            if (fetchAll || !auth['auth']) {
+
+                    {function () {
+                        switch (pages[value]['name']) {
+                            case "Мероприятия":
                                 return (
-                                    data.map((item, index) => (
-                                        <Grid item xs="auto"  key={index}>
-                                            <CardEvent data={item}
-                                                       auth={auth}
-                                                       participantEvent={participantEvent}
-                                            />
-                                        </Grid>
-                                    )))
-                            }
-                        }()
+                                    <Grid container spacing={2}
+                                          sx={{
+                                              display: 'grid',
+                                              gridTemplateColumns: 'repeat(3, 1fr)'
+                                          }}>
+                                        {function () {
+                                            if (fetchAll || !auth['auth']) {
+                                                return (
+                                                    data.map((item, index) => (
+                                                        <Grid item xs="auto"
+                                                              key={index}>
+                                                            <CardEvent
+                                                                data={item}
+                                                                auth={auth}
+                                                                participantEvent={participantEvent}
+                                                            />
+                                                        </Grid>
+                                                    )))
+                                            }
+                                        }()
 
-                        }
-
+                                        }
+                                    </Grid>
+                                )
+                            case "Вебинары":
+                                return (
+                                    <Grid container spacing={2}
+                          sx={{justifyContent: 'space-between'}}>
+                        {data.map((item, index) => (
+                            item['broadcast_url'] ?
+                                <Grid item xs="auto" key={index}>
+                                    <ItemBroadcast data={item}/>
+                                </Grid> : ''
+                        ))}
 
                     </Grid>
+                                )
+
+                        }
+                    }()}
+
                 </Box>
 
                 {/*<Box>*/}
