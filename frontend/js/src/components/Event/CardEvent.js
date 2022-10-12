@@ -122,7 +122,7 @@ function CardEvent(props) {
                                             <Box sx={{display:'inline-grid', justifyContent:'center'}}>
                                                <Typography variant="subtitle2" gutterBottom> Заявка на участие принята
                                                </Typography>
-                                                <ButtonDefault onClick={() => {
+                                                {props.data['reset_registration'] ?<ButtonDefault onClick={() => {
                                                     dataDelete(`${host}/frontend/api/participant_event/`, {
                                                         'participant': props.auth['id'],
                                                         'event': props.data['id']
@@ -131,7 +131,8 @@ function CardEvent(props) {
                                                 }} variant="outlined"
                                                                size='small'>
                                                     Отменить
-                                                </ButtonDefault>
+                                                </ButtonDefault>:''}
+
                                             </Box>
                                         )
 

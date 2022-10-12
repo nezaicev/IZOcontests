@@ -64,7 +64,8 @@ function MainPage() {
                                         <Grid item xs="auto"  key={index}>
                                             <CardEvent data={item}
                                                        auth={auth}
-                                                       participantEvent={participantEvent}/>
+                                                       participantEvent={participantEvent}
+                                            />
                                         </Grid>
                                     )))
                             }
