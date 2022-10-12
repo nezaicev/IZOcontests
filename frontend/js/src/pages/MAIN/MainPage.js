@@ -70,8 +70,10 @@ function MainPage() {
                                 return (
                                     <Grid container spacing={2}
                                           sx={{
+
                                               display: 'grid',
-                                              gridTemplateColumns: 'repeat(3, 1fr)'
+                                               alignItems: 'stretch',
+                                              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr) )'
                                           }}>
                                         {function () {
                                             if (fetchAll || !auth['auth']) {
@@ -95,7 +97,8 @@ function MainPage() {
                             case "Вебинары":
                                 return (
                                     <Grid container spacing={2}
-                          sx={{justifyContent: 'space-between'}}>
+                          sx={{display: 'grid',
+                                             gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr) )'}}>
                         {data.map((item, index) => (
                             item['broadcast_url'] ?
                                 <Grid item xs="auto" key={index}>
