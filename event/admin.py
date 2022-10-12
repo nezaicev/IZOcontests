@@ -43,7 +43,7 @@ class ParticipantEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
             return super(admin.ModelAdmin, self).get_queryset(request)
         else:
             qs = super(admin.ModelAdmin, self).get_queryset(request)
-            return qs.filter(teacher=request.user)
+            return qs.filter(participant=request.user)
 
     def get_fio_participant(self, obj):
         return '{} - {}'.format(obj.participant.fio, obj.participant.email)
