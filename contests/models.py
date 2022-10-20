@@ -220,6 +220,7 @@ class Artakiada(BaseContest):
     nomination = models.ForeignKey(NominationART, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
 
+
     def __str__(self):
         return str(self.reg_number)
 
