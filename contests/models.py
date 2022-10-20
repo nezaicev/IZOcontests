@@ -112,7 +112,7 @@ class BaseContest(models.Model):
     fio = models.CharField('Участник', max_length=700)
     fio_teacher = models.CharField('Педагог', max_length=300)
     school = models.CharField('Образовательная организация', max_length=150)
-    city = models.CharField('Город', max_length=101, blank=True)
+    city = models.CharField('Город', max_length=101)
     year_contest = models.CharField('Год проведения', max_length=20,
                                     default=utils.generate_year())
     status = models.ForeignKey(Status, verbose_name='Статус',
@@ -202,7 +202,7 @@ class Artakiada(BaseContest):
         'district', 'nomination', 'material', 'author_name')
     author_name = models.CharField(max_length=50, blank=False,
                                    verbose_name='Авторское название')
-    birthday = models.DateField(verbose_name='Дата рождения', blank=False,
+    birthday = models.DateField(verbose_name='Дата рождения', blank=True, null=True,
                                 default=timezone.now)
     age = models.ForeignKey(AgeART, verbose_name='Возраст',
                             on_delete=models.SET_NULL, null=True)
@@ -219,6 +219,10 @@ class Artakiada(BaseContest):
                               on_delete=models.SET_NULL, null=True)
     nomination = models.ForeignKey(NominationART, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
+
+    snils_gir=models.CharField(max_length=20, verbose_name='СНИЛС', null=True, blank=True)
+    phone_gir=models.CharField(verbose_name='Контактный телефон', null=True, blank=True, max_length=50)
+    address_school_gir=models.CharField(verbose_name='Адрес организации', null=True, blank=True, max_length=200)
 
 
     def __str__(self):
@@ -254,7 +258,7 @@ class NRusheva(BaseContest):
                               on_delete=models.SET_NULL, null=True)
     nomination = models.ForeignKey(NominationNR, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
-    birthday = models.DateField(verbose_name='Дата рождения', blank=False,
+    birthday = models.DateField(verbose_name='Дата рождения', blank=True, null=True,
                                 default=timezone.now)
     level = models.ForeignKey(Level, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True)
@@ -272,6 +276,14 @@ class NRusheva(BaseContest):
                               verbose_name='Формат работы')
     description = models.TextField(max_length=500, blank=False,
                                    verbose_name='Аннотация')
+
+    snils_gir = models.CharField(max_length=20, verbose_name='СНИЛС',
+                                 null=True, blank=True)
+    phone_gir = models.CharField(verbose_name='Контактный телефон', null=True,
+                                 blank=True, max_length=50)
+    address_school_gir = models.CharField(verbose_name='Адрес организации',
+                                          null=True, blank=True,
+                                          max_length=200)
 
     def __str__(self):
         return str(self.reg_number)
