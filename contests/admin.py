@@ -355,7 +355,7 @@ class ArtakiadaAdmin(BaseAdmin):
             'fields': ('fio_teacher',)
         }),
         ('Организация', {
-            'fields': ('city', 'school', 'district', )
+            'fields': ('region', 'city', 'school', 'district', )
         }),
         ('Работа', {
             'fields': ('author_name', 'image','material', 'theme', 'nomination')
@@ -408,7 +408,7 @@ class NRushevaAdmin(BaseAdmin):
             'fields': ('fio_teacher',)
         }),
         ('Организация', {
-            'fields': ('city', 'school', 'district',)
+            'fields': ('region', 'city', 'school', 'district',)
         }),
         ('Работа', {
             'fields': (

@@ -203,7 +203,7 @@ class Artakiada(BaseContest):
     author_name = models.CharField(max_length=50, blank=False,
                                    verbose_name='Авторское название')
     birthday = models.DateField(verbose_name='Дата рождения', blank=True, null=True,
-                                default=timezone.now)
+                                )
     age = models.ForeignKey(AgeART, verbose_name='Возраст',
                             on_delete=models.SET_NULL, null=True)
     info = models.ForeignKey('PageContest', on_delete=models.SET_NULL,
@@ -259,7 +259,7 @@ class NRusheva(BaseContest):
     nomination = models.ForeignKey(NominationNR, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
     birthday = models.DateField(verbose_name='Дата рождения', blank=True, null=True,
-                                default=timezone.now)
+                                )
     level = models.ForeignKey(Level, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True)
     age = models.ForeignKey(AgeRUSH, verbose_name='Возраст',
