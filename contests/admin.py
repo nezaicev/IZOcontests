@@ -10,7 +10,7 @@ from contests.models import Artakiada, NRusheva, Mymoskvichi, \
     ParticipantMymoskvichi, \
     TeacherExtraMymoskvichi, Archive, ShowEvent, VP, ParticipantVP, \
     TeacherExtraVP, ExtraImageVP, ExtraImageArchive, VideoArchive, VideoVP, \
-    FileArchive, CreativeTack
+    FileArchive, CreativeTack, FileVP
 from contests.directory import NominationNR, NominationART, NominationMYMSK, \
     ThemeART, \
     ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level, AgeVP, \
@@ -501,11 +501,16 @@ class VideoVPInline(admin.StackedInline):
     extra = 0
 
 
+class FileVPInline(admin.StackedInline):
+    model = FileVP
+    extra = 0
+
+
 class VPAdmin(BaseAdmin):
     model = VP
     name = 'vp'
     inlines = [ParticipantVPInline, TeacherExtraVPInline, ImageExtraVPInline,
-               VideoVPInline]
+               VideoVPInline, FileVPInline]
     exclude = (
         'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher',
         'participants', 'teachers', 'info', 'year_contest', 'extraImage',

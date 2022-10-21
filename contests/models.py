@@ -345,7 +345,7 @@ class VP(BaseContest, MultiParticipants):
                             on_delete=models.SET_NULL, null=True)
     level = models.ForeignKey(LevelVP, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True)
-    ovz=models.BooleanField(verbose_name='Проекты, выполненные детьми с ОВЗ', default=False)
+    ovz=models.BooleanField(verbose_name='Проект, выполнен детьми с ОВЗ', null=True, default=False)
 
     def __str__(self):
         return str(self.reg_number)
@@ -747,6 +747,17 @@ class FileArchive(File):
     class Meta:
         verbose_name = 'Файлы архив'
         verbose_name_plural = 'Файлы архив'
+
+
+class FileVP(File):
+    files = models.ForeignKey(VP,
+                              on_delete=models.CASCADE,
+                              blank=True,
+                              null=True, related_name='files')
+
+    class Meta:
+        verbose_name = 'Файлы (Аннотация|Презентация)'
+        verbose_name_plural = 'Файлы (Аннотация|Презентация)'
 
 
 class CreativeTack(models.Model):
