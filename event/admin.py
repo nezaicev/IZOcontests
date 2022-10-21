@@ -30,6 +30,8 @@ class ParticipantEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
                 {"field": "participant__school", "label": "Организация"},
                 {"field": "participant__city", "label": "Город"},
                 {"field": "participant__region__name", "label": "Регион"},
+                {"field": "participant__email", "label": "Email"},
+                {"field": "participant__phone", "label": "Телефон"},
             ],
             "export-filtered": True,
             "permissions": [
