@@ -345,6 +345,7 @@ class VP(BaseContest, MultiParticipants):
                             on_delete=models.SET_NULL, null=True)
     level = models.ForeignKey(LevelVP, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True)
+    ovz=models.BooleanField(verbose_name='Проекты, выполненные детьми с ОВЗ', default=False)
 
     def __str__(self):
         return str(self.reg_number)

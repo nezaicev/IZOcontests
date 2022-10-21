@@ -305,7 +305,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
                 'region': request.user.region,
                 'district': request.user.district,
                 'fio_teacher': request.user.fio,
-                'phone_gir':request.user.phone if self.model._meta.get_field('phone_gir') else '',
+                # 'phone_gir':request.user.phone if self.model._meta.get_field('phone_gir') else '',
                 }
 
     def response_add(self, request, obj, post_url_continue=None):
