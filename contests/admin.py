@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
-from django_simple_export_admin.admin import DjangoSimpleExportAdmin
+from django_simple_export_admin.admin import DjangoSimpleExportAdmin, ForceStringRender
 
 from contests.models import Artakiada, NRusheva, Mymoskvichi, \
     ParticipantMymoskvichi, \
@@ -28,6 +28,11 @@ from event.models import Event, ParticipantEvent
 
 
 # Register your models here.
+
+
+class Levels(object):
+    def __call__(self, value):
+        return str(value)
 
 
 class RegionsListFilter(admin.SimpleListFilter):
@@ -509,12 +514,46 @@ class FileVPInline(admin.StackedInline):
 class VPAdmin(BaseAdmin):
     model = VP
     name = 'vp'
+    filter_horizontal = ('level',)
     inlines = [ParticipantVPInline, TeacherExtraVPInline, ImageExtraVPInline,
                VideoVPInline, FileVPInline]
+    fieldsets = (
+
+        ('Организация', {
+            'fields': ('region', 'city', 'school', 'district',)
+        }),
+        ('Работа', {
+            'fields': ('author_name', 'direction', 'nomination', 'level','ovz')
+        }),
+
+
+    )
+
     exclude = (
         'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher',
         'participants', 'teachers', 'info', 'year_contest', 'extraImage',
         'video')
+
+    django_simple_export_admin_exports = {
+        "filtered-books": {
+            "label": "Выгрузить список",
+            "icon": "fas fa-book",
+            "fields": [
+                {"field": "reg_number", "label": "Номер",
+                 },
+                {"field": "teacher__fio", "label": "ФИО"},
+                {"field": "school", "label": "Организация"},
+                {"field": "teacher__city", "label": "Город"},
+                {"field": "region__name", "label": "Регион"},
+                # {"field": "level", "label": "Is Published", "render":ForceStringRender()},
+
+            ],
+            "export-filtered": True,
+            "permissions": [
+                "contests.export_participants"],
+        }
+    }
+
 
     def response_add(self, request, obj, post_url_continue=None):
 
@@ -534,6 +573,7 @@ class VPAdmin(BaseAdmin):
         obj.save()
 
         return super().response_change(request, obj)
+
 
 
 class StatusAdmin(admin.ModelAdmin):

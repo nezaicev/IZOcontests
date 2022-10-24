@@ -202,7 +202,8 @@ class Artakiada(BaseContest):
         'district', 'nomination', 'material', 'author_name')
     author_name = models.CharField(max_length=50, blank=False,
                                    verbose_name='Авторское название')
-    birthday = models.DateField(verbose_name='Дата рождения', blank=True, null=True,
+    birthday = models.DateField(verbose_name='Дата рождения', blank=True,
+                                null=True,
                                 )
     age = models.ForeignKey(AgeART, verbose_name='Возраст',
                             on_delete=models.SET_NULL, null=True)
@@ -220,10 +221,13 @@ class Artakiada(BaseContest):
     nomination = models.ForeignKey(NominationART, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
 
-    snils_gir=models.CharField(max_length=20, verbose_name='СНИЛС', null=True, blank=True)
-    phone_gir=models.CharField(verbose_name='Контактный телефон', null=True, blank=True, max_length=50)
-    address_school_gir=models.CharField(verbose_name='Адрес организации', null=True, blank=True, max_length=200)
-
+    snils_gir = models.CharField(max_length=20, verbose_name='СНИЛС',
+                                 null=True, blank=True)
+    phone_gir = models.CharField(verbose_name='Контактный телефон', null=True,
+                                 blank=True, max_length=50)
+    address_school_gir = models.CharField(verbose_name='Адрес организации',
+                                          null=True, blank=True,
+                                          max_length=200)
 
     def __str__(self):
         return str(self.reg_number)
@@ -258,7 +262,8 @@ class NRusheva(BaseContest):
                               on_delete=models.SET_NULL, null=True)
     nomination = models.ForeignKey(NominationNR, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
-    birthday = models.DateField(verbose_name='Дата рождения', blank=True, null=True,
+    birthday = models.DateField(verbose_name='Дата рождения', blank=True,
+                                null=True,
                                 )
     level = models.ForeignKey(Level, verbose_name='Класс',
                               on_delete=models.SET_NULL, null=True)
@@ -329,23 +334,25 @@ class VP(BaseContest, MultiParticipants):
 
     fields = (
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school',
-        'region', 'city', 'district', 'age', 'author_name', 'nomination',
-        'level', 'direction',
+        'region', 'city', 'district', 'author_name', 'nomination',
+        'direction',
     )
     info = models.ForeignKey('PageContest', on_delete=models.SET_NULL,
                              null=True, default=get_info_contests('vp'))
     author_name = models.CharField(max_length=50, blank=False,
                                    verbose_name='Авторское название')
     direction = models.ForeignKey(DirectionVP, on_delete=models.SET_NULL,
-                                  verbose_name='Направление', null=True)
+                                  verbose_name='Форма организации', null=True)
 
     nomination = models.ForeignKey(NominationVP, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
-    age = models.ForeignKey(AgeVP, verbose_name='Возраст',
-                            on_delete=models.SET_NULL, null=True)
-    level = models.ForeignKey(LevelVP, verbose_name='Класс',
-                              on_delete=models.SET_NULL, null=True)
-    ovz=models.BooleanField(verbose_name='Проект, выполнен детьми с ОВЗ', null=True, default=False)
+    # age = models.ForeignKey(AgeVP, verbose_name='Возраст',
+    #                         on_delete=models.SET_NULL, null=True)
+    level = models.ManyToManyField(LevelVP, related_name='levels',
+                                   verbose_name='Класс',
+                                   )
+    ovz = models.BooleanField(verbose_name='Проект, выполнен детьми с ОВЗ',
+                              null=True, blank=False, default=False)
 
     def __str__(self):
         return str(self.reg_number)
@@ -353,6 +360,9 @@ class VP(BaseContest, MultiParticipants):
     class Meta:
         verbose_name = 'Конкурс Выставочных проектов (участники)'
         verbose_name_plural = 'Конкурс Выставочных проектов (участники)'
+        permissions = [
+            ("export_participants", "Выгрузить список участников"),
+        ]
 
     @classmethod
     def get_stat_data(cls):
