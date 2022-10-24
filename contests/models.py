@@ -358,8 +358,8 @@ class VP(BaseContest, MultiParticipants):
         return str(self.reg_number)
 
     class Meta:
-        verbose_name = 'Конкурс Выставочных проектов (участники)'
-        verbose_name_plural = 'Конкурс Выставочных проектов (участники)'
+        verbose_name = 'Конкурс Художественных проектов (участники)'
+        verbose_name_plural = 'Конкурс Художественных проектов (участники)'
         permissions = [
             ("export_participants", "Выгрузить список участников"),
         ]
