@@ -499,6 +499,7 @@ class TeacherExtraVPInline(admin.StackedInline):
 class ImageExtraVPInline(admin.StackedInline):
     model = ExtraImageVP
     extra = 0
+    max_num = 15
 
 
 class VideoVPInline(admin.StackedInline):
