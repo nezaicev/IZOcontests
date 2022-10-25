@@ -146,13 +146,11 @@ class ArchiveInterface:
                                                               instance=False),
                 'participants': utils.get_dependent_data_for_obj(obj,
                                                                  'id'),
-
             }
             vm_record, created = Archive.objects.update_or_create(
 
                 reg_number=obj.reg_number, defaults=values_for_record,
             )
-
             if hasattr(obj, 'images'):
                 vm_record.images.set(
                     [ExtraImageArchive.objects.create(image=image.image) for
@@ -788,7 +786,6 @@ class ShowEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin, ArchiveInterface
         return obj.teacher.city
 
     get_city.short_description = 'Город'
-
 
 
 admin.site.register(ShowEvent, ShowEventAdmin)
