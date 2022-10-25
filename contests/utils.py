@@ -365,3 +365,7 @@ class PathAndRename(object):
         else:
             filename = '{}.{}'.format(uuid4().hex, ext)
         return os.path.join(self.path, filename)
+
+# def add_phone_for_pdf(wraper_func):
+#     def wraper():
+#         fi
