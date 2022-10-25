@@ -70,9 +70,7 @@ class Events(models.Model):
                               blank=True, null=True,
                               on_delete=models.PROTECT)
 
-    # app = models.CharField(verbose_name='Приложение', max_length=30,
-    #                        blank=False)
-    # model = models.CharField(verbose_name='Модель', max_length=30, blank=False)
+
 
     def __str__(self):
         return self.name
@@ -346,8 +344,7 @@ class VP(BaseContest, MultiParticipants):
 
     nomination = models.ForeignKey(NominationVP, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
-    # age = models.ForeignKey(AgeVP, verbose_name='Возраст',
-    #                         on_delete=models.SET_NULL, null=True)
+
     level = models.ManyToManyField(LevelVP, related_name='levels',
                                    verbose_name='Класс',
                                    )
