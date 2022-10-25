@@ -372,6 +372,15 @@ class VP(BaseContest, MultiParticipants):
 
         return stat
 
+    def get_fields_for_pdf(self, attrs_obj=None):
+        list_fields=list(super().get_fields_for_pdf())
+        list_fields.append((self.teacher.__class__.phone.field.verbose_name,
+                          CustomUser.objects.get(id=self.teacher_id).phone))
+        return tuple(list_fields)
+
+
+
+
 
 class ParticipantVP(models.Model):
     fio = models.CharField(max_length=50, verbose_name='Фамилия, имя',

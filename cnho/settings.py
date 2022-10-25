@@ -44,14 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'users.apps.UsersConfig',
     'mailing.apps.MailingConfig',
     'contests.apps.ContestsConfig',
     'map.apps.MapConfig',
     'cert.apps.CertConfig',
     'event.apps.EventConfig',
-
     'ckeditor',
     'ckeditor_uploader',
     'multiselectfield',
