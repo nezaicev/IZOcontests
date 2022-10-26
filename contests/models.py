@@ -364,9 +364,9 @@ class VP(BaseContest, MultiParticipants):
         return stat
 
     def get_fields_for_pdf(self, attrs_obj=None):
-        list_fields=list(super().get_fields_for_pdf())
+        list_fields = list(super().get_fields_for_pdf())
         list_fields.append((self.teacher.__class__.phone.field.verbose_name,
-                          CustomUser.objects.get(id=self.teacher_id).phone))
+                            CustomUser.objects.get(id=self.teacher_id).phone))
         return tuple(list_fields)
 
 
@@ -603,6 +603,11 @@ class Archive(models.Model):
 
     participants = models.IntegerField(verbose_name='participants', blank=True,
                                        null=True)
+
+    def save(self, *args, **kwargs):
+        if self.reg_number == '':
+            self.reg_number = '0-{}'.format(str(int(time.time())))
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Архив'
