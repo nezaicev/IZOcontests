@@ -48,6 +48,14 @@ const CardBroadcast = styled(Card)(() => ({
     height: 'fit-content'
 }))
 
+    const optionsDate = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timezone: 'UTC',
+        hour: 'numeric',
+        minute: 'numeric',
+    };
 
 
 export default function ItemBroadcast(props) {
@@ -87,7 +95,7 @@ export default function ItemBroadcast(props) {
                                 sx={{
                                     backgroundColor: "rgb(129 110 110 / 76%)"
                                 }}
-                                title={getFormattedDate(props.data['start_date'])}
+                                title={getFormattedDate(props.data['start_date'], optionsDate)}
                                 actionIcon={
                                     <Tooltip title="Видео">
                                         <IconButton>
@@ -112,31 +120,13 @@ export default function ItemBroadcast(props) {
                     <Box>
 
                         <Box sx={{paddingLeft: '10px',paddingRight: '10px',paddingBottom: '10px', alignContent:'center'}}>
-                            {/*<Box sx={{ display: expanded ? 'none' : 'block'}}>*/}
+
 
                            <Typography>{props.data['name']}</Typography>
-                                {/*</Box>*/}
-                            {/*<Box sx={{*/}
-                            {/*    textAlign: 'right',*/}
-                            {/*    marginRight: '-10px',*/}
-                            {/*    marginBottom: '-10px'*/}
-                            {/*}}>*/}
-                                {/*<ButtonCollapse*/}
-                                {/*    expand={expanded}*/}
-                                {/*    onClick={handleExpandClick}*/}
-                                {/*    aria-expanded={expanded}*/}
-                                {/*    aria-label="show more"*/}
-                                {/*    sx={{p: '2px'}}>*/}
-                                {/*    <ExpandMoreIcon/>*/}
-                                {/*</ButtonCollapse>*/}
-                            {/*</Box>*/}
+
 
                         </Box>
-                        {/*<Collapse in={expanded} timeout="auto" unmountOnExit>*/}
-                        {/*    <CardContent sx={{padding:'8px'}}>*/}
-                        {/*     <p> Test</p>*/}
-                        {/*    </CardContent>*/}
-                        {/*</Collapse>*/}
+
                     </Box> : ''}
             </CardBroadcast>
 

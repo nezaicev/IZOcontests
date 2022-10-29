@@ -4,6 +4,9 @@ import django_filters
 
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
+from exposition.models import Exposition
+from exposition.serializers import ExpositionSerializer, \
+    ExpositionListSerializer
 from frontend.apps import StandardResultsSetPagination
 from django.shortcuts import render
 from contests.models import Archive, NominationVP, DirectionVP, ThemeART, \
@@ -247,7 +250,8 @@ class ParticipantEventDetailView(APIView):
             serializer.save()
             event = Event.objects.get(id=request.data['event'])
             if event.send_letter:
-                send_mail_for_subscribers.delay([request.user.email,], event.name, event.letter)
+                send_mail_for_subscribers.delay([request.user.email, ],
+                                                event.name, event.letter)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -270,4 +274,30 @@ class ParticipantEventListView(APIView):
         user_id = request.query_params.get('participant')
         participant_event = self.get_list_objects(user_id)
         serializer = ParticipantEventSerializers(participant_event, many=True)
+        return Response(serializer.data)
+
+
+class ExpositionListAPIView(APIView):
+
+    def get(self, request):
+        is_archive = request.query_params.get('is_archive')
+        if is_archive is None:
+            expositions = Exposition.objects.all()
+        else:
+            expositions = Exposition.objects.filter(archive=is_archive)
+        serializer = ExpositionListSerializer(expositions, many=True)
+        return Response(serializer.data)
+
+
+class ExpositionDetailAPIView(APIView):
+
+    def get_object(self, pk):
+        try:
+            return Exposition.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        exposition = self.get_object(pk)
+        serializer = ExpositionSerializer(exposition)
         return Response(serializer.data)

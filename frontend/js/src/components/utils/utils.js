@@ -50,15 +50,8 @@ export function getExcludeData(data, exclude) {
 }
 
 
-export function getFormattedDate(date) {
-    let options = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        timezone: 'UTC',
-        hour: 'numeric',
-        minute: 'numeric',
-    };
+export function getFormattedDate(date, options) {
+
     let newDate = new Date(date)
     return newDate.toLocaleString('ru', options)
 }

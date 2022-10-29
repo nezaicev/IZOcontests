@@ -10,7 +10,8 @@ import MainPage from "./pages/MAIN/MainPage";
 import EventPage from "./pages/EVENT/EventPage";
 import BroadcastListPage from "./pages/BROADCAST/BroadcastListPage";
 import BroadcastPage from "./pages/BROADCAST/BroadcastPage";
-
+import ExpositionListPage from "./pages/EXPOSITION/ExpositionListPage";
+import ExpositionPage from "./pages/EXPOSITION/ExpositionPage";
 
 const host = process.env.REACT_APP_HOST_NAME
 
@@ -29,6 +30,8 @@ const App = () => {
                     <Route path='/frontend/event/:id/' element={<EventPage/>} />
                     <Route path='/frontend/broadcasts/' element={<BroadcastListPage/>} />
                     <Route path='/frontend/broadcast/:id/' element={<BroadcastPage/>} />
+                    <Route path='/frontend/expositions/' element={<ExpositionListPage/>}/>
+                    <Route path='/frontend/exposition/:id/' element={<ExpositionPage/>}/>
 
                 </Routes>
                 {/*<Switch>*/}

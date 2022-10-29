@@ -526,12 +526,14 @@ class ModxDbimgMuz(models.Model):
 from cert.models import Cert
 
 
-class Archive(models.Model):
-    CROP_ORIENTATION = (('top', 'Верх'),
+CROP_ORIENTATION = (('top', 'Верх'),
                         ('center', 'Центр'),
                         ('bottom', 'Низ'),
                         ('left', 'Лево'),
                         ('right', 'Право'))
+
+class Archive(models.Model):
+
     reg_number = models.CharField(max_length=20, blank=False, null=False,
                                   unique=True,
                                   verbose_name='Регистрационный номер')
@@ -676,7 +678,7 @@ class ExtraImageArchive(ExtraImage):
                                        null=True, blank=True)
     crop_orientation_img = models.CharField(max_length=50,
                                             verbose_name='Ориентация превью',
-                                            choices=Archive.CROP_ORIENTATION,
+                                            choices=CROP_ORIENTATION,
                                             default='center',
                                             )
 

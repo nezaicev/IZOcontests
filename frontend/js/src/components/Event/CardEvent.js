@@ -20,6 +20,14 @@ const buttonColor = brown.A400
 
 
 function CardEvent(props) {
+     let optionsDate = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timezone: 'UTC',
+        hour: 'numeric',
+        minute: 'numeric',
+    };
 
     const statuses = [
             {'auth': false, 'participation': ''},
@@ -89,7 +97,7 @@ function CardEvent(props) {
                     <Box component={'div'} sx={{marginTop: '15px'}}>
                         <Chip icon={<EventNoteIcon
                             sx={{color: 'rgb(128,110,110)'}}/>}
-                              label={getFormattedDate(props.data['start_date'])}
+                              label={getFormattedDate(props.data['start_date'], optionsDate)}
                               variant="outlined"/>
                     </Box>
 

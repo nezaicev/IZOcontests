@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'map.apps.MapConfig',
     'cert.apps.CertConfig',
     'event.apps.EventConfig',
+    'exposition.apps.ExpositionConfig',
     'ckeditor',
     'ckeditor_uploader',
     'multiselectfield',

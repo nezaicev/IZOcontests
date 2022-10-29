@@ -7,18 +7,20 @@ import Container from "@mui/material/Container";
 import dataFetch from "../../components/utils/dataFetch"
 import useAuth from "../../components/hooks/useAuth";
 import ItemBroadcast from "../../components/Broadcast/ItemBroadcast";
+import {useNavigate} from "react-router-dom";
 
 
 let pages = [
     {'name': 'Мероприятия', 'link': '/frontend/api/events/'},
-    {'name': 'Вебинары', 'link': '/frontend/api/broadcasts/'}
+    {'name': 'Вебинары', 'link': '/frontend/api/broadcasts/'},
+    {'name': 'Выставки', 'link': '/frontend/api/broadcasts/'}
 
 ]
 
 const host = process.env.REACT_APP_HOST_NAME
 
 function MainPage() {
-
+     const navigate = useNavigate()
 
     const auth = useAuth()
     const [fetchAll, setFetchAll] = useState(false);
@@ -26,11 +28,13 @@ function MainPage() {
     const [data, setData] = React.useState([])
     const [value, setValue] = React.useState(0);
 
+
     useEffect(() => {
         dataFetch(`${host}${pages[value]['link']}`, null, (data) => {
             setData(data);
         })
     }, [])
+
 
     useEffect(() => {
         dataFetch(`${host}${pages[value]['link']}`, null, (data) => {
@@ -108,6 +112,10 @@ function MainPage() {
 
                     </Grid>
                                 )
+                            case "Выставки":
+                            {
+                                navigate("/frontend/expositions/")
+                            }
 
                         }
                     }()}
