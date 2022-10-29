@@ -22,7 +22,7 @@ function CardExposition(props) {
     };
     return (
         <ImageListItem
-            sx={{marginTop: '25px'}}
+            sx={{marginTop: '15px', margin:'10'}}
 
         >
             <Card sx={{border: 7, borderColor: '#fff', boxShadow: 0}}
@@ -37,7 +37,7 @@ function CardExposition(props) {
                 </a>
                 <ImageListItemBar
                     sx={{
-                        backgroundColor: "rgba(138, 119, 119, 0.77)"
+                        backgroundColor: "rgba(138, 119, 119, 0.89)"
                     }}
                     title={getFormattedDate(props.data['start_date'], optionsDate) + ' - ' +
                     getFormattedDate(props.data['end_date'], optionsDate)

@@ -9,6 +9,7 @@ import dataFetch from "../../components/utils/dataFetch";
 import CardExposition from "../../components/Exposition/CardExposition";
 import {CircularProgress} from "@mui/material";
 import StatExposition from "../../components/Exposition/SatExposition";
+import ImageListItem from "@mui/material/ImageListItem";
 
 
 document.title = 'Выставки'
@@ -56,15 +57,21 @@ function ExpositionListPage(props) {
                             case "Выставки":
                                 return (
                                     data.map((item, index) => (
+                                         <ImageListItem key={index}
+                                           sx={{marginTop: '25px'}}>
                                         <CardExposition key={index}
                                                         data={item}/>
+                                         </ImageListItem>
                                     ))
                                 )
                             case "Архив":
                                 return (
                                     data.map((item, index) => (
+                                         <ImageListItem key={index}
+                                           sx={{marginTop: '25px'}}>
                                         <CardExposition key={index}
                                                         data={item}/>
+                                         </ImageListItem>
                                     ))
                                 )
                             case "Статистика":
