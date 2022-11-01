@@ -7,27 +7,27 @@ import Container from "@mui/material/Container";
 import dataFetch from "../../components/utils/dataFetch"
 import useAuth from "../../components/hooks/useAuth";
 import ItemBroadcast from "../../components/Broadcast/ItemBroadcast";
-import {useNavigate} from "react-router-dom";
+import {useNavigate,useLocation, redirect} from "react-router-dom";
 
 
 let pages = [
     {'name': 'Мероприятия', 'link': '/frontend/api/events/'},
     {'name': 'Вебинары', 'link': '/frontend/api/broadcasts/'},
-    {'name': 'Выставки', 'link': '/frontend/api/broadcasts/'}
+    {'name': 'Выставки', 'link': ''},
+    {'name': 'Виртуальный музей', 'link': 'http://shkola-nemenskogo.ru/'}
 
 ]
 
 const host = process.env.REACT_APP_HOST_NAME
 
 function MainPage() {
-     const navigate = useNavigate()
-
+    const navigate = useNavigate()
+    const location= useLocation()
     const auth = useAuth()
     const [fetchAll, setFetchAll] = useState(false);
     const [participantEvent, setParticipantEvent] = React.useState([])
     const [data, setData] = React.useState([])
     const [value, setValue] = React.useState(0);
-
 
     useEffect(() => {
         dataFetch(`${host}${pages[value]['link']}`, null, (data) => {
@@ -76,7 +76,7 @@ function MainPage() {
                                           sx={{
 
                                               display: 'grid',
-                                               alignItems: 'stretch',
+                                              alignItems: 'stretch',
                                               gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr) )'
                                           }}>
                                         {function () {
@@ -101,20 +101,26 @@ function MainPage() {
                             case "Вебинары":
                                 return (
                                     <Grid container spacing={2}
-                          sx={{display: 'grid',
-                                             gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr) )'}}>
-                        {data.map((item, index) => (
-                            item['broadcast_url'] ?
-                                <Grid item xs="auto" key={index}>
-                                    <ItemBroadcast data={item}/>
-                                </Grid> : ''
-                        ))}
+                                          sx={{
+                                              display: 'grid',
+                                              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr) )'
+                                          }}>
+                                        {data.map((item, index) => (
+                                            item['broadcast_url'] ?
+                                                <Grid item xs="auto"
+                                                      key={index}>
+                                                    <ItemBroadcast
+                                                        data={item}/>
+                                                </Grid> : ''
+                                        ))}
 
-                    </Grid>
+                                    </Grid>
                                 )
-                            case "Выставки":
-                            {
-                                navigate("/frontend/expositions/")
+                            case "Выставки": {
+                                return (navigate("/frontend/expositions/"))
+                            }
+                            case "Виртуальный музей": {
+                                document.location.href='http://shkola-nemenskogo.ru/'
                             }
 
                         }

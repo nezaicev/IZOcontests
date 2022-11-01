@@ -7,12 +7,11 @@ import React, {useEffect, useState} from "react";
 import useAuth from "../../components/hooks/useAuth";
 import dataFetch from "../../components/utils/dataFetch";
 import CardExposition from "../../components/Exposition/CardExposition";
-import {CircularProgress} from "@mui/material";
+import {CircularProgress, Grid} from "@mui/material";
 import StatExposition from "../../components/Exposition/SatExposition";
 import ImageListItem from "@mui/material/ImageListItem";
 
 
-document.title = 'Выставки'
 let pages = [
     {
         'name': 'Выставки',
@@ -56,28 +55,36 @@ function ExpositionListPage(props) {
                         switch (pages[value]['name']) {
                             case "Выставки":
                                 return (
-                                    data.map((item, index) => (
-                                         <ImageListItem key={index}
-                                           sx={{marginTop: '25px'}}>
-                                        <CardExposition key={index}
+                                    <Box sx={{display:'flex'}}>
+                                            <Grid container spacing={2}
+                                                  sx={{justifyContent: data.length>2?'space-between':'flex-start'}}>
+                                                {data.map((item, index) => (
+
+                                                <Grid item xs="auto"
+                                                      key={index}>
+                                                    <CardExposition
                                                         data={item}/>
-                                         </ImageListItem>
-                                    ))
+                                                </Grid>
+
+                                    ))}
+                                                   </Grid>
+                                        </Box>
                                 )
                             case "Архив":
                                 return (
                                     data.map((item, index) => (
-                                         <ImageListItem key={index}
-                                           sx={{marginTop: '25px'}}>
-                                        <CardExposition key={index}
-                                                        data={item}/>
-                                         </ImageListItem>
+                                        <ImageListItem key={index}
+                                                       sx={{marginTop: '25px'}}>
+                                            <CardExposition key={index}
+                                                            data={item}/>
+                                        </ImageListItem>
                                     ))
                                 )
                             case "Статистика":
                                 return (
                                     <StatExposition data={data}/>
                                 )
+
                         }
                     } else {
                         return (
