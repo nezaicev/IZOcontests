@@ -7,7 +7,7 @@ import Container from "@mui/material/Container";
 import dataFetch from "../../components/utils/dataFetch"
 import useAuth from "../../components/hooks/useAuth";
 import ItemBroadcast from "../../components/Broadcast/ItemBroadcast";
-import {useNavigate,useLocation, redirect} from "react-router-dom";
+import {useNavigate, useLocation, redirect} from "react-router-dom";
 
 
 let pages = [
@@ -22,12 +22,79 @@ const host = process.env.REACT_APP_HOST_NAME
 
 function MainPage() {
     const navigate = useNavigate()
-    const location= useLocation()
+    const location = useLocation()
     const auth = useAuth()
     const [fetchAll, setFetchAll] = useState(false);
     const [participantEvent, setParticipantEvent] = React.useState([])
     const [data, setData] = React.useState([])
     const [value, setValue] = React.useState(0);
+
+    function test(value) {
+        console.log('test1')
+        console.log(data)
+        setValue(value)
+        console.log('test2')
+
+    }
+
+
+    function renderData() {
+        switch (pages[value]['name']) {
+            case "Мероприятия":
+                return (
+                    <Grid container spacing={2}
+                          sx={{
+
+                              display: 'grid',
+                              alignItems: 'stretch',
+                              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr) )'
+                          }}>
+                        {function () {
+                            if (fetchAll || !auth['auth']) {
+                                return (
+                                    data.map((item, index) => (
+                                        <Grid item xs="auto"
+                                              key={index}>
+                                            <CardEvent
+                                                data={item}
+                                                auth={auth}
+                                                participantEvent={participantEvent}
+                                            />
+                                        </Grid>
+                                    )))
+                            }
+                        }()
+
+                        }
+                    </Grid>
+                )
+            case "Вебинары":
+                return (
+                    <Grid container spacing={2}
+                          sx={{
+                              display: 'grid',
+                              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr) )'
+                          }}>
+                        {data.map((item, index) => (
+                            item['broadcast_url'] ?
+                                <Grid item xs="auto"
+                                      key={index}>
+                                    <ItemBroadcast
+                                        data={item}/>
+                                </Grid> : ''
+                        ))}
+
+                    </Grid>
+                )
+            case "Выставки": {
+                return (navigate("/frontend/expositions/"))
+            }
+            case "Виртуальный музей": {
+                document.location.href = 'http://shkola-nemenskogo.ru/'
+            }
+
+        }
+    }
 
     useEffect(() => {
         dataFetch(`${host}${pages[value]['link']}`, null, (data) => {
@@ -68,83 +135,10 @@ function MainPage() {
             }}>
                 <Box>
 
-                    {function () {
-                        switch (pages[value]['name']) {
-                            case "Мероприятия":
-                                return (
-                                    <Grid container spacing={2}
-                                          sx={{
-
-                                              display: 'grid',
-                                              alignItems: 'stretch',
-                                              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr) )'
-                                          }}>
-                                        {function () {
-                                            if (fetchAll || !auth['auth']) {
-                                                return (
-                                                    data.map((item, index) => (
-                                                        <Grid item xs="auto"
-                                                              key={index}>
-                                                            <CardEvent
-                                                                data={item}
-                                                                auth={auth}
-                                                                participantEvent={participantEvent}
-                                                            />
-                                                        </Grid>
-                                                    )))
-                                            }
-                                        }()
-
-                                        }
-                                    </Grid>
-                                )
-                            case "Вебинары":
-                                return (
-                                    <Grid container spacing={2}
-                                          sx={{
-                                              display: 'grid',
-                                              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr) )'
-                                          }}>
-                                        {data.map((item, index) => (
-                                            item['broadcast_url'] ?
-                                                <Grid item xs="auto"
-                                                      key={index}>
-                                                    <ItemBroadcast
-                                                        data={item}/>
-                                                </Grid> : ''
-                                        ))}
-
-                                    </Grid>
-                                )
-                            case "Выставки": {
-                                return (navigate("/frontend/expositions/"))
-                            }
-                            case "Виртуальный музей": {
-                                document.location.href='http://shkola-nemenskogo.ru/'
-                            }
-
-                        }
-                    }()}
+                    {renderData()}
 
                 </Box>
 
-                {/*<Box>*/}
-                {/*    <Grid container spacing={2}*/}
-                {/*          sx={{justifyContent: 'space-between'}}>*/}
-                {/*        <Grid item xs="auto">*/}
-                {/*            <CardExposition/>*/}
-                {/*        </Grid>*/}
-                {/*        <Grid item xs="auto">*/}
-                {/*            <CardExposition/>*/}
-                {/*        </Grid>*/}
-                {/*        <Grid item xs="auto">*/}
-                {/*            <CardExposition/>*/}
-                {/*        </Grid>*/}
-                {/*        <Grid item xs="auto">*/}
-                {/*            <CardExposition/>*/}
-                {/*        </Grid>*/}
-                {/*    </Grid>*/}
-                {/*</Box>*/}
 
             </Container>
         </Box>

@@ -113,7 +113,7 @@ const Header = (props) => {
                         >
                             {props.pages ? props.pages.map((page, index) => (
                                 <MenuItem key={index}
-                                          onClick={handleCloseNavMenu}>
+                                          onClick={()=>{handleCloseNavMenu(); props.activePage(index)}}>
                                     <Typography component='a'
                                                 textAlign="center">{page['name']}</Typography>
                                 </MenuItem>
@@ -126,7 +126,9 @@ const Header = (props) => {
                         component="div"
                         sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}
                     >
-                        <HomeIcon sx={{fontSize: 45}}/>
+                          <a href={props.mainLink?props.mainLink:'http://shkola-nemenskogo.ru/'}>
+                            <HomeIcon sx={{fontSize: 45}}/>
+                        </a>
                     </Typography>
                     <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
 
