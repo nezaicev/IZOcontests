@@ -73,7 +73,7 @@ class ParticipantEvent(models.Model):
     date_reg = models.DateTimeField(verbose_name='Дата регистрации',
                                     auto_now=True)
     status = models.ForeignKey(Status, verbose_name='Статус участника',
-                               on_delete=models.PROTECT, blank=True, null=True)
+                               on_delete=models.PROTECT, blank=True, null=True , default=Status.objects.get(name='Участник').id)
 
     def save(self, *args, **kwargs):
         if not self.pk:
