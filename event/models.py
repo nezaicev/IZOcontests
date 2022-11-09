@@ -30,7 +30,7 @@ class Event(models.Model):
                              upload_to=PathAndRename('PageContests/'),
                              blank=True, null=True)
     message = RichTextField(verbose_name='Информация', blank=True,
-                               null=True)
+                            null=True)
     send_letter = models.BooleanField(default=False,
                                       verbose_name='Отправить письмо')
     letter = RichTextField(verbose_name='Письмо', blank=True, null=True)
@@ -38,10 +38,12 @@ class Event(models.Model):
                                     on_delete=models.PROTECT, null=True,
                                     blank=True)
     hide = models.BooleanField(verbose_name='Архив', default=False)
-    reset_registration= models.BooleanField(verbose_name='Отмена регистрации', default=False )
+    reset_registration = models.BooleanField(verbose_name='Отмена регистрации',
+                                             default=False)
     broadcast_url = models.URLField(verbose_name='Трансляция', blank=True,
                                     null=True)
-    event_url = models.URLField(verbose_name='Ссылка', blank=False, unique=True, null=False)
+    event_url = models.URLField(verbose_name='Ссылка', blank=False,
+                                unique=True, null=False)
 
     def __str__(self):
         return '{} {}'.format(self.name, self.start_date.date())
@@ -52,13 +54,9 @@ class Event(models.Model):
         verbose_name_plural = 'Мероприятия'
 
     def save(self, *args, **kwargs):
-
-        # self.event_url = '{}{}/'.format(URL_EVENT, str(int(time.time())))
         super(Event, self).save(*args, **kwargs)
-        print(self.pk)
         self.event_url = '{}{}/'.format(URL_EVENT, self.pk)
         super(Event, self).save(*args, **kwargs)
-
 
 
 class ParticipantEvent(models.Model):
@@ -73,7 +71,8 @@ class ParticipantEvent(models.Model):
     date_reg = models.DateTimeField(verbose_name='Дата регистрации',
                                     auto_now=True)
     status = models.ForeignKey(Status, verbose_name='Статус участника',
-                               on_delete=models.PROTECT, blank=True, null=True , default=Status.objects.get(name='Участник').id)
+                               on_delete=models.PROTECT, blank=True, null=True,
+                               default=Status.objects.get(name='Участник').id)
 
     def save(self, *args, **kwargs):
         if not self.pk:

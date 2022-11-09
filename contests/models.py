@@ -15,6 +15,7 @@ from contests.directory import NominationART, NominationMYMSK, ThemeART, \
     ThemeRUSH, ThemeMYMSK, AgeRUSH, AgeMYMSK, Status, Level, Material, \
     NominationVP, AgeVP, LevelVP, NominationNR, DirectionVP, AgeART
 from contests.validators import validate_file_extension
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class PageContest(models.Model):
@@ -422,6 +423,19 @@ class Mymoskvichi(BaseContest, MultiParticipants):
                             verbose_name='Ссылка на файл (облако)',
                             null=True)
 
+    phone_gir = PhoneNumberField(verbose_name='Контактный телефон', null=True,
+                                 )
+    address_school_gir = models.CharField(verbose_name='Адрес организации',
+                                          null=True, blank=True,
+                                          max_length=200)
+    duration = models.CharField(verbose_name='Длительность', default='3:30',
+                                blank=True, max_length=100, null=True)
+    email = models.EmailField(verbose_name='Электронная почта')
+    description_file = models.FileField(upload_to=PathAndRename('file/'),
+                                        validators=[validate_file_extension],
+                                        max_length=200,
+                                        verbose_name='Описание и сценарий')
+
     def __str__(self):
         return str(self.reg_number)
 
@@ -444,8 +458,10 @@ class ParticipantMymoskvichi(models.Model):
                            blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Участники',
                                      on_delete=models.CASCADE)
-    birthday = models.DateField(verbose_name='Дата Рождения', blank=False,
+    birthday = models.DateField(verbose_name='Дата Рождения', blank=True,
                                 default=timezone.now)
+    snils_gir = models.CharField(max_length=20, verbose_name='СНИЛС',
+                                 null=True, blank=True)
 
     def __str__(self):
         return str(self.fio)
@@ -459,8 +475,6 @@ class TeacherExtraMymoskvichi(models.Model):
     fio = models.CharField(max_length=50, verbose_name='ФИО', blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Педагог',
                                      on_delete=models.CASCADE)
-    birthday = models.DateField(verbose_name='Дата Рождения', blank=False,
-                                default=timezone.now)
 
     def __str__(self):
         return str(self.fio)
@@ -525,15 +539,14 @@ class ModxDbimgMuz(models.Model):
 
 from cert.models import Cert
 
-
 CROP_ORIENTATION = (('top', 'Верх'),
-                        ('center', 'Центр'),
-                        ('bottom', 'Низ'),
-                        ('left', 'Лево'),
-                        ('right', 'Право'))
+                    ('center', 'Центр'),
+                    ('bottom', 'Низ'),
+                    ('left', 'Лево'),
+                    ('right', 'Право'))
+
 
 class Archive(models.Model):
-
     reg_number = models.CharField(max_length=20, blank=False, null=False,
                                   unique=True,
                                   verbose_name='Регистрационный номер')

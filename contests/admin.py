@@ -456,6 +456,22 @@ class TeacherExtraMymoskvichiInline(admin.StackedInline):
 class MymoskvichiAdmin(BaseAdmin):
     model = Mymoskvichi
     name = 'mymoskvichi'
+    fieldsets = (
+
+        ('Организация', {
+            'fields': ('region', 'city', 'school', 'district',)
+        }),
+        ('Работа', {
+            'fields': (
+                'author_name',  'nomination',
+                 'program', 'link', 'age')
+        }),
+
+        ('Данные для ГИР (https://талантыроссии.рф/)', {
+            'fields': (
+                'phone_gir', 'address_school_gir')
+        }),
+    )
     inlines = [ParticipantMymoskvichiInline, TeacherExtraMymoskvichiInline]
     exclude = (
         'reg_number', 'teacher', 'barcode', 'status', 'fio', 'fio_teacher',

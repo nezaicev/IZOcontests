@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'django_static_fontawesome',
     'django_changelist_toolbar_admin',
     'django_simple_export_admin',
+    'phonenumber_field'
 
 ]
 
