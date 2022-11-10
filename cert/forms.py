@@ -44,7 +44,7 @@ class ConfirmationUserDataEventForm(forms.Form):
     school = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Организация',
-        max_length=80)
+        max_length=150)
     city = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Регион|Город',
