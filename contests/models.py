@@ -459,7 +459,7 @@ class Mymoskvichi(BaseContest, MultiParticipants):
 
 
 class ParticipantMymoskvichi(models.Model):
-    fio = models.CharField(max_length=50, verbose_name='Фамилия, имя',
+    fio = models.CharField(max_length=50, verbose_name='Фамилия Имя Отчество',
                            blank=False)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Участники',
                                      on_delete=models.CASCADE)
