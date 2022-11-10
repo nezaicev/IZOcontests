@@ -116,6 +116,7 @@ class BaseContest(models.Model):
     district = models.ForeignKey(District, verbose_name='Округ',
                                  on_delete=models.PROTECT, null=True,
                                  blank=True)
+    email = models.EmailField(verbose_name='Электронная почта', null=True)
 
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -345,6 +346,9 @@ class VP(BaseContest, MultiParticipants):
                                    )
     ovz = models.BooleanField(verbose_name='Проект, выполнен детьми с ОВЗ',
                               null=True, blank=False, default=False)
+    phone_gir = models.CharField(verbose_name='Контактный телефон', null=True,
+                                 blank=True, max_length=50)
+
 
     def __str__(self):
         return str(self.reg_number)
@@ -429,12 +433,13 @@ class Mymoskvichi(BaseContest, MultiParticipants):
                                           null=True, blank=True,
                                           max_length=200)
     duration = models.CharField(verbose_name='Длительность', default='3:30',
-                                blank=True, max_length=100, null=True)
-    email = models.EmailField(verbose_name='Электронная почта')
+                                max_length=100, null=True)
     description_file = models.FileField(upload_to=PathAndRename('file/'),
                                         validators=[validate_file_extension],
                                         max_length=200,
-                                        verbose_name='Описание и сценарий')
+                                        verbose_name='Описание и сценарий',
+                                        null=True
+                                        )
 
     def __str__(self):
         return str(self.reg_number)
@@ -459,7 +464,7 @@ class ParticipantMymoskvichi(models.Model):
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Участники',
                                      on_delete=models.CASCADE)
     birthday = models.DateField(verbose_name='Дата Рождения', blank=True,
-                                default=timezone.now)
+                                )
     snils_gir = models.CharField(max_length=20, verbose_name='СНИЛС',
                                  null=True, blank=True)
 

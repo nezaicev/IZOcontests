@@ -37,6 +37,8 @@ ALLOWED_HOSTS = ['*']
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 # Application definition
 
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

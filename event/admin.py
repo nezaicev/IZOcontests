@@ -16,11 +16,12 @@ class EventAdmin(admin.ModelAdmin):
 
 class ParticipantEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
     model = ParticipantEvent
-    list_display = ['reg_number', 'get_fio_participant', 'event',
-                    'certificate']
+    list_display = ['reg_number', 'get_fio_participant',
+                    'certificate','event']
     list_filter=['event',]
     exclude = ['reg_number',]
     actions = ['send_selected_letter',]
+    search_fields = ('reg_number', 'participant__fio', 'participant__email')
 
     django_simple_export_admin_exports = {
         "filtered-participant": {

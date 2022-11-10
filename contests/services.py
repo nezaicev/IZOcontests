@@ -4,6 +4,11 @@ from contests.models import ModxDbimgMuz, ShowEvent, CustomUser, PageContest
 def exists_record_vm(oldname):
     ModxDbimgMuz.objects.using('vm').get(oldname=oldname)
 
+# def update_phone_number_for_user(user, new_phone):
+#     if new_phone:
+#         if user.phone!=new_phone:
+#             user.phone
+
 
 def subscribe_show_event(teacher, page_contest):
     result=ShowEvent.objects.create(

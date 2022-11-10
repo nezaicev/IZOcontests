@@ -308,6 +308,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
                 'region': request.user.region,
                 'district': request.user.district,
                 'fio_teacher': request.user.fio,
+                'email': request.user.email,
                 # 'phone_gir':request.user.phone if self.model._meta.get_field('phone_gir') else '',
                 }
 
@@ -364,7 +365,8 @@ class ArtakiadaAdmin(BaseAdmin):
             'fields': ('author_name', 'image','material', 'theme', 'nomination')
         }),
         ('Данные для ГИР (https://талантыроссии.рф/)', {
-            'fields': ('birthday', 'snils_gir', 'phone_gir', 'address_school_gir')
+
+            'fields': ('email','birthday', 'snils_gir', 'phone_gir', 'address_school_gir')
         }),
     )
 
@@ -419,7 +421,7 @@ class NRushevaAdmin(BaseAdmin):
         }),
         ('Данные для ГИР (https://талантыроссии.рф/)', {
             'fields': (
-            'birthday', 'snils_gir', 'phone_gir', 'address_school_gir')
+            'email', 'birthday', 'snils_gir', 'phone_gir', 'address_school_gir')
         }),
     )
 
@@ -464,11 +466,11 @@ class MymoskvichiAdmin(BaseAdmin):
         ('Работа', {
             'fields': (
                 'author_name',  'nomination',
-                 'program', 'link', 'age')
+                 'program', 'link', 'age', 'description_file', 'duration')
         }),
 
         ('Данные для ГИР (https://талантыроссии.рф/)', {
-            'fields': (
+            'fields': ('email',
                 'phone_gir', 'address_school_gir')
         }),
     )
@@ -540,6 +542,11 @@ class VPAdmin(BaseAdmin):
         ('Работа', {
             'fields': ('author_name', 'direction', 'nomination', 'level','ovz')
         }),
+        ('Контактные данные',{
+            'fields':('email', 'phone_gir')
+        }
+
+        )
 
 
     )
