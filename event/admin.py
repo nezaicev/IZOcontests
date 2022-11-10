@@ -1,4 +1,5 @@
 from django.contrib import admin, messages
+from django.contrib.auth import get_permission_codename
 from django.template.response import TemplateResponse
 from django_changelist_toolbar_admin.admin import DjangoChangelistToolbarAdmin
 from django_simple_export_admin.admin import DjangoSimpleExportAdmin
@@ -71,7 +72,13 @@ class ParticipantEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
                                 {'items': queryset, 'form': form})
 
     send_selected_letter.short_description = 'Отправить выбранное письмо'
-    # send_selected_letter.allowed_permissions = ('execution_all_actions',)
+    send_selected_letter.allowed_permissions = ('send_selected_letter',)
+
+    def has_send_selected_letter_permission(self, request):
+        """Does the user have the send_selected_letter permission?"""
+        opts = self.opts
+        codename = get_permission_codename('send_selected_letter', opts)
+        return request.user.has_perm('%s.%s' % (opts.app_label, codename))
 
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.groups.filter(
