@@ -186,14 +186,14 @@ const Header = (props) => {
                         </Menu>
                     </Box> : <div>
                         <IconButton
-                            size="large"
+                            // size="large"
                             aria-label="account of current user"
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
                             onClick={handleOpenUserMenu}
                             color="inherit"
                         >
-                            <AccountCircle/>
+                            <AccountCircle sx={{fontSize:35}}/>
                         </IconButton>
                         <Menu
                             id="menu-appbar"

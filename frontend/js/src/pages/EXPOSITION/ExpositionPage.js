@@ -23,18 +23,17 @@ let pages = [
 
 function ExpositionPage(props) {
     const auth = useAuth()
-     const [fetchAll, setFetchAll] = useState(false);
-     const [value, setValue] = React.useState(0);
-    const [data, setData]=React.useState({})
-    let {id}=useParams()
+    const [fetchAll, setFetchAll] = useState(false);
+    const [value, setValue] = React.useState(0);
+    const [data, setData] = React.useState({})
+    let {id} = useParams()
 
-     useEffect(() => {
+    useEffect(() => {
         dataFetch(`${host}/frontend/api/exposition/${id}/`, null, (data) => {
             setData(data);
             setFetchAll(true)
         })
     }, [])
-
 
 
     return (
@@ -49,29 +48,44 @@ function ExpositionPage(props) {
                 mt: '20px',
                 justifyContent: 'center'
             }}>
-                {fetchAll ?  <Box>
-                    <Box sx={{justifyContent:'center', display:'flex', marginTop:'15px', marginBottom:'15px'}}>
+                {fetchAll ? <Box>
+                    <Box sx={{
+                        justifyContent: 'center',
+                        display: 'flex',
+                        marginTop: '15px',
+                        marginBottom: '15px'
+                    }}>
                         <Typography variant="h5">
                             {data.title}
                         </Typography>
                     </Box>
-                    <Box sx={{marginTop:'15px', marginBottom:'5px'}}>
-                    <Chip icon={<LocationOnIcon sx={{color: 'rgb(128,110,110)'}}/>}
-                          label={data.address}/>
+                    <Box sx={{marginTop: '15px', marginBottom: '5px'}}>
+                        {/*<Chip icon={<LocationOnIcon sx={{color: 'rgb(128,110,110)'}}/>}*/}
+                        {/*      label={data.address}/>*/}
+                        <Box sx={{
+                            display:'flex'
+                        }}>
+                            <LocationOnIcon
+                                sx={{color: 'rgb(128,110,110)'}}/>
+                            <Typography sx={{fontSize:[10,12,14]}} variant="overline" display="block"
+                                        gutterBottom>
+                                {data.address}
+                            </Typography>
+                        </Box>
                     </Box>
 
-                     <Paper
+                    <Paper
 
-                     dangerouslySetInnerHTML={{__html: data.content}}
-                     scroll={'body'}
-                     sx={{
-                         boxShadow: 0,
-                         maxHeight:600,
-                         overflow:'auto',
-                         padding:['5px','15px'],
-                     }}
+                        dangerouslySetInnerHTML={{__html: data.content}}
+                        scroll={'body'}
+                        sx={{
+                            boxShadow: 0,
+                            maxHeight: 600,
+                            overflow: 'auto',
+                            padding: ['5px', '15px'],
+                        }}
 
-                />
+                    />
                     <Box>
 
                         <SimpleReactLightbox>
@@ -85,7 +99,7 @@ function ExpositionPage(props) {
 
                                 }}>
 
-                                    { fetchAll ? data.images.map((item, index) => (
+                                    {fetchAll ? data.images.map((item, index) => (
 
                                         <ImageListItem key={index}
                                                        sx={{marginTop: '25px'}}>
@@ -104,7 +118,7 @@ function ExpositionPage(props) {
                                                     />
                                                 </a>
                                             </Card>
-                                        </ImageListItem>)):null}
+                                        </ImageListItem>)) : null}
                                 </Box>
                             </SRLWrapper>
                         </SimpleReactLightbox>
@@ -112,18 +126,17 @@ function ExpositionPage(props) {
 
                     </Box>
 
-                </Box>: <Box sx={{
-                                    justifyContent: 'center',
-                                    height:'600',
-                                    display: 'flex',
-                                    marginTop: ' 20px'
-                                }}>
-                                    <CircularProgress sx={{
-                                        color: '#d26666'
-                                    }}/>
-                                </Box>
-                               }
-
+                </Box> : <Box sx={{
+                    justifyContent: 'center',
+                    height: '600',
+                    display: 'flex',
+                    marginTop: ' 20px'
+                }}>
+                    <CircularProgress sx={{
+                        color: '#d26666'
+                    }}/>
+                </Box>
+                }
 
 
             </Container>
