@@ -428,6 +428,7 @@ class Mymoskvichi(BaseContest, MultiParticipants):
                             null=True)
 
     phone_gir = PhoneNumberField(verbose_name='Контактный телефон', null=True,
+                                 default='+7'
                                  )
     address_school_gir = models.CharField(verbose_name='Адрес организации',
                                           null=True, blank=True,
@@ -464,6 +465,7 @@ class ParticipantMymoskvichi(models.Model):
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Участники',
                                      on_delete=models.CASCADE)
     birthday = models.DateField(verbose_name='Дата Рождения', blank=True,
+                                null=True
                                 )
     snils_gir = models.CharField(max_length=20, verbose_name='СНИЛС',
                                  null=True, blank=True)
