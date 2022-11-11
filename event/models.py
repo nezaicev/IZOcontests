@@ -96,6 +96,6 @@ class ParticipantEvent(models.Model):
         verbose_name_plural = 'Заявки'
         permissions = [
             ("export_participants", "Выгрузить список участников"),
-            ("send_selected_letter", "Отправить письмо")
+            ("send_selected_letter_to_participant_event", "Отправить выбранное письмо")
         ]
         unique_together = ('participant', 'event',)

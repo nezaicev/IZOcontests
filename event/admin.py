@@ -45,6 +45,7 @@ class ParticipantEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
                 "event.export_participants"],
         }
     }
+    @admin.action(permissions=['send_selected_letter_to_participant_event'])
     def send_selected_letter(self, request, queryset):
 
         if 'apply' in request.POST:
@@ -72,13 +73,10 @@ class ParticipantEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
                                 {'items': queryset, 'form': form})
 
     send_selected_letter.short_description = 'Отправить выбранное письмо'
-    send_selected_letter.allowed_permissions = ('send_selected_letter',)
 
-    def has_send_selected_letter_permission(self, request):
-        """Does the user have the send_selected_letter permission?"""
-        opts = self.opts
-        codename = get_permission_codename('send_selected_letter', opts)
-        return request.user.has_perm('%s.%s' % (opts.app_label, codename))
+    def has_send_selected_letter_to_participant_event_permission(self, request):
+        return request.user.has_perm('event.send_selected_letter_to_participant_event')
+
 
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.groups.filter(
