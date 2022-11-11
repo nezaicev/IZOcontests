@@ -466,6 +466,7 @@ class ParticipantMymoskvichi(models.Model):
                                      on_delete=models.CASCADE)
     birthday = models.DateField(verbose_name='Дата Рождения', blank=True,
                                 null=True
+
                                 )
     snils_gir = models.CharField(max_length=20, verbose_name='СНИЛС',
                                  null=True, blank=True)
