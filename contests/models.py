@@ -472,8 +472,8 @@ class ParticipantMymoskvichi(models.Model):
         return str(self.fio)
 
     class Meta:
-        verbose_name = 'Участник'
-        verbose_name_plural = 'Участники'
+        verbose_name = 'Участник (Мы Москвичи)'
+        verbose_name_plural = 'Участники (Мы Москвичи)'
 
 
 class TeacherExtraMymoskvichi(models.Model):
@@ -485,8 +485,8 @@ class TeacherExtraMymoskvichi(models.Model):
         return str(self.fio)
 
     class Meta:
-        verbose_name = 'Педагог'
-        verbose_name_plural = 'Педагоги'
+        verbose_name = 'Педагог (Мы Москвичи)'
+        verbose_name_plural = 'Педагоги (Мы Москвичи)'
 
 
 class Message(models.Model):
