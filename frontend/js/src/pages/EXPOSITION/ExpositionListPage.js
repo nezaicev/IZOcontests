@@ -8,7 +8,7 @@ import useAuth from "../../components/hooks/useAuth";
 import dataFetch from "../../components/utils/dataFetch";
 import CardExposition from "../../components/Exposition/CardExposition";
 import {CircularProgress, Grid} from "@mui/material";
-import StatExposition from "../../components/Exposition/SatExposition";
+import StatExposition from "../../components/Exposition/StatExposition";
 import ImageListItem from "@mui/material/ImageListItem";
 
 

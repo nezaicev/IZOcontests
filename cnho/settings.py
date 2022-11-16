@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'cert.apps.CertConfig',
     'event.apps.EventConfig',
     'exposition.apps.ExpositionConfig',
+    'content.apps.ContentConfig',
     'ckeditor',
     'ckeditor_uploader',
     'multiselectfield',

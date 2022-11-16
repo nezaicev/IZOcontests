@@ -25,6 +25,8 @@ from contests.serializers import ArchiveSerializer, NominationVPSerializer, \
     NominationMymoskvichiSerializer
 from event.models import Event, ParticipantEvent
 from event.serializers import EventSerializer, ParticipantEventSerializers
+from content.models import Page
+from content.serializers import PageSerializer
 from contests.tasks import send_mail_for_subscribers
 
 
@@ -300,4 +302,17 @@ class ExpositionDetailAPIView(APIView):
     def get(self, request, pk):
         exposition = self.get_object(pk)
         serializer = ExpositionSerializer(exposition)
+        return Response(serializer.data)
+
+
+class PageDetailAPIView(APIView):
+    def get_object(self, slug):
+        try:
+            return Page.objects.get(slug=slug)
+        except Event.DoesNotExist:
+            raise Http404
+
+    def get(self, request, slug):
+        page = self.get_object(slug)
+        serializer = PageSerializer(page)
         return Response(serializer.data)
