@@ -117,6 +117,8 @@ class BaseContest(models.Model):
                                  on_delete=models.PROTECT, null=True,
                                  blank=True)
     email = models.EmailField(verbose_name='Электронная почта', null=True)
+    status_change=models.BooleanField(verbose_name='Статус изменения', default=False)
+
 
     def save(self, *args, **kwargs):
         if not self.pk:

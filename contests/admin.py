@@ -4,7 +4,8 @@ from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
-from django_simple_export_admin.admin import DjangoSimpleExportAdmin, ForceStringRender
+from django_simple_export_admin.admin import DjangoSimpleExportAdmin, \
+    ForceStringRender
 
 from contests.models import Artakiada, NRusheva, Mymoskvichi, \
     ParticipantMymoskvichi, \
@@ -23,6 +24,7 @@ from contests.forms import PageContestsFrom, ConfStorageForm, \
 from contests.models import PageContest, Message, ModxDbimgMuz, Events
 from contests import utils
 from contests import tasks
+from contests.services import alert_change_obj_contest
 from mailing.admin import SendEmail
 from event.models import Event, ParticipantEvent
 
@@ -75,8 +77,10 @@ class ArchiveInterface:
                     count_updated_obj += 1
 
             else:
-                messages.add_message(request, messages.INFO, "Не найдено мероприятие {}".format(
-                    utils.get_dependent_data_for_obj(obj, 'contest_name')))
+                messages.add_message(request, messages.INFO,
+                                     "Не найдено мероприятие {}".format(
+                                         utils.get_dependent_data_for_obj(obj,
+                                                                          'contest_name')))
         if count_updated_obj or count_created_obj:
             messages.add_message(request, messages.INFO,
                                  "Добавлено {}, обнавлено {}".format(
@@ -182,39 +186,39 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     form = ModelForm
     search_fields = ('reg_number', 'fio', 'fio_teacher')
     list_display = (
-        'reg_number', 'fio', 'status', 'school', 'region', 'district',
+        'reg_number', 'fio', 'status', 'status_change', 'school', 'region',
+        'district',
         'fio_teacher')
     list_filter = ('status', 'district', 'region')
     actions = ['export_list_info', 'export_as_xls', 'create_thumbs',
                'archived', 'send_selected_letter', ]
     exclude = (
         'reg_number', 'teacher', 'barcode', 'status', 'info', 'year_contest',
-        'extraImage')
+        'extraImage', 'status_change')
 
-
-    def create_thumbs(self, request, queryset):
-        config = {}
-        if 'apply' in request.POST:
-            form = ConfStorageForm(request.POST)
-            if form.is_valid():
-                config = {'USERNAME': form.cleaned_data['username'],
-                          'PASSWORD': form.cleaned_data['password'],
-                          'CONTAINER': form.cleaned_data['container']
-                          }
-            urls_levels = [{'url': obj.image.url, 'level': obj.level.name} for
-                           obj in queryset]
-            tasks.celery_create_thumbs.delay(urls_levels, config=config)
-            return None
-        form = ConfStorageForm(
-            initial={'_selected_action': queryset.values_list('id', flat=True),
-                     'username': os.getenv('USERNAME_SELECTEL'),
-                     'password': os.getenv('PASSWORD_SELECTEL'),
-                     'container': os.getenv('CONTAINER_SELECTEL')
-                     })
-        return TemplateResponse(request, "admin/set_thumb_config.html",
-                                {'items': queryset, 'form': form})
-
-    create_thumbs.short_description = 'Создать превью'
+    # def create_thumbs(self, request, queryset):
+    #     config = {}
+    #     if 'apply' in request.POST:
+    #         form = ConfStorageForm(request.POST)
+    #         if form.is_valid():
+    #             config = {'USERNAME': form.cleaned_data['username'],
+    #                       'PASSWORD': form.cleaned_data['password'],
+    #                       'CONTAINER': form.cleaned_data['container']
+    #                       }
+    #         urls_levels = [{'url': obj.image.url, 'level': obj.level.name} for
+    #                        obj in queryset]
+    #         tasks.celery_create_thumbs.delay(urls_levels, config=config)
+    #         return None
+    #     form = ConfStorageForm(
+    #         initial={'_selected_action': queryset.values_list('id', flat=True),
+    #                  'username': os.getenv('USERNAME_SELECTEL'),
+    #                  'password': os.getenv('PASSWORD_SELECTEL'),
+    #                  'container': os.getenv('CONTAINER_SELECTEL')
+    #                  })
+    #     return TemplateResponse(request, "admin/set_thumb_config.html",
+    #                             {'items': queryset, 'form': form})
+    #
+    # create_thumbs.short_description = 'Создать превью'
 
     def export_list_info(self, request, queryset):
         meta = self.model._meta
@@ -274,7 +278,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     def get_list_display(self, request):
         if request.user.is_superuser or request.user.groups.filter(
                 name='Manager').exists():
-            self.list_editable = ('status',)
+            self.list_editable = ('status', 'status_change')
             self.list_filter = self.__class__.list_filter
             return self.__class__.list_display
         else:
@@ -289,6 +293,8 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
             else:
                 self.list_display = utils.remove_field_in_list(
                     self.list_display, 'status')
+                self.list_display = utils.remove_field_in_list(
+                    self.list_display, 'status_change')
 
                 return self.list_display
 
@@ -317,8 +323,9 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
         return super().response_add(request, obj, post_url_continue)
 
     def response_change(self, request, obj):
-        utils.generate_pdf(obj.get_fields_for_pdf(), obj.info.name,
-                           obj.info.alias, obj.reg_number)
+        obj.status_change = alert_change_obj_contest(request.user, obj.teacher,
+                                                     obj.status_change)
+        obj.save()
         return super().response_change(request, obj)
 
     class Media:
@@ -342,29 +349,31 @@ class ArtakiadaAdmin(BaseAdmin):
         'region',
     )
     list_display = (
-        'reg_number', 'image_tag', 'fio', 'level', 'status', 'school',
+        'reg_number', 'image_tag', 'fio', 'level', 'status', 'status_change',
+        'school',
         'region',
         'district',
         'fio_teacher')
     fieldsets = (
         ('Участник', {
-            'fields': ('fio','age','level')
+            'fields': ('fio', 'age', 'level')
         }),
         ('Педагог', {
             'fields': ('fio_teacher',)
         }),
         ('Организация', {
-            'fields': ('region', 'city', 'school', 'district', )
+            'fields': ('region', 'city', 'school', 'district',)
         }),
         ('Работа', {
-            'fields': ('author_name', 'image','material', 'theme', 'nomination')
+            'fields': (
+            'author_name', 'image', 'material', 'theme', 'nomination')
         }),
         ('Данные для ГИР (https://талантыроссии.рф/)', {
 
-            'fields': ('email','birthday', 'snils_gir', 'phone_gir', 'address_school_gir')
+            'fields': ('email', 'birthday', 'snils_gir', 'phone_gir',
+                       'address_school_gir')
         }),
     )
-
 
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.groups.filter(
@@ -396,7 +405,8 @@ class NRushevaAdmin(BaseAdmin):
     name = 'nrusheva'
     list_filter = ('level', 'status', 'district', 'region')
     list_display = (
-        'reg_number', 'image_tag', 'fio', 'status', 'school', 'region',
+        'reg_number', 'image_tag', 'fio', 'status', 'status_change', 'school',
+        'region',
         'district',
         'fio_teacher')
 
@@ -412,13 +422,16 @@ class NRushevaAdmin(BaseAdmin):
         }),
         ('Работа', {
             'fields': (
-            'author_name', 'image', 'material', 'theme', 'nomination', 'format','description')
+                'author_name', 'image', 'material', 'theme', 'nomination',
+                'format', 'description')
         }),
         ('Данные для ГИР (https://талантыроссии.рф/)', {
             'fields': (
-            'email', 'birthday', 'snils_gir', 'phone_gir', 'address_school_gir')
+                'email', 'birthday', 'snils_gir', 'phone_gir',
+                'address_school_gir')
         }),
     )
+
 
 class InlineFormset(forms.models.BaseInlineFormSet):
     def clean(self):
@@ -460,13 +473,13 @@ class MymoskvichiAdmin(BaseAdmin):
         }),
         ('Работа', {
             'fields': (
-                'author_name',  'nomination',
-                 'program', 'link', 'age', 'description_file', 'duration')
+                'author_name', 'nomination',
+                'program', 'link', 'age', 'description_file', 'duration')
         }),
 
         ('Данные для ГИР (https://талантыроссии.рф/)', {
             'fields': ('email',
-                'phone_gir', 'address_school_gir')
+                       'phone_gir', 'address_school_gir')
         }),
     )
     inlines = [ParticipantMymoskvichiInline, TeacherExtraMymoskvichiInline]
@@ -535,14 +548,14 @@ class VPAdmin(BaseAdmin):
             'fields': ('region', 'city', 'school', 'district',)
         }),
         ('Работа', {
-            'fields': ('author_name', 'direction', 'nomination', 'level','ovz')
+            'fields': (
+            'author_name', 'direction', 'nomination', 'level', 'ovz')
         }),
-        ('Контактные данные',{
-            'fields':('email', 'phone_gir')
+        ('Контактные данные', {
+            'fields': ('email', 'phone_gir')
         }
 
-        )
-
+         )
 
     )
 
@@ -571,7 +584,6 @@ class VPAdmin(BaseAdmin):
         }
     }
 
-
     def response_add(self, request, obj, post_url_continue=None):
 
         if obj.generate_list_participants(ParticipantVP):
@@ -590,7 +602,6 @@ class VPAdmin(BaseAdmin):
         obj.save()
 
         return super().response_change(request, obj)
-
 
 
 class StatusAdmin(admin.ModelAdmin):
@@ -768,16 +779,18 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     load_json_data_from_file.short_description = 'Загрузить данные из JSON файла'
 
 
-class ShowEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin, ArchiveInterface, SendEmail):
+class ShowEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin,
+                     ArchiveInterface, SendEmail):
     model = ShowEvent
     search_fields = ('reg_number', 'fio')
 
     list_display = (
-        'reg_number', 'page_contest', 'fio', 'status', 'school','get_city', 'region',
+        'reg_number', 'page_contest', 'fio', 'status', 'school', 'get_city',
+        'region',
         'district',
     )
     list_filter = ('page_contest',)
-    actions = ['archived','send_selected_letter']
+    actions = ['archived', 'send_selected_letter']
     exclude = ('reg_number', 'teacher', 'barcode', 'status', 'info')
 
     django_simple_export_admin_exports = {
