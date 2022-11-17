@@ -474,7 +474,7 @@ class MymoskvichiAdmin(BaseAdmin):
         ('Работа', {
             'fields': (
                 'author_name', 'nomination',
-                'program', 'link', 'age', 'description_file', 'duration')
+                'program', 'link', 'age', 'description_file', 'duration', 'ovz')
         }),
 
         ('Данные для ГИР (https://талантыроссии.рф/)', {

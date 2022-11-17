@@ -331,7 +331,7 @@ class VP(BaseContest, MultiParticipants):
     fields = (
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school',
         'region', 'city', 'district', 'author_name', 'nomination',
-        'direction','ovz'
+        'direction','ovz',
     )
     info = models.ForeignKey('PageContest', on_delete=models.SET_NULL,
                              null=True, default=get_info_contests('vp'))
@@ -437,12 +437,17 @@ class Mymoskvichi(BaseContest, MultiParticipants):
                                           max_length=200)
     duration = models.CharField(verbose_name='Длительность', default='3:30',
                                 max_length=100, null=True)
+
     description_file = models.FileField(upload_to=PathAndRename('file/'),
                                         validators=[validate_file_extension],
                                         max_length=200,
                                         verbose_name='Описание и сценарий',
                                         null=True
                                         )
+    ovz = models.CharField(verbose_name='Проект, выполнен детьми с ОВЗ',
+                           blank=False, default='Нет',
+                           choices=(('Нет', 'Нет'), ('Да', 'Да')),
+                           max_length=10)
 
     def __str__(self):
         return str(self.reg_number)
