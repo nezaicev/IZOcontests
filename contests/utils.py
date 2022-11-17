@@ -200,17 +200,20 @@ def generate_barcode(reg_number):
     data = list(filter(None, re.split('\D', reg_number[6:])))
     data = str(data[0])
     ean = EAN(data, writer=ImageWriter())
-    ean.save(settings.BARCODE_MEDIA_ROOT + reg_number, options={
-        'module_width': 0.2,
-        'module_height': 3,
-        'quiet_zone': 0.9,
-        'font_size': 10,
-        'text_distance': 1.5,
-        'background': 'white',
-        'foreground': 'black',
-        'write_text': True,
-        'text': '',
-    }, text=None)
+    try:
+        ean.save(settings.BARCODE_MEDIA_ROOT + reg_number, options={
+            'module_width': 0.2,
+            'module_height': 3,
+            'quiet_zone': 0.9,
+            'font_size': 10,
+            'text_distance': 1.5,
+            'background': 'white',
+            'foreground': 'black',
+            'write_text': True,
+            'text': '',
+        }, text=None)
+    except:
+        print('Barcode is not saved')
 
 
 def generate_pdf(list, contest_name, alias, reg_number):

@@ -223,18 +223,13 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
         try:
             file_location = os.path.join(settings.MEDIA_ROOT, 'pdf', self.name,
                                          f'{reg_number}.pdf')
-            if os.path.exists(file_location) and os.path.getsize(
-                    file_location) > 0:
-                response = FileResponse(open(file_location, 'rb'))
-                return response
-            else:
-                utils.generate_barcode(queryset[0].reg_number)
-                utils.generate_pdf(queryset[0].get_parm_for_pdf(),
-                                   queryset[0].info.name,
-                                   queryset[0].info.alias,
-                                   queryset[0].reg_number)
-                response = FileResponse(open(file_location, 'rb'))
-                return response
+            utils.generate_barcode(queryset[0].reg_number)
+            utils.generate_pdf(queryset[0].get_fields_for_pdf(),
+                               queryset[0].info.name,
+                               queryset[0].info.alias,
+                               queryset[0].reg_number)
+            response = FileResponse(open(file_location, 'rb'))
+            return response
 
         except:
             self.message_user(request, "{} не найден".format(file_location))
