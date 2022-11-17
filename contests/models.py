@@ -340,15 +340,15 @@ class VP(BaseContest, MultiParticipants):
 
     nomination = models.ForeignKey(NominationVP, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
-
     level = models.ManyToManyField(LevelVP, related_name='levels',
                                    verbose_name='Класс',
                                    )
-    ovz = models.BooleanField(verbose_name='Проект, выполнен детьми с ОВЗ',
-                              null=True, blank=False, default=False)
+    ovz = models.CharField(verbose_name='Проект, выполнен детьми с ОВЗ',
+                           blank=False, default='Нет',
+                           choices=(('Нет', 'Нет'),('Да', 'Да')),
+                           max_length=10)
     phone_gir = models.CharField(verbose_name='Контактный телефон', null=True,
                                  blank=True, max_length=50)
-
 
     def __str__(self):
         return str(self.reg_number)
