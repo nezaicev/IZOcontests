@@ -117,8 +117,8 @@ class BaseContest(models.Model):
                                  on_delete=models.PROTECT, null=True,
                                  blank=True)
     email = models.EmailField(verbose_name='Электронная почта', null=True)
-    status_change=models.BooleanField(verbose_name='Статус изменения', default=False)
-
+    status_change = models.BooleanField(verbose_name='Статус изменения',
+                                        default=False)
 
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -331,7 +331,7 @@ class VP(BaseContest, MultiParticipants):
     fields = (
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school',
         'region', 'city', 'district', 'author_name', 'nomination',
-        'direction','ovz',
+        'direction', 'ovz',
     )
     info = models.ForeignKey('PageContest', on_delete=models.SET_NULL,
                              null=True, default=get_info_contests('vp'))
@@ -347,7 +347,7 @@ class VP(BaseContest, MultiParticipants):
                                    )
     ovz = models.CharField(verbose_name='Проект, выполнен детьми с ОВЗ',
                            blank=False, default='Нет',
-                           choices=(('Нет', 'Нет'),('Да', 'Да')),
+                           choices=(('Нет', 'Нет'), ('Да', 'Да')),
                            max_length=10)
     phone_gir = models.CharField(verbose_name='Контактный телефон', null=True,
                                  blank=True, max_length=50)
@@ -374,6 +374,14 @@ class VP(BaseContest, MultiParticipants):
         list_fields = list(super().get_fields_for_pdf())
         list_fields.append((self.teacher.__class__.phone.field.verbose_name,
                             CustomUser.objects.get(id=self.teacher_id).phone))
+
+        value_level = str([item[0] for item in
+                           self.level.values_list('name')]).replace("'",
+                                                                    '').replace(
+            "]", '').replace("[", '')
+        list_fields.append(('Класс',
+                            value_level))
+
         return tuple(list_fields)
 
 

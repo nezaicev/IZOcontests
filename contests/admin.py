@@ -236,7 +236,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
             return response
 
         except:
-            self.message_user(request, "{} не найден".format(file_location))
+            self.message_user(request, "{} не найден (ошибка формирования)".format(file_location))
             return HttpResponseRedirect(request.get_full_path())
 
     export_list_info.short_description = 'Скачать регистрационный лист участника'
