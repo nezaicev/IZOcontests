@@ -4,6 +4,7 @@ import uuid
 import os
 import time
 from uuid import uuid4
+from zipfile import ZipFile
 
 import urllib3
 from PIL import Image, ImageOps
@@ -369,6 +370,14 @@ class PathAndRename(object):
             filename = '{}.{}'.format(uuid4().hex, ext)
         return os.path.join(self.path, filename)
 
-# def add_phone_for_pdf(wraper_func):
-#     def wraper():
-#         fi
+
+def download_file_by_url(url, path_name_extension_save):
+    data=requests.get(url)
+    data.raise_for_status()
+    with open(path_name_extension_save, 'wb')as file:
+        file.write(data.content)
+
+def create_archive(source_path,):
+    pass
+
+
