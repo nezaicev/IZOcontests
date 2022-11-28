@@ -335,10 +335,10 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
         js = [
             'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js',
             'https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/js/jquery.suggestions.min.js',
-            '/static/dadata/js/organizations.js',
-            '/static/dadata/js/city_for_admin.js',
             "https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js",
             "https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js",
+            '/static/admin/js/JQueryRotate.js',
+            '/static/admin/js/custom/editImage.js',
         ]
 
 
@@ -764,7 +764,7 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
 
                 return HttpResponseRedirect('/admin/contests/archive/')
             else:
-                messages.add_message(request, messages.DEBUG,
+                messages.add_message(request, messages.error(),
                                      'Ошибка {}'.format(
                                          form.errors))
 

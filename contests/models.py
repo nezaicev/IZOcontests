@@ -1,6 +1,7 @@
 import time
 
 from django.db import models
+from django.template.loader import render_to_string
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.safestring import mark_safe
@@ -230,9 +231,22 @@ class Artakiada(BaseContest):
 
     def image_tag(self):
         if self.image:
+
+            context={
+                'reg_number':self.reg_number,
+                'fio': self.fio,
+                'age': self.age,
+                'image_url': self.image.url,
+                'thumb_image': get_thumbnail(self.image, '75x75', crop='center',quality=99).url,
+                'icon_url': "/static/site/img/rotate.png",
+                'angle':''
+            }
+
             return mark_safe(
-                '<a data-fancybox="gallery" data-caption="{}, {}, {}" href="{}" class="image-link">Изображение</a>'.format(
-                    self.reg_number, self.fio, self.level, self.image.url))
+
+                render_to_string('buttons/rotate_image.html',context=context)
+
+              )
         else:
             return 'No Image Found'
 
@@ -293,7 +307,8 @@ class NRusheva(BaseContest):
         if self.image:
             return mark_safe(
                 '<a data-fancybox="gallery" data-caption="{}, {}, {}" href="{}" class="image-link">Изображение</a>'.format(
-                    self.reg_number, self.fio, self.age, self.image.url)
+                    self.reg_number, self.fio, self.level, self.image.url)
+
             )
         else:
             return 'No Image Found'

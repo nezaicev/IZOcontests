@@ -164,9 +164,6 @@ def add_field_in_list(obj_tuple, name_field):
     return fields
 
 
-
-
-
 def generate_xls(queryset, path):
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Users')
@@ -340,18 +337,7 @@ def generate_enumeration_field_by_id(obj_id, model_participant_id,
 
     return enumeration
 
-# def generate_enumeration_from_inline_model(obj, model,field, enumeration=None):
-#     if enumeration == None:
-#         enumeration = ''
-#         participants = list(
-#             model.objects.filter(participants_id=obj.pk).values_list(
-#                 'fio', flat=True))
-#         for participant in participants:
-#             if participant != participants[-1]:
-#                 fios += participant + ', '
-#             else:
-#                 fios += participant
-#         return fios
+
 @deconstructible
 class PathAndRename(object):
     def __init__(self, sub_path):
@@ -369,6 +355,32 @@ class PathAndRename(object):
             filename = '{}.{}'.format(uuid4().hex, ext)
         return os.path.join(self.path, filename)
 
+
 # def add_phone_for_pdf(wraper_func):
 #     def wraper():
 #         fi
+
+
+def rotate_img(img_path, angle):
+    img = Image.open(img_path)
+    img_rotate = img.rotate(-angle)
+    img_rotate.save(img_path, quality=99)
+    img.close()
+
+
+def replace_file_to_selectel(local_url_file, path_in_container):
+    storage = SelectelStorage()
+    file_name = local_url_file.split('/')[-1]
+    if storage.container.exists(os.path.join(path_in_container, file_name)):
+        storage.container.delete(os.path.join(path_in_container, file_name))
+
+        with open(local_url_file, 'rb') as file:
+            (storage.container.save(os.path.join(path_in_container, file_name),
+                                    file.read()))
+            if storage.exists(os.path.join(path_in_container, file_name)):
+                if os.path.exists(local_url_file):
+                    os.remove(local_url_file)
+
+                return os.path.join(path_in_container, file_name)
+            else:
+                return None
