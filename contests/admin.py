@@ -593,6 +593,8 @@ class VPAdmin(BaseAdmin):
     def download_archive_files(self, request, queryset):
         obj = queryset[0]
         tmp_dir = os.path.join(settings.MEDIA_ROOT, 'tmp', obj.reg_number)
+        pdf_path=os.path.join(settings.MEDIA_ROOT, 'pdf', 'vp',
+                                     '{}.pdf'.format(obj.reg_number))
         images_urls = [obj.image.url for obj in obj.images.select_related()]
         files_urls = [obj.file.url for obj in obj.files.select_related()]
         if os.path.exists(tmp_dir):
@@ -600,6 +602,9 @@ class VPAdmin(BaseAdmin):
 
         if len(queryset) == 1:
             os.makedirs(tmp_dir)
+            if os.path.exists(pdf_path):
+                shutil.copy(pdf_path, tmp_dir)
+
             if images_urls:
                 os.makedirs(os.path.join(tmp_dir, 'images'))
                 for url in images_urls:
