@@ -1,5 +1,7 @@
+import os
 import time
 
+from django.conf import settings
 from django.db import models
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -232,21 +234,23 @@ class Artakiada(BaseContest):
     def image_tag(self):
         if self.image:
 
-            context={
-                'reg_number':self.reg_number,
+            context = {
+                'reg_number': self.reg_number,
                 'fio': self.fio,
                 'age': self.age,
                 'image_url': self.image.url,
-                'thumb_image': get_thumbnail(self.image, '75x75', crop='center',quality=99).url,
+                'thumb_image': get_thumbnail(self.image.url, '75x75',
+                                             crop='center', quality=99).url,
                 'icon_url': "/static/site/img/rotate.png",
-                'angle':''
+                'api_url': 'http://{}/contests/api/rotate_image/'.format(
+                    os.getenv('HOSTNAME'))
             }
 
             return mark_safe(
 
-                render_to_string('buttons/rotate_image.html',context=context)
+                render_to_string('buttons/rotate_image.html', context=context)
 
-              )
+            )
         else:
             return 'No Image Found'
 

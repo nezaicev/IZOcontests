@@ -1,4 +1,6 @@
 import os
+from zipfile import ZipFile
+import shutil
 from django import forms
 from django.contrib import messages
 from django.template.response import TemplateResponse
@@ -236,7 +238,9 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
             return response
 
         except:
-            self.message_user(request, "{} не найден (ошибка формирования)".format(file_location))
+            self.message_user(request,
+                              "{} не найден (ошибка формирования)".format(
+                                  file_location))
             return HttpResponseRedirect(request.get_full_path())
 
     export_list_info.short_description = 'Скачать регистрационный лист участника'
@@ -366,7 +370,7 @@ class ArtakiadaAdmin(BaseAdmin):
         }),
         ('Работа', {
             'fields': (
-            'author_name', 'image', 'material', 'theme', 'nomination')
+                'author_name', 'image', 'material', 'theme', 'nomination')
         }),
         ('Данные для ГИР (https://талантыроссии.рф/)', {
 
@@ -474,7 +478,8 @@ class MymoskvichiAdmin(BaseAdmin):
         ('Работа', {
             'fields': (
                 'author_name', 'nomination',
-                'program', 'link', 'age', 'description_file', 'duration', 'ovz')
+                'program', 'link', 'age', 'description_file', 'duration',
+                'ovz')
         }),
 
         ('Данные для ГИР (https://талантыроссии.рф/)', {
@@ -542,6 +547,7 @@ class VPAdmin(BaseAdmin):
     filter_horizontal = ('level',)
     inlines = [ParticipantVPInline, TeacherExtraVPInline, ImageExtraVPInline,
                VideoVPInline, FileVPInline]
+    actions = ['download_archive_files']
     fieldsets = (
 
         ('Организация', {
@@ -549,7 +555,7 @@ class VPAdmin(BaseAdmin):
         }),
         ('Работа', {
             'fields': (
-            'author_name', 'direction', 'nomination', 'level', 'ovz')
+                'author_name', 'direction', 'nomination', 'level', 'ovz')
         }),
         ('Контактные данные', {
             'fields': ('email', 'phone_gir')
@@ -583,6 +589,55 @@ class VPAdmin(BaseAdmin):
                 "contests.export_participants"],
         }
     }
+
+    def download_archive_files(self, request, queryset):
+        obj = queryset[0]
+        tmp_dir = os.path.join(settings.MEDIA_ROOT, 'tmp', obj.reg_number)
+        pdf_path=os.path.join(settings.MEDIA_ROOT, 'pdf', 'vp',
+                                     '{}.pdf'.format(obj.reg_number))
+        images_urls = [obj.image.url for obj in obj.images.select_related()]
+        files_urls = [obj.file.url for obj in obj.files.select_related()]
+        if os.path.exists(tmp_dir):
+            shutil.rmtree(tmp_dir, ignore_errors=True)
+
+        if len(queryset) == 1:
+            os.makedirs(tmp_dir)
+            if os.path.exists(pdf_path):
+                shutil.copy(pdf_path, tmp_dir)
+
+            if images_urls:
+                os.makedirs(os.path.join(tmp_dir, 'images'))
+                for url in images_urls:
+                    path_save = os.path.join(tmp_dir, 'images',
+                                             url.split('/')[-1])
+                    utils.download_file_by_url(url, path_save)
+            if files_urls:
+                os.makedirs(os.path.join(tmp_dir, 'files'))
+                for url in files_urls:
+                    path_save = os.path.join(tmp_dir, 'files',
+                                             url.split('/')[-1])
+                    utils.download_file_by_url(url, path_save)
+
+            if os.listdir(os.path.join(tmp_dir, 'images')) or os.listdir(
+                    os.path.join(tmp_dir, 'files')):
+                shutil.make_archive(tmp_dir, 'zip', tmp_dir)
+                if os.path.exists('{}.zip'.format(tmp_dir)):
+                    shutil.rmtree(tmp_dir, ignore_errors=True)
+                    response = HttpResponse(
+                        open('{}.zip'.format(tmp_dir), 'rb').read())
+                    response[
+                        'Content-Disposition'] = 'attachment; filename={}.zip'.format(
+                        obj.reg_number)
+                    response['Content-Type'] = 'application/zip'
+                    return response
+
+        else:
+            self.message_user(request,
+                              "Должен быть выбран только 1 проект!",
+                              messages.ERROR)
+            return HttpResponseRedirect(request.get_full_path())
+
+    download_archive_files.short_description = 'Скачать проект'
 
     def response_add(self, request, obj, post_url_continue=None):
 

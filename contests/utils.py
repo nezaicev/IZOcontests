@@ -4,6 +4,7 @@ import uuid
 import os
 import time
 from uuid import uuid4
+from zipfile import ZipFile
 
 import urllib3
 from PIL import Image, ImageOps
@@ -356,11 +357,6 @@ class PathAndRename(object):
         return os.path.join(self.path, filename)
 
 
-# def add_phone_for_pdf(wraper_func):
-#     def wraper():
-#         fi
-
-
 def rotate_img(img_path, angle):
     img = Image.open(img_path)
     img_rotate = img.rotate(-angle)
@@ -384,3 +380,17 @@ def replace_file_to_selectel(local_url_file, path_in_container):
                 return os.path.join(path_in_container, file_name)
             else:
                 return None
+
+
+def download_file_by_url(url, path_name_extension_save):
+    data=requests.get(url)
+    data.raise_for_status()
+    with open(path_name_extension_save, 'wb')as file:
+        file.write(data.content)
+    if os.path.exists(path_name_extension_save):
+        return path_name_extension_save
+    else:
+        return None
+
+
+

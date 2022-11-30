@@ -23,8 +23,13 @@ function editImage(element){
 
 }
 
-function saveChangeImage(regNumber){
+function saveChangeImage(image_url, api_url){
+
+    console.log(image_url, api_url)
     let angle=$("#angle")[0].value
-    console.log(regNumber, angle)
+    let url= new URL(api_url)
+    let params={'angle': angle, 'image_url': image_url}
+    url.search = new URLSearchParams(params).toString();
+    fetch(url)
 
 }

@@ -7,7 +7,8 @@
 
   <span> | </span>
   <input id="angle" value=0 type="hidden"/>
-  <button type="button" id="saveRotateImage" name="save"
-          onclick=saveChangeImage({{ reg_number }}) class="button">Save</button>
+  <button type="submit" id="saveRotateImage" name="save"
+          onclick=saveChangeImage("{{image_url}}","{{ api_url }}")
+          class="button">Save</button>
 
 </div>
