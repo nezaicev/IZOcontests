@@ -547,7 +547,9 @@ class VPAdmin(BaseAdmin):
     filter_horizontal = ('level',)
     inlines = [ParticipantVPInline, TeacherExtraVPInline, ImageExtraVPInline,
                VideoVPInline, FileVPInline]
-    actions = ['download_archive_files']
+
+    actions = ['export_list_info', 'export_as_xls',
+               'archived','download_archive_files' ]
     fieldsets = (
 
         ('Организация', {
