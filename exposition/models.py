@@ -21,6 +21,8 @@ class Exposition(models.Model):
     count_exp = models.IntegerField(verbose_name='Количество едениц')
     count_participants = models.IntegerField(
         verbose_name='Количество участников')
+    virtual = models.BooleanField(verbose_name='Виртуальная', default=False)
+    publicate = models.BooleanField(verbose_name='Опубликовать', default=True)
 
     def __str__(self):
         return self.title
@@ -36,6 +38,7 @@ class ImageExposition(models.Model):
                               upload_to=PathAndRename(
                                   'exposition/images'))
     images = models.ForeignKey(Exposition,
+                               verbose_name='Выставка',
                                on_delete=models.CASCADE,
                                blank=True,
                                null=True, related_name='images')
@@ -46,11 +49,15 @@ class ImageExposition(models.Model):
                                             choices=CROP_ORIENTATION,
                                             default='center',
                                             )
+    label = models.CharField('Подпись', max_length=200, blank=True, null=True)
 
     class Meta:
         ordering = ['order_number', ]
         verbose_name = 'Изображение (Выставка)'
         verbose_name_plural = 'Изображения для выставки'
+
+    def __str__(self):
+        return 'Изображние {}'.format(self.id)
 
     @property
     def image_tag(self):
@@ -62,7 +69,3 @@ class ImageExposition(models.Model):
                 ))
         else:
             return ''
-
-
-
-
