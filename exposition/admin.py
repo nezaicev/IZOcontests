@@ -6,10 +6,9 @@ from exposition.models import ImageExposition, Exposition
 
 
 class ImageExpositionInline(admin.StackedInline):
-    formset = InlineFormset
     readonly_fields = ('image_tag',)
     model = ImageExposition
-    extra = 1
+    extra = 0
 
 
 class ImageExpositionAdmin(admin.ModelAdmin):
