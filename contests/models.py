@@ -233,7 +233,6 @@ class Artakiada(BaseContest):
 
     def image_tag(self):
         if self.image:
-
             context = {
                 'reg_number': self.reg_number,
                 'fio': self.fio,
@@ -241,8 +240,8 @@ class Artakiada(BaseContest):
                 'image_url': self.image.url,
                 'thumb_image': get_thumbnail(self.image.url, '75x75',
                                              crop='center', quality=99).url,
-                'icon_url': "/static/site/img/rotate.png",
-                'api_url': 'http://{}/contests/api/rotate_image/'.format(
+                'icon_url': "/static/site/img/rotate.svg",
+                'api_url': 'http://{}/contests/api/rotate_image_artakiada/'.format(
                     os.getenv('HOSTNAME'))
             }
 
@@ -309,13 +308,27 @@ class NRusheva(BaseContest):
 
     def image_tag(self):
         if self.image:
+            context = {
+                'reg_number': self.reg_number,
+                'fio': self.fio,
+                'age': self.age,
+                'image_url': self.image.url,
+                'thumb_image': get_thumbnail(self.image.url, '75x75',
+                                             crop='center', quality=99).url,
+                'icon_url': "/static/site/img/rotate.svg",
+                'api_url': 'http://{}/contests/api/rotate_image_nrusheva/'.format(
+                    os.getenv('HOSTNAME'))
+            }
+
             return mark_safe(
-                '<a data-fancybox="gallery" data-caption="{}, {}, {}" href="{}" class="image-link">Изображение</a>'.format(
-                    self.reg_number, self.fio, self.level, self.image.url)
+
+                render_to_string('buttons/rotate_image.html', context=context)
 
             )
         else:
             return 'No Image Found'
+
+    image_tag.short_description = 'Image'
 
     class Meta:
         verbose_name = 'Конкурс им. Нади Рушевой (участник)'

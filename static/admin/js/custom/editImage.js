@@ -1,7 +1,7 @@
 
 
 
-function editImage(element){
+function editImage(element, reg_number){
     let angle=0
     let img=element.previousElementSibling.childNodes[1]
     let matrix=$(img).css('transform')
@@ -19,17 +19,23 @@ function editImage(element){
         $(img).rotate(angle)
     }
     $("#angle")[0].value=angle
+
+    if (angle){
+        $("#saveButtonBlock_"+reg_number)[0].hidden=false
+    }
     return angle
 
 }
 
-function saveChangeImage(image_url, api_url){
+function saveChangeImage(image_url, api_url, reg_number){
 
     console.log(image_url, api_url)
     let angle=$("#angle")[0].value
     let url= new URL(api_url)
-    let params={'angle': angle, 'image_url': image_url}
+    let form = document.createElement('form');
+    document.body.append(form)
+    let params={'angle': angle, 'image_url': image_url, 'reg_number':reg_number}
     url.search = new URLSearchParams(params).toString();
-    fetch(url)
+    fetch(url).then((result)=>{ form.submit()})
 
 }
