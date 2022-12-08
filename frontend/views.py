@@ -284,9 +284,9 @@ class ExpositionListAPIView(APIView):
     def get(self, request):
         is_archive = request.query_params.get('is_archive')
         if is_archive is None:
-            expositions = Exposition.objects.all()
+            expositions = Exposition.objects.filter(publicate=True)
         else:
-            expositions = Exposition.objects.filter(archive=is_archive)
+            expositions = Exposition.objects.filter(archive=is_archive, publicate=True)
         serializer = ExpositionListSerializer(expositions, many=True)
         return Response(serializer.data)
 

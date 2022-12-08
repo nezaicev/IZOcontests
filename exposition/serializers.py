@@ -21,6 +21,7 @@ class ImagesExpositionSerializer(serializers.RelatedField):
                     'md_thumb': get_thumbnail(value.image.url, '2000',
                                               quality=99).url,
                     'original': value.image.url,
+                    'label':value.label
                     }
         else:
             return None
@@ -53,4 +54,4 @@ class ExpositionListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Exposition
-        fields = ('id','title','poster','start_date', 'end_date', 'address', 'count_participants', 'count_exp')
+        fields = ('id','title','poster','start_date', 'end_date', 'address', 'count_participants', 'count_exp', 'publicate','virtual')

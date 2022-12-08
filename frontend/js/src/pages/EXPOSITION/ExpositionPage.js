@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import {Chip, CircularProgress, Paper, Typography} from "@mui/material";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import ComputerIcon from '@mui/icons-material/Computer';
 import React, {useEffect, useState} from "react";
 import SimpleReactLightbox, {SRLWrapper} from "simple-react-lightbox";
 import {optionsSRLWrapper} from "../../components/styled";
@@ -13,6 +14,7 @@ import Container from "@mui/material/Container";
 import {useParams} from "react-router-dom";
 import useAuth from "../../components/hooks/useAuth";
 import dataFetch from "../../components/utils/dataFetch";
+
 
 let pages = [
     {'name': 'Выставки', 'link': '/frontend/api/events/'},
@@ -60,9 +62,9 @@ function ExpositionPage(props) {
                         </Typography>
                     </Box>
                     <Box sx={{marginTop: '15px', marginBottom: '5px'}}>
-                        {/*<Chip icon={<LocationOnIcon sx={{color: 'rgb(128,110,110)'}}/>}*/}
-                        {/*      label={data.address}/>*/}
-                        <Box sx={{
+
+
+                      <Box sx={{
                             display:'flex'
                         }}>
                             <LocationOnIcon
@@ -72,6 +74,10 @@ function ExpositionPage(props) {
                                 {data.address}
                             </Typography>
                         </Box>
+
+
+
+
                     </Box>
 
                     <Paper
@@ -113,7 +119,7 @@ function ExpositionPage(props) {
                                                 <a href={item['md_thumb']}>
                                                     <img
                                                         src={item['thumb']}
-                                                        alt={data.title}
+                                                        alt={item.label?item.label:data.title}
                                                         loading="lazy"
                                                     />
                                                 </a>

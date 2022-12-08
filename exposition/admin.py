@@ -6,9 +6,14 @@ from exposition.models import ImageExposition, Exposition
 
 
 class ImageExpositionInline(admin.StackedInline):
-    formset = InlineFormset
+    readonly_fields = ('image_tag',)
     model = ImageExposition
-    extra = 1
+    extra = 0
+
+
+class ImageExpositionAdmin(admin.ModelAdmin):
+    model=ImageExposition
+    list_display = ['image_tag', 'images']
 
 
 class ExpositionAdmin(admin.ModelAdmin):
@@ -16,3 +21,4 @@ class ExpositionAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Exposition, ExpositionAdmin)
+admin.site.register(ImageExposition,ImageExpositionAdmin )

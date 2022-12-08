@@ -39,7 +39,9 @@ function CardExposition(props) {
                     sx={{
                         backgroundColor: "rgba(138, 119, 119, 0.89)"
                     }}
-                    title={getFormattedDate(props.data['start_date'], optionsDate) + ' - ' +
+                    title={
+                        props.data['virtual']? 'Виртуальная выставка':
+                        getFormattedDate(props.data['start_date'], optionsDate) + ' - ' +
                     getFormattedDate(props.data['end_date'], optionsDate)
                     }
                     actionIcon={
