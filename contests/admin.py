@@ -348,6 +348,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
 
 class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
+    list_per_page = 25
     list_filter = (
         'level', 'status', 'district', RegionsListFilter, 'nomination',
         'region',
@@ -407,6 +408,7 @@ class ArtakiadaAdmin(BaseAdmin):
 
 class NRushevaAdmin(BaseAdmin):
     name = 'nrusheva'
+    list_per_page = 25
     list_filter = ('level', 'status', 'district', 'region')
     list_display = (
         'reg_number', 'image_tag', 'fio', 'status', 'status_change', 'school',
@@ -468,6 +470,7 @@ class TeacherExtraMymoskvichiInline(admin.StackedInline):
 
 
 class MymoskvichiAdmin(BaseAdmin):
+    list_per_page = 50
     model = Mymoskvichi
     name = 'mymoskvichi'
     fieldsets = (
@@ -542,6 +545,7 @@ class FileVPInline(admin.StackedInline):
 
 
 class VPAdmin(BaseAdmin):
+    list_per_page = 50
     model = VP
     name = 'vp'
     filter_horizontal = ('level',)
