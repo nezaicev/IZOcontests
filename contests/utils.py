@@ -359,8 +359,8 @@ class PathAndRename(object):
 
 def rotate_img(img_path, angle):
     img = Image.open(img_path)
-    img_rotate = img.rotate(-angle)
-    img_rotate.save(img_path, quality=99)
+    img_rotate = img.rotate(-angle, expand=True)
+    img_rotate.save(img_path, quality=100)
     img.close()
 
 

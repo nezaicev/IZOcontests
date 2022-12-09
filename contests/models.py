@@ -315,7 +315,7 @@ class NRusheva(BaseContest):
                 'image_url': self.image.url,
                 'thumb_image': get_thumbnail(self.image.url, '75x75',
                                              crop='center', quality=99).url,
-                'icon_url': "/static/site/img/rotate.svg",
+
                 'api_url': 'http://{}/contests/api/rotate_image_nrusheva/'.format(
                     os.getenv('HOSTNAME'))
             }

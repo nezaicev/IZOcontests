@@ -1,16 +1,22 @@
+{% load static %}
 
 
+<div style="padding: 6px">
+  <a data-fancybox="gallery" id="{{ reg_number }}_img"
+        data-caption="{{ reg_number }}, {{ fio }}, {{ age }}"
+        href="{{ image_url }}"
+        class="image-link"> <img id="{{ reg_number }}_thumb"
+                                 src="{{ thumb_image }}" width="75px"
+                                 height="75px"/></a>
 
-<div><a data-fancybox="gallery" data-caption="{{ reg_number }}, {{ fio }}, {{ age }}" href="{{ image_url }}"
-        class="image-link"> <img src="{{ thumb_image }}" width="75px" height="75px"/></a>
-
-{#  <button type="button" class="button" name="save" onclick=editImage(this,"{{ reg_number }}")><img#}
-{#    src="{{ icon_url }}" width="15px" height="15px"/></button>#}
-<span hidden id="saveButtonBlock_{{ reg_number }}">
+  <button type="button" class="button" name="save"
+          onclick=editImage(this,"{{ reg_number }}")><img
+    src="{% static "site/img/rotate.svg" %}" width="15px" height="15px"/></button>
+  <span hidden id="saveButtonBlock_{{ reg_number }}">
   <span> | </span>
   <input id="angle" value=0 type="hidden"/>
   <button type="button" id="saveRotateImage" name="save"
-          onclick=saveChangeImage("{{image_url}}","{{ api_url }}","{{ reg_number }}")
+          onclick=saveChangeImage("{{ image_url }}","{{ api_url }}","{{ reg_number }}","{% static "site/img/tadpole.svg" %}","{{ thumb_image }}")
           class="button">Save</button>
 </span>
 </div>
