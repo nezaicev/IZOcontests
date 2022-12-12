@@ -137,7 +137,7 @@ class BaseContest(models.Model):
         if not attrs_obj:
             attrs_obj = []
             attrs_obj.append(
-                (PageContest.TYPE_CONTESTS[self.info.type], self.info.name))
+                ('Конкурс', self.info.name))
         for attr in self.fields:
             if type(getattr(self, attr)) is str:
                 field_value = getattr(self, attr)
