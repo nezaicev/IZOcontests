@@ -60,7 +60,7 @@ class Cert(models.Model):
         if filesize > megabyte_limit * 1024 * 1024:
             raise ValidationError(
                 "Max file size is %sMB" % str(megabyte_limit))
-
+    name =models.CharField('Название', max_length=200, blank=True, null=True, default='Мероприятие')
     blank = models.ImageField(storage=FileSystemStorage,
                               verbose_name='Бланк сертификата',
                               upload_to='certs/', blank=False,
@@ -70,7 +70,7 @@ class Cert(models.Model):
     year_contest = models.CharField('Год', max_length=20,
                                       null=True, default=utils.generate_year())
     contest = models.ForeignKey(Events, verbose_name='Конкурс', max_length=15,
-                                blank=False, default=None, on_delete=models.PROTECT)
+                                blank=True, null=True, default=None, on_delete=models.PROTECT)
     status = models.ForeignKey(Status, verbose_name='Статус участника',
                                blank=False, default=Status.objects.get(name='Участник').id,
                                on_delete=models.PROTECT)
@@ -113,7 +113,11 @@ class Cert(models.Model):
                              )
 
     def __str__(self):
-        return "Сертификат {} {} {}".format(self.contest.name, self.status, self.year_contest)
+        if self.contest:
+            return "Сертификат {} {} {}".format(self.contest.name, self.status, self.year_contest)
+        else:
+            return "Сертификат {} {} {}".format(self.name, self.status,
+                                                self.year_contest)
 
     class Meta:
         verbose_name = 'Сертификат'

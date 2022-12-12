@@ -880,7 +880,7 @@ class ShowEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin,
     get_city.short_description = 'Город'
 
 
-admin.site.register(ShowEvent, ShowEventAdmin)
+# admin.site.register(ShowEvent, ShowEventAdmin)
 admin.site.register(PageContest, PageContestAdmin)
 admin.site.register(Mymoskvichi, MymoskvichiAdmin)
 admin.site.register(VP, VPAdmin)

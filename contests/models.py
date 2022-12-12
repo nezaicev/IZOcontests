@@ -31,16 +31,16 @@ class PageContest(models.Model):
     name = models.CharField(verbose_name='Название мероприятия',
                             max_length=250, default='test',
                             blank=True)
-    start_date = models.DateTimeField(verbose_name='Начало мероприятия',
+    start_date = models.DateTimeField(verbose_name='Начало',
                                       blank=True, null=True)
     logo = models.ImageField(verbose_name='Логотип',
                              upload_to=PathAndRename('PageContests/'),
                              blank=True, null=True)
     content = RichTextField(verbose_name='Контент', blank=True, null=True)
-    type = models.CharField(verbose_name='Тип',
-                            choices=(('1', 'Конкурс'), ('2', 'Мероприятие'),
-                                     ('3', 'Анонс')),
-                            default=1, max_length=20)
+    # type = models.CharField(verbose_name='Тип',
+    #                         choices=(('1', 'Конкурс'), ('2', 'Мероприятие'),
+    #                                  ('3', 'Анонс')),
+    #                         default=1, max_length=20)
     letter = RichTextField(verbose_name='Письмо', blank=True, null=True)
     hide = models.BooleanField(verbose_name='Скрыть', default=False)
 
@@ -49,8 +49,8 @@ class PageContest(models.Model):
 
     class Meta:
         ordering = ('-id',)
-        verbose_name = 'Страница мероприятия'
-        verbose_name_plural = 'Страницы мероприятия'
+        verbose_name = 'Страница конкурса'
+        verbose_name_plural = 'Страницы конкурса'
 
 
 def get_info_contests(alias_contest):
