@@ -50,7 +50,7 @@ class PageContest(models.Model):
     class Meta:
         ordering = ('-id',)
         verbose_name = 'Страница конкурса'
-        verbose_name_plural = 'Страницы конкурса'
+        verbose_name_plural = 'Страницы конкурсов'
 
 
 def get_info_contests(alias_contest):

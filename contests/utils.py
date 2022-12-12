@@ -388,7 +388,8 @@ def download_file_by_url(url, path_name_extension_save):
     with open(path_name_extension_save, 'wb')as file:
         file.write(data.content)
     if os.path.exists(path_name_extension_save):
-        return path_name_extension_save
+        if os.stat(path_name_extension_save).st_size==data.headers['Content-Length']:
+            return path_name_extension_save
     else:
         return None
 
