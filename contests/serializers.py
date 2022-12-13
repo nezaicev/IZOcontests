@@ -5,7 +5,7 @@ from django.conf import settings
 from rest_framework import serializers
 from .models import ModxDbimgMuz, Archive, Level, ExtraImageArchive, \
     NominationVP, DirectionVP, VideoArchive, FileArchive, Region, ThemeART, \
-    ThemeRUSH, NominationMYMSK
+    ThemeRUSH, NominationMYMSK, PageContest
 from contests.utils import upload_file, parse_path_file, download_file
 
 
@@ -43,6 +43,12 @@ class DirectionVPSerializer(serializers.ModelSerializer):
     class Meta:
         model = DirectionVP
         fields = ('name',)
+
+
+class PageContestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=PageContest
+        fields= ('name','content','logo')
 
 
 class LevelSerializer(serializers.ModelSerializer):

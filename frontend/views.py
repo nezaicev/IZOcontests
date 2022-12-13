@@ -11,7 +11,7 @@ from frontend.apps import StandardResultsSetPagination
 from django.shortcuts import render
 from contests.models import Archive, NominationVP, DirectionVP, ThemeART, \
     NominationMYMSK, \
-    ThemeRUSH, CreativeTack
+    ThemeRUSH, CreativeTack, PageContest
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
@@ -22,7 +22,7 @@ from rest_framework.authentication import SessionAuthentication, \
 from rest_framework.response import Response
 from contests.serializers import ArchiveSerializer, NominationVPSerializer, \
     DirectionVPSerializer, ThemeNRushevaSerializer, ThemeArtakiadaSerializer, \
-    NominationMymoskvichiSerializer
+    NominationMymoskvichiSerializer, PageContestSerializer
 from event.models import Event, ParticipantEvent
 from event.serializers import EventSerializer, ParticipantEventSerializers
 from content.models import Page
@@ -315,4 +315,12 @@ class PageDetailAPIView(APIView):
     def get(self, request, slug):
         page = self.get_object(slug)
         serializer = PageSerializer(page)
+        return Response(serializer.data)
+
+
+class PageContestAPIView(APIView):
+
+    def get(self, request):
+        contests = PageContest.objects.all()
+        serializer = PageContestSerializer(contests, many=True)
         return Response(serializer.data)

@@ -1,12 +1,12 @@
 
+/*Для выгрузки в продакшен,  внести теже изменения в static/frontend/css/App.css */
   body {
           background-color: #EFECE3FF;
           margin: 0
       }
 
-  /*.MuiButtonBase-root-MuiTab-root.Mui-selected{*/
-  /*  color: #0E2231;*/
-  /*}*/
+
+
 
 
 .player-wrapper {

@@ -37,7 +37,7 @@ ALLOWED_HOSTS = ['*']
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 # Application definition
 
-DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -225,6 +225,7 @@ CKEDITOR_UPLOAD_PATH = os.getenv("CE_UPLOAD_PATH", "uploads/")
 CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 CKEDITOR_CONFIGS = {
     'default': {
+        'allowedContent': True,
         'skin': 'moono-lisa',
         'toolbar_Basic': [
             ['Source', '-', 'Bold', 'Italic']

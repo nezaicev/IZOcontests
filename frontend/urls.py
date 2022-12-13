@@ -38,6 +38,7 @@ urlpatterns = [
     path('api/exposition_list', views.ExpositionListAPIView.as_view()),
     path('api/exposition/<int:pk>/', views.ExpositionDetailAPIView.as_view()),
     path('api/page/<slug:slug>/', views.PageDetailAPIView.as_view()),
+    path('api/contests/', views.PageContestAPIView.as_view()),
 
     re_path(r'.*', views.index),
 

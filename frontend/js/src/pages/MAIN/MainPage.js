@@ -8,10 +8,12 @@ import dataFetch from "../../components/utils/dataFetch"
 import useAuth from "../../components/hooks/useAuth";
 import ItemBroadcast from "../../components/Broadcast/ItemBroadcast";
 import {useNavigate, useLocation, redirect} from "react-router-dom";
+import CardContest from "../../components/Contest/CardContest";
 
 
 let pages = [
     {'name': 'Мероприятия', 'link': '/frontend/api/events/'},
+    {'name': 'Конкурсы', 'link': '/frontend/api/contests/'},
     {'name': 'Вебинары', 'link': '/frontend/api/broadcasts/'},
     {'name': 'Выставки', 'link': ''},
     {'name': 'Виртуальный музей', 'link': 'http://shkola-nemenskogo.ru/'}
@@ -28,14 +30,6 @@ function MainPage() {
     const [participantEvent, setParticipantEvent] = React.useState([])
     const [data, setData] = React.useState([])
     const [value, setValue] = React.useState(0);
-
-    function test(value) {
-        console.log('test1')
-        console.log(data)
-        setValue(value)
-        console.log('test2')
-
-    }
 
 
     function renderData() {
@@ -59,6 +53,33 @@ function MainPage() {
                                                 data={item}
                                                 auth={auth}
                                                 participantEvent={participantEvent}
+                                            />
+                                        </Grid>
+                                    )))
+                            }
+                        }()
+
+                        }
+                    </Grid>
+                )
+            case "Конкурсы":
+                return (
+                    <Grid container spacing={2}
+                          sx={{
+
+                              display: 'grid',
+                              alignItems: 'stretch',
+                              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr) )'
+                          }}>
+                        {function () {
+                            if (fetchAll || !auth['auth']) {
+                                return (
+                                    data.map((item, index) => (
+                                        <Grid item xs="auto"
+                                              key={index}>
+                                            <CardContest
+                                                data={item}
+                                                auth={auth}
                                             />
                                         </Grid>
                                     )))
