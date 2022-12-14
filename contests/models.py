@@ -27,8 +27,9 @@ class PageContest(models.Model):
                      '3': 'Анонс'}
     alias = models.CharField(verbose_name='Псевдоним', blank=False,
                              max_length=100, default='test')
+
     email = models.EmailField(verbose_name='Email', blank=True, null=True)
-    name = models.CharField(verbose_name='Название мероприятия',
+    name = models.CharField(verbose_name='Название конкурса',
                             max_length=250, default='test',
                             blank=True)
     start_date = models.DateTimeField(verbose_name='Начало',
@@ -42,13 +43,15 @@ class PageContest(models.Model):
     #                                  ('3', 'Анонс')),
     #                         default=1, max_length=20)
     letter = RichTextField(verbose_name='Письмо', blank=True, null=True)
-    hide = models.BooleanField(verbose_name='Скрыть', default=False)
+    hide = models.BooleanField(verbose_name='Скрыть кнопку перехода', default=False)
+    order = models.IntegerField(verbose_name='Порядковый номер', default=1)
+
 
     def __str__(self):
         return str(self.name)
 
     class Meta:
-        ordering = ('-id',)
+        ordering = ('order',)
         verbose_name = 'Страница конкурса'
         verbose_name_plural = 'Страницы конкурсов'
 

@@ -48,7 +48,7 @@ class DirectionVPSerializer(serializers.ModelSerializer):
 class PageContestSerializer(serializers.ModelSerializer):
     class Meta:
         model=PageContest
-        fields= ('name','content','logo')
+        fields= ('name','content','logo','order','hide')
 
 
 class LevelSerializer(serializers.ModelSerializer):

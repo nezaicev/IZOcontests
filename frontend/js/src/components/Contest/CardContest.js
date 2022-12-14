@@ -52,7 +52,7 @@ function CardContest(props) {
             }}>
 
                 <CardContent>
-                    <Typography variant="body1" display="block" gutterBottom>
+                    <Typography variant="h6" display="block" gutterBottom>
                         {props.data['name']}
                     </Typography>
                     <Box component={'div'} sx={{marginTop: '15px'}}>
@@ -70,7 +70,9 @@ function CardContest(props) {
                         display: 'flex',
                         marginTop: '10px'
                     }}>
-                    {props.auth['id']
+                    {  !props.data['hide']
+                        ?
+                        props.auth['id']
                         ?
                         <ButtonDefault onClick={() => {
                             window.location.replace(`${host}/admin/`)
@@ -83,6 +85,7 @@ function CardContest(props) {
                         }} variant="outlined" size='small'>
                             Необходима авторизация
                         </ButtonDefault>
+                        :''
                     }
                        </Box>
 
