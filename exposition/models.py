@@ -35,6 +35,7 @@ class Exposition(models.Model):
 
 class ImageExposition(models.Model):
     image = models.ImageField(verbose_name='Изображение',
+                              max_length=250,
                               upload_to=PathAndRename(
                                   'exposition/images'))
     images = models.ForeignKey(Exposition,
