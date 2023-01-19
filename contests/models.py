@@ -166,8 +166,8 @@ class BaseContest(models.Model):
 
         result = {
             'statement_count': cls.objects.all().exclude(status=id_status_statement_error).count(),
-            'teacher_count': cls.objects.select_related('teacher').filter(
-                teacher__status__customuser=id_status_teacher).values(
+            'teacher_count': cls.objects.select_related('teacher__status').filter(
+                teacher__status=id_status_teacher).values(
                 'teacher_id').distinct().count(),
             'school_count': cls.objects.values('school').distinct().count(),
             'region_count': cls.objects.all().exclude(status=id_status_statement_error).values(
