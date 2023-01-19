@@ -7,6 +7,8 @@ import {CircularProgress, Grid} from "@mui/material";
 import CardEvent from "../../components/Event/CardEvent";
 import StatContestTable from "../../components/Statistics/StatContestTable";
 import dataFetch from "../../components/utils/dataFetch";
+import StatEventTable from "../../components/Statistics/StatEventTable";
+import {DividerStyled} from "../../components/styled";
 
 
 let pages = [
@@ -14,6 +16,8 @@ let pages = [
 ]
 
 const host = process.env.REACT_APP_HOST_NAME
+
+
 
 function Statistics() {
 
@@ -54,7 +58,16 @@ function Statistics() {
                     {function () {
                         if (fetchAll) {
                             return (
-                                <StatContestTable data={data}/>
+                                <Box>
+                                    <Box>
+                                        <StatContestTable data={data.contests}/>
+                                    </Box>
+                                <DividerStyled sx={{marginTop:'15px', marginBottom:'15px'}}/>
+                                    <Box>
+                                        <StatEventTable data={data.events}/>
+                                    </Box>
+
+                                </Box>
 
                             )
                         } else {

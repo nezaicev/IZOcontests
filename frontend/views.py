@@ -92,25 +92,52 @@ class CsrfExemptSessionAuthentication(SessionAuthentication):
 
 class StatAPIView(APIView):
     permission_classes = [ManagerOnly]
+
     def get(self, request):
-        result = [
-            {
-                'name': models.Artakiada.objects.first().info.name if models.Artakiada.objects.first() else 0,
-                **models.Artakiada.get_stat_data()},
-            {
-                'name': models.NRusheva.objects.first().info.name if models.NRusheva.objects.first() else 0,
-                **models.NRusheva.get_stat_data()},
-            {'name': models.VP.objects.first().info.name if models.VP.objects.first() else 0,
-             **models.VP.get_stat_data()},
-            {
-                'name': models.Mymoskvichi.objects.first().info.name if models.Mymoskvichi.objects.first() else 0,
-                **models.Mymoskvichi.get_stat_data()}]
+        result = {
+            'contests': [
+
+                {
+                    'name': models.Artakiada.objects.first().info.name if models.Artakiada.objects.first() else 0,
+                    **models.Artakiada.get_stat_data()},
+                {
+                    'name': models.NRusheva.objects.first().info.name if models.NRusheva.objects.first() else 0,
+                    **models.NRusheva.get_stat_data()},
+                {'name': models.VP.objects.first().info.name if models.VP.objects.first() else 0,
+                 **models.VP.get_stat_data()},
+                {
+                    'name': models.Mymoskvichi.objects.first().info.name if models.Mymoskvichi.objects.first() else 0,
+                    **models.Mymoskvichi.get_stat_data()}],
+            'events':
+                [{
+                    'name_event': event.name,
+                    'date_event': event.start_date,
+                    'participant_count': event.participantevent_set.all().count(),
+                    'school_count': event.participantevent_set.all().values(
+                        'participant__school').distinct().count(),
+                    'region_count': event.participantevent_set.all().values(
+                        'participant__region').distinct().count(),
+                } for event in Event.objects.all()]
+
+        }
 
         return Response(result)
 
 
-
-
+# class StatEventsAPIView(APIView):
+#     permission_classes = [ManagerOnly]
+#
+#     def get(self, requests):
+#         result = [{
+#             'name_event': event.name,
+#             'date_event': event.start_date,
+#             'participants_count': event.participantevent_set.all().count(),
+#             'school_count': event.participantevent_set.all().values(
+#                 'participant__school').distinct().count(),
+#             'region_count': event.participantevent_set.all().values(
+#                 'participant__region').distinct().count(),
+#         } for event in Event.objects.all()]
+#         return result
 
 
 class ArchiveAPIView(ModelViewSet):
