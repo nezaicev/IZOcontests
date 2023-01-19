@@ -11,8 +11,11 @@ from model_utils.managers import InheritanceManager
 from ckeditor.fields import RichTextField
 from sorl.thumbnail import get_thumbnail
 
+import contests.directory
+
 from contests.utils import PathAndRename
-from users.models import CustomUser, Region, District
+from users.models import CustomUser, Region, District, Status as StatusTeacher
+
 from contests import utils
 from contests.directory import NominationART, NominationMYMSK, ThemeART, \
     ThemeRUSH, ThemeMYMSK, AgeRUSH, AgeMYMSK, Status, Level, Material, \
@@ -45,7 +48,6 @@ class PageContest(models.Model):
     letter = RichTextField(verbose_name='Письмо', blank=True, null=True)
     hide = models.BooleanField(verbose_name='Скрыть кнопку перехода', default=False)
     order = models.IntegerField(verbose_name='Порядковый номер', default=1)
-
 
     def __str__(self):
         return str(self.name)
@@ -159,12 +161,19 @@ class BaseContest(models.Model):
 
     @classmethod
     def get_stat_data(cls):
+        id_status_teacher = StatusTeacher.objects.get(name='Педагог').id
+        id_status_statement_error = Status.objects.get(name='Ошибка').id
+
         result = {
-            'statement_count': cls.objects.all().count(),
-            'teacher_count': cls.objects.values(
+            'statement_count': cls.objects.all().exclude(status=id_status_statement_error).count(),
+            'teacher_count': cls.objects.select_related('teacher').filter(
+                teacher__status__customuser=id_status_teacher).values(
                 'teacher_id').distinct().count(),
             'school_count': cls.objects.values('school').distinct().count(),
-            'participant_count': cls.objects.all().count(),
+            'region_count': cls.objects.all().exclude(status=id_status_statement_error).values(
+                'region').distinct().count(),
+            'participant_count': cls.objects.all().exclude(
+                status=id_status_statement_error).count(),
         }
         return result
 
@@ -400,8 +409,13 @@ class VP(BaseContest, MultiParticipants):
     @classmethod
     def get_stat_data(cls):
         stat = super().get_stat_data()
-        stat['participant_count'] = ParticipantVP.objects.all().count()
-        stat['teacher_count'] = TeacherExtraVP.objects.all().count()
+        id_status_statement_error = Status.objects.get(name='Ошибка').id
+        stat['participant_count'] = ParticipantVP.objects.select_related(
+            'participants__status').all().exclude(
+            participants__status=id_status_statement_error).count()
+        stat['teacher_count'] = TeacherExtraVP.objects.select_related(
+            'participants__status').all().exclude(
+            participants__status=id_status_statement_error).count()
 
         return stat
 
@@ -502,9 +516,14 @@ class Mymoskvichi(BaseContest, MultiParticipants):
     @classmethod
     def get_stat_data(cls):
         stat = super().get_stat_data()
-        stat[
-            'participant_count'] = ParticipantMymoskvichi.objects.all().count()
-        stat['teacher_count'] = TeacherExtraMymoskvichi.objects.all().count()
+
+        id_status_statement_error = Status.objects.get(name='Ошибка').id
+        stat['participant_count'] = ParticipantMymoskvichi.objects.select_related(
+            'participants__status').all().exclude(
+            participants__status=id_status_statement_error).count()
+        stat['teacher_count'] = TeacherExtraMymoskvichi.objects.select_related(
+            'participants__status').all().exclude(
+            participants__status=id_status_statement_error).count()
 
         return stat
 
@@ -613,7 +632,7 @@ class Archive(models.Model):
 
     teacher = models.ForeignKey(CustomUser, on_delete=models.CASCADE,
                                 blank=True, null=True)
-    fio = models.CharField('Участник', max_length=700, blank=True, null=True,
+    fio = models.CharField('Участник', max_length=5000, blank=True, null=True,
                            default='')
     fio_teacher = models.CharField('Педагог', max_length=300, blank=True,
                                    null=True)

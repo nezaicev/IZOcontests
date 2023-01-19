@@ -22,21 +22,22 @@ import {AccountCircle} from "@mui/icons-material";
 
 const host = process.env.REACT_APP_HOST_NAME
 
-const settings = [
-    {name:'Личный кабинет', link:`${host}/admin/`},
-    {name:'Выход', link: `${host}/users/logout/?next_page=frontend/`}
-]
-
-const initialSettings = [
-    {name:'Вход', link:`${host}/users/login/`},
-    {name:'Забыли пароль', link: `${host}/users/password_reset/`},
-    {name:'Регистрация', link: `${host}/users/signup/`},
-
-]
-
-
 
 const Header = (props) => {
+    const settings = [
+        {name: 'Личный кабинет', link: `${host}/admin/`},
+        props.auth.manager ? {name: 'Статистика', link: `${host}/frontend/page/statistics/`} : '',
+        {name: 'Выход', link: `${host}/users/logout/?next_page=frontend/`}
+    ]
+
+    const initialSettings = [
+        {name: 'Вход', link: `${host}/users/login/`},
+        {name: 'Забыли пароль', link: `${host}/users/password_reset/`},
+        {name: 'Регистрация', link: `${host}/users/signup/`},
+
+    ]
+
+
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
@@ -74,7 +75,7 @@ const Header = (props) => {
                         component="div"
                         sx={{mr: 2, display: {xs: 'none', md: 'flex'}}}
                     >
-                        <a href={props.mainLink?props.mainLink:'http://shkola-nemenskogo.ru/'}>
+                        <a href={props.mainLink ? props.mainLink : 'http://shkola-nemenskogo.ru/'}>
                             <HomeIcon sx={{fontSize: 60}}/>
                         </a>
                     </Typography>
@@ -113,7 +114,10 @@ const Header = (props) => {
                         >
                             {props.pages ? props.pages.map((page, index) => (
                                 <MenuItem key={index}
-                                          onClick={()=>{handleCloseNavMenu(); props.activePage(index)}}>
+                                          onClick={() => {
+                                              handleCloseNavMenu();
+                                              props.activePage(index)
+                                          }}>
                                     <Typography component='a'
                                                 textAlign="center">{page['name']}</Typography>
                                 </MenuItem>
@@ -126,7 +130,7 @@ const Header = (props) => {
                         component="div"
                         sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}
                     >
-                          <a href={props.mainLink?props.mainLink:'http://shkola-nemenskogo.ru/'}>
+                        <a href={props.mainLink ? props.mainLink : 'http://shkola-nemenskogo.ru/'}>
                             <HomeIcon sx={{fontSize: 45}}/>
                         </a>
                     </Typography>
@@ -178,7 +182,10 @@ const Header = (props) => {
                         >
                             {settings.map((setting, index) => (
                                 <MenuItem key={index}
-                                          onClick={()=>{handleCloseUserMenu(); window.location.replace(setting.link)}}>
+                                          onClick={() => {
+                                              handleCloseUserMenu();
+                                              window.location.replace(setting.link)
+                                          }}>
                                     <Typography
                                         textAlign="center">{setting.name}</Typography>
                                 </MenuItem>
@@ -193,7 +200,7 @@ const Header = (props) => {
                             onClick={handleOpenUserMenu}
                             color="inherit"
                         >
-                            <AccountCircle sx={{fontSize:35}}/>
+                            <AccountCircle sx={{fontSize: 35}}/>
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -210,9 +217,12 @@ const Header = (props) => {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {initialSettings.map((setting, index)=>(
-                             <MenuItem key={setting.name}
-                                          onClick={()=>{handleCloseUserMenu(); window.location.replace(setting.link)}}>
+                            {initialSettings.map((setting, index) => (
+                                <MenuItem key={setting.name}
+                                          onClick={() => {
+                                              handleCloseUserMenu();
+                                              window.location.replace(setting.link)
+                                          }}>
                                     <Typography
                                         textAlign="center">{setting.name}</Typography>
                                 </MenuItem>))

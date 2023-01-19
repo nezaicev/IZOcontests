@@ -13,6 +13,7 @@ import BroadcastPage from "./pages/BROADCAST/BroadcastPage";
 import ExpositionListPage from "./pages/EXPOSITION/ExpositionListPage";
 import ExpositionPage from "./pages/EXPOSITION/ExpositionPage";
 import BasePage from "./components/BasePage/BasePage";
+import Statistics from "./pages/STATISTICS/Statistics";
 
 const host = process.env.REACT_APP_HOST_NAME
 
@@ -34,6 +35,7 @@ const App = () => {
                     <Route path='/frontend/expositions/' element={<ExpositionListPage/>}/>
                     <Route path='/frontend/exposition/:id/' element={<ExpositionPage/>}/>
                     <Route path='/frontend/page/:slug/' element={<BasePage/>}/>
+                    <Route path='/frontend/page/statistics/' element={<Statistics/>}/>
 
                 </Routes>
                 {/*<Switch>*/}

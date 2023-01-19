@@ -4,6 +4,7 @@ import django_filters
 
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
+from contests import models
 from exposition.models import Exposition
 from exposition.serializers import ExpositionSerializer, \
     ExpositionListSerializer
@@ -42,12 +43,23 @@ class AuthView(APIView):
             'id': request.user.id,
             'user': str(request.user),
             'auth': request.user.is_authenticated,
+            'superuser': request.user.is_superuser,
+            'manager': request.user.groups.filter(name='Manager').exists()
         }
         return Response(content)
 
 
 def index(request):
     return render(request, 'frontend/index.html')
+
+
+class ManagerOnly(BasePermission):
+    def has_permission(self, request, view):
+
+        if request.user.is_superuser or request.user.groups.filter(name='Manager').exists():
+            return True
+        else:
+            return False
 
 
 class AdminOnly(BasePermission):
@@ -76,6 +88,29 @@ class CsrfExemptSessionAuthentication(SessionAuthentication):
 
     def enforce_csrf(self, request):
         return
+
+
+class StatAPIView(APIView):
+    permission_classes = [ManagerOnly]
+    def get(self, request):
+        result = [
+            {
+                'name': models.Artakiada.objects.first().info.name if models.Artakiada.objects.first() else 0,
+                **models.Artakiada.get_stat_data()},
+            {
+                'name': models.NRusheva.objects.first().info.name if models.NRusheva.objects.first() else 0,
+                **models.NRusheva.get_stat_data()},
+            {'name': models.VP.objects.first().info.name if models.VP.objects.first() else 0,
+             **models.VP.get_stat_data()},
+            {
+                'name': models.Mymoskvichi.objects.first().info.name if models.Mymoskvichi.objects.first() else 0,
+                **models.Mymoskvichi.get_stat_data()}]
+
+        return Response(result)
+
+
+
+
 
 
 class ArchiveAPIView(ModelViewSet):

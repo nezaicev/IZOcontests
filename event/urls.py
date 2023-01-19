@@ -1,6 +1,6 @@
 from django.urls import path
-from event.views import StatView
+from event.views import StatAPIView
 
-urlpatterns = [
-    path('stat/', StatView.as_view(), name='stat'),
-]
+# urlpatterns = [
+#     path('stat/', StatAPIView.as_view(), name='stat'),
+# ]

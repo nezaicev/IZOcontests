@@ -1,4 +1,5 @@
 from django.urls import path, re_path
+
 from . import views
 from django.views.decorators.csrf import csrf_exempt
 
@@ -39,6 +40,7 @@ urlpatterns = [
     path('api/exposition/<int:pk>/', views.ExpositionDetailAPIView.as_view()),
     path('api/page/<slug:slug>/', views.PageDetailAPIView.as_view()),
     path('api/contests/', views.PageContestAPIView.as_view()),
+    path('api/statistics/', views.StatAPIView.as_view()),
 
     re_path(r'.*', views.index),
 

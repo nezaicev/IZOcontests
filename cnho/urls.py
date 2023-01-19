@@ -27,7 +27,7 @@ urlpatterns = [
          name='home'),
     path('admin/', admin.site.urls),
     path('certs/', include('cert.urls')),
-    path('event/', include('event.urls')),
+    # path('event/', include('event.urls')),
     path('map/', include('map.urls')),
     path('users/', include('users.urls')),
     path('mailing/', include('mailing.urls')),
