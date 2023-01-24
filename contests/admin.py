@@ -349,6 +349,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
 class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
     list_per_page = 25
+    search_fields = ('reg_number', 'fio', 'fio_teacher', 'school')
     list_filter = (
         'level', 'status', 'district', RegionsListFilter, 'nomination',
         'region',
