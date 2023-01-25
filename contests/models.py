@@ -754,6 +754,21 @@ class ExtraImageVP(ExtraImage):
     def __str__(self):
         return str(self.image)
 
+    @property
+    def image_tag(self):
+        if self.image:
+            return mark_safe(
+
+
+
+                '<a data-fancybox="gallery" id="{}_img" href = "{}" class ="image-link"> <img src="{}" width="100px" height="100px" /></a>'.format(
+                    self.id,
+                    self.image.url,
+                    get_thumbnail(self.image, '300x300', crop='center',quality=99).url
+                ))
+        else:
+            return ''
+
     class Meta:
         verbose_name = 'Изображения'
         verbose_name_plural = 'Изображения'

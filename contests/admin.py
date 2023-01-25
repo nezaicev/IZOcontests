@@ -530,6 +530,7 @@ class TeacherExtraVPInline(admin.StackedInline):
 
 
 class ImageExtraVPInline(admin.StackedInline):
+    readonly_fields = ('image_tag',)
     model = ExtraImageVP
     extra = 0
     max_num = 15
