@@ -1,4 +1,5 @@
 from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 
 
@@ -9,7 +10,7 @@ class Page(models.Model):
     slug = models.SlugField(unique=True, verbose_name='Псевдоним')
     title = models.CharField(verbose_name='Заголовок', max_length=400)
     subtitle = models.CharField(verbose_name='Подзаголовок', max_length=400)
-    content = RichTextField(verbose_name='Контент')
+    content = RichTextUploadingField(verbose_name='Контент')
 
     class Meta:
         verbose_name = 'Страница'

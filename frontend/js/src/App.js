@@ -14,6 +14,7 @@ import ExpositionListPage from "./pages/EXPOSITION/ExpositionListPage";
 import ExpositionPage from "./pages/EXPOSITION/ExpositionPage";
 import BasePage from "./components/BasePage/BasePage";
 import Statistics from "./pages/STATISTICS/Statistics";
+import MymoskvichiMainPage from "./pages/MYMOSKVICHI/MymoskvichiMainPage";
 
 const host = process.env.REACT_APP_HOST_NAME
 
@@ -28,7 +29,9 @@ const App = () => {
                     <Route path='/frontend/vp/' element={<GalleryPageVP/>}/>
                     <Route path='/frontend/artakiada/' element={<GalleryPageArtakiada/>}/>
                     <Route path='/frontend/nrusheva/' element={<GallaryPageNRusheva/>}/>
-                    <Route path='/frontend/mymoskvichi/' element={<GalleryPageMyMoskvichi/>}/>
+                    <Route path='/frontend/mymoskvichi/' element={<MymoskvichiMainPage/>}/>
+                    <Route path='/frontend/test/' element={<GalleryPageMyMoskvichi/>}/>
+
                     <Route path='/frontend/event/:id/' element={<EventPage/>} />
                     <Route path='/frontend/broadcasts/' element={<BroadcastListPage/>} />
                     <Route path='/frontend/broadcast/:id/' element={<BroadcastPage/>} />
@@ -36,6 +39,7 @@ const App = () => {
                     <Route path='/frontend/exposition/:id/' element={<ExpositionPage/>}/>
                     <Route path='/frontend/page/:slug/' element={<BasePage/>}/>
                     <Route path='/frontend/page/statistics/' element={<Statistics/>}/>
+
 
                 </Routes>
                 {/*<Switch>*/}

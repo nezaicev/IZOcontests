@@ -222,7 +222,7 @@ DEFAULT_FILE_STORAGE = 'django_selectel_storage.storage.SelectelStorage'
 
 CKEDITOR_BROWSE_SHOW_DIRS = True
 CKEDITOR_UPLOAD_PATH = os.getenv("CE_UPLOAD_PATH", "uploads/")
-CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
+# CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 CKEDITOR_CONFIGS = {
     'default': {
         'allowedContent': True,
