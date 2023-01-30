@@ -37,7 +37,7 @@ export default function VisibleBoxMyMoskvichi(props) {
                 page_size: 3,
                 publish: true,
                 contest_name: props.contestName,
-                year: props.year,
+                year_contest: props.year_contest,
                 page: props.page,
                 nomination: props.nomination,
                 ordering: '-rating',

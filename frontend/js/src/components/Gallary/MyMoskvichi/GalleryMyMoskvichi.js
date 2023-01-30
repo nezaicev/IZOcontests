@@ -60,7 +60,7 @@ export default function GalleryMyMoskvichi(props) {
                 <VisibleBoxMyMoskvichi
                     url={props.urlContent}
                     contestName={props.contestName}
-                    year={dataVerticalTabs[valueVerticalTabs]}
+                    year_contest={dataVerticalTabs[valueVerticalTabs]}
                     nomination={dataHorizontalTabs[valueHorizontalTabs]}
                     page={page}
                     setPage={(newValue) => {
