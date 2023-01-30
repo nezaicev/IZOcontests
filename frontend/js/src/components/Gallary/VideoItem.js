@@ -146,6 +146,8 @@ export default function VideoItem(props) {
                         </Box>
                         <Collapse in={expanded} timeout="auto" unmountOnExit>
                             <CardContent sx={{padding:'8px'}}>
+                                <FieldTitle title={'Номер: '}
+                                            content={props.item.reg_number}/>
                                 <FieldTitle title={'Название: '}
                                             content={props.item.author_name}/>
                                 <FieldTitle
@@ -155,6 +157,8 @@ export default function VideoItem(props) {
                                             content={props.item.region + (props.item.city && (props.item.city !== props.item.region) ? ", " + props.item.city : '')}/>
                                 <FieldTitle title={'Образовательное уч.: '}
                                             content={props.item.school}/>
+                                {props.item.age ?<FieldTitle title={'Возраст: '}
+                                            content={props.item.age }/>:''}
                                 {
                                     props.item.description ?
                                         <FieldTitle title={'Описание: '}
