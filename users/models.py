@@ -68,7 +68,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
     email = models.EmailField(_('email'), unique=True)
-    fio = models.CharField(verbose_name='ФИО пользователя', max_length=70)
+    fio = models.CharField(verbose_name='ФИО пользователя', max_length=200)
     school = models.CharField('Образовательная организация', max_length=150, )
     region = models.ForeignKey(Region, verbose_name='Регион',
                                on_delete=models.SET_NULL, default=1,null=True)

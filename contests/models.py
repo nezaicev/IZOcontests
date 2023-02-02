@@ -379,7 +379,7 @@ class VP(BaseContest, MultiParticipants):
     )
     info = models.ForeignKey('PageContest', on_delete=models.SET_NULL,
                              null=True, default=get_info_contests('vp'))
-    author_name = models.CharField(max_length=50, blank=False,
+    author_name = models.CharField(max_length=200, blank=False,
                                    verbose_name='Авторское название')
     direction = models.ForeignKey(DirectionVP, on_delete=models.SET_NULL,
                                   verbose_name='Форма организации', null=True)

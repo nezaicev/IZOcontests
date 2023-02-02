@@ -25,6 +25,7 @@ from contests.forms import PageContestsFrom, ConfStorageForm, \
     CreativeTackAdminForm, InputFile
 from contests.models import PageContest, Message, ModxDbimgMuz, Events
 from contests import utils
+from contests.pdf import pdf
 from contests import tasks
 from contests.services import alert_change_obj_contest
 from mailing.admin import SendEmail
@@ -229,7 +230,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
         try:
             file_location = os.path.join(settings.MEDIA_ROOT, 'pdf', self.name,
                                          f'{reg_number}.pdf')
-            utils.generate_barcode(queryset[0].reg_number)
+            pdf.generate_barcode(queryset[0].reg_number)
             utils.generate_pdf(queryset[0].get_fields_for_pdf(),
                                queryset[0].info.name,
                                queryset[0].info.alias,
