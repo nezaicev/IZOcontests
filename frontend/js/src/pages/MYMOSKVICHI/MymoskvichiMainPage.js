@@ -5,7 +5,7 @@ import {CircularProgress, Grid, Paper, Typography} from "@mui/material";
 import Container from "@mui/material/Container";
 import dataFetch from "../../components/utils/dataFetch"
 import useAuth from "../../components/hooks/useAuth";
-import {useNavigate, useLocation, Route, Routes} from "react-router-dom";
+import {useNavigate, useLocation, Route, Routes, useParams} from "react-router-dom";
 import GalleryMyMoskvichi from "../../components/Gallary/MyMoskvichi/GalleryMyMoskvichi";
 import Doctor from "../../components/CustomIcons/Doctor";
 import Button from "@mui/material/Button";
@@ -19,6 +19,9 @@ let pages = [
     {'name': 'Галерея', 'link': ''},
     {'name': 'Жюри конкурса', 'link': '/frontend/api/page/mymoskvichi_gury/'},
 ]
+
+
+
 
 const BaseInfo = () => {
 
@@ -77,12 +80,13 @@ const BaseInfo = () => {
 const host = process.env.REACT_APP_HOST_NAME
 
 function MainPage() {
+
     const navigate = useNavigate()
     const location = useLocation()
     const auth = useAuth()
     const [fetchAll, setFetchAll] = useState(false);
     const [data, setData] = React.useState([])
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = React.useState(useParams()?Number(useParams()['slug']):0);
 
 
     function renderData() {
@@ -222,6 +226,7 @@ function MainPage() {
         <Box sx={{fontFamily: 'Roboto', height: 'auto'}}>
             <Header pages={pages}
                     activePage={(newValue) => (setValue(newValue))}
+                    startPage={value}
                     auth={auth}
                     mainLink={`${host}/frontend/main/`}
             />
