@@ -44,11 +44,11 @@ class ConfirmationUserDataEventForm(forms.Form):
     school = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Организация',
-        max_length=150)
+        max_length=160)
     city = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Регион|Город',
-        max_length=80)
+        max_length=150)
 
 
 class BaseConfirmationUserDataForm(forms.Form):
@@ -72,11 +72,11 @@ class BaseConfirmationUserDataForm(forms.Form):
     school = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Название организации|студии',
-        max_length=80)
+        max_length=160)
     city = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Город|Регион',
-        max_length=80)
+        max_length=150)
     teacher = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Руководитель',
@@ -85,7 +85,7 @@ class BaseConfirmationUserDataForm(forms.Form):
     author_name = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Название работы',
-        max_length=80,
+        max_length=120,
         required=False
     )
     owner = forms.ChoiceField(
@@ -110,7 +110,7 @@ class ConfirmationUserDataExtraForm(BaseConfirmationUserDataForm):
     city = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Город|Регион',
-        max_length=80)
+        max_length=150)
     nomination = forms.ChoiceField(
         widget=forms.Select(attrs={'class': 'form-select col-6'}),
         label='Номинация',
@@ -120,7 +120,7 @@ class ConfirmationUserDataExtraForm(BaseConfirmationUserDataForm):
     author_name = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Название работы',
-        max_length=80)
+        max_length=120)
 
     teacher = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
