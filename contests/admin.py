@@ -235,7 +235,14 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
                                queryset[0].info.name,
                                queryset[0].info.alias,
                                queryset[0].reg_number)
-            response = FileResponse(open(file_location, 'rb'))
+            # response = FileResponse(open(file_location, 'rb'))
+            # return response
+            response = HttpResponse(
+                open(file_location, 'rb').read())
+            response[
+                'Content-Disposition'] = 'attachment; filename={}.pdf'.format(
+                reg_number)
+            response['Content-Type'] = 'application/pdf'
             return response
 
         except:
