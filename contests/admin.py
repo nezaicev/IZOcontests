@@ -766,10 +766,10 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     actions = ['export_as_xls', 'send_selected_letter',
                'load_json_data_from_file', 'transfer_data']
     list_editable = []
-    list_display = ['reg_number', 'publish', 'contest_name', 'author_name',
+    list_display = ['reg_number', 'publish','certificate', 'contest_name', 'author_name',
                     'fio_teacher',
                     'teacher',
-                    'rating', 'status', 'year_contest', 'certificate']
+                    'rating', 'status', 'year_contest']
     list_filter = ('contest_name', 'publish', 'year_contest', 'status')
 
     search_fields = ('reg_number', 'fio', 'fio_teacher')
