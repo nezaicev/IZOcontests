@@ -36,20 +36,19 @@ function MainPage() {
         switch (pages[value]['name']) {
             case "Мероприятия":
                 return (
-                    <Grid container spacing={3}
-                          sx={{
+                     <Box sx={{
+                                    display: 'grid',
+                                    gridTemplateColumns: `repeat(auto-fill, minmax(320px, 1fr))`,
+                                    justifyItems: 'center',
+                                    alignItems: 'stretch',
+                                    marginBottom: '60px',
 
-                              display: 'flex',
-                              justifyContent: data.length>2?'space-between':'center'
-                              /*{data.length<3? justifyContent:'space-between':''},*/
-                              // alignItems: 'stretch',
-                              // gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr) )'
-                          }}>
+                                }}>
                         {function () {
                             if (fetchAll || !auth['auth']) {
                                 return (
                                     data.map((item, index) => (
-                                        <Grid item xs="auto"
+                                        <Grid item xs="auto" sx={{margin:'20px'}}
                                               key={index}>
                                             <CardEvent
                                                 data={item}
@@ -62,21 +61,23 @@ function MainPage() {
                         }()
 
                         }
-                    </Grid>
+                     </Box>
                 )
             case "Конкурсы":
                 return (
-                    <Grid container spacing={2}
-                          sx={{
+                     <Box sx={{
+                                    display: 'grid',
+                                    gridTemplateColumns: `repeat(auto-fill, minmax(320px, 1fr))`,
+                                    justifyItems: 'center',
+                                    alignItems: 'stretch',
+                                    marginBottom: '30px',
 
-                              display: 'flex',
-                              justifyContent:data.length>2?'space-between':'center',
-                          }}>
+                                }}>
                         {function () {
                             if (fetchAll || !auth['auth']) {
                                 return (
                                     data.map((item, index) => (
-                                        <Grid item xs="auto"
+                                        <Grid item xs="auto" sx={{margin:'20px'}}
                                               key={index}>
                                             <CardContest
                                                 data={item}
@@ -88,26 +89,28 @@ function MainPage() {
                         }()
 
                         }
-                    </Grid>
+                     </Box>
                 )
             case "Вебинары":
                 return (
-                    <Grid container spacing={1}
-                          sx={{
-                              display: 'flex',
-                               justifyContent:data.length>2?'space-between':'center',
-                              // gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr) )'
-                          }}>
+                     <Box sx={{
+                                    display: 'grid',
+                                    gridTemplateColumns: `repeat(auto-fill, minmax(320px, 1fr))`,
+                                    justifyItems: 'center',
+                                    alignItems: 'stretch',
+                                    marginBottom: '30px',
+
+                                }}>
                         {data.map((item, index) => (
                             item['broadcast_url'] ?
-                                <Grid item xs="auto"
+                                <Grid item xs="auto" sx={{}}
                                       key={index}>
                                     <ItemBroadcast
                                         data={item}/>
                                 </Grid> : ''
                         ))}
 
-                    </Grid>
+                     </Box>
                 )
             case "Выставки": {
                 return (navigate("/frontend/expositions/"))

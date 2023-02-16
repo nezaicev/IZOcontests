@@ -65,7 +65,7 @@ function CardEvent(props) {
             sx={{
                 display: 'flex',
                 flexWrap: 'wrap',
-                marginTop: '20px',
+                // margin: '20px',
                 width: 350,
                 height:'100%',
 
