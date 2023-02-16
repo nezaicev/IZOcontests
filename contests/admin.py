@@ -634,18 +634,17 @@ class VPAdmin(BaseAdmin):
                                              url.split('/')[-1])
                     utils.download_file_by_url(url, path_save)
 
-            if os.listdir(os.path.join(tmp_dir, 'images')) or os.listdir(
-                    os.path.join(tmp_dir, 'files')):
-                shutil.make_archive(tmp_dir, 'zip', tmp_dir)
-                if os.path.exists('{}.zip'.format(tmp_dir)):
-                    shutil.rmtree(tmp_dir, ignore_errors=True)
-                    response = HttpResponse(
-                        open('{}.zip'.format(tmp_dir), 'rb').read())
-                    response[
-                        'Content-Disposition'] = 'attachment; filename={}.zip'.format(
-                        obj.reg_number)
-                    response['Content-Type'] = 'application/zip'
-                    return response
+            # if os.path.exists(os.path.join(tmp_dir, 'images')) or os.path.exists(os.path.join(tmp_dir, 'files')):
+            shutil.make_archive(tmp_dir, 'zip', tmp_dir)
+            if os.path.exists('{}.zip'.format(tmp_dir)):
+                shutil.rmtree(tmp_dir, ignore_errors=True)
+                response = HttpResponse(
+                    open('{}.zip'.format(tmp_dir), 'rb').read())
+                response[
+                    'Content-Disposition'] = 'attachment; filename={}.zip'.format(
+                    obj.reg_number)
+                response['Content-Type'] = 'application/zip'
+                return response
 
         else:
             self.message_user(request,
