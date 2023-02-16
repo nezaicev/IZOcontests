@@ -3,7 +3,6 @@ import Container from "@mui/material/Container";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import React from "react";
-
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
@@ -195,7 +194,7 @@ const Header = (props) => {
                         </Menu>
                     </Box> : <div>
                         <IconButton
-                            // size="large"
+
                             aria-label="account of current user"
                             aria-controls="menu-appbar"
                             aria-haspopup="true"

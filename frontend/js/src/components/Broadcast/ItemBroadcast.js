@@ -43,7 +43,7 @@ const CardBroadcast = styled(Card)(() => ({
     "& .MuiPaper-elevation1": {boxShadow: '0'},
     alignItems: 'baseline',
     flexDirection: 'column',
-    margin: '20px',
+    margin: '15px',
     width: '340px',
     height: 'fit-content'
 }))

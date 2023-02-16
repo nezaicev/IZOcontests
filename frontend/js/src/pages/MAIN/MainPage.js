@@ -36,12 +36,14 @@ function MainPage() {
         switch (pages[value]['name']) {
             case "Мероприятия":
                 return (
-                    <Grid container spacing={2}
+                    <Grid container spacing={3}
                           sx={{
 
-                              display: 'grid',
-                              alignItems: 'stretch',
-                              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr) )'
+                              display: 'flex',
+                              justifyContent: data.length>2?'space-between':'center'
+                              /*{data.length<3? justifyContent:'space-between':''},*/
+                              // alignItems: 'stretch',
+                              // gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr) )'
                           }}>
                         {function () {
                             if (fetchAll || !auth['auth']) {
@@ -67,9 +69,8 @@ function MainPage() {
                     <Grid container spacing={2}
                           sx={{
 
-                              display: 'grid',
-                              alignItems: 'stretch',
-                              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr) )'
+                              display: 'flex',
+                              justifyContent:data.length>2?'space-between':'center',
                           }}>
                         {function () {
                             if (fetchAll || !auth['auth']) {
@@ -91,10 +92,11 @@ function MainPage() {
                 )
             case "Вебинары":
                 return (
-                    <Grid container spacing={2}
+                    <Grid container spacing={1}
                           sx={{
-                              display: 'grid',
-                              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr) )'
+                              display: 'flex',
+                               justifyContent:data.length>2?'space-between':'center',
+                              // gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr) )'
                           }}>
                         {data.map((item, index) => (
                             item['broadcast_url'] ?
@@ -154,7 +156,7 @@ function MainPage() {
                 mt: '20px',
                 justifyContent: 'center',
             }}>
-                <Box>
+                <Box sx={{justifyContent: 'center'}}>
 
                     {renderData()}
 
