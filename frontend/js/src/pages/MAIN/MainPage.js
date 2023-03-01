@@ -125,7 +125,12 @@ function MainPage() {
     useEffect(() => {
         dataFetch(`${host}${pages[value]['link']}`, null, (data) => {
             setData(data);
+             if (data.length===0){
+            pages.splice(0,1)
+            setValue(1)
+        }
         })
+
     }, [])
 
 
