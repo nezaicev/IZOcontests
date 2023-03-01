@@ -12,8 +12,8 @@ import CardContest from "../../components/Contest/CardContest";
 
 
 let pages = [
-    {'name': 'Мероприятия', 'link': '/frontend/api/events/'},
     {'name': 'Конкурсы', 'link': '/frontend/api/contests/'},
+    {'name': 'Мероприятия', 'link': '/frontend/api/events/'},
     {'name': 'Вебинары', 'link': '/frontend/api/broadcasts/'},
     {'name': 'Выставки', 'link': ''},
     {'name': 'Виртуальный музей', 'link': 'http://shkola-nemenskogo.ru/'}
@@ -44,7 +44,7 @@ function MainPage() {
                                     marginBottom: '60px',
 
                                 }}>
-                        {function () {
+                        {data.length>0 ?function () {
                             if (fetchAll || !auth['auth']) {
                                 return (
                                     data.map((item, index) => (
@@ -58,7 +58,7 @@ function MainPage() {
                                         </Grid>
                                     )))
                             }
-                        }()
+                        }():''
 
                         }
                      </Box>
@@ -124,18 +124,19 @@ function MainPage() {
 
     useEffect(() => {
         dataFetch(`${host}${pages[value]['link']}`, null, (data) => {
-            setData(data);
-             if (data.length===0){
-            pages.splice(0,1)
-            setValue(1)
-        }
+
+            setData(data)
+
         })
+
+
 
     }, [])
 
 
     useEffect(() => {
         dataFetch(`${host}${pages[value]['link']}`, null, (data) => {
+
             setData(data);
         })
     }, [value])
