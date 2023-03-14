@@ -523,6 +523,21 @@ class MymoskvichiAdmin(BaseAdmin):
         obj.save()
 
         return super().response_change(request, obj)
+#
+#     def formfield_for_foreignkey(self, db_field, request, **kwargs):
+#         if db_field.name == 'nomination':
+#             return NominationMYMSKChoiceField(queryset=NominationMYMSK.objects.filter(
+#                 name='Мультчеллендж «Год педагога и наставника»'))
+#         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+#
+#
+# class NominationMYMSKChoiceField(forms.ModelChoiceField):
+#     def __init__(self, queryset, **kwargs):
+#         super().__init__(queryset, **kwargs)
+#         self.label = 'Номинация'
+#
+#     def label_from_instance(self, obj):
+#         return obj.name
 
 
 class ParticipantVPInline(admin.StackedInline):
@@ -563,7 +578,7 @@ class VPAdmin(BaseAdmin):
                VideoVPInline, FileVPInline]
 
     actions = ['export_list_info', 'export_as_xls',
-               'archived','download_archive_files' ]
+               'archived', 'download_archive_files']
     fieldsets = (
 
         ('Организация', {
@@ -609,8 +624,8 @@ class VPAdmin(BaseAdmin):
     def download_archive_files(self, request, queryset):
         obj = queryset[0]
         tmp_dir = os.path.join(settings.MEDIA_ROOT, 'tmp', obj.reg_number)
-        pdf_path=os.path.join(settings.MEDIA_ROOT, 'pdf', 'vp',
-                                     '{}.pdf'.format(obj.reg_number))
+        pdf_path = os.path.join(settings.MEDIA_ROOT, 'pdf', 'vp',
+                                '{}.pdf'.format(obj.reg_number))
         images_urls = [obj.image.url for obj in obj.images.select_related()]
         files_urls = [obj.file.url for obj in obj.files.select_related()]
         if os.path.exists(tmp_dir):
@@ -765,7 +780,7 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     actions = ['export_as_xls', 'send_selected_letter',
                'load_json_data_from_file', 'transfer_data']
     list_editable = []
-    list_display = ['reg_number', 'publish','certificate', 'contest_name', 'author_name',
+    list_display = ['reg_number', 'publish', 'certificate', 'contest_name', 'author_name',
                     'fio_teacher',
                     'teacher',
                     'rating', 'status', 'year_contest']
