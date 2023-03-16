@@ -15,6 +15,7 @@ import ExpositionPage from "./pages/EXPOSITION/ExpositionPage";
 import BasePage from "./components/BasePage/BasePage";
 import Statistics from "./pages/STATISTICS/Statistics";
 import MymoskvichiMainPage from "./pages/MYMOSKVICHI/MymoskvichiMainPage";
+import GalleryPageDesign from "./pages/DESIGN/GalleryPageDesign";
 
 const host = process.env.REACT_APP_HOST_NAME
 
@@ -27,6 +28,7 @@ const App = () => {
 
                     <Route path='/frontend/main/' element={<MainPage/>}/>
                     <Route path='/frontend/vp/' element={<GalleryPageVP/>}/>
+                    <Route path='/frontend/design/' element={<GalleryPageDesign/>}/>
                     <Route path='/frontend/artakiada/' element={<GalleryPageArtakiada/>}/>
                     <Route path='/frontend/nrusheva/' element={<GallaryPageNRusheva/>}/>
                     <Route path='/frontend/mymoskvichi/:slug/' element={<MymoskvichiMainPage/>}/>

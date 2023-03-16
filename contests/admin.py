@@ -19,7 +19,7 @@ from contests.directory import NominationNR, NominationART, NominationMYMSK, \
     ThemeMYMSK, ThemeRUSH, AgeRUSH, AgeMYMSK, Material, Status, Level, AgeVP, \
     NominationVP, LevelVP, DirectionVP, AgeART
 from django.contrib.auth.models import Group, Permission
-from django.forms import ModelForm
+from django.forms import ModelForm, Select, TextInput
 from django.conf import settings
 from contests.forms import PageContestsFrom, ConfStorageForm, \
     CreativeTackAdminForm, InputFile
@@ -523,6 +523,8 @@ class MymoskvichiAdmin(BaseAdmin):
         obj.save()
 
         return super().response_change(request, obj)
+
+
 #
 #     def formfield_for_foreignkey(self, db_field, request, **kwargs):
 #         if db_field.name == 'nomination':
@@ -773,6 +775,56 @@ class FileArchiveInline(admin.StackedInline):
     extra = 0
 
 
+CONTESTS_NAME = [('Дизайн детям', 'Дизайн детям')]
+NOMINATION_DESIGN = [('Motion-design', 'Motion-design'),
+                     ('Графический дизайн', 'Графический дизайн'),
+                     ('Дизайн малых форм', 'Дизайн малых форм'),
+                     ('Промышленный дизайн', 'Промышленный дизайн'),
+                     ('Макетирование', 'Макетирование'), ('Дизайн костюма', 'Дизайн костюма'),
+                     ('Бумажная пластика', 'Бумажная пластика'), ('Дизайн среды', 'Дизайн среды'),
+                     ('Дизайн персонажа', 'Дизайн персонажа'), ('Другое', 'Другое')]
+
+
+class ArchiveProxy(Archive):
+    class Meta:
+        verbose_name = 'Проект "Дизайн детям"'
+        verbose_name_plural = 'проекты "Дизайн детям"'
+        proxy = True
+
+
+class DesignArchiveAdmin(admin.ModelAdmin):
+    list_per_page = 50
+    inlines = [ImageExtraArchiveInline, VideoArchiveInline, FileArchiveInline]
+    model = Archive
+    list_editable = ['publish']
+    list_display = ['author_name','fio', 'contest_name','publish',
+                    'fio_teacher',
+                    'rating', 'status', 'year_contest']
+    list_filter = ('contest_name', 'publish', 'year_contest', 'status')
+
+    search_fields = ('fio', 'fio_teacher')
+
+    exclude = (
+        'info', 'reg_number', 'barcode', 'content', 'participants', 'teacher', 'date_reg',
+        'district',
+        'image', 'level', 'format', 'link', 'crop_orientation_img', 'theme','program')
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'contest_name':
+            kwargs['widget'] = Select(choices=CONTESTS_NAME)
+        if db_field.name == 'nomination':
+            kwargs['widget'] = Select(choices=NOMINATION_DESIGN)
+        if db_field.name == 'year_contest':
+            kwargs['widget'] = TextInput(attrs={'value':utils.generate_year()})
+        return super().formfield_for_dbfield(db_field, **kwargs)
+
+    def get_queryset(self, request):
+        if request.user.is_superuser or request.user.groups.filter(
+                name='Manager').exists():
+            qs = super(admin.ModelAdmin, self).get_queryset(request)
+            return qs.filter(contest_name=CONTESTS_NAME[0][0])
+
+
 class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     list_per_page = 50
     inlines = [ImageExtraArchiveInline, VideoArchiveInline, FileArchiveInline]
@@ -931,3 +983,4 @@ admin.site.register(NominationNR)
 admin.site.register(DirectionVP)
 admin.site.register(AgeART)
 admin.site.register(CreativeTack, CreativeTackAdmin)
+admin.site.register(ArchiveProxy, DesignArchiveAdmin)

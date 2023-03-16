@@ -622,6 +622,8 @@ CROP_ORIENTATION = (('top', 'Верх'),
                     ('left', 'Лево'),
                     ('right', 'Право'))
 
+CONTESTS_NAME = (('Дизайн детям', 'Дизайн детям'),)
+
 
 class Archive(models.Model):
     reg_number = models.CharField(max_length=20, blank=False, null=False,
@@ -652,7 +654,8 @@ class Archive(models.Model):
 
     rating = models.FloatField('Рейтинг', default=0)
     publish = models.BooleanField(verbose_name='Опубликовать', default=False)
-    contest_name = models.CharField(max_length=200, null=True,
+    contest_name = models.CharField(max_length=200,
+                                    null=True,
                                     verbose_name='Конкурс', blank=True)
     image = models.ImageField(upload_to=PathAndRename('all_contests/'),
                               max_length=200, verbose_name='Изображение',
@@ -759,12 +762,10 @@ class ExtraImageVP(ExtraImage):
         if self.image:
             return mark_safe(
 
-
-
                 '<a data-fancybox="gallery" id="{}_img" href = "{}" class ="image-link"> <img src="{}" width="100px" height="100px" /></a>'.format(
                     self.id,
                     self.image.url,
-                    get_thumbnail(self.image, '300x300', crop='center',quality=99).url
+                    get_thumbnail(self.image, '300x300', crop='center', quality=99).url
                 ))
         else:
             return ''
