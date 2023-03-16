@@ -637,6 +637,11 @@ class VPAdmin(BaseAdmin):
             os.makedirs(tmp_dir)
             if os.path.exists(pdf_path):
                 shutil.copy(pdf_path, tmp_dir)
+            else:
+                self.export_list_info(request, queryset)
+                pdf_path = os.path.join(settings.MEDIA_ROOT, 'pdf', 'vp',
+                                        '{}.pdf'.format(obj.reg_number))
+                shutil.copy(pdf_path, tmp_dir)
 
             if images_urls:
                 os.makedirs(os.path.join(tmp_dir, 'images'))
