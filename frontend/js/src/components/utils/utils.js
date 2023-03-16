@@ -20,7 +20,8 @@ export function validContestName(name) {
 
 export function formattingName(name) {
     if (name) {
-        let data = name.split(', ')
+        const breakpoint = /, +/
+        let data = name.split(breakpoint)
         let result = ''
         data.forEach(function (item, i) {
             result += item.split(' ')[0][0] + '. ' + item.split(' ')[1] + ', '
