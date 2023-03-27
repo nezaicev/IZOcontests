@@ -119,6 +119,7 @@ class FileXlsAdmin(admin.ModelAdmin):
                     for new_subscriber in new_subscribers:
                         subscriber, created = Subscriber.objects.get_or_create(
                             email=new_subscriber['email'],
+                            group=new_subscriber['group'],
                             defaults=new_subscriber)
                         if created:
                             count_inserts += 1

@@ -45,15 +45,16 @@ class Subscriber(models.Model):
         (MOSCOW, 'Москва и МО'),
         (REGION, 'Регион'),
     ]
-    email = models.EmailField(_('email'), unique=True)
+    email = models.EmailField(_('email'))
     group= models.ForeignKey(GroupSubscribe, verbose_name='Группа',
-                             on_delete=models.PROTECT, null=True)
+                             on_delete=models.PROTECT, null=False)
     phone_number = models.CharField(verbose_name='Телефон', max_length=30,
                                     blank=True,
                                     null=True)
     existing = models.BooleanField(verbose_name='Существование', default=True)
 
     class Meta:
+        unique_together = ('email', 'group',)
         verbose_name = 'Подписчик'
         verbose_name_plural = 'Подписчики'
 
@@ -66,7 +67,7 @@ class FileXls(models.Model):
                             default='Not name')
     file = models.FileField(verbose_name='Файл', upload_to='tmp/',
                             storage=FileSystemStorage)
-    processed = models.BooleanField(verbose_name='Обработано', default=True)
+    processed = models.BooleanField(verbose_name='Обработано', default=False)
 
     class Meta:
         verbose_name = 'Файл'
