@@ -1,16 +1,15 @@
 import os
-from environs import Env
-from dotenv import load_dotenv
+from django.utils import dateformat
 from django.shortcuts import render
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy, reverse
-from django.http import FileResponse, HttpResponseRedirect
+from django.http import  HttpResponseRedirect
 from django.contrib import messages
-from django.views import generic, View
-from cert.forms import SearchRegNumForm, ConfirmationUserDataForm, \
+from cert.forms import SearchRegNumForm, \
     BaseConfirmationUserDataForm, ConfirmationUserDataExtraForm, \
     ConfirmationUserDataEventForm
+from django.views import generic, View
 from cert.services import get_obj_by_reg_num_from_archive, get_blank_cert
 from cert.utils import generate_cert
 from event.models import ParticipantEvent
@@ -146,8 +145,13 @@ class ConfirmationParticipantCertEvent(View):
             record_event = ParticipantEvent.objects.get(
                 reg_number=request.GET.get('reg_number'))
             request.session['reg_number']=request.GET.get('reg_number')
+
+
+            start_date =dateformat.format(record_event.event.start_date, settings.DATE_FORMAT)
+
             self.form = self.form(
-                {
+                {   'event_name': record_event.event.name,
+                    'start_date': start_date,
                     'fio': record_event.participant.fio,
                     'reg_number': record_event.reg_number,
                     'school': record_event.participant.school,

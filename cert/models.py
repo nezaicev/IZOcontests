@@ -43,7 +43,7 @@ class Text(models.Model):
     width = models.IntegerField(verbose_name='Длинна текста', default=50)
     align = models.CharField(verbose_name='Выравнивание текста', choices=ALIGN,
                              default='center', max_length=10)
-    offset=models.IntegerField(verbose_name='Отступ (низ)', default=3)
+    offset = models.IntegerField(verbose_name='Отступ (низ)', default=3)
 
     def __str__(self):
         return self.name
@@ -60,7 +60,9 @@ class Cert(models.Model):
         if filesize > megabyte_limit * 1024 * 1024:
             raise ValidationError(
                 "Max file size is %sMB" % str(megabyte_limit))
-    name =models.CharField('Название', max_length=200, blank=True, null=True, default='Мероприятие')
+
+    name = models.CharField('Название', max_length=200, blank=True, null=True,
+                            default='Мероприятие')
     blank = models.ImageField(storage=FileSystemStorage,
                               verbose_name='Бланк сертификата',
                               upload_to='certs/', blank=False,
@@ -68,9 +70,21 @@ class Cert(models.Model):
                               )
     access = models.BooleanField(verbose_name='Доступ', default=False)
     year_contest = models.CharField('Год', max_length=20,
-                                      null=True, default=utils.generate_year())
+                                    null=True, default=utils.generate_year())
     contest = models.ForeignKey(Events, verbose_name='Конкурс', max_length=15,
                                 blank=True, null=True, default=None, on_delete=models.PROTECT)
+
+    event_name_text = models.ForeignKey(Text, related_name='event_name',
+                                        verbose_name='Название мероприятия',
+                                        on_delete=models.PROTECT, null=True, default=None,
+                                        blank=True
+                                        )
+    start_date_text = models.ForeignKey(Text, related_name='start_date',
+                                        verbose_name='Дата',
+                                        on_delete=models.PROTECT, null=True, default=None,
+                                        blank=True
+                                        )
+
     status = models.ForeignKey(Status, verbose_name='Статус участника',
                                blank=False, default=Status.objects.get(name='Участник').id,
                                on_delete=models.PROTECT)
@@ -80,9 +94,9 @@ class Cert(models.Model):
                                      verbose_name='Регистрационный номер',
                                      on_delete=models.PROTECT)
     position_text = models.ForeignKey(Text, related_name='status',
-                                    verbose_name='Должность/класс',
-                                    on_delete=models.PROTECT,
-                                    )
+                                      verbose_name='Должность/класс',
+                                      on_delete=models.PROTECT,
+                                      )
 
     school_text = models.ForeignKey(Text, related_name='school',
                                     verbose_name='Организация',
@@ -90,27 +104,27 @@ class Cert(models.Model):
                                     )
 
     author_name_text = models.ForeignKey(Text, related_name='author_name',
-                                    verbose_name='Название',
+                                         verbose_name='Название',
                                          blank=True,
-                                    on_delete=models.PROTECT, null=True,
-                                    )
+                                         on_delete=models.PROTECT, null=True,
+                                         )
     city_text = models.ForeignKey(Text, related_name='city',
-                                         verbose_name='Город',
-                                         blank=True,
-                                         on_delete=models.PROTECT, null=True,
-                                         )
+                                  verbose_name='Город',
+                                  blank=True,
+                                  on_delete=models.PROTECT, null=True,
+                                  )
     teacher_text = models.ForeignKey(Text, related_name='teacher',
-                                         verbose_name='Педагог',
-                                         blank=True,
-                                         on_delete=models.PROTECT, null=True,
-                                         )
+                                     verbose_name='Педагог',
+                                     blank=True,
+                                     on_delete=models.PROTECT, null=True,
+                                     )
     nomination_text = models.ForeignKey(Text, related_name='nomination',
                                         verbose_name='Номинация',
                                         on_delete=models.PROTECT, blank=True,
                                         null=True)
-    article=models.CharField(verbose_name='Артикул', max_length=7,
-                             default=str(datetime.datetime.now().year)[2:]
-                             )
+    article = models.CharField(verbose_name='Артикул', max_length=7,
+                               default=str(datetime.datetime.now().year)[2:]
+                               )
 
     def __str__(self):
         if self.contest:

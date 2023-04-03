@@ -32,6 +32,24 @@ class ConfirmationUserDataEventForm(forms.Form):
                                                 'class': 'form-control'}
                                      )
                                      )
+
+    event_name = forms.CharField(label='Название мероприятия',
+                                 max_length=200,
+                                 widget=forms.TextInput(
+                                     attrs={'readonly': 'readonly',
+                                            'class': 'form-control'}
+                                 )
+                                 )
+
+    start_date = forms.CharField(label='Дата',
+                                 max_length=30,
+                                 widget=forms.TextInput(
+                                     attrs={'readonly': 'readonly',
+                                            'class': 'form-control'}
+                                 )
+                                 )
+
+
     fio = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control col-6'}),
         label='Участник',

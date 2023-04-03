@@ -217,6 +217,38 @@ def generate_cert(reg_number, blank_cert, form_values):
                 blank_cert.reg_num_text.anchor
                 )
 
+    if form_values.get('event_name') and blank_cert.event_name_text:
+        event_name=insert_text(blank_cert.event_name_text.font.url,
+                    blank_cert.event_name_text.size,
+                    form_values['event_name'],
+                    blank_cert.event_name_text.width,
+                    blank_cert.event_name_text.align,
+                    blank_cert.event_name_text.position,
+                    blank_cert.event_name_text.color,
+                    draw,
+                    blank_cert.event_name_text.anchor
+                    )
+
+        # prev_field_position = blank_cert.position_text.offset if blank_cert.position_text else 0
+
+        blank_cert.start_date_text.position[1] = event_name[3] + blank_cert.event_name_text.offset
+
+        insert_text(blank_cert.start_date_text.font.url,
+                    blank_cert.start_date_text.size,
+                    form_values['start_date'],
+                    blank_cert.start_date_text.width,
+                    blank_cert.start_date_text.align,
+                    blank_cert.start_date_text.position,
+
+
+                    blank_cert.start_date_text.color,
+                    draw,
+                    blank_cert.start_date_text.anchor
+                    )
+
+
+
+
     img.save(path_file, "JPEG")
     if os.path.exists(path_file):
         return path_file
