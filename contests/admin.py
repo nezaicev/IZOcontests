@@ -813,7 +813,7 @@ class DesignArchiveAdmin(admin.ModelAdmin):
 
     exclude = (
         'info', 'reg_number', 'barcode', 'content', 'participants', 'teacher', 'date_reg',
-        'district','region','status', 'year_contest', 'direction', 'contest_name','theme',
+        'district','region','status', 'year_contest', 'direction','theme',
          'format', 'link', 'crop_orientation_img','description','program', 'material')
 
     def formfield_for_dbfield(self, db_field, **kwargs):
