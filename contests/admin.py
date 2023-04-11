@@ -525,21 +525,23 @@ class MymoskvichiAdmin(BaseAdmin):
         return super().response_change(request, obj)
 
 
-#
-#     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-#         if db_field.name == 'nomination':
-#             return NominationMYMSKChoiceField(queryset=NominationMYMSK.objects.filter(
-#                 name='Мультчеллендж «Год педагога и наставника»'))
-#         return super().formfield_for_foreignkey(db_field, request, **kwargs)
-#
-#
-# class NominationMYMSKChoiceField(forms.ModelChoiceField):
-#     def __init__(self, queryset, **kwargs):
-#         super().__init__(queryset, **kwargs)
-#         self.label = 'Номинация'
-#
-#     def label_from_instance(self, obj):
-#         return obj.name
+
+# Веменная функция для закрытия основных номинаций Мы москвичи
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'nomination':
+            return NominationMYMSKChoiceField(queryset=NominationMYMSK.objects.filter(
+                name='Мультчеллендж «Год педагога и наставника»'))
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+class NominationMYMSKChoiceField(forms.ModelChoiceField):
+    def __init__(self, queryset, **kwargs):
+        super().__init__(queryset, **kwargs)
+        self.label = 'Номинация'
+
+    def label_from_instance(self, obj):
+        return obj.name
 
 
 class ParticipantVPInline(admin.StackedInline):
@@ -799,20 +801,20 @@ class ArchiveProxy(Archive):
 
 class DesignArchiveAdmin(admin.ModelAdmin):
     list_per_page = 50
-    inlines = [ImageExtraArchiveInline, VideoArchiveInline, FileArchiveInline]
+    # inlines = [ImageExtraArchiveInline, VideoArchiveInline, FileArchiveInline]
     model = Archive
     list_editable = ['publish']
     list_display = ['author_name','fio', 'contest_name','publish',
                     'fio_teacher',
                     'rating', 'status', 'year_contest']
-    list_filter = ('contest_name', 'publish', 'year_contest', 'status')
+    list_filter = ('contest_name', 'publish', 'year_contest', )
 
     search_fields = ('fio', 'fio_teacher')
 
     exclude = (
         'info', 'reg_number', 'barcode', 'content', 'participants', 'teacher', 'date_reg',
-        'district',
-        'image', 'level', 'format', 'link', 'crop_orientation_img', 'theme','program')
+        'district','region','status', 'year_contest', 'direction', 'contest_name','theme',
+         'format', 'link', 'crop_orientation_img','description','program', 'material')
 
     def formfield_for_dbfield(self, db_field, **kwargs):
         if db_field.name == 'contest_name':

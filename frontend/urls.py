@@ -19,6 +19,7 @@ urlpatterns = [
     path('api/auth/',views.AuthView.as_view()),
     path('api/archive/',
          views.ArchiveAPIView.as_view({'get': 'list', 'post': 'create'})),
+    path('api/archive/design/', views.DesignArchiveView.as_view({'get': 'list'})),
     path('api/archive/nominationvp/', views.NominationVPAPIView.as_view()),
     path('api/archive/nomination/mymoskvichi',
          views.NominationMymoskvichiAPIView.as_view()),
@@ -41,6 +42,7 @@ urlpatterns = [
     path('api/page/<slug:slug>/', views.PageDetailAPIView.as_view()),
     path('api/contests/', views.PageContestAPIView.as_view()),
     path('api/statistics/', views.StatAPIView.as_view()),
+
 
     re_path(r'.*', views.index),
 

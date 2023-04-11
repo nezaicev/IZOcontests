@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import React, {useEffect, useState} from "react";
-import useInfiniteScroll from "../../hooks/useInfiniteScroll";
+import useInfiniteScroll from "../../../hooks/useInfiniteScroll";
 import axios from "axios";
 import {CircularProgress} from "@mui/material";
 import {ExpandMoreCollapse, ItemVisibleDesign} from "./ItemVisibleDesign";

@@ -25,7 +25,7 @@ function GalleryPageDesign(props) {
                     contestName={process.env.REACT_APP_DESIGN}
                     urlVerticalTabs={`${host}/frontend/api/archive/contest/years/`}
                     urlHorizontalTabs={`${host}/frontend/api/archive/contest/nominations/`}
-                    urlContent={`${host}/frontend/api/archive/`}>
+                    urlContent={`${host}/frontend/api/archive/design/`}>
 
                 </GalleryDesign>
 

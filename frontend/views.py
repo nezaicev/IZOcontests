@@ -8,7 +8,7 @@ from contests import models
 from exposition.models import Exposition
 from exposition.serializers import ExpositionSerializer, \
     ExpositionListSerializer
-from frontend.apps import StandardResultsSetPagination
+from frontend.apps import StandardResultsSetPagination, DesignPagination
 from django.shortcuts import render
 from contests.models import Archive, NominationVP, DirectionVP, ThemeART, \
     NominationMYMSK, \
@@ -23,12 +23,38 @@ from rest_framework.authentication import SessionAuthentication, \
 from rest_framework.response import Response
 from contests.serializers import ArchiveSerializer, NominationVPSerializer, \
     DirectionVPSerializer, ThemeNRushevaSerializer, ThemeArtakiadaSerializer, \
-    NominationMymoskvichiSerializer, PageContestSerializer
+    NominationMymoskvichiSerializer, PageContestSerializer, DesignArchiveSerializer
 from event.models import Event, ParticipantEvent
 from event.serializers import EventSerializer, ParticipantEventSerializers
 from content.models import Page
 from content.serializers import PageSerializer
 from contests.tasks import send_mail_for_subscribers
+
+
+class DesignArchiveView(ModelViewSet):
+    pagination_class = DesignPagination
+
+    queryset = Archive.objects.all()
+    serializer_class = DesignArchiveSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filter_fields = ['contest_name',   'publish',
+                     'nomination',  'year_contest']
+
+    # def get(self, request):
+    #
+    #     queryset=Archive.objects.all()
+    #     contest_name = request.query_params.get('contest_name')
+    #     nomination = request.query_params.get('nomination')
+    #     year_contest = request.query_params.get('year_contest')
+    #
+    #     if queryset:
+    #         serializer_for_queryset = DesignArchiveSerializer(
+    #             instance=queryset,
+    #             many=True
+    #         ).data
+    #     else:
+    #         serializer_for_queryset = []
+    #     return Response(serializer_for_queryset)
 
 
 class AuthView(APIView):

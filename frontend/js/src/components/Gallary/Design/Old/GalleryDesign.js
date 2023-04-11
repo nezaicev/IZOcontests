@@ -1,14 +1,11 @@
-import VerticalTabs from "../VerticalTabs";
-import HorizontalTabs from "../HorizontalTabs";
+import VerticalTabs from "../../VerticalTabs";
+import HorizontalTabs from "../../HorizontalTabs";
 import React, {useEffect, useState} from "react";
 import {Box} from "@mui/material";
-import dataFetch from "../../utils/dataFetch";
-import VisibleBoxImages from "../VisibleBoxImages";
-import CreativeTack from "../CreativeTack";
-import {getExcludeData} from "../../utils/utils";
-import DesignVisibleBoxImages from "./DesignVisibleBoxImages";
-
-const excludeYears=['2020-2021 год']
+import dataFetch from "../../../utils/dataFetch";
+import {ExpandMoreCollapse} from "./ItemVisibleDesign";
+import VisibleBoxVP from "./VisibleBoxDesign";
+import VisibleBoxDesign from "./VisibleBoxDesign";
 
 
 export default function GalleryDesign(props) {
@@ -22,7 +19,7 @@ export default function GalleryDesign(props) {
 
     useEffect(() => {
         dataFetch(props.urlVerticalTabs, params, (data) => {
-            setDataVerticalTabs(getExcludeData(data, excludeYears), [setValueVerticalTabs(0)]);
+            setDataVerticalTabs(data, [setValueVerticalTabs(0)]);
         })
     }, [])
 
@@ -33,11 +30,6 @@ export default function GalleryDesign(props) {
         })
     }, [valueVerticalTabs])
 
-    useEffect(() => {
-        params['year_contest'] = dataVerticalTabs[valueVerticalTabs]
-        params['nomination'] = dataHorizontalTabs[valueHorizontalTabs]
-
-    }, [dataHorizontalTabs, valueHorizontalTabs])
 
     return (<React.Fragment>
             <Box sx={{
@@ -59,12 +51,9 @@ export default function GalleryDesign(props) {
 
                 />
             </Box>
-
-
-
             <Box sx={{}}>
 
-                <DesignVisibleBoxImages
+                <VisibleBoxDesign
                     url={props.urlContent}
                     contestName={props.contestName}
                     year={dataVerticalTabs[valueVerticalTabs]}

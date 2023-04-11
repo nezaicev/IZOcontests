@@ -155,6 +155,23 @@ class CustomImageField(serializers.Field):
             return None
 
 
+class DesingImageField(serializers.Field):
+
+    def to_representation(self, value):
+        if value.url:
+            return {'thumb': get_thumbnail(value.url, '380',
+                                           quality=99).url,
+                    'md_thumb': get_thumbnail(value.url, '2000',
+                                              quality=99).url,
+                    'original': value.url,
+                    }
+        else:
+            return None
+
+
+
+
+
 class ArchiveSerializer(serializers.ModelSerializer):
     reg_number = serializers.CharField(required=True)
     image = CustomImageField()
@@ -175,3 +192,12 @@ class ArchiveSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return Archive.objects.create(**validated_data)
+
+
+class DesignArchiveSerializer(serializers.Serializer):
+    contest_name=serializers.CharField(required=True)
+    year_contest=serializers.CharField(required=True)
+    nomination=serializers.CharField(required=True)
+    image=DesingImageField()
+
+

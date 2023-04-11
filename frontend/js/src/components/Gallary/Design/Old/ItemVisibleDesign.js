@@ -5,12 +5,12 @@ import Box from "@mui/material/Box";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
 import CardContent from "@mui/material/CardContent";
-import {DividerStyled, ImageListStyled, TypographyStyled} from "../../styled";
-import ImageGallery from "../ImageGallery";
+import {DividerStyled, ImageListStyled, TypographyStyled} from "../../../styled";
+import ImageGallery from "../../ImageGallery";
 import Typography from "@mui/material//Typography";
-import FieldTitle from "../FieldTitle";
-import {formattingName, validContestName} from "../../utils/utils";
-import VideoItem from "../VideoItem";
+import FieldTitle from "../../FieldTitle";
+import {formattingName, validContestName} from "../../../utils/utils";
+import VideoItem from "../../VideoItem";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import Tooltip from "@mui/material/Tooltip";
 import CameraIcon from '@mui/icons-material/Camera';
@@ -19,7 +19,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import ImageList from "@mui/material/ImageList";
 import Card from "@mui/material/Card";
 import {CardMedia} from "@mui/material";
-import {ButtonCollapse} from "../../styled";
+import {ButtonCollapse} from "../../../styled";
 
 
 function createMarkup() {
