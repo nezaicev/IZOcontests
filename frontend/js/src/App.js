@@ -59,7 +59,6 @@ const App = () => {
                         <Route path='archive' element={<Archive/>}/>
                         <Route path='statistics' element={<Statistics/>}/>
 
-
                     </Route>
                 </Routes>
 
