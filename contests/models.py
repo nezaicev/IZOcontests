@@ -435,8 +435,15 @@ class VP(BaseContest, MultiParticipants):
 
 
 class ParticipantVP(models.Model):
-    fio = models.CharField(max_length=50, verbose_name='Фамилия, имя',
+    fio = models.CharField(max_length=50, verbose_name='Фамилия, имя, отчество',
                            blank=False)
+    birthday = models.DateField(verbose_name='Дата рождения', blank=True,
+                                null=True,
+                                )
+    level = models.CharField(max_length=30, verbose_name='Класс',
+                             blank=True, null=True)
+    snils_gir = models.CharField(max_length=20, verbose_name='СНИЛС',
+                                 null=True, blank=True)
     participants = models.ForeignKey(VP, verbose_name='Участники',
                                      on_delete=models.CASCADE)
 
