@@ -6,16 +6,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
 
-    path('', views.index),
-    path('main/', views.index, name='home_frontend'),
-    path('vp/', views.index),
-    path('artakiada/', views.index),
-    path('nrusheva/', views.index),
-    path('mymoskvichi/', views.index),
-    path('event/', views.index),
-    path('broadcast/', views.index),
-    path('broadcasts/', views.index),
-
     path('api/auth/',views.AuthView.as_view()),
     path('api/archive/',
          views.ArchiveAPIView.as_view({'get': 'list', 'post': 'create'})),
@@ -44,7 +34,7 @@ urlpatterns = [
     path('api/statistics/', views.StatAPIView.as_view()),
 
 
-    re_path(r'.*', views.index),
+
 
 ]
 

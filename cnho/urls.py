@@ -20,37 +20,36 @@ from django.conf.urls.static import static
 from django.conf import settings
 from contests.views import PageContestView, EventPageView
 from contests.models import Message
-
+from frontend import views as frontend
 urlpatterns = [
 
-    path('', RedirectView.as_view(url='/frontend/main/'),
-         name='home'),
+    # path('', RedirectView.as_view(url='/frontend/main/'),
+    #      name='home'),
+
+    path('', frontend.index),
+    path('main/', frontend.index, name='home_frontend'),
+    path('vp/', frontend.index),
+    path('artakiada/', frontend.index),
+    path('nrusheva/', frontend.index),
+    path('mymoskvichi/', frontend.index),
+    path('event/', frontend.index),
+    path('broadcast/', frontend.index),
+    path('broadcasts/', frontend.index),
+
+    path('frontend/', include('frontend.urls')),
+
     path('admin/', admin.site.urls),
     path('certs/', include('cert.urls')),
-    # path('event/', include('event.urls')),
     path('map/', include('map.urls')),
     path('users/', include('users.urls')),
     path('mailing/', include('mailing.urls')),
-    path('frontend/', include('frontend.urls')),
     path('contests/', include('contests.urls')),
     path('users/', include('django.contrib.auth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    # path('', PageContestView.as_view(template_name='home.html'),
-    #      name='home'),
 
-
-
-
-    # path('event/5/',  RedirectView.as_view(url='/frontend/main/')),
     re_path(r'^event/\d', RedirectView.as_view(url='/frontend/main/')),
 
-
-    # path('event/<int:pk>/',
-    #      EventPageView.as_view(template_name='event/page.html'), name='event'),
-
-
-
-
+    re_path(r'.*', frontend.index),
 
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

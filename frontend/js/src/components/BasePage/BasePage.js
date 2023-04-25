@@ -41,7 +41,7 @@ function BasePage(props) {
     return (
         <Box sx={{fontFamily: 'Roboto', height: 'auto'}}>
             <Header
-                pages={pages}
+                    pages={pages}
                     activePage={(newValue) => (setValue(newValue))}
                     auth={auth}
                     // mainLink={`${host}/frontend/expositions/`}

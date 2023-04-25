@@ -65,29 +65,29 @@ function CardContest(props) {
 
                     </Box>
                     <DividerStyled/>
-                       <Box componetn={'div'} sx={{
+                    <Box componetn={'div'} sx={{
                         justifyContent: 'center',
                         display: 'flex',
                         marginTop: '10px'
                     }}>
-                    {  !props.data['hide']
-                        ?
-                        props.auth['id']
-                        ?
-                        <ButtonDefault onClick={() => {
-                            window.location.replace(`${host}/admin/`)
-                        }} variant="outlined" size='small'>
-                            Принять участие
-                        </ButtonDefault>
-                        :
-                        <ButtonDefault onClick={() => {
-                            window.location.replace(`${host}/users/login/`)
-                        }} variant="outlined" size='small'>
-                            Необходима авторизация
-                        </ButtonDefault>
-                        :''
-                    }
-                       </Box>
+                        {!props.data['hide']
+                            ?
+                            props.auth['id']
+                                ?
+                                <ButtonDefault onClick={() => {
+                                    window.location.replace(`${host}/admin/`)
+                                }} variant="outlined" size='small'>
+                                    Принять участие
+                                </ButtonDefault>
+                                :
+                                <ButtonDefault onClick={() => {
+                                    window.location.replace(`${host}/users/login/`)
+                                }} variant="outlined" size='small'>
+                                    Необходима авторизация
+                                </ButtonDefault>
+                            : ''
+                        }
+                    </Box>
 
                 </CardContent>
             </Box>

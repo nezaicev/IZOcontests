@@ -2,20 +2,18 @@ import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import React from "react";
+import React, {useEffect} from "react";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from "./HomeIcon";
-import {useNavigate} from 'react-router-dom'
-import {RedirectFunction} from "react-router-dom";
+import {useNavigate, useResolvedPath} from 'react-router-dom'
 import Tab from "@mui/material/Tab";
 import Tabs, {tabsClasses} from "@mui/material/Tabs";
 import {Avatar} from "@mui/material";
 import Tooltip from '@mui/material/Tooltip';
-import Button from "@mui/material/Button";
 import {stringAvatar} from "../utils/utils";
 import {AccountCircle} from "@mui/icons-material";
 
@@ -23,6 +21,11 @@ const host = process.env.REACT_APP_HOST_NAME
 
 
 const Header = (props) => {
+
+    // console.log(props.startPage, 'index_page')
+    // console.log(typeof (props.startPage))
+    // console.log(props.startPage === -1)
+    const [tabs, setTabs] = React.useState(props.pages);
     const settings = [
         {name: 'Личный кабинет', link: `${host}/admin/`},
         props.auth.manager ? {name: 'Статистика', link: `${host}/frontend/page/statistics/`} : '',
@@ -36,13 +39,21 @@ const Header = (props) => {
 
     ]
 
+    const [value, setValue] = React.useState(props.startPage === -1 ? 0 : props.startPage);
 
-    const [value, setValue] = React.useState(props.startPage ? props.startPage : 0);
+
+    useEffect(() => {
+        setValue(props.startPage === -1 ? 0 : props.startPage)
+    }, [props.pages])
+
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
-        props.activePage(newValue)
+        navigate(props.pages[newValue]['link'])
+        // console.log(newValue, 'click_tab')
     };
+
+
     const navigate = useNavigate()
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);

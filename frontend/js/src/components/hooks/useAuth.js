@@ -6,7 +6,9 @@ const useAuth=()=>{
     const [auth, setAuth] = React.useState({
         "id": '',
         "user": "AnonymousUser",
-        "auth": false
+        "auth": false,
+        "superuser": false,
+        "manager":false,
     })
 
     useEffect(() => {
