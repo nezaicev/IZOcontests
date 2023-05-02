@@ -36,7 +36,7 @@ export default function VisibleBoxVP(props) {
                 page_size: 1,
                 publish: true,
                 contest_name: props.contestName,
-                year: props.year,
+                year_contest: props.year,
                 page: props.page,
                 nomination: props.nomination,
                 ordering: '-rating',
