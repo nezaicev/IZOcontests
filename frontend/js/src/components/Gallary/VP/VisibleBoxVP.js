@@ -24,7 +24,13 @@ export default function VisibleBoxVP(props) {
             props.setPage(1, loadMoreItems())
 
         }
-    }, [props.nomination])
+    }, [props.nomination, props.year])
+
+    // useEffect(()=>{
+    //     setItems([])
+    // },[props.nomination, props.year])
+
+
 
     function loadMoreItems() {
 
