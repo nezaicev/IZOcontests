@@ -24,7 +24,13 @@ export default function VisibleBoxVP(props) {
             props.setPage(1, loadMoreItems())
 
         }
-    }, [props.nomination])
+    }, [props.nomination, props.year])
+
+    // useEffect(()=>{
+    //     setItems([])
+    // },[props.nomination, props.year])
+
+
 
     function loadMoreItems() {
 
@@ -36,7 +42,7 @@ export default function VisibleBoxVP(props) {
                 page_size: 1,
                 publish: true,
                 contest_name: props.contestName,
-                year: props.year,
+                year_contest: props.year,
                 page: props.page,
                 nomination: props.nomination,
                 ordering: '-rating',
