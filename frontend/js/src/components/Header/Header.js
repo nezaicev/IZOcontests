@@ -148,7 +148,7 @@ const Header = (props) => {
 
 
                         <Tabs value={value} onChange={handleChange}
-                              variant="scrollable"
+                              variant={props.pages.length<=2?'':'scrollable'}
                               scrollButtons="auto"
                               textColor="inherit"
                               sx={{

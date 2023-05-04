@@ -33,6 +33,7 @@ import Event from "./pages/EVENT/Event";
 import Broadcast from "./pages/BROADCAST/Broadcast";
 import {ContestsStatistics} from "./pages/STATISTICS/ContestsStatistics";
 import {Exposition} from "./pages/EXPOSITION/Exposition";
+import StatExposition from "./components/Exposition/StatExposition";
 
 
 const host = process.env.REACT_APP_HOST_NAME
@@ -69,10 +70,10 @@ const App = () => {
                         {'name': 'Статистика', 'link': '/expositions/statistics'},
 
                     ]}/>}>
-                        <Route index element={<Expositions/>}/>
-                        <Route path='main' element={<Expositions/>}/>
-                        <Route path='archive' element={<Archive/>}/>
-                        <Route path='statistics' element={<Statistics/>}/>
+                        <Route index element={<Expositions isArchive={0}/>}/>
+                        <Route path='main' element={<Expositions isArchive={0}/>}/>
+                        <Route path='archive' element={<Expositions isArchive={1}/>}/>
+                        {/*<Route path='statistics' element={<StatExposition/>}/>*/}
 
                     </Route>
 
