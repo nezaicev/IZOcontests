@@ -27,7 +27,6 @@ function GalleryPageNRusheva(props) {
                     urlHorizontalTabs={`${host}/frontend/api/archive/contest/thems/`}
                     urlCreativeTack={`${host}/frontend/api/contest/creative_tack/`}
                     urlContent={`${host}/frontend/api/archive/`}>
-
                 </GalleryNRusheva>
 
             </Container>

@@ -28,7 +28,8 @@ export default function VisibleBoxImages(props) {
             props.setPage(1, loadMoreItems())
 
         }
-    }, [props.theme])
+    }, [props.theme,  props.year])
+
 
     function loadMoreItems() {
 
@@ -40,7 +41,7 @@ export default function VisibleBoxImages(props) {
                 page_size: 3,
                 publish: true,
                 contest_name: props.contestName,
-                year: props.year,
+                year_contest: props.year,
                 page: props.page,
                 theme: props.theme,
                 ordering: '-rating',

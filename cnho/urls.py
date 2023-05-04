@@ -27,7 +27,7 @@ urlpatterns = [
     #      name='home'),
 
     path('', frontend.index),
-    path('main/', frontend.index, name='home_frontend'),
+    path('', frontend.index, name='home_frontend'),
     path('vp/', frontend.index),
     path('artakiada/', frontend.index),
     path('nrusheva/', frontend.index),

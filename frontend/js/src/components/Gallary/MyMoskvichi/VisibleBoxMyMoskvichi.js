@@ -27,6 +27,7 @@ export default function VisibleBoxMyMoskvichi(props) {
         }
     }, [props.nomination])
 
+
     function loadMoreItems() {
 
         setIsFetching(true);

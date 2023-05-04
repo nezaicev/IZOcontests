@@ -28,7 +28,7 @@ const Header = (props) => {
     const [tabs, setTabs] = React.useState(props.pages);
     const settings = [
         {name: 'Личный кабинет', link: `${host}/admin/`},
-        props.auth.manager ? {name: 'Статистика', link: `${host}/frontend/page/statistics/`} : '',
+        props.auth.manager ? {name: 'Статистика', link: `${host}/statistics/`} : '',
         {name: 'Выход', link: `${host}/users/logout/?next_page=frontend/`}
     ]
 

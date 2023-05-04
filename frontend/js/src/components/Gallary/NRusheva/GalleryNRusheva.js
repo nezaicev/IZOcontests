@@ -7,8 +7,8 @@ import VisibleBoxImages from "../VisibleBoxImages";
 import CreativeTack from "../CreativeTack";
 import {getExcludeData} from "../../utils/utils";
 
-const excludeYears=['2020-2021 год']
-
+// const excludeYears=['2020-2021 год']
+const excludeYears=[]
 
 export default function GalleryNRusheva(props) {
     const [dataVerticalTabs, setDataVerticalTabs] = React.useState([])

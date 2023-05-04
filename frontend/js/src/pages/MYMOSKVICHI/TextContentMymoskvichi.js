@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
-import dataFetch from "../../components/utils/dataFetch";
 import Box from "@mui/material/Box";
 import {CircularProgress, Paper, Typography} from "@mui/material";
+import {BaseInfo} from "./BaseInfo";
+import dataFetch from "../../components/utils/dataFetch";
 
 
-const VP=()=>{
-    const apiLink = '/frontend/api/page/vp_base_info/'
+const TextContentMymoskvichi=(props)=>{
+    const apiLink = props.link
     const [data, setData] = React.useState([])
     const [fetchAll, setFetchAll] = useState(false);
 
@@ -16,9 +17,19 @@ const VP=()=>{
         })
 
     }, [])
+    useEffect(() => {
+        dataFetch(`${process.env.REACT_APP_HOST_NAME}${apiLink}`, {}, (data) => {
+            setData(data)
+            setFetchAll(true)
+        })
+
+    }, [props.link])
+
+
     return (
          <Box>{
                             fetchAll ? <Box>
+                                <BaseInfo/>
                                 <Box sx={{
                                     justifyContent: 'center',
                                     display: 'flex',
@@ -58,4 +69,4 @@ const VP=()=>{
     )
 }
 
-export {VP}
+export {TextContentMymoskvichi}
