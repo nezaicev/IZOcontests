@@ -123,14 +123,14 @@ export function ExpandMoreCollapse(props) {
                                     content={props.item.fio_teacher}/>
 
 
-                                <FieldTitle title='Направление: '
+                                <FieldTitle title={Number(props.item.reg_number)>1662253180000?'Форма организации: ':'Направление: '}
                                             content={props.item.direction}/>
 
                                 {
                                     props.item.description ?
-                                        <Box sx={{marginTop: '10px'}}>
+                                        <Box>
                                             <Typography variant='body2'
-                                                        mt={10}>
+                                                        mt={2.5}>
                                                 {props.item.description}
                                             </Typography> </Box> : ''
 
