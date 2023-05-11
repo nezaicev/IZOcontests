@@ -1,3 +1,4 @@
+import csv
 import os
 from zipfile import ZipFile
 import shutil
@@ -840,7 +841,7 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     inlines = [ImageExtraArchiveInline, VideoArchiveInline, FileArchiveInline]
     model = Archive
     actions = ['export_as_xls', 'send_selected_letter',
-               'load_json_data_from_file', 'transfer_data']
+               'load_json_data_from_file', 'transfer_data','update_status_archive' ]
     list_editable = []
     list_display = ['reg_number', 'publish', 'certificate', 'contest_name', 'author_name',
                     'fio_teacher',
@@ -924,6 +925,18 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
                                 {'items': queryset, 'form': form})
 
     load_json_data_from_file.short_description = 'Загрузить данные из JSON файла'
+
+    def update_status_archive(self, request, queryset):
+        with open('contests_archive_status.csv', newline='') as csvfile:
+            spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+            for row in spamreader:
+                if row[2] !='NULL':
+                    Archive.objects.filter(pk=int(row[0])).update(status=int(row[2]))
+                else:
+                    Archive.objects.filter(pk=int(row[0])).update(status=1)
+
+
+    update_status_archive.short_description='Обновить статус из csv'
 
 
 class ShowEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin,
