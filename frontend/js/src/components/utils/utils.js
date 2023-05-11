@@ -2,6 +2,18 @@ import dataFetch from "./dataFetch";
 
 const host = process.env.REACT_APP_HOST_NAME
 
+
+export const years_expositions = (data) => {
+        let result = new Set();
+        data.forEach((i) => {
+            result.add(i['start_date'].split('-')[0])
+        });
+        return Array.from(result)
+    }
+
+
+
+
 export function validContestName(name) {
     if ((name.search(/\d/) !== -1) ||
         (name.toLowerCase().indexOf('изосту') !== -1) ||

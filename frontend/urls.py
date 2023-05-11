@@ -28,6 +28,7 @@ urlpatterns = [
     path('api/participant_event/', csrf_exempt(views.ParticipantEventDetailView.as_view())),
     path('api/participant_event_list/', views.ParticipantEventListView.as_view()),
     path('api/exposition_list', views.ExpositionListAPIView.as_view()),
+    path('api/expositions_years/', views.YearExpositionsArchiveAPIView.as_view()),
     path('api/exposition/<int:pk>/', views.ExpositionDetailAPIView.as_view()),
     path('api/page/<slug:slug>/', views.PageDetailAPIView.as_view()),
     path('api/contests/', views.PageContestAPIView.as_view()),

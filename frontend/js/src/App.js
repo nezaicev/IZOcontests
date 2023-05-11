@@ -72,8 +72,8 @@ const App = () => {
                     ]}/>}>
                         <Route index element={<Expositions isArchive={0}/>}/>
                         <Route path='main' element={<Expositions isArchive={0}/>}/>
-                        <Route path='archive' element={<Expositions isArchive={1}/>}/>
-                        {/*<Route path='statistics' element={<StatExposition/>}/>*/}
+                        <Route path='archive' element={<Archive isArchive={1}/>}/>
+                        <Route path='statistics' element={<Statistics/>}/>
 
                     </Route>
 

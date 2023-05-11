@@ -31,10 +31,10 @@ function CardExposition(props) {
                     <img
                         src={props.data.poster['thumb']}
                         alt={props.data.title}
-                        // loading="lazy"
+                        loading="lazy"
                     />
                 </Link>
-                <ImageListItemBar
+                { props.data.poster['thumb'] ? <ImageListItemBar
                     sx={{
                         backgroundColor: "rgba(138, 119, 119, 0.89)"
                     }}
@@ -52,11 +52,12 @@ function CardExposition(props) {
                             }}/>
                         </IconButton>
 
-                    }/>
+                    }/>:''}
 
             </Card>
 
         </ImageListItem>
+
     )
 }
 

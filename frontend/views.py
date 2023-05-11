@@ -37,8 +37,8 @@ class DesignArchiveView(ModelViewSet):
     queryset = Archive.objects.all()
     serializer_class = DesignArchiveSerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filter_fields = ['contest_name',   'publish',
-                     'nomination',  'year_contest']
+    filter_fields = ['contest_name', 'publish',
+                     'nomination', 'year_contest']
 
     # def get(self, request):
     #
@@ -371,10 +371,22 @@ class ExpositionListAPIView(APIView):
 
     def get(self, request):
         is_archive = request.query_params.get('is_archive')
+        year = request.query_params.get('year')
         if is_archive is None:
             expositions = Exposition.objects.filter(publicate=True)
         else:
             expositions = Exposition.objects.filter(archive=is_archive, publicate=True)
+            if year:
+                expositions_1 = Exposition.objects.filter(archive=is_archive, start_date__year=year,
+                                                          start_date__month__lt=9, publicate=True)
+                year = str(int(year) - 1)
+                expositions_2 = Exposition.objects.filter(archive=is_archive, start_date__year=year,
+                                                          start_date__month__in=[9, 10, 11, 12],
+                                                          publicate=True)
+                expositions = expositions_1.union(expositions_2)
+
+            else:
+                expositions = Exposition.objects.filter(archive=is_archive, publicate=True)
         serializer = ExpositionListSerializer(expositions, many=True)
         return Response(serializer.data)
 
@@ -412,3 +424,22 @@ class PageContestAPIView(APIView):
         contests = PageContest.objects.all()
         serializer = PageContestSerializer(contests, many=True)
         return Response(serializer.data)
+
+
+class YearExpositionsArchiveAPIView(APIView):
+
+    def get(self, request):
+        years = []
+        dates = Exposition.objects.filter(archive=1, publicate=True).values_list('start_date',
+                                                                                 flat=True)
+        for date in dates:
+            if date.month in [9, 10, 11, 12]:
+                years.append(date.year + 1)
+            else:
+                years.append(date.year)
+        if years:
+            years.sort(reverse=True)
+            years=list(dict.fromkeys(years))
+            return Response(years)
+        else:
+            return None

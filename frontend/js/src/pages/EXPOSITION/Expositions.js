@@ -8,7 +8,6 @@ const Expositions = (props) => {
     const apiLink = '/frontend/api/exposition_list'
     const [data, setData] = React.useState([])
     const [fetchAll, setFetchAll] = useState(false);
-    console.log(props.isArchive)
     useEffect(() => {
         dataFetch(`${process.env.REACT_APP_HOST_NAME}${apiLink}`, {is_archive: props.isArchive}, (data) => {
             setData(data)

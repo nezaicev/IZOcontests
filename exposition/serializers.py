@@ -55,3 +55,21 @@ class ExpositionListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exposition
         fields = ('id','title','poster','start_date', 'end_date', 'address', 'count_participants', 'count_exp', 'publicate','virtual')
+
+
+class YearExpositionField(serializers.Field):
+
+    def to_representation(self, value):
+
+        if value:
+            return {'year':value.year}
+        else:
+            return None
+
+
+class YearsExpositionSerializer(serializers.ModelSerializer):
+    start_date=YearExpositionField()
+
+    class Meta:
+        model = Exposition
+        fields =('start_date')
