@@ -184,6 +184,37 @@ class ArchiveInterface:
 
     archived.short_description = 'Отправить в Архив'
 
+    def update_status_archive(self, request, queryset):
+        count_created_obj = 0
+        count_updated_obj = 0
+
+        for obj in queryset:
+
+            values_for_record = {
+
+
+
+
+                'status': utils.get_dependent_data_for_obj(obj, 'status'),
+
+            }
+            vm_record, created = Archive.objects.update_or_create(
+
+                reg_number=obj.reg_number, defaults=values_for_record,
+            )
+            if created:
+                count_created_obj += 1
+            else:
+
+                vm_record.save()
+                count_updated_obj += 1
+
+        messages.add_message(request, messages.INFO,
+                             ' "{}"  новых записей  отправленно в АРХИВ, "{}" обновлено'.format(
+                                 count_created_obj, count_updated_obj))
+
+    update_status_archive.short_description = 'Обновить статус в архиве'
+
 
 class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     name = ''
@@ -195,7 +226,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
         'fio_teacher')
     list_filter = ('status', 'district', 'region')
     actions = ['export_list_info', 'export_as_xls', 'create_thumbs',
-               'archived', 'send_selected_letter', ]
+               'archived', 'send_selected_letter', 'update_status_archive']
     exclude = (
         'reg_number', 'teacher', 'barcode', 'status', 'info', 'year_contest',
         'extraImage', 'status_change')
@@ -272,8 +303,15 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
 
         if not request.user.groups.filter(
                 name='Manager').exists():
+            if 'update_status_archive' in actions:
+                del actions['update_status_archive']
+
+        if not request.user.groups.filter(
+                name='Manager').exists():
             if 'send_vm' in actions:
                 del actions['send_vm']
+
+
         if not request.user.groups.filter(
                 name='Manager').exists():
             if 'archived' in actions:
@@ -583,7 +621,7 @@ class VPAdmin(BaseAdmin):
                VideoVPInline, FileVPInline]
 
     actions = ['export_list_info', 'export_as_xls',
-               'archived', 'download_archive_files']
+               'archived', 'download_archive_files','update_status_archive']
     fieldsets = (
 
         ('Организация', {
@@ -841,7 +879,7 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     inlines = [ImageExtraArchiveInline, VideoArchiveInline, FileArchiveInline]
     model = Archive
     actions = ['export_as_xls', 'send_selected_letter',
-               'load_json_data_from_file', 'transfer_data','update_status_archive' ]
+               'load_json_data_from_file', 'transfer_data']
     list_editable = []
     list_display = ['reg_number', 'publish', 'certificate', 'contest_name', 'author_name',
                     'fio_teacher',
@@ -926,17 +964,17 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
 
     load_json_data_from_file.short_description = 'Загрузить данные из JSON файла'
 
-    def update_status_archive(self, request, queryset):
-        with open('contests_archive_status.csv', newline='') as csvfile:
-            spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
-            for row in spamreader:
-                if row[2] !='NULL':
-                    Archive.objects.filter(pk=int(row[0])).update(status=int(row[2]))
-                else:
-                    Archive.objects.filter(pk=int(row[0])).update(status=1)
-
-
-    update_status_archive.short_description='Обновить статус из csv'
+    # def update_status_archive(self, request, queryset):
+    #     with open('contests_archive_status.csv', newline='') as csvfile:
+    #         spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+    #         for row in spamreader:
+    #             if row[2] !='NULL':
+    #                 Archive.objects.filter(pk=int(row[0])).update(status=int(row[2]))
+    #             else:
+    #                 Archive.objects.filter(pk=int(row[0])).update(status=1)
+    #
+    #
+    # update_status_archive.short_description='Обновить статус из csv'
 
 
 class ShowEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin,
