@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {CircularProgress, Grid} from "@mui/material";
-import CardExposition from "../../components/Exposition/CardExposition";
 import Box from "@mui/material/Box";
 import dataFetch from "../../components/utils/dataFetch";
 import {useSearchParams} from "react-router-dom";
-import {years_expositions} from "../../components/utils/utils"
 import HorizontalTabs from "../../components/Gallary/HorizontalTabs";
+import {lazy, Suspense} from 'react';
+
+const CardExposition = lazy(() => import('../../components/Exposition/CardExposition'));
+
 
 const Archive = (props) => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -27,10 +29,10 @@ const Archive = (props) => {
         setFetchAll(false)
 
         if (years.length > 0) {
-            searchParams.set('year',years[valueHorizontalTabs] );
+            searchParams.set('year', years[valueHorizontalTabs]);
             setSearchParams(searchParams)
             dataFetch(`${process.env.REACT_APP_HOST_NAME}${apiLink}`, {
-                year: searchParams.get('year')?searchParams.get('year'):years[valueHorizontalTabs],
+                year: searchParams.get('year') ? searchParams.get('year') : years[valueHorizontalTabs],
                 is_archive: props.isArchive
             }, (data) => {
                 setData(data)
@@ -46,7 +48,7 @@ const Archive = (props) => {
             flexWrap: 'wrap',
             justifyContent: 'center',
             alignItems: 'center',
-            marginBottom:'10px'
+            marginBottom: '10px'
         }}>
             <HorizontalTabs contestName={props.contestName}
                             data={years}
@@ -58,15 +60,17 @@ const Archive = (props) => {
                 if (fetchAll
                     || data.length > 0) {
                     return (
-                       <Box sx={{display: 'flex'}}>
+                        <Box sx={{display: 'flex'}}>
                             <Grid container spacing={2}
                                   sx={{justifyContent: data.length > 2 ? 'space-between' : 'flex-start'}}>
                                 {data.map((item, index) => (
 
                                     <Grid item xs="auto"
                                           key={index}>
-                                        <CardExposition
-                                            data={item}/>
+                                        <Suspense fallback={<div>Загрузка...</div>}>
+                                            <CardExposition
+                                                data={item}/>
+                                        </Suspense>
                                     </Grid>
 
                                 ))}

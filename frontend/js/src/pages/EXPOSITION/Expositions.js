@@ -1,8 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {CircularProgress, Grid} from "@mui/material";
-import CardExposition from "../../components/Exposition/CardExposition";
+// import CardExposition from "../../components/Exposition/CardExposition";
 import Box from "@mui/material/Box";
 import dataFetch from "../../components/utils/dataFetch";
+
+import {lazy, Suspense} from 'react';
+const CardExposition = lazy(() => import('../../components/Exposition/CardExposition'));
+
 
 const Expositions = (props) => {
     const apiLink = '/frontend/api/exposition_list'
@@ -40,8 +44,12 @@ const Expositions = (props) => {
 
                                     <Grid item xs="auto"
                                           key={index}>
-                                        <CardExposition
+                                         <Suspense fallback={<div>Загрузка...</div>}>
+      <CardExposition
                                             data={item}/>
+    </Suspense>
+                                        {/*<CardExposition*/}
+                                        {/*    data={item}/>*/}
                                     </Grid>
 
                                 ))}

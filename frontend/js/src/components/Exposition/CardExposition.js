@@ -13,6 +13,7 @@ import {Link} from "react-router-dom"
 
 
 
+
 function CardExposition(props) {
     const urlExposition=`${host}/exposition/${props.data.id}/`
     let optionsDate = {

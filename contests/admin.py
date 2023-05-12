@@ -457,7 +457,7 @@ class ArtakiadaAdmin(BaseAdmin):
 class NRushevaAdmin(BaseAdmin):
     name = 'nrusheva'
     list_per_page = 25
-    list_filter = ('level', 'status', 'district', 'region')
+    list_filter = ('level', 'status', 'district', 'region', 'theme')
     list_display = (
         'reg_number', 'image_tag', 'fio', 'status', 'status_change', 'school',
         'region',

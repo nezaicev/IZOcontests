@@ -1,20 +1,7 @@
 import './App.css';
 import React from "react";
 import {Router, Route, Routes, BrowserRouter, Navigate, Link} from 'react-router-dom'
-import GalleryPageVP from "./pages/VP/GalleryPageVP";
-import GalleryPageArtakiada from "./pages/ARTAKIADA/GalleryPageArtakiada";
-import GallaryPageNRusheva from "./pages/NRUSHEVA/GallaryPageNRusheva";
-import GalleryPageMyMoskvichi
-    from "./pages/MYMOSKVICHI/GalleryPageMyMoskvichi";
-import MainPage from "./pages/MAIN/MainPage";
-import EventPage from "./pages/EVENT/EventPage";
-import BroadcastListPage from "./pages/BROADCAST/BroadcastListPage";
-import BroadcastPage from "./pages/BROADCAST/BroadcastPage";
-import ExpositionListPage from "./pages/EXPOSITION/ExpositionListPage";
-import ExpositionPage from "./pages/EXPOSITION/ExpositionPage";
-import BasePage from "./components/BasePage/BasePage";
-import MymoskvichiMainPage from "./pages/MYMOSKVICHI/MymoskvichiMainPage";
-import GalleryPageDesign from "./pages/DESIGN/GalleryPageDesign";
+
 import {Contests} from "./pages/MAIN/Contests";
 import {Layout} from "./components/BasePage/Layout";
 import {Events} from "./pages/EVENT/Events";
@@ -33,7 +20,7 @@ import Event from "./pages/EVENT/Event";
 import Broadcast from "./pages/BROADCAST/Broadcast";
 import {ContestsStatistics} from "./pages/STATISTICS/ContestsStatistics";
 import {Exposition} from "./pages/EXPOSITION/Exposition";
-import StatExposition from "./components/Exposition/StatExposition";
+
 
 
 const host = process.env.REACT_APP_HOST_NAME
@@ -77,12 +64,22 @@ const App = () => {
 
                     </Route>
 
+                    {/*'______Временные редиректы______'*/}
+                    <Route path="frontend/vp/" element={<Navigate to="/vp/gallery"  />} />
+                    <Route path="frontend/artakiada/" element={<Navigate to="/artakiada/gallery"  />} />
+                    <Route path="frontend/nrusheva/" element={<Navigate to="/nrusheva/gallery"  />} />
+                    <Route path="frontend/mymoskvichi/2/" element={<Navigate to="/mymoskvichi/gallery"  />} />
+                    <Route path="frontend/mymoskvichi/0/" element={<Navigate to="/mymoskvichi"  />} />
+                    <Route path="frontend/mymoskvichi/" element={<Navigate to="/mymoskvichi"  />} />
+
+
 
                     {/*'______Худ. проекты______'*/}
                     <Route path='/vp' element={<Layout tabs={[
                         {'name': 'Художественные проекты', 'link': '/vp'},
                         {'name': 'Положение', 'link': '/vp/statute'},
                         {'name': 'Галерея', 'link': '/vp/gallery'},
+
 
                     ]}/>}>
                         <Route index
@@ -212,21 +209,6 @@ const App = () => {
 
                 </Routes>
 
-
-                {/*<Route path='/' element={<MainPage/>}/>*/}
-                {/*<Route path='/frontend/vp/' element={<GalleryPageVP/>}/>*/}
-                {/*<Route path='/frontend/design/' element={<GalleryPageDesign/>}/>*/}
-                {/*<Route path='/frontend/artakiada/' element={<GalleryPageArtakiada/>}/>*/}
-                {/*<Route path='/frontend/nrusheva/' element={<GallaryPageNRusheva/>}/>*/}
-                {/*<Route path='/frontend/mymoskvichi/:slug/' element={<MymoskvichiMainPage/>}/>*/}
-                {/*<Route path='/frontend/test/' element={<GalleryPageMyMoskvichi/>}/>*/}
-                {/*<Route path='/frontend/event/:id/' element={<EventPage/>} />*/}
-                {/*<Route path='/frontend/broadcasts/' element={<BroadcastListPage/>} />*/}
-                {/*<Route path='/frontend/broadcast/:id/' element={<BroadcastPage/>} />*/}
-                {/*<Route path='/frontend/expositions/' element={<ExpositionListPage/>}/>*/}
-                {/*<Route path='/frontend/exposition/:id/' element={<ExpositionPage/>}/>*/}
-                {/*<Route path='/frontend/page/:slug/' element={<BasePage/>}/>*/}
-                {/*<Route path='/frontend/page/statistics/' element={<Statistics/>}/>*/}
 
             </BrowserRouter>
 
