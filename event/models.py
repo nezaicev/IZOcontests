@@ -11,7 +11,7 @@ from contests.utils import PathAndRename
 from contests.directory import Status
 from cert.models import Cert
 
-URL_EVENT = '{}/frontend/event/'.format(os.environ.get('HOSTNAME'))
+URL_EVENT = '{}/event/'.format(os.environ.get('HOSTNAME'))
 
 
 class Event(models.Model):

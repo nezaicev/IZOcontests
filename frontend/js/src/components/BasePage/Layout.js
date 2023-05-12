@@ -35,7 +35,7 @@ const Layout = (props) => {
 
             </Container>
 
-            <footer> 2023</footer>
+            <footer> </footer>
         </>
 
     )

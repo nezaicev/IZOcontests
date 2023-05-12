@@ -36,10 +36,10 @@ export default function CreativeTack(props) {
                 <Paper
 
                      dangerouslySetInnerHTML={{__html: props.data}}
-                     scroll={'body'}
+                     // scroll={'body'}
                      sx={{
                          boxShadow: 0,
-                         maxHeight:600,
+                         // maxHeight:600,
                          overflow:'auto',
                          padding:['5px','25px'],
                      }}

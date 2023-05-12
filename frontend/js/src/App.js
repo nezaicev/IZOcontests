@@ -184,6 +184,7 @@ const App = () => {
                         {'name': 'Мероприятия', 'link': '/event'},
                     ]}/>}>
                         <Route path='event/:id' element={<Event/>}/>
+                        <Route path="frontend/event/:id" element={<Navigate to="/events"  />} />
                     </Route>
 
                     {/*'_______Трансляция________'*/}
@@ -191,6 +192,7 @@ const App = () => {
                         {'name': 'Трансляция', 'link': '/broadcast'},
                     ]}/>}>
                         <Route path='broadcast/:id' element={<Broadcast/>}/>
+                        <Route path="frontend/broadcast/:id" element={<Navigate to="/broadcasts"  />} />
                     </Route>
 
                     {/*'_______Выставка________'*/}

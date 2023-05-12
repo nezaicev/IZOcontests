@@ -8,7 +8,7 @@ import {years_expositions} from "../../components/utils/utils"
 import HorizontalTabs from "../../components/Gallary/HorizontalTabs";
 
 const Archive = (props) => {
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [years, setYears] = React.useState([]);
     const [valueHorizontalTabs, setValueHorizontalTabs] = React.useState(0)
     const apiLink = '/frontend/api/exposition_list'
@@ -25,9 +25,12 @@ const Archive = (props) => {
     useEffect(() => {
         setData([])
         setFetchAll(false)
+
         if (years.length > 0) {
+            searchParams.set('year',years[valueHorizontalTabs] );
+            setSearchParams(searchParams)
             dataFetch(`${process.env.REACT_APP_HOST_NAME}${apiLink}`, {
-                year: years[valueHorizontalTabs],
+                year: searchParams.get('year')?searchParams.get('year'):years[valueHorizontalTabs],
                 is_archive: props.isArchive
             }, (data) => {
                 setData(data)

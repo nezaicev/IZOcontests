@@ -1,6 +1,6 @@
 import Card from "@mui/material/Card";
 
-import {CardMedia, Chip, Paper} from "@mui/material";
+import {Avatar, CardMedia, Chip, Paper} from "@mui/material";
 import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -41,6 +41,7 @@ function CardContest(props) {
                 image={props.data['logo']}
                 alt=''
             />
+
 
             <Box sx={{
                 flexWrap: "wrap",
