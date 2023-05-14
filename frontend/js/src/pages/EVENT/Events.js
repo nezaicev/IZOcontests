@@ -15,7 +15,7 @@ const Events = () => {
     const auth = useOutletContext()
 
     useEffect(() => {
-        dataFetch(`${process.env.REACT_APP_HOST_NAME}${apiLink}`, null, (data) => {
+        dataFetch(`${process.env.REACT_APP_HOST_NAME}${apiLink}`, {order:'start_date'}, (data) => {
             setData(data)
             setFetchAll(true)
         })

@@ -265,7 +265,11 @@ class CreativeTackAPIView(APIView):
 class EventListView(APIView):
 
     def get(self, request, format=None):
-        events = Event.objects.filter(hide=False)
+        order = request.query_params.get('order')
+        if order:
+            events = Event.objects.filter(hide=False).order_by(order)
+        else:
+            events = Event.objects.filter(hide=False)
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
 

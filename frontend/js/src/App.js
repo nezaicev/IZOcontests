@@ -71,7 +71,7 @@ const App = () => {
                     <Route path="frontend/mymoskvichi/2/" element={<Navigate to="/mymoskvichi/gallery"  />} />
                     <Route path="frontend/mymoskvichi/0/" element={<Navigate to="/mymoskvichi"  />} />
                     <Route path="frontend/mymoskvichi/" element={<Navigate to="/mymoskvichi"  />} />
-
+                     <Route path="frontend/expositions/" element={<Navigate to="/expositions"  />} />
 
 
                     {/*'______Худ. проекты______'*/}
