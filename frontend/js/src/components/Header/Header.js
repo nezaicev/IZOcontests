@@ -85,7 +85,7 @@ const Header = (props) => {
                         component="div"
                         sx={{mr: 2, display: {xs: 'none', md: 'flex'}}}
                     >
-                        <a href={props.mainLink ? props.mainLink : 'http://shkola-nemenskogo.ru/'}>
+                        <a href={props.mainLink ? props.mainLink : '/'}>
                             <HomeIcon sx={{fontSize: 60}}/>
                         </a>
                     </Typography>
@@ -126,7 +126,9 @@ const Header = (props) => {
                                 <MenuItem key={index}
                                           onClick={() => {
                                               handleCloseNavMenu();
-                                              props.activePage(index)
+                                              navigate(page.link)
+                                              console.log(page)
+                                              // props.activePage(index)
                                           }}>
                                     <Typography component='a'
                                                 textAlign="center">{page['name']}</Typography>
@@ -140,7 +142,7 @@ const Header = (props) => {
                         component="div"
                         sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}
                     >
-                        <a href={props.mainLink ? props.mainLink : 'http://shkola-nemenskogo.ru/'}>
+                        <a href={props.mainLink ? props.mainLink : '/'}>
                             <HomeIcon sx={{fontSize: 45}}/>
                         </a>
                     </Typography>
