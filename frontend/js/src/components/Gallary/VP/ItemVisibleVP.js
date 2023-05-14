@@ -111,8 +111,10 @@ export function ExpandMoreCollapse(props) {
                                             content={props.item.region + (props.item.city && (props.item.city !== props.item.region) ? ", " + props.item.city : '')}/>
                                 <FieldTitle title={'Образовательное уч.: '}
                                             content={props.item.school}/>
-                                <FieldTitle title={'Возраст: '}
-                                            content={props.item.age}/>
+                                {props.item.age?<FieldTitle title={'Возраст: '}
+                                            content={props.item.age}/> :<FieldTitle title={'Возраст: '}
+                                            content={props.item.level}/> }
+
 
                                 <FieldTitle
                                     title={props.item.fio.search(',') || !validContestName(props.item.fio) > 0 ? 'Участники: ' : 'Участник: '}
