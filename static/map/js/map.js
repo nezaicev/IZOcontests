@@ -15,8 +15,6 @@ ymaps.ready(function () {
         );
 
         $.get("/map/placemarks/", function (placemarks) {
-       // let placemarks=data
-            console.log(placemarks['placemarks']);
              placemarks['placemarks'].forEach(function (placemark){
                 myPlacemark=createPlacemark(placemark.title,placemark.coordinates,placemark.video_url,placemark.image_url)
                 myMap.geoObjects.add(myPlacemark);

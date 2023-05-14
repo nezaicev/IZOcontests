@@ -49,7 +49,7 @@ class Event(models.Model):
         return '{} {}'.format(self.name, self.start_date.date())
 
     class Meta:
-        ordering = ['start_date']
+        ordering = ['-start_date']
         verbose_name = 'Мероприятие'
         verbose_name_plural = 'Мероприятия'
 

@@ -26,7 +26,7 @@ urlpatterns = [
     # path('', RedirectView.as_view(url='/frontend/main/'),
     #      name='home'),
 
-    path('', frontend.index),
+    path('', frontend.index, name='home'),
     path('', frontend.index, name='home_frontend'),
     path('vp/', frontend.index),
     path('artakiada/', frontend.index),

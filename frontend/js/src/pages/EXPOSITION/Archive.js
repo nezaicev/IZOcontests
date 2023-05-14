@@ -18,7 +18,7 @@ const Archive = (props) => {
     const [fetchAll, setFetchAll] = useState(false);
 
     useEffect(() => {
-        dataFetch(`${process.env.REACT_APP_HOST_NAME}/frontend/api/expositions_years/`, {}, (data) => {
+        dataFetch(`${process.env.REACT_APP_HOST_NAME}/frontend/api/expositions_years/`, {is_archive:1}, (data) => {
             setYears(data)
         })
 

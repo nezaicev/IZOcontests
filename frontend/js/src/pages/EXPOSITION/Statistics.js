@@ -29,7 +29,7 @@ const Statistics = (props) => {
         if (years.length > 0) {
             dataFetch(`${process.env.REACT_APP_HOST_NAME}${apiLink}`, {
                 year: years[valueHorizontalTabs],
-                is_archive: 1
+                // is_archive: 0
             }, (data) => {
                 setData(data)
                 setFetchAll(true)

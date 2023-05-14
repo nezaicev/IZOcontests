@@ -374,6 +374,17 @@ class ExpositionListAPIView(APIView):
         year = request.query_params.get('year')
         if is_archive is None:
             expositions = Exposition.objects.filter(publicate=True)
+            if year:
+                expositions_1 = Exposition.objects.filter(start_date__year=year,
+                                                          start_date__month__lt=9, publicate=True)
+                year = str(int(year) - 1)
+                expositions_2 = Exposition.objects.filter(start_date__year=year,
+                                                          start_date__month__in=[9, 10, 11, 12],
+                                                          publicate=True)
+                expositions = expositions_1.union(expositions_2)
+
+            else:
+                expositions = Exposition.objects.filter(archive=is_archive, publicate=True)
         else:
             expositions = Exposition.objects.filter(archive=is_archive, publicate=True)
             if year:
@@ -430,8 +441,16 @@ class YearExpositionsArchiveAPIView(APIView):
 
     def get(self, request):
         years = []
-        dates = Exposition.objects.filter(archive=1, publicate=True).values_list('start_date',
-                                                                                 flat=True)
+        if request.query_params.get('is_archive'):
+            dates = Exposition.objects.filter(
+                archive=request.query_params.get('is_archive'),
+                publicate=True).values_list('start_date',
+                                            flat=True)
+        else:
+            dates = Exposition.objects.filter(
+                publicate=True).values_list('start_date',
+                                            flat=True)
+
         for date in dates:
             if date.month in [9, 10, 11, 12]:
                 years.append(date.year + 1)
@@ -439,7 +458,7 @@ class YearExpositionsArchiveAPIView(APIView):
                 years.append(date.year)
         if years:
             years.sort(reverse=True)
-            years=list(dict.fromkeys(years))
+            years = list(dict.fromkeys(years))
             return Response(years)
         else:
-            return None
+            return Response([])
