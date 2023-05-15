@@ -2,13 +2,13 @@ import React, {useEffect, useState} from "react";
 import {Grid} from "@mui/material";
 import CardEvent from "../../components/Event/CardEvent";
 import Box from "@mui/material/Box";
-import {useOutletContext} from "react-router-dom";
+import {useNavigate, useOutletContext} from "react-router-dom";
 import dataFetch from "../../components/utils/dataFetch";
 
 
 const Events = () => {
     const apiLink = '/frontend/api/events/'
-
+    const navigate=useNavigate()
     const [fetchAll, setFetchAll] = useState(false);
     const [data, setData] = React.useState([])
     const [participantEvent, setParticipantEvent] = React.useState([])
@@ -53,6 +53,7 @@ const Events = () => {
                                     data={item}
                                     auth={auth}
                                     participantEvent={participantEvent}
+                                    onClick={()=>{}}
                                 />
                             </Grid>
                             ))}
