@@ -49,7 +49,7 @@ urlpatterns = [
     path('users/', include('django.contrib.auth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 
-    re_path(r'^event/\d', RedirectView.as_view(url='/events')),
+    re_path(r'^frontend/event/\d', RedirectView.as_view(url='/events')),
 
     re_path(r'.*', frontend.index),
 
