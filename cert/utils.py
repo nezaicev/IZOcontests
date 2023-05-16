@@ -124,7 +124,7 @@ def generate_cert(reg_number, blank_cert, form_values):
         blank_cert.teacher_text.position[1] = prev_field_position
         label_teacher = insert_text(font_default,
                               blank_cert.teacher_text.size,
-                              'РУКОВОДИТЕЛЬ',
+                              'РУКОВОДИТЕЛЬ(И)',
                               blank_cert.teacher_text.width,
                               blank_cert.teacher_text.align,
                               blank_cert.teacher_text.position,
