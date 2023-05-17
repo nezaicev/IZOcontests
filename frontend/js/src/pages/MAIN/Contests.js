@@ -5,6 +5,7 @@ import {CircularProgress, Grid} from "@mui/material";
 import CardContest from "../../components/Contest/CardContest";
 import {useOutletContext} from "react-router-dom";
 import dataFetch from "../../components/utils/dataFetch";
+import Button from "@mui/material/Button";
 
 
 const Contests = () => {
@@ -38,10 +39,12 @@ const Contests = () => {
                             {data.map((item, index) => (
                             <Grid item xs="auto" sx={{margin: '20px'}}
                                   key={index}>
+
                                 <CardContest
                                     data={item}
                                     auth={auth}
                                 />
+
                             </Grid>
                             ))}
                         </Box>

@@ -4,6 +4,7 @@ import CardEvent from "../../components/Event/CardEvent";
 import Box from "@mui/material/Box";
 import {useNavigate, useOutletContext} from "react-router-dom";
 import dataFetch from "../../components/utils/dataFetch";
+import Button from "@mui/material/Button";
 
 
 const Events = () => {
@@ -49,12 +50,14 @@ const Events = () => {
                             {data.map((item, index) => (
                             <Grid item xs="auto" sx={{margin: '20px'}}
                                   key={index}>
+
                                 <CardEvent
                                     data={item}
                                     auth={auth}
                                     participantEvent={participantEvent}
-                                    onClick={()=>{}}
+
                                 />
+
                             </Grid>
                             ))}
                         </Box>

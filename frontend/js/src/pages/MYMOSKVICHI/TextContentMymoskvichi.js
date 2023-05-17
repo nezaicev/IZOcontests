@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Box from "@mui/material/Box";
-import {CircularProgress, Paper, Typography} from "@mui/material";
+import {Avatar, CircularProgress, Paper, Typography} from "@mui/material";
 import {BaseInfo} from "./BaseInfo";
 import dataFetch from "../../components/utils/dataFetch";
 
@@ -29,13 +29,20 @@ const TextContentMymoskvichi=(props)=>{
     return (
          <Box>{
                             fetchAll ? <Box>
+
                                 <BaseInfo/>
+
+
+
                                 <Box sx={{
                                     justifyContent: 'center',
                                     display: 'flex',
                                     marginTop: '30px',
                                     marginBottom: '20px'
                                 }}>
+
+
+
                                     <Typography variant="h5">
                                         {data.subtitle}
                                     </Typography>

@@ -9,6 +9,7 @@ import React, {useEffect} from "react";
 
 import {ButtonDefault, DividerStyled} from "../styled";
 import {host} from "../utils/consts";
+import Button from "@mui/material/Button";
 
 
 function CardContest(props) {
@@ -31,6 +32,7 @@ function CardContest(props) {
                 height: '100%',
 
             }}>
+
             <CardMedia
                 component="img"
                 sx={{
@@ -41,6 +43,7 @@ function CardContest(props) {
                 image={props.data['logo']}
                 alt=''
             />
+
 
 
             <Box sx={{

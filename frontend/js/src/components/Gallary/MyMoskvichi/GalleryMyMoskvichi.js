@@ -34,6 +34,7 @@ export default function GalleryMyMoskvichi(props) {
 
 
     return (<React.Fragment>
+
             <Box sx={{
 
                 display: 'flex',
