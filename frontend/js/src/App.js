@@ -51,7 +51,7 @@ const App = () => {
 
                     {/*'____Выставки______'*/}
                     <Route path='/expositions' element={<Layout tabs={[
-                        {'name': 'Главная', 'link': '/'},
+                        // {'name': 'Главная', 'link': '/'},
                         {'name': 'Выставки', 'link': '/expositions/main'},
                         {'name': 'Архив', 'link': '/expositions/archive'},
                         {'name': 'Статистика', 'link': '/expositions/statistics'},
