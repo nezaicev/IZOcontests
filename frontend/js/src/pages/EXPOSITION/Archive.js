@@ -62,10 +62,10 @@ const Archive = (props) => {
                     return (
                         <Box sx={{display: 'flex'}}>
                             <Grid container spacing={2}
-                                  sx={{justifyContent: data.length > 2 ? 'space-between' : 'flex-start'}}>
+                                  sx={{justifyContent: data.length > 2 ? 'center' : 'flex-start'}}>
                                 {data.map((item, index) => (
 
-                                    <Grid item xs="auto"
+                                    <Grid item xs="auto" sx={{margin:'15px'}}
                                           key={index}>
                                         <Suspense fallback={<div>Загрузка...</div>}>
                                             <CardExposition
