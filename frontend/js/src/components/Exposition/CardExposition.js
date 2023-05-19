@@ -35,8 +35,7 @@ function CardExposition(props) {
                     />
                 </Link>
 
-
-                {props.data.poster['thumb'] ? <ImageListItemBar
+                <ImageListItemBar
                     sx={{
                         backgroundColor: "rgba(138, 119, 119, 0.89)"
                     }}
@@ -54,7 +53,7 @@ function CardExposition(props) {
                             }}/>
                         </IconButton>
 
-                    }/> : ''}
+                    }/>
 
 
             </Paper>
