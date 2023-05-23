@@ -1,4 +1,6 @@
 import os.path
+import random
+import time
 
 from sorl.thumbnail import get_thumbnail
 from django.conf import settings
@@ -169,12 +171,19 @@ class DesingImageField(serializers.Field):
             return None
 
 
+class RegNumber(serializers.Field):
 
+    def to_representation(self, value):
+        return value
+
+    def to_internal_value(self, data):
+        print(data, 'data')
+        return data
 
 
 class ArchiveSerializer(serializers.ModelSerializer):
-    reg_number = serializers.CharField(required=True)
-    image = CustomImageField()
+    reg_number = serializers.CharField(required=False)
+    image = CustomImageField(required=False)
     images = ImagesSerializer(many=True, read_only=True)
     videos = VideosSerializer(many=True, read_only=True)
     files = FilesSerializer(many=True, read_only=True)

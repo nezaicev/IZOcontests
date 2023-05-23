@@ -85,7 +85,7 @@ export default function VideoItem(props) {
                             <a href='#'>
                                 <img
                                     src={getThumbYoutube(props.url, 'mqdefault')}
-                                    alt={props.name}
+                                    alt={props.item.author_name ? props.item.author_name : ''}
                                     loading="lazy"/>
                             </a>
 
@@ -94,7 +94,7 @@ export default function VideoItem(props) {
                                 sx={{
                                     backgroundColor: "rgb(129 110 110 / 76%)"
                                 }}
-                                title={props.name.toUpperCase()}
+                                title={props.item.author_name.toUpperCase()}
                                 actionIcon={
                                     <Tooltip title="Видео">
                                         <IconButton>
@@ -120,11 +120,12 @@ export default function VideoItem(props) {
 
                         <Box sx={{padding: '10px'}}>
                             <Box sx={{ display: expanded ? 'none' : 'block'}}>
-                            <FieldTitle
+                                {props.item.fio_teacher && <FieldTitle
                                 title={props.item.fio_teacher.search(',') > 0 ? 'Педагоги: ' : 'Педагог: '}
-                                content={props.item.fio_teacher}/>
-                            <FieldTitle title={"Регион/город: "}
-                                        content={props.item.region + (props.item.city && (props.item.city !== props.item.region) ? ", " + props.item.city : '')}/>
+                                content={props.item.fio_teacher}/>}
+
+                                {props.item.region &&  <FieldTitle title={"Регион/город: "}
+                                        content={props.item.region + (props.item.city && (props.item.city !== props.item.region) ? ", " + props.item.city : '')}/>}
                             <FieldTitle title={'Образовательное уч.: '}
                                         content={props.item.school}/>
                                 </Box>
@@ -150,11 +151,13 @@ export default function VideoItem(props) {
                                             content={props.item.reg_number}/>
                                 <FieldTitle title={'Название: '}
                                             content={props.item.author_name}/>
-                                <FieldTitle
+
+                                {props.item.fio_teacher && <FieldTitle
                                     title={props.item.fio_teacher.search(',') > 0 ? 'Педагоги: ' : 'Педагог: '}
-                                    content={props.item.fio_teacher}/>
-                                <FieldTitle title={"Регион/город: "}
-                                            content={props.item.region + (props.item.city && (props.item.city !== props.item.region) ? ", " + props.item.city : '')}/>
+                                    content={props.item.fio_teacher}/>}
+
+                                {props.item.region &&  <FieldTitle title={"Регион/город: "}
+                                            content={props.item.region + (props.item.city && (props.item.city !== props.item.region) ? ", " + props.item.city : '')}/>}
                                 <FieldTitle title={'Образовательное уч.: '}
                                             content={props.item.school}/>
                                 {props.item.age ?<FieldTitle title={'Возраст: '}

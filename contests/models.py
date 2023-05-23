@@ -1,4 +1,5 @@
 import os
+import random
 import time
 
 from django.conf import settings
@@ -709,7 +710,7 @@ class Archive(models.Model):
 
     def save(self, *args, **kwargs):
         if self.reg_number == '':
-            self.reg_number = '0-{}'.format(str(int(time.time())))
+            self.reg_number = '{}-{}'.format(round(random.random()*10000),str(int(time.time())))
         super().save(*args, **kwargs)
 
     class Meta:

@@ -67,7 +67,7 @@ export default function VisibleBoxMyMoskvichi(props) {
                         return (
                             <Box key={index}
                                  ref={(items.length === index + 1) ? lastElementRef : null}>
-                                <VideoItem name={item.author_name}
+                                <VideoItem
                                            item={item}
                                            url={item.link}
                                            key={index}/>
