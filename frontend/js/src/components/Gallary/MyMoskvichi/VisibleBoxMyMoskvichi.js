@@ -27,6 +27,18 @@ export default function VisibleBoxMyMoskvichi(props) {
         }
     }, [props.nomination])
 
+    useEffect(() => {
+
+        if (props.year_contest) {
+            props.setNomination([])
+            // props.setPage(1)
+
+        }
+    }, [props.year_contest])
+
+
+
+
 
     function loadMoreItems() {
 

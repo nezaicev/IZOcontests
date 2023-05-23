@@ -63,6 +63,9 @@ export default function GalleryMyMoskvichi(props) {
                     contestName={props.contestName}
                     year_contest={dataVerticalTabs[valueVerticalTabs]}
                     nomination={dataHorizontalTabs[valueHorizontalTabs]}
+                    setNomination={(newValue)=>{
+                        setDataHorizontalTabs(newValue)
+                    }}
                     page={page}
                     setPage={(newValue) => {
                         setPage(newValue)
