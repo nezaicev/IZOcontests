@@ -28,6 +28,7 @@ export default function VerticalTabs(props) {
                 height: 88,
                 bgcolor: 'background.paper',
                 display: 'flex',
+                marginLeft:'10px'
             }}
         >
             <ThemeProvider theme={customThemeTab}>
