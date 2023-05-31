@@ -18,6 +18,10 @@ class ImageExpositionAdmin(admin.ModelAdmin):
 
 class ExpositionAdmin(admin.ModelAdmin):
     inlines = [ImageExpositionInline]
+    list_display = ['title', 'start_date', 'end_date']
+    list_filter = ('archive',)
+
+    search_fields = ('title',)
 
 
 admin.site.register(Exposition, ExpositionAdmin)
