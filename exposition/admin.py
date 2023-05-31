@@ -20,6 +20,7 @@ class ExpositionAdmin(admin.ModelAdmin):
     inlines = [ImageExpositionInline]
     list_display = ['title', 'start_date', 'end_date']
     list_filter = ('archive',)
+    list_editable = ['end_date']
 
     search_fields = ('title',)
 
