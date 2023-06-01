@@ -177,7 +177,7 @@ STATICFILES_DIRS = [
 
 # STATIC_ROOT=os.getenv('STATIC_ROOT',os.path.join(BASE_DIR,'static'))
 
-PATH_IMG_UPLOAD = 'all_contests/'
+PATH_IMG_UPLOAD = 'all_contests/archive/'
 TMP_DIR = os.path.join(BASE_DIR, 'media', 'tmp')
 
 MEDIA_URL = os.getenv('MEDIA_URL', '/media/')

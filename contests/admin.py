@@ -940,13 +940,13 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
                                      'Загрузка данных из {}'.format(
                                          path_local_file))
 
-                print(tasks.upload_data_from_file.delay(path_local_file,
+                tasks.upload_data_from_file.delay(path_local_file,
                                                         os.path.join(
                                                             '{}{}'.format(
                                                                 settings.PROTOCOL,
                                                                 os.getenv(
                                                                     'HOSTNAME')),
-                                                            'frontend/api/archive/')))
+                                                            'frontend/api/archive/'))
 
                 return HttpResponseRedirect('/admin/contests/archive/')
             else:
