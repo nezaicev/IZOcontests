@@ -116,11 +116,15 @@ def download_file(url, name_file, extension):
 
 
 def parse_path_file(path):
+    container=path.split('/')[3]
+    domain=path.split('/')[2]
+
     result = {
         'http': True,
         'extension': path.split('/')[-1].split('.')[-1],
         'file_name': path.split('/')[-1].split('.')[-2],
-        'path': path
+        'container_name':container,
+        'path': path.replace('{}/{}'.format(domain, container),'{}/{}'.format(domain, str(int(container)-1)) )
     }
     if 'http' not in path:
         result['http'] = False
