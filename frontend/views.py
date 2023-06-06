@@ -385,10 +385,10 @@ class ExpositionListAPIView(APIView):
                 expositions_2 = Exposition.objects.filter(start_date__year=year,
                                                           start_date__month__in=[9, 10, 11, 12],
                                                           publicate=True)
-                expositions = expositions_1.union(expositions_2)
+                expositions = expositions_1.union(expositions_2).order_by('-start_date')
 
             else:
-                expositions = Exposition.objects.filter(archive=is_archive, publicate=True)
+                expositions = Exposition.objects.filter(archive=is_archive, publicate=True).order_by('-start_date')
         else:
             expositions = Exposition.objects.filter(archive=is_archive, publicate=True)
             if year:
@@ -398,10 +398,10 @@ class ExpositionListAPIView(APIView):
                 expositions_2 = Exposition.objects.filter(archive=is_archive, start_date__year=year,
                                                           start_date__month__in=[9, 10, 11, 12],
                                                           publicate=True)
-                expositions = expositions_1.union(expositions_2)
+                expositions = expositions_1.union(expositions_2).order_by('-start_date')
 
             else:
-                expositions = Exposition.objects.filter(archive=is_archive, publicate=True)
+                expositions = Exposition.objects.filter(archive=is_archive, publicate=True).order_by('-start_date')
         serializer = ExpositionListSerializer(expositions, many=True)
         return Response(serializer.data)
 

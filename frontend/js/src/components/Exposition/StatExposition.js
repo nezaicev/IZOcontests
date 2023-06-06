@@ -5,6 +5,7 @@ import {
     TableHead,
     TableRow
 } from "@mui/material";
+
 import React from "react";
 
 function StatExposition(props) {
