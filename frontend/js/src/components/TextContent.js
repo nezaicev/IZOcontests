@@ -31,11 +31,11 @@ const TextContent = (props) => {
             fetchAll ? <Box>
 
                 <Box sx={{justifyContent: 'center', display: 'flex'}}>
-                    <Avatar
-                        alt="Мы Москвичи"
-                        srcSet={`${process.env.REACT_APP_HOST_NAME}/static/frontend/images/contests/logo_mymoskvichi.jpg`}
-                        sx={{width: 95, height: 95 , borderColor:'#AA8C8C', border:'10px'}}
-                    />
+                    {/*<Avatar*/}
+                    {/*    alt="Мы Москвичи"*/}
+                    {/*    srcSet={`${process.env.REACT_APP_HOST_NAME}/static/frontend/images/contests/logo_mymoskvichi.jpg`}*/}
+                    {/*    sx={{width: 95, height: 95 , borderColor:'#AA8C8C', border:'10px'}}*/}
+                    {/*/>*/}
                 </Box>
 
                 <Box sx={{
