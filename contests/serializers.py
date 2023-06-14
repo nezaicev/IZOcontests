@@ -125,6 +125,10 @@ class CustomImageField(serializers.Field):
             downloaded_path_file = download_file(file['path'],
                                                  file['file_name'],
                                                  file['extension'])
+            if not downloaded_path_file:
+                downloaded_path_file = download_file(file['original_path'],
+                                                     file['file_name'],
+                                                     file['extension'])
 
             if os.path.exists(downloaded_path_file):
                 return upload_file(downloaded_path_file,

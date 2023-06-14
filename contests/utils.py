@@ -103,16 +103,19 @@ def upload_file(local_url_file, path_in_container, extension):
 
 
 def download_file(url, name_file, extension):
-    urllib3.disable_warnings()
-    result = requests.get(url, verify=False)
-    result.raise_for_status()
-    os.makedirs(settings.TMP_DIR, exist_ok=True)
-    with open(os.path.join(settings.TMP_DIR,
-                           '{}.{}'.format(name_file, extension)),
-              'wb') as file:
-        file.write(result.content)
-    return os.path.join(settings.TMP_DIR,
-                        '{}.{}'.format(name_file, extension))
+    try:
+        urllib3.disable_warnings()
+        result = requests.get(url, verify=False)
+        result.raise_for_status()
+        os.makedirs(settings.TMP_DIR, exist_ok=True)
+        with open(os.path.join(settings.TMP_DIR,
+                               '{}.{}'.format(name_file, extension)),
+                  'wb') as file:
+            file.write(result.content)
+        return os.path.join(settings.TMP_DIR,
+                            '{}.{}'.format(name_file, extension))
+    except:
+        return None
 
 
 def parse_path_file(path):
@@ -124,7 +127,8 @@ def parse_path_file(path):
         'extension': path.split('/')[-1].split('.')[-1],
         'file_name': path.split('/')[-1].split('.')[-2],
         'container_name':container,
-        'path': path.replace('{}/{}'.format(domain, container),'{}/{}'.format(domain, str(int(container)-1)) )
+        'path': path.replace('{}/{}'.format(domain, container),'{}/{}'.format(domain, str(int(container)-1)) ),
+        'original_path': path ,
     }
     if 'http' not in path:
         result['http'] = False
