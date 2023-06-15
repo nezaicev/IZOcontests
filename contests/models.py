@@ -892,7 +892,7 @@ class FileVP(File):
 class CreativeTack(models.Model):
     contest_name = models.CharField('Конкурс', max_length=50)
     year_contest = models.CharField('Год', max_length=50)
-    theme = models.CharField('Тема|Номинация', max_length=50)
+    theme = models.CharField('Тема|Номинация', max_length=200)
     content = RichTextField(verbose_name='Контент')
 
     class Meta:
