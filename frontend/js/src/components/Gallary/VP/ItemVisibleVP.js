@@ -168,15 +168,19 @@ export function ExpandMoreCollapse(props) {
                                         }}/>
                                     </IconButton>
                                 </Tooltip> <DividerStyled/>
-                                </React.Fragment> : ''}
-
-                            {
-                                props.item.videos.map((item, index) => (
+                                    {props.item.videos.map((item, index) => (
                                     <VideoItem name={item.name}
                                                url={item.link}
-                                               key={index}/>))
+                                               key={index}/>))}
+                                </React.Fragment> : ''}
 
-                            }
+                            {/*{*/}
+                            {/*    props.item.videos.map((item, index) => (*/}
+                            {/*        <VideoItem name={item.name}*/}
+                            {/*                   url={item.link}*/}
+                            {/*                   key={index}/>))*/}
+
+                            {/*}*/}
 
 
                             {props.item.files.length > 0 ?
