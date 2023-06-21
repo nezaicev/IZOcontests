@@ -9,13 +9,11 @@ import ImageListItem from "@mui/material/ImageListItem";
 import {styled} from '@mui/material/styles';
 import Tooltip from "@mui/material/Tooltip";
 import Collapse from '@mui/material/Collapse';
-import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CardContent from "@mui/material/CardContent";
 import Card from "@mui/material/Card";
 import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import {ButtonCollapse, ImageButton} from "../styled";
-import {ItemVisibleVP} from "./VP/ItemVisibleVP";
 import FieldTitle from "./FieldTitle";
 
 const style = {
