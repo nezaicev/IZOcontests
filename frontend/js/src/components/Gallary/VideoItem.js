@@ -85,7 +85,7 @@ export default function VideoItem(props) {
                             <a href='#'>
                                 <img
                                     src={getThumbYoutube(props.url, 'mqdefault')}
-                                    // alt={props.item.author_name ? props.item.author_name : ''}
+                                    alt={props.item && props.item.author_name }
                                     loading="lazy"/>
                             </a>
 
@@ -94,7 +94,7 @@ export default function VideoItem(props) {
                                 sx={{
                                     backgroundColor: "rgb(129 110 110 / 76%)"
                                 }}
-                                title={props.item.author_name && props.item.author_name.toUpperCase()}
+                                title={props.item && props.item.author_name.toUpperCase()}
                                 actionIcon={
                                     <Tooltip title="Видео">
                                         <IconButton>
