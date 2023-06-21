@@ -20,6 +20,8 @@ import Event from "./pages/EVENT/Event";
 import Broadcast from "./pages/BROADCAST/Broadcast";
 import {ContestsStatistics} from "./pages/STATISTICS/ContestsStatistics";
 import {Exposition} from "./pages/EXPOSITION/Exposition";
+import {VM} from "./pages/VM_MAIN/vm";
+
 
 
 
@@ -31,7 +33,7 @@ const App = () => {
             <BrowserRouter>
 
                 <Routes>
-
+                    <Route path={'/test'} element={<VM/>}/>
 
                     {/*'_______Главная________'*/}
                     <Route path='/' element={<Layout tabs={[
