@@ -237,6 +237,7 @@ class ThemeContestAPIView(APIView):
         year = request.query_params.get('year_contest')
         themes = set(
             Archive.objects.filter(theme__gt='', theme__isnull=False,
+                                   publish=True,
                                    contest_name=contest_name,
                                    year_contest=year).values_list(
                 'theme', flat=True))
