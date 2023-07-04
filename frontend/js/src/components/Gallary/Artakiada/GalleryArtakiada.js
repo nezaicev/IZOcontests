@@ -7,7 +7,7 @@ import VisibleBoxImages from "../VisibleBoxImages";
 import CreativeTack from "../CreativeTack";
 import {getExcludeData} from "../../utils/utils";
 
-const excludeYears=['2022-2023 год']
+const excludeYears=[]
 
 
 export default function GalleryArtakiada(props) {
