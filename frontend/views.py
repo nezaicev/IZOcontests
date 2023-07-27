@@ -209,9 +209,7 @@ class YearContestAPIView(APIView):
 
     def get(self, request):
         contest_name = request.query_params.get('contest_name')
-        years = set(
-            Archive.objects.filter(contest_name=contest_name).values_list(
-                'year_contest', flat=True))
+        years = set(Archive.objects.filter(contest_name=contest_name).values_list('year_contest', flat=True))
         years = list(years)
         years.sort(reverse=True)
         return Response(years)
@@ -224,6 +222,7 @@ class NominationContestAPIView(APIView):
         year = request.query_params.get('year_contest')
         nominations = set(
             Archive.objects.filter(contest_name=contest_name,
+                                   publish=True,
                                    year_contest=year).values_list(
                 'nomination', flat=True))
         nominations = list(nominations)
@@ -238,6 +237,7 @@ class ThemeContestAPIView(APIView):
         year = request.query_params.get('year_contest')
         themes = set(
             Archive.objects.filter(theme__gt='', theme__isnull=False,
+                                   publish=True,
                                    contest_name=contest_name,
                                    year_contest=year).values_list(
                 'theme', flat=True))

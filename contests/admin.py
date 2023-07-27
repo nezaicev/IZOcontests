@@ -881,10 +881,10 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     actions = ['export_as_xls', 'send_selected_letter',
                'load_json_data_from_file', 'transfer_data']
     list_editable = []
-    list_display = ['reg_number', 'publish', 'certificate', 'contest_name', 'author_name',
+    list_display = ['reg_number', 'certificate', 'contest_name',
                     'fio_teacher',
                     'teacher',
-                    'rating', 'status', 'year_contest']
+                    'rating', 'status', 'year_contest', 'image','fio', 'theme','author_name','publish', 'age', 'level']
     list_filter = ('contest_name', 'publish', 'year_contest', 'status')
 
     search_fields = ('reg_number', 'fio', 'fio_teacher')
@@ -911,7 +911,7 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     def get_list_display(self, request):
         if request.user.is_superuser or request.user.groups.filter(
                 name='Manager').exists():
-            self.list_editable = ('publish', 'rating')
+            self.list_editable = ('publish', 'rating','image', 'theme','author_name')
             self.list_filter = self.__class__.list_filter
             return self.__class__.list_display
         else:
