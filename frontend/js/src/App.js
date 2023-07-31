@@ -33,8 +33,8 @@ const App = () => {
             <BrowserRouter>
 
                 <Routes>
-                    <Route path={'/test'} element={<VM/>}/>
 
+                    <Route index element={<VM/>}/>
                     {/*'_______Главная________'*/}
                     <Route path='/' element={<Layout tabs={[
                         {'name': 'Конкурсы', 'link': '/contests'},
@@ -44,7 +44,8 @@ const App = () => {
                         // {'name': 'Виртуальный музей', 'link': 'http://shkola-nemenskogo.ru/'}
 
                     ]}/>}>
-                        <Route index element={<Contests/>}/>
+                        {/*<Route index element={<Contests/>}/>*/}
+
                         <Route path='contests' element={<Contests/>}/>
                         <Route path='events' element={<Events/>}/>
                         <Route path='broadcasts' element={<Broadcasts/>}/>
