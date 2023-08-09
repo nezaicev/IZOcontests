@@ -33,6 +33,8 @@ urlpatterns = [
     path('api/page/<slug:slug>/', views.PageDetailAPIView.as_view()),
     path('api/contests/', views.PageContestAPIView.as_view()),
     path('api/statistics/', views.StatAPIView.as_view()),
+    path('api/video/', views.VideoAPIView.as_view()),
+    path('api/video/categories/', views.CategoryAPIView.as_view()),
 
 
 

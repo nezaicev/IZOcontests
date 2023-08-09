@@ -26,8 +26,8 @@ from contests.serializers import ArchiveSerializer, NominationVPSerializer, \
     NominationMymoskvichiSerializer, PageContestSerializer, DesignArchiveSerializer
 from event.models import Event, ParticipantEvent
 from event.serializers import EventSerializer, ParticipantEventSerializers
-from content.models import Page
-from content.serializers import PageSerializer
+from content.models import Page, Video, Category
+from content.serializers import PageSerializer, VideoSerializer
 from contests.tasks import send_mail_for_subscribers
 
 
@@ -209,7 +209,8 @@ class YearContestAPIView(APIView):
 
     def get(self, request):
         contest_name = request.query_params.get('contest_name')
-        years = set(Archive.objects.filter(contest_name=contest_name).values_list('year_contest', flat=True))
+        years = set(Archive.objects.filter(contest_name=contest_name).values_list('year_contest',
+                                                                                  flat=True))
         years = list(years)
         years.sort(reverse=True)
         return Response(years)
@@ -388,7 +389,8 @@ class ExpositionListAPIView(APIView):
                 expositions = expositions_1.union(expositions_2).order_by('-start_date')
 
             else:
-                expositions = Exposition.objects.filter(archive=is_archive, publicate=True).order_by('-start_date')
+                expositions = Exposition.objects.filter(archive=is_archive,
+                                                        publicate=True).order_by('-start_date')
         else:
             expositions = Exposition.objects.filter(archive=is_archive, publicate=True)
             if year:
@@ -401,7 +403,8 @@ class ExpositionListAPIView(APIView):
                 expositions = expositions_1.union(expositions_2).order_by('-start_date')
 
             else:
-                expositions = Exposition.objects.filter(archive=is_archive, publicate=True).order_by('-start_date')
+                expositions = Exposition.objects.filter(archive=is_archive,
+                                                        publicate=True).order_by('-start_date')
         serializer = ExpositionListSerializer(expositions, many=True)
         return Response(serializer.data)
 
@@ -466,3 +469,23 @@ class YearExpositionsArchiveAPIView(APIView):
             return Response(years)
         else:
             return Response([])
+
+
+class VideoAPIView(ListAPIView):
+    serializer_class = VideoSerializer
+    pagination_class = StandardResultsSetPagination
+
+
+    def get_queryset(self):
+        queryset = Video.objects.all()
+        category = self.request.query_params.get('category')
+        if category is not None:
+            queryset = queryset.filter(categories__name__contains=category).order_by('order')
+        return queryset
+
+
+class CategoryAPIView(APIView):
+
+    def get(self, request):
+        categories = list(Category.objects.all().values_list('name', flat=True))
+        return Response(categories)
