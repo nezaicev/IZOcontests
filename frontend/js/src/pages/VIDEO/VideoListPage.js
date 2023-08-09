@@ -36,7 +36,7 @@ function VideoListPage() {
             method: "GET",
             url: `${host}/frontend/api/video/`,
             params: {
-                page_size: 3,
+                page_size: 1,
                 category: dataInitial ? dataInitial[valueHorizontalTabs] : categories[valueHorizontalTabs],
                 page: page,
             },
