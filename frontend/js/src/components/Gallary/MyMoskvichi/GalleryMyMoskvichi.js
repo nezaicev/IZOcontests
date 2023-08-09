@@ -56,7 +56,7 @@ export default function GalleryMyMoskvichi(props) {
                 />
 
             </Box>
-            <Box sx={{}}>
+
 
                 <VisibleBoxMyMoskvichi
                     url={props.urlContent}
@@ -72,7 +72,7 @@ export default function GalleryMyMoskvichi(props) {
                     }}
                 />
 
-            </Box>
+
         </React.Fragment>
     )
 }

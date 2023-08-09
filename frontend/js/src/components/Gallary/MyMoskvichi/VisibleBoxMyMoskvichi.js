@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import React, {useEffect, useState} from "react";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import axios from "axios";
-import {CircularProgress} from "@mui/material";
+import {CircularProgress, Grid} from "@mui/material";
 // import {ExpandMoreCollapse} from "./ItemVisibleVP";
 import VideoItem from "../VideoItem";
 
@@ -31,14 +31,8 @@ export default function VisibleBoxMyMoskvichi(props) {
 
         if (props.year_contest) {
             props.setNomination([])
-            // props.setPage(1)
-
         }
     }, [props.year_contest])
-
-
-
-
 
     function loadMoreItems() {
 
@@ -71,27 +65,34 @@ export default function VisibleBoxMyMoskvichi(props) {
 
 
     return (
-        <Box>
-            <Box sx={{display:'flex', flexWrap:'wrap'}}>
+
+            <Box sx={{
+                display: 'grid',
+                gridTemplateColumns: `repeat(auto-fill, minmax(320px, 1fr))`,
+                justifyItems: 'center',
+                alignItems: 'stretch',
+                marginBottom: '30px',
+            }}>
                 {
                     items.map((item, index) => {
 
                         return (
-                            <Box key={index}
-                                 ref={(items.length === index + 1) ? lastElementRef : null}>
-                                <VideoItem
-                                           item={item}
-                                           url={item.link}
-                                           key={index}/>
 
-                            </Box>
+                            <Grid key={index} item xs="auto"
+                                  ref={(items.length === index + 1) ? lastElementRef : null}>
+                                <VideoItem
+                                    item={item}
+                                    url={item.link}
+                                    key={index}/>
+
+                            </Grid>
                         )
 
                     })
                 }
-            </Box>
 
-            {isFetching && <Box sx={{
+
+                  {isFetching && <Box sx={{
                 justifyContent: 'center',
                 height: '600',
                 display: 'flex',
@@ -101,7 +102,12 @@ export default function VisibleBoxMyMoskvichi(props) {
                     color: '#d26666'
                 }}/>
             </Box>}
-        </Box>
+            </Box>
+
+
+
+
+
     )
 }
 

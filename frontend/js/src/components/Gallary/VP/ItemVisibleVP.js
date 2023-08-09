@@ -176,7 +176,7 @@ export function ExpandMoreCollapse(props) {
 
                             {/*{*/}
                             {/*    props.item.videos.map((item, index) => (*/}
-                            {/*        <VideoItem name={item.name}*/}
+                            {/*        <ItemBroadcast name={item.name}*/}
                             {/*                   url={item.link}*/}
                             {/*                   key={index}/>))*/}
 

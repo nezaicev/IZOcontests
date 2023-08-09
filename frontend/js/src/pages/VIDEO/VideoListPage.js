@@ -1,66 +1,131 @@
 import Box from "@mui/material/Box";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import Header from "../../components/Header/Header";
-import {Grid} from "@mui/material";
+import {CircularProgress, Grid} from "@mui/material";
 import Container from "@mui/material/Container";
 import dataFetch from "../../components/utils/dataFetch"
-import VideoItem from "../../components/Video/VideoItem";
+import ItemBroadcast from "../../components/Broadcast/ItemBroadcast";
 import useAuth from "../../components/hooks/useAuth";
+import {GridVideoItems} from "../../components/Video/GridVideoItems";
+import HorizontalTabs from "../../components/Gallary/HorizontalTabs";
+import axios from "axios";
+import useInfiniteScroll from "../../components/hooks/useInfiniteScroll";
+import VideoItem from "../../components/Video/VideoItem";
 
 
 let pages = [
-    {'name': 'Вебинары', 'link': '/frontend/api/events/'},
+    {'name': 'Виде', 'link': 'frontend/api/video/'},
 ]
 
 const host = process.env.REACT_APP_HOST_NAME
 
-function BroadcastListPage() {
-    const auth = useAuth()
+function VideoListPage() {
+    const [page, setPage] = React.useState(1)
     const [data, setData] = React.useState([])
+    const [categories, setCategories] = React.useState([]);
+    const [valueHorizontalTabs, setValueHorizontalTabs] = React.useState(0)
     const [value, setValue] = React.useState(0);
+    const [isFetching, setIsFetching] = useState(false);
+    const [HasMore, setHasMore] = useState(true);
+
+
+    function loadMoreItems(dataInitial) {
+
+        setIsFetching(true);
+        axios({
+            method: "GET",
+            url: `${host}/frontend/api/video/`,
+            params: {
+                page_size: 3,
+                category: dataInitial ? dataInitial[valueHorizontalTabs] : categories[valueHorizontalTabs],
+                page: page,
+            },
+        })
+            .then((res) => {
+                setData((prevTitles) => {
+                    return [...new Set([...prevTitles, ...res.data.results.map((b) => b)])];
+                });
+                res.data.next ? setPage((prevPageNumber) => prevPageNumber + 1) : setPage(1);
+                setHasMore(!!res.data.next);
+                setIsFetching(false);
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    }
+
+    const [lastElementRef] = useInfiniteScroll(
+        HasMore ? loadMoreItems : () => {
+        },
+        isFetching
+    );
 
 
     useEffect(() => {
-        dataFetch(`${host}${pages[value]['link']}`, null, (data) => {
-            setData(data);
+        setIsFetching(true);
+        dataFetch(`${process.env.REACT_APP_HOST_NAME}/frontend/api/video/categories/`, {}, (data) => {
+            setCategories(data, [function () {
+                loadMoreItems(data)
+                setIsFetching(false)
+            }()])
         })
     }, [])
 
+
     useEffect(() => {
-        dataFetch(`${host}${pages[value]['link']}`, null, (data) => {
-            setData(data);
-        })
-    }, [value])
+        setData([])
+
+        if (categories.length > 0) {
+            loadMoreItems()
+        }
+
+    }, [valueHorizontalTabs])
 
 
     return (
-        <Box sx={{fontFamily: 'Roboto', height: 'auto'}}>
-            <Header pages={pages}
-                    activePage={(newValue) => (setValue(newValue))}
-                    auth={auth}
-                    mainLink={`${host}/frontend/main/`}/>
-            <Container sx={{
-                fontFamily: 'Roboto',
-                mt: '20px',
-                justifyContent: 'center',
-            }}>
-                <Box>
-                    <Grid container spacing={2}
-                          sx={{justifyContent: 'space-between'}}>
-                        {data.map((item, index) => (
-                            item['broadcast_url'] ?
-                                <Grid item xs="auto" key={index}>
-                                    <VideoItem data={item}/>
-                                </Grid> : ''
-                        ))}
-
-                    </Grid>
-                </Box>
-
-            </Container>
+        <> <Box sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: '10px'
+        }}>
+            {categories.length > 0 ? <HorizontalTabs
+                data={categories}
+                setValueHorizontalTabs={(newValue) => (setValueHorizontalTabs((newValue)))}
+            /> : ''}
         </Box>
 
+            <Box>
+                <Grid container spacing={2}
+                      sx={{justifyContent: 'space-between'}}>
+                    {data.map((item, index) => (
+                        item['link'] ?
+                            <Grid item xs="auto" key={index}
+                                  ref={(data.length === index + 1) ? lastElementRef : null}>
+                                <VideoItem link={item['link']} title={item['title']}
+                                           description={item['description']}/>
+                            </Grid> : ''
+                    ))}
+
+                </Grid>
+                {isFetching && <Box sx={{
+                    justifyContent: 'center',
+                    height: '600',
+                    display: 'flex',
+                    marginTop: ' 20px'
+                }}>
+                    <CircularProgress sx={{
+                        color: '#d26666'
+                    }}/>
+                </Box>}
+            </Box>
+
+
+        </>
     )
+
+
 }
 
-export default BroadcastListPage
+export {VideoListPage}

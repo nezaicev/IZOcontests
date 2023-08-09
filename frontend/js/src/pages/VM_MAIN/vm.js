@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {createSvgIcon} from "@mui/material";
 
 
-const fontSize=4
+const fontSize = 4
 
 
 const HomeIcon = createSvgIcon(
@@ -11,18 +11,16 @@ const HomeIcon = createSvgIcon(
     'Home',
 );
 
-const setBackgroundStyle=()=>{
+const setBackgroundStyle = () => {
     document.body.style.backgroundColor = "#fff";
-    document.body.style.backgroundImage= 'url(static/frontend/images/background/back.svg)';
-    document.body.style.backgroundPositionX='center'
-    document.body.style.backgroundPositionY='85%'
-    document.body.style.backgroundRepeat='no-repeat'
-    document.body.style.backgroundAttachment='fixed'
-    document.body.style.backgroundSize='cover'
+    document.body.style.backgroundImage = 'url(static/frontend/images/background/back.svg)';
+    document.body.style.backgroundPositionX = 'center'
+    document.body.style.backgroundPositionY = '85%'
+    document.body.style.backgroundRepeat = 'no-repeat'
+    document.body.style.backgroundAttachment = 'fixed'
+    document.body.style.backgroundSize = 'cover'
 
 }
-
-
 
 
 const BoxButtonLink = (props) => {
@@ -30,13 +28,17 @@ const BoxButtonLink = (props) => {
         <a href={props.href} style={{
             fill: props.color,
             transition: '0.5s',
-            cursor: props.active ? 'hand' :'default',
+            cursor: props.active ? 'hand' : 'default',
         }}
            onMouseEnter={(e) => {
-               props.active ? e.currentTarget.style.fill = '#fff':''
+               if (props.active) {
+                   e.currentTarget.style.fill = '#fff'
+               }
            }}
            onMouseLeave={(e) => {
-               props.active ? e.currentTarget.style.fill = props.color:''
+               if (props.active) {
+                   e.currentTarget.style.fill = props.color
+               }
            }}>
             {props.children}
 
@@ -74,9 +76,7 @@ const VM = (props) => {
                       strokeWidth={0.65}/>
 
 
-
-
-                 <BoxButtonLink  active={true} href='artakiada' color={'rgba(64,157,170,0.76)'}>
+                <BoxButtonLink active={true} href='artakiada' color={'rgba(64,157,170,0.76)'}>
                     <rect
                         id="rect4433-5-4"
                         width="35.522415"
@@ -114,9 +114,6 @@ const VM = (props) => {
                 </BoxButtonLink>
 
 
-
-
-
                 <BoxButtonLink active={true} href='nrusheva' color={'rgba(197,167,100,0.76)'}>
                     <rect
 
@@ -128,7 +125,8 @@ const VM = (props) => {
                         rx={0.5}
                     />
 
-                    <text x="106.5" y="25.5" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
+                    <text x="106.5" y="25.5" fill={"#3C3C3B"} fontSize={fontSize}
+                          textAnchor="middle">
                         <tspan>КОНКУРС</tspan>
                         <tspan x="106.5" dy="1.5em">ИМЕНИ</tspan>
                         <tspan x="106.5" dy="1.5em">НАДИ РУШЕВОЙ</tspan>
@@ -147,7 +145,8 @@ const VM = (props) => {
                         rx={0.5}
                     />
 
-                    <text x="144.5" y="23.5" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
+                    <text x="144.5" y="23.5" fill={"#3C3C3B"} fontSize={fontSize}
+                          textAnchor="middle">
                         <tspan>КОНКУРС</tspan>
                         <tspan x="144.5" dy="1.5em">«ЧЕРЕЗ</tspan>
                         <tspan x="144.5" dy="1.5em">ИССКУСТВО</tspan>
@@ -202,7 +201,7 @@ const VM = (props) => {
                 </BoxButtonLink>
 
 
-                <BoxButtonLink href='#' color={'rgba(198,200,240,0.76)'}>
+                <BoxButtonLink active={true} href='video' color={'rgba(198,200,240,0.76)'}>
                     <rect
 
                         id="rect4433-5-5-4"
@@ -260,22 +259,22 @@ const VM = (props) => {
                         rx={0.5}
                     />
                     <text x="183" y="66.5" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
-                         <tspan>АРТ-АКЦИИ</tspan>
+                        <tspan>АРТ-АКЦИИ</tspan>
 
                     </text>
                 </BoxButtonLink>
 
                 <BoxButtonLink href='#' color={'rgba(140,188,243,0.76)'}>
-                   <rect
-                    id="rect4433-7"
-                    width="41.522415"
-                    height="34.805302"
-                    x="7.615749"
-                    y="86.219551"
-                    rx={0.5}
-                   />
+                    <rect
+                        id="rect4433-7"
+                        width="41.522415"
+                        height="34.805302"
+                        x="7.615749"
+                        y="86.219551"
+                        rx={0.5}
+                    />
                     <text x="29" y="98" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
-                           <tspan>ПЕДАГОГИЧЕСКИЕ</tspan>
+                        <tspan>ПЕДАГОГИЧЕСКИЕ</tspan>
                         <tspan x="29" dy="1.5em">МЕТОДИЧЕСКИЕ</tspan>
                         <tspan x="29" dy="1.5em">КОЛЛЕКЦИИ</tspan>
 
@@ -284,31 +283,31 @@ const VM = (props) => {
 
 
                 <BoxButtonLink href='#' color={'rgba(100,188,197,0.76)'}>
-                  <rect
-                    id="rect4433-9"
-                    width="35.522415"
-                    height="34.805302"
-                    x="50.923767"
-                    y="86.044823"
-                    rx={0.5}
-                  />
+                    <rect
+                        id="rect4433-9"
+                        width="35.522415"
+                        height="34.805302"
+                        x="50.923767"
+                        y="86.044823"
+                        rx={0.5}
+                    />
                     <text x="69" y="98" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
 
-                      <tspan>СКАЗКИ</tspan>
+                        <tspan>СКАЗКИ</tspan>
                         <tspan x="69" dy="1.5em">НОРОДОВ МИРА</tspan>
                         <tspan x="69" dy="1.5em">ГЛАЗАМИ ДЕТЕЙ</tspan>
                     </text>
                 </BoxButtonLink>
 
                 <BoxButtonLink active={true} href='vp' color={'rgba(156,189,227,0.76)'}>
-                <rect
-                    id="rect4433-5-5-46"
-                    width="35.522415"
-                    height="34.805302"
-                    x="88.432693"
-                    y="85.967056"
-                    rx={0.5}
-                />
+                    <rect
+                        id="rect4433-5-5-46"
+                        width="35.522415"
+                        height="34.805302"
+                        x="88.432693"
+                        y="85.967056"
+                        rx={0.5}
+                    />
                     <text x="105" y="98" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
                         <tspan>КОНКУРС</tspan>
                         <tspan x="105" dy="1.5em">АРТ</tspan>
@@ -316,31 +315,31 @@ const VM = (props) => {
                     </text>
                 </BoxButtonLink>
 
-                 <BoxButtonLink href='#' color={'rgba(213,198,142,0.76)'}>
-                <rect
+                <BoxButtonLink href='#' color={'rgba(213,198,142,0.76)'}>
+                    <rect
 
-                    id="rect4433-5-5-9"
-                    width="35.522415"
-                    height="34.805302"
-                    x="125.95808"
-                    y="86.0952"
-                    rx={0.5}
-                />
+                        id="rect4433-5-5-9"
+                        width="35.522415"
+                        height="34.805302"
+                        x="125.95808"
+                        y="86.0952"
+                        rx={0.5}
+                    />
                     <text x="142" y="98" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
                         <tspan>АРТ</tspan>
                         <tspan x="142" dy="1.5em">ЧЕЛЛЕНДЖИ</tspan>
                     </text>
                 </BoxButtonLink>
 
-                 <BoxButtonLink href='#' color={'rgba(177,226,204,0.76)'}>
-                <rect
-                    id="rect4433-7-8"
-                    width="41.522415"
-                    height="34.805302"
-                    x="163.45549"
-                    y="86.163292"
-                    rx={0.5}
-                />
+                <BoxButtonLink href='#' color={'rgba(177,226,204,0.76)'}>
+                    <rect
+                        id="rect4433-7-8"
+                        width="41.522415"
+                        height="34.805302"
+                        x="163.45549"
+                        y="86.163292"
+                        rx={0.5}
+                    />
                     <text x="182" y="98" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
                         <tspan>ПРОЕКТ</tspan>
                         <tspan x="182" dy="1.5em">«ДИЗАЙН ДЕТЯМ»</tspan>

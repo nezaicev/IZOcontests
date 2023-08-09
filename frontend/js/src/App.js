@@ -21,7 +21,7 @@ import Broadcast from "./pages/BROADCAST/Broadcast";
 import {ContestsStatistics} from "./pages/STATISTICS/ContestsStatistics";
 import {Exposition} from "./pages/EXPOSITION/Exposition";
 import {VM} from "./pages/VM_MAIN/vm";
-
+import {VideoListPage} from "./pages/VIDEO/VideoListPage"
 
 
 
@@ -207,6 +207,13 @@ const App = () => {
                         {'name': 'Статистика', 'link': '/statistics'},
                     ]}/>}>
                         <Route path='statistics' element={<ContestsStatistics/>}/>
+                    </Route>
+
+                     {/*'_______Видео________'*/}
+                    <Route path='/' element={<Layout tabs={[
+                        {'name': 'Видео', 'link': '/video'},
+                    ]}/>}>
+                        <Route path='video' element={<VideoListPage/>}/>
                     </Route>
 
 
