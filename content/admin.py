@@ -5,7 +5,6 @@ from content.forms import  ContentCreateForm
 
 
 class PageAdmin(admin.ModelAdmin):
-    # form=ContentCreateForm
     search_fields = ('title', 'subtitle', 'slug')
 
 
@@ -14,6 +13,7 @@ class VideoAdmin(admin.ModelAdmin):
     list_editable = ('order',)
     search_fields = ('title',)
     filter_horizontal = ('categories',)
+
 
 admin.site.register(Page, PageAdmin)
 admin.site.register(Video, VideoAdmin)

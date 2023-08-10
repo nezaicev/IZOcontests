@@ -3,9 +3,11 @@ from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 
-
 # Create your models here.
+from contests.utils import PathAndRename
+
 unique_id = uuid.uuid4().hex
+
 
 class Page(models.Model):
     slug = models.SlugField(unique=True, verbose_name='Псевдоним')
@@ -34,9 +36,8 @@ class Video(models.Model):
             self.order = self.pk
         super(Video, self).save(*args, **kwargs)
 
-
     class Meta:
-        ordering=('order',)
+        ordering = ('order',)
         verbose_name = 'Видео'
         verbose_name_plural = 'Видео'
 
@@ -56,4 +57,21 @@ class Category(models.Model):
 
 
 class Publication(models.Model):
-    pass
+    title = models.CharField('Название', max_length=100)
+    link = models.URLField('Ссылка')
+    poster = models.ImageField(verbose_name='Обложка',
+                               upload_to=PathAndRename('publication/posters/'))
+    order = models.IntegerField('Порядковый номер')
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.order = self.pk
+        super(Publication, self).save(*args, **kwargs)
+
+    class Meta:
+        ordering = ('order',)
+        verbose_name = 'Публикация'
+        verbose_name_plural = 'Публикации'
+
+    def __str__(self):
+        return self.title
