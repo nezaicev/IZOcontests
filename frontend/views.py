@@ -475,12 +475,11 @@ class VideoAPIView(ListAPIView):
     serializer_class = VideoSerializer
     pagination_class = StandardResultsSetPagination
 
-
     def get_queryset(self):
         queryset = Video.objects.all()
         category = self.request.query_params.get('category')
         if category is not None:
-            queryset = queryset.filter(categories__name__contains=category).order_by('order')
+            queryset = queryset.filter(categories__name__contains=category)
         return queryset
 
 

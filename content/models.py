@@ -1,10 +1,11 @@
+import uuid
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 
 
 # Create your models here.
-
+unique_id = uuid.uuid4().hex
 
 class Page(models.Model):
     slug = models.SlugField(unique=True, verbose_name='Псевдоним')
@@ -26,9 +27,16 @@ class Video(models.Model):
     link = models.URLField('Ссылка', blank=False, null=False)
     categories = models.ManyToManyField('Category', related_name='categories',
                                         verbose_name='Категория', )
-    order = models.IntegerField('Порядковый номер', default=1)
+    order = models.IntegerField('Порядковый номер')
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.order = self.pk
+        super(Video, self).save(*args, **kwargs)
+
 
     class Meta:
+        ordering=('order',)
         verbose_name = 'Видео'
         verbose_name_plural = 'Видео'
 

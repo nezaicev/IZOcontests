@@ -10,6 +10,8 @@ class PageAdmin(admin.ModelAdmin):
 
 
 class VideoAdmin(admin.ModelAdmin):
+    list_display = ('title', 'order')
+    list_editable = ('order',)
     search_fields = ('title',)
     filter_horizontal = ('categories',)
 
