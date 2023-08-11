@@ -22,7 +22,7 @@ import {ContestsStatistics} from "./pages/STATISTICS/ContestsStatistics";
 import {Exposition} from "./pages/EXPOSITION/Exposition";
 import {VM} from "./pages/VM_MAIN/vm";
 import {VideoListPage} from "./pages/VIDEO/VideoListPage"
-
+import {PublicationListPage} from "./pages/PUBLICATION/PublicationListPage";
 
 
 const host = process.env.REACT_APP_HOST_NAME
@@ -68,13 +68,15 @@ const App = () => {
                     </Route>
 
                     {/*'______Временные редиректы______'*/}
-                    <Route path="frontend/vp/" element={<Navigate to="/vp/gallery"  />} />
-                    <Route path="frontend/artakiada/" element={<Navigate to="/artakiada/gallery"  />} />
-                    <Route path="frontend/nrusheva/" element={<Navigate to="/nrusheva/gallery"  />} />
-                    <Route path="frontend/mymoskvichi/2/" element={<Navigate to="/mymoskvichi/gallery"  />} />
-                    <Route path="frontend/mymoskvichi/0/" element={<Navigate to="/mymoskvichi"  />} />
-                    <Route path="frontend/mymoskvichi/" element={<Navigate to="/mymoskvichi"  />} />
-                     <Route path="frontend/expositions/" element={<Navigate to="/expositions"  />} />
+                    <Route path="frontend/vp/" element={<Navigate to="/vp/gallery"/>}/>
+                    <Route path="frontend/artakiada/"
+                           element={<Navigate to="/artakiada/gallery"/>}/>
+                    <Route path="frontend/nrusheva/" element={<Navigate to="/nrusheva/gallery"/>}/>
+                    <Route path="frontend/mymoskvichi/2/"
+                           element={<Navigate to="/mymoskvichi/gallery"/>}/>
+                    <Route path="frontend/mymoskvichi/0/" element={<Navigate to="/mymoskvichi"/>}/>
+                    <Route path="frontend/mymoskvichi/" element={<Navigate to="/mymoskvichi"/>}/>
+                    <Route path="frontend/expositions/" element={<Navigate to="/expositions"/>}/>
 
 
                     {/*'______Худ. проекты______'*/}
@@ -184,7 +186,7 @@ const App = () => {
                         {'name': 'Мероприятия', 'link': '/event'},
                     ]}/>}>
                         <Route path='event/:id' element={<Event/>}/>
-                        <Route path="frontend/event/:id" element={<Navigate to="/events"  />} />
+                        <Route path="frontend/event/:id" element={<Navigate to="/events"/>}/>
                     </Route>
 
                     {/*'_______Трансляция________'*/}
@@ -192,7 +194,8 @@ const App = () => {
                         {'name': 'Трансляция', 'link': '/broadcast'},
                     ]}/>}>
                         <Route path='broadcast/:id' element={<Broadcast/>}/>
-                        <Route path="frontend/broadcast/:id" element={<Navigate to="/broadcasts"  />} />
+                        <Route path="frontend/broadcast/:id"
+                               element={<Navigate to="/broadcasts"/>}/>
                     </Route>
 
                     {/*'_______Выставка________'*/}
@@ -209,11 +212,18 @@ const App = () => {
                         <Route path='statistics' element={<ContestsStatistics/>}/>
                     </Route>
 
-                     {/*'_______Видео________'*/}
+                    {/*'_______Видео________'*/}
                     <Route path='/' element={<Layout tabs={[
                         {'name': 'Видео', 'link': '/video'},
                     ]}/>}>
                         <Route path='video' element={<VideoListPage/>}/>
+                    </Route>
+
+                    {/*'_______Публикации________'*/}
+                    <Route path='/' element={<Layout tabs={[
+                        {'name': 'Публикации', 'link': '/publication'},
+                    ]}/>}>
+                        <Route path='publication' element={<PublicationListPage/>}/>
                     </Route>
 
 

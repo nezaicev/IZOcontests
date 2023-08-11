@@ -26,8 +26,8 @@ from contests.serializers import ArchiveSerializer, NominationVPSerializer, \
     NominationMymoskvichiSerializer, PageContestSerializer, DesignArchiveSerializer
 from event.models import Event, ParticipantEvent
 from event.serializers import EventSerializer, ParticipantEventSerializers
-from content.models import Page, Video, Category
-from content.serializers import PageSerializer, VideoSerializer
+from content.models import Page, Video, Category, Publication
+from content.serializers import PageSerializer, VideoSerializer, PublicationSerializer
 from contests.tasks import send_mail_for_subscribers
 
 
@@ -488,3 +488,9 @@ class CategoryAPIView(APIView):
     def get(self, request):
         categories = list(Category.objects.all().values_list('name', flat=True))
         return Response(categories)
+
+
+class PublicationAPIView(ListAPIView):
+    queryset = Publication.objects.all()
+    serializer_class = PublicationSerializer
+    pagination_class = StandardResultsSetPagination

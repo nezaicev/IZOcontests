@@ -1,12 +1,7 @@
 import Box from "@mui/material/Box";
 import React, {useEffect, useState} from "react";
-import Header from "../../components/Header/Header";
 import {CircularProgress, Grid} from "@mui/material";
-import Container from "@mui/material/Container";
 import dataFetch from "../../components/utils/dataFetch"
-import ItemBroadcast from "../../components/Broadcast/ItemBroadcast";
-import useAuth from "../../components/hooks/useAuth";
-import {GridVideoItems} from "../../components/Video/GridVideoItems";
 import HorizontalTabs from "../../components/Gallary/HorizontalTabs";
 import axios from "axios";
 import useInfiniteScroll from "../../components/hooks/useInfiniteScroll";

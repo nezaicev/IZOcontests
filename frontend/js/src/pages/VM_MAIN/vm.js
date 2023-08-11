@@ -11,6 +11,34 @@ const HomeIcon = createSvgIcon(
     'Home',
 );
 
+const styleTexture = {
+    backgroundColor: '#fff',
+    backgroundImage: 'url(static/frontend/images/background/back.svg)',
+    backgroundPositionX: 'center',
+    backgroundPositionY: '85%',
+    backgroundRepeat: 'no-repeat',
+    backgroundAttachment: 'fixed',
+    backgroundSize: 'cover',
+    "&::before": {
+        content: '""',
+        position: 'absolute',
+        zIndex: 1,
+        top: 0,
+        left: 0,
+        display: 'block',
+        width: '100%',
+        height: '100%',
+        pointerEvents: 'none',
+        backgroundImage: 'url(https://cdn.selectel.ru/site/img/texture.91f8215.png)',
+        backgroundSize: '260px',
+        opacity: 0.35,
+    }
+}
+
+const setTextureStyle = () => {
+    document.body.classList.add('texture')
+}
+
 const setBackgroundStyle = () => {
     document.body.style.backgroundColor = "#fff";
     document.body.style.backgroundImage = 'url(static/frontend/images/background/back.svg)';
@@ -19,7 +47,6 @@ const setBackgroundStyle = () => {
     document.body.style.backgroundRepeat = 'no-repeat'
     document.body.style.backgroundAttachment = 'fixed'
     document.body.style.backgroundSize = 'cover'
-
 }
 
 
@@ -49,7 +76,10 @@ const BoxButtonLink = (props) => {
 
 const VM = (props) => {
 
-    setBackgroundStyle()
+    // setBackgroundStyle()
+    setTextureStyle()
+
+
     return (
         <Box sx={{
             justifyContent: 'center',
@@ -57,7 +87,21 @@ const VM = (props) => {
             alignItems: 'center',
             width: '100%',
             height: "100%",
-            fontFamily: 'Roboto'
+            fontFamily: 'Roboto',
+             "&::before": {
+        content: '""',
+        position: 'absolute',
+        zIndex: 1,
+        top: 0,
+        left: 0,
+        display: 'block',
+        width: '100%',
+        height: '100%',
+        pointerEvents: 'none',
+        backgroundImage: '',
+        backgroundSize: '260px',
+        opacity: 0,
+    }
         }}>
             <svg width='73%' height="85%" viewBox="-14 8 250 150">
 
@@ -234,7 +278,7 @@ const VM = (props) => {
                 </BoxButtonLink>
 
 
-                <BoxButtonLink href='#' color={'rgba(209,213,237,0.76)'}>
+                <BoxButtonLink active={true} href='publication' color={'rgba(209,213,237,0.76)'}>
                     <rect
                         id="rect4433-6"
                         width="35.522415"

@@ -65,6 +65,8 @@ class Publication(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk:
+
+            super(Publication, self).save(*args, **kwargs)
             self.order = self.pk
         super(Publication, self).save(*args, **kwargs)
 

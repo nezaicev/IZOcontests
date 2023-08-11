@@ -16,6 +16,7 @@ import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 
 function CardExposition(props) {
     // const urlExposition = `${host}/exposition/${props.data.id}/`
+    const [isFetching, setIsFetching] = React.useState(true)
     let optionsDate = {
         year: 'numeric',
         month: 'numeric',
@@ -32,9 +33,11 @@ function CardExposition(props) {
                         src={props.data.poster['thumb']}
                         alt={props.data.title}
                         loading="lazy"
+                        onLoad={()=>{setIsFetching(false)}}
                     />
                 </Link>
 
+                {isFetching?'':
                 <ImageListItemBar
                     sx={{
                         backgroundColor: "rgba(138, 119, 119, 0.89)"
@@ -54,48 +57,13 @@ function CardExposition(props) {
                         </IconButton>
 
                     }/>
-
+}
 
             </Paper>
 
         </ImageListItem>
 
 
-        // <ImageListItem
-        //     sx={{marginTop: '15px', margin:'10'}}
-        //
-        // >
-        //     <Card sx={{border: 7, borderColor: '#fff', boxShadow: 0}}>
-        //         <Link to={`/exposition/${props.data.id}`}>
-        //             <img
-        //                 src={props.data.poster['thumb']}
-        //                 alt={props.data.title}
-        //                 loading="lazy"
-        //             />
-        //         </Link>
-        //         { props.data.poster['thumb'] ? <ImageListItemBar
-        //             sx={{
-        //                 backgroundColor: "rgba(138, 119, 119, 0.89)"
-        //             }}
-        //             title={
-        //                 props.data['virtual']? 'Виртуальная выставка':
-        //                 getFormattedDate(props.data['start_date'], optionsDate) + ' - ' +
-        //             getFormattedDate(props.data['end_date'], optionsDate)
-        //             }
-        //             actionIcon={
-        //
-        //                 <IconButton>
-        //                     <EventNoteIcon sx={{
-        //                         color: "#fff",
-        //                         p: '5px'
-        //                     }}/>
-        //                 </IconButton>
-        //
-        //             }/>:''}
-        //
-        //     </Card>
-        //
-        // </ImageListItem>
 
     )
 }
