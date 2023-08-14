@@ -62,10 +62,14 @@ class Publication(models.Model):
     poster = models.ImageField(verbose_name='Обложка',
                                upload_to=PathAndRename('publication/posters/'))
     order = models.IntegerField('Порядковый номер')
+    year = models.CharField('Год', max_length=10, choices=(('2024', '2024'), ('2023', '2023'), ('2022', '2022'),
+                                            ('2021', '2021'), ('2020', '2020'), ('2019', '2019'),
+                                            ('2018', '2018'), ('2017', '2017'), ('2016', '2016'),
+                                            ('2015', '2015'), ('2014', '2014'), ('2013', '2013'),
+                                            ('2012', '2012'), ('2011', '2011'), ('2010', '2010')))
 
     def save(self, *args, **kwargs):
         if not self.pk:
-
             super(Publication, self).save(*args, **kwargs)
             self.order = self.pk
         super(Publication, self).save(*args, **kwargs)

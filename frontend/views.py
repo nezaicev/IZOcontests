@@ -491,6 +491,20 @@ class CategoryAPIView(APIView):
 
 
 class PublicationAPIView(ListAPIView):
-    queryset = Publication.objects.all()
+    # queryset = Publication.objects.all()
     serializer_class = PublicationSerializer
     pagination_class = StandardResultsSetPagination
+
+    def get_queryset(self):
+        queryset = Publication.objects.all()
+        year = self.request.query_params.get('year')
+        if year is not None:
+            queryset = queryset.filter(year=year)
+        return queryset
+
+
+class PublicationYearsAPIView(APIView):
+
+    def get(self, request):
+        years = list(Publication.objects.all().values_list('year', flat=True).distinct())
+        return Response(years)

@@ -16,9 +16,9 @@ class VideoAdmin(admin.ModelAdmin):
 
 
 class PublicationAdmin(admin.ModelAdmin):
-    list_display = ('title','order')
+    list_display = ('title','year','order')
     list_editable = ('order',)
-    search_fields = ('title',)
+    search_fields = ('title','year')
 
 
 admin.site.register(Category)
