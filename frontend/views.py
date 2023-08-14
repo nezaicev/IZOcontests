@@ -506,5 +506,5 @@ class PublicationAPIView(ListAPIView):
 class PublicationYearsAPIView(APIView):
 
     def get(self, request):
-        years = list(Publication.objects.all().values_list('year', flat=True).distinct())
+        years = list(Publication.objects.order_by('-year').values_list('year', flat=True).distinct('year'))
         return Response(years)
