@@ -10,7 +10,7 @@ import VisibleBoxImages from "../../components/Gallary/VisibleBoxImages";
 const excludeYears = ['2023-2024 год']
 const contestName=process.env.REACT_APP_ART_CHALLENGE
 
-document.title=contestName
+// document.title=contestName
 
 function ArtChallengeListPage(props) {
     const [dataVerticalTabs, setDataVerticalTabs] = React.useState([])

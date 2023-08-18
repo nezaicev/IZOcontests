@@ -911,7 +911,7 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     def get_list_display(self, request):
         if request.user.is_superuser or request.user.groups.filter(
                 name='Manager').exists():
-            self.list_editable = ('publish', 'rating','image', 'theme','author_name')
+            self.list_editable = ('publish', 'rating',)
             self.list_filter = self.__class__.list_filter
             return self.__class__.list_display
         else:
