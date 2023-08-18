@@ -292,7 +292,7 @@ const VM = (props) => {
                     </text>
                 </BoxButtonLink>
 
-                <BoxButtonLink href='#' color={'rgba(208,237,208,0.76)'}>
+                <BoxButtonLink active={true} href='art_challenge' color={'rgba(208,237,208,0.76)'}>
                     <rect
 
                         id="rect4433-5-5-0"
