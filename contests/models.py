@@ -716,7 +716,7 @@ class Archive(models.Model):
     class Meta:
         verbose_name = 'Архив'
         verbose_name_plural = 'Архив'
-        # ordering = ['-rating', 'reg_number']
+        ordering = ['-rating', 'reg_number']
 
         indexes = [
             models.Index(fields=['contest_name', 'nomination', '-rating']),
