@@ -31,6 +31,7 @@ from django_selectel_storage.storage import SelectelStorage, Container
 import requests
 from contests.pdf import pdf
 
+
 def formatting_fio_participant(fio):
     fio_list = fio.split(' ')
     if len(fio_list) >= 2:
@@ -87,6 +88,18 @@ def authenticate_user(username, password):
     return session, response
 
 
+def upload_file_by_link(url_file, path_in_container, extension):
+    storage = SelectelStorage()
+    new_file = '{}.{}'.format(uuid.uuid1(), extension)
+    file = requests.get(url_file)
+    if file.ok:
+        storage._save(os.path.join(path_in_container, new_file), file.content)
+        if storage.exists(os.path.join(path_in_container, new_file)):
+            return os.path.join(path_in_container, new_file)
+    else:
+        print('Ошибка загрузки файла!')
+
+
 def upload_file(local_url_file, path_in_container, extension):
     storage = SelectelStorage()
     new_file = '{}.{}'.format(uuid.uuid1(), extension)
@@ -119,16 +132,17 @@ def download_file(url, name_file, extension):
 
 
 def parse_path_file(path):
-    container=path.split('/')[3]
-    domain=path.split('/')[2]
+    container = path.split('/')[3]
+    domain = path.split('/')[2]
 
     result = {
         'http': True,
         'extension': path.split('/')[-1].split('.')[-1],
         'file_name': path.split('/')[-1].split('.')[-2],
-        'container_name':container,
-        'path': path.replace('{}/{}'.format(domain, container),'{}/{}'.format(domain, str(int(container)-1)) ),
-        'original_path': path ,
+        'container_name': container,
+        'path': path.replace('{}/{}'.format(domain, container),
+                             '{}/{}'.format(domain, str(int(container) - 1))),
+        'original_path': path,
     }
     if 'http' not in path:
         result['http'] = False
@@ -200,7 +214,7 @@ def generate_xls(queryset, path):
 
 
 def generate_pdf(fields, contest_name, alias, reg_number):
-    document=pdf.Pdf()
+    document = pdf.Pdf()
     document.run(fields, contest_name, alias, reg_number)
     # width, height = A4
     # styles = getSampleStyleSheet()
@@ -370,15 +384,12 @@ def replace_file_to_selectel(local_url_file, path_in_container):
 
 
 def download_file_by_url(url, path_name_extension_save):
-    data=requests.get(url)
+    data = requests.get(url)
     data.raise_for_status()
-    with open(path_name_extension_save, 'wb')as file:
+    with open(path_name_extension_save, 'wb') as file:
         file.write(data.content)
     if os.path.exists(path_name_extension_save):
-        if os.stat(path_name_extension_save).st_size==data.headers['Content-Length']:
+        if os.stat(path_name_extension_save).st_size == data.headers['Content-Length']:
             return path_name_extension_save
     else:
         return None
-
-
-

@@ -23,6 +23,10 @@ import {Exposition} from "./pages/EXPOSITION/Exposition";
 import {VM} from "./pages/VM_MAIN/vm";
 import {VideoListPage} from "./pages/VIDEO/VideoListPage"
 import {PublicationListPage} from "./pages/PUBLICATION/PublicationListPage";
+import {
+    ArtChallengeListPage,
+    GalleryArtChallenge
+} from "./pages/ART_CHALLENGE/ArtChallengeListPage";
 
 
 const host = process.env.REACT_APP_HOST_NAME
@@ -224,6 +228,17 @@ const App = () => {
                         {'name': 'Публикации', 'link': '/publication'},
                     ]}/>}>
                         <Route path='publication' element={<PublicationListPage/>}/>
+                    </Route>
+
+                    {/*'_______Арт-акции________'*/}
+                    <Route path='/' element={<Layout tabs={[
+                        {'name': 'Арт-акции', 'link': '/art_challenge'},
+                    ]}/>}>
+                        <Route path='art_challenge' element={<ArtChallengeListPage
+                            urlVerticalTabs={`${host}/frontend/api/archive/contest/years/`}
+                            urlHorizontalTabs={`${host}/frontend/api/archive/contest/thems/`}
+                            urlContent={`${host}/frontend/api/archive/`}/>}
+                        />
                     </Route>
 
 

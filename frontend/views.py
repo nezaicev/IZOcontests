@@ -1,5 +1,6 @@
 from django.http import Http404
 from rest_framework import filters, status
+from rest_framework.filters import OrderingFilter
 import django_filters
 
 from rest_framework.permissions import BasePermission, SAFE_METHODS
@@ -172,11 +173,11 @@ class ArchiveAPIView(ModelViewSet):
     permission_classes = [AdminOnly]
     queryset = Archive.objects.all()
     serializer_class = ArchiveSerializer
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend, OrderingFilter]
     filter_fields = ['contest_name', 'status', 'direction', 'publish',
                      'nomination', 'theme', 'year_contest']
     ordering_fields = ['rating']
-    ordering = ['-rating']
+    ordering = ['rating']
     pagination_class = StandardResultsSetPagination
 
 

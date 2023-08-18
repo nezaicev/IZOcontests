@@ -1,6 +1,6 @@
 amqp==5.1.1
 asgiref==3.5.2
-beautifulsoup4==4.8.2
+beautifulsoup4==4.12.2
 billiard==3.6.4.0
 bizerror==0.4.9
 celery==5.2.7
@@ -37,6 +37,7 @@ fastutils==0.42.14
 gunicorn==20.0.4
 html5lib==1.1
 idna==2.10
+ImageHash==4.3.1
 jdcal==1.4.1
 jsonformatter==0.3.1
 kombu==5.2.4
@@ -60,11 +61,13 @@ python-barcode==0.13.1
 python-docx==0.8.10
 python-dotenv==0.15.0
 pytz==2022.2.1
+PyWavelets==1.4.1
 PyYAML==6.0
 redis==3.5.3
 reportlab==3.5.55
 requests==2.24.0
 rsa==4.9
+scipy==1.10.1
 six==1.15.0
 sorl-thumbnail==12.8.0
 soupsieve==2.0.1

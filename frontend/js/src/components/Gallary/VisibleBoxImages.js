@@ -28,7 +28,7 @@ export default function VisibleBoxImages(props) {
             props.setPage(1, loadMoreItems())
 
         }
-    }, [props.theme,  props.year])
+    }, [props.theme, props.year])
 
 
     function loadMoreItems() {
@@ -44,7 +44,7 @@ export default function VisibleBoxImages(props) {
                 year_contest: props.year,
                 page: props.page,
                 theme: props.theme,
-                ordering: '-rating',
+                ordering: props.ordering ? props.ordering : '-rating',
             },
         })
             .then((res) => {
@@ -80,7 +80,7 @@ export default function VisibleBoxImages(props) {
                             <ImageListItem key={index}
                                            sx={{marginTop: '25px'}}>
 
-                                 <Card sx={{border: 7, borderColor: '#fff', boxShadow:0}}
+                                <Card sx={{border: 7, borderColor: '#fff', boxShadow: 0}}
                                       key={index}
                                       ref={(items.length === index + 1) ? lastElementRef : null}>
                                     <a href={item.image['md_thumb']}>
@@ -93,27 +93,21 @@ export default function VisibleBoxImages(props) {
                                 </Card>
 
 
-
-
-
                             </ImageListItem>))}
 
 
-
-
-
                     </Box>
-                     {isFetching && <Box sx={{
-                                    justifyContent: 'center',
-                                    height:'600',
-                                    display: 'flex',
-                                    marginTop: ' 20px'
-                                }}>
-                                    <CircularProgress sx={{
-                                        color: '#d26666'
-                                    }}/>
-                                </Box>
-                               }
+                    {isFetching && <Box sx={{
+                        justifyContent: 'center',
+                        height: '600',
+                        display: 'flex',
+                        marginTop: ' 20px'
+                    }}>
+                        <CircularProgress sx={{
+                            color: '#d26666'
+                        }}/>
+                    </Box>
+                    }
 
                 </SRLWrapper>
             </SimpleReactLightbox>
