@@ -52,7 +52,7 @@ export function createLabel(obj) {
             if (regexp.test(obj.fio)) {
                 return `${obj.fio}, `
             } else {
-                return formattingName(obj.fio)
+                return `${formattingName(obj.fio)}, `
             }
         } else {
             return ''

@@ -342,7 +342,7 @@ const VM = (props) => {
                     </text>
                 </BoxButtonLink>
 
-                <BoxButtonLink active={true} href='vp' color={'rgba(156,189,227,0.76)'}>
+                <BoxButtonLink  href='#' color={'rgba(156,189,227,0.76)'}>
                     <rect
                         id="rect4433-5-5-46"
                         width="35.522415"
@@ -353,12 +353,12 @@ const VM = (props) => {
                     />
                     <text x="105" y="98" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
                         <tspan>КОНКУРС</tspan>
-                        <tspan x="105" dy="1.5em">АРТ</tspan>
-                        <tspan x="105" dy="1.5em">ПРОЕКТОВ</tspan>
+                        <tspan x="105" dy="1.5em">«АРТ</tspan>
+                        <tspan x="105" dy="1.5em">ПРОЕКТ»</tspan>
                     </text>
                 </BoxButtonLink>
 
-                <BoxButtonLink href='#' color={'rgba(213,198,142,0.76)'}>
+                <BoxButtonLink  href='#' color={'rgba(213,198,142,0.76)'}>
                     <rect
 
                         id="rect4433-5-5-9"
@@ -368,13 +368,13 @@ const VM = (props) => {
                         y="86.0952"
                         rx={0.5}
                     />
-                    <text x="142" y="98" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
-                        <tspan>АРТ</tspan>
-                        <tspan x="142" dy="1.5em">ЧЕЛЛЕНДЖИ</tspan>
+                    <text x="144" y="100" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
+                        <tspan>ПРОЕКТ</tspan>
+                        <tspan x="144" dy="1.5em">«ДИЗАЙН ДЕТЯМ»</tspan>
                     </text>
                 </BoxButtonLink>
 
-                <BoxButtonLink href='#' color={'rgba(177,226,204,0.76)'}>
+                <BoxButtonLink active={true} href='vp' color={'rgba(177,226,204,0.76)'}>
                     <rect
                         id="rect4433-7-8"
                         width="41.522415"
@@ -383,9 +383,9 @@ const VM = (props) => {
                         y="86.163292"
                         rx={0.5}
                     />
-                    <text x="182" y="98" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
-                        <tspan>ПРОЕКТ</tspan>
-                        <tspan x="182" dy="1.5em">«ДИЗАЙН ДЕТЯМ»</tspan>
+                    <text x="184" y="100" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
+                        <tspan>ХУДОЖЕСТВЕННЫЕ</tspan>
+                        <tspan x="184" dy="1.5em">ПРОЕКТЫ</tspan>
                     </text>
                 </BoxButtonLink>
 
