@@ -29,6 +29,7 @@ export default function GalleryMyMoskvichi(props) {
         params['year_contest'] = dataVerticalTabs[valueVerticalTabs]
         dataFetch(props.urlHorizontalTabs, params, (data) => {
             setDataHorizontalTabs(data, [setValueHorizontalTabs(0)])
+            setPage(1)
         })
     }, [valueVerticalTabs])
 
