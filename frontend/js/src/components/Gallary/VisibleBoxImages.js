@@ -38,7 +38,7 @@ export default function VisibleBoxImages(props) {
             method: "GET",
             url: props.url,
             params: {
-                page_size: 3,
+                page_size: 6,
                 publish: true,
                 contest_name: props.contestName,
                 year_contest: props.year,
