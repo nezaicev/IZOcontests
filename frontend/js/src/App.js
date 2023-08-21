@@ -237,7 +237,7 @@ const App = () => {
                         <Route path='art_challenge' element={<ArtChallengeListPage
                             urlVerticalTabs={`${host}/frontend/api/archive/contest/years/`}
                             urlHorizontalTabs={`${host}/frontend/api/archive/contest/thems/`}
-                            urlContent={`${host}/frontend/api/archive/`}/>}
+                            urlContent={`${host}/frontend/api/archive/art_challenge/`}/>}
                         />
                     </Route>
 

@@ -55,6 +55,8 @@ function VideoListPage() {
         isFetching
     );
 
+    useEffect(()=>{setPage(1)}, [categories])
+
 
     useEffect(() => {
         setIsFetching(true);

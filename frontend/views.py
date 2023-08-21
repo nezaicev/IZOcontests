@@ -173,12 +173,28 @@ class ArchiveAPIView(ModelViewSet):
     permission_classes = [AdminOnly]
     queryset = Archive.objects.all()
     serializer_class = ArchiveSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filter_fields = ['contest_name', 'status', 'direction', 'publish',
+                     'nomination', 'theme', 'year_contest']
+    # ordering_fields = ['rating']
+    # ordering = ['rating']
+    pagination_class = StandardResultsSetPagination
+
+
+class ArtChallengeAPIView(ModelViewSet):
+    authentication_classes = [CsrfExemptSessionAuthentication,
+                              BasicAuthentication]
+    permission_classes = [AdminOnly]
+    queryset = Archive.objects.all()
+    serializer_class = ArchiveSerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend, OrderingFilter]
     filter_fields = ['contest_name', 'status', 'direction', 'publish',
                      'nomination', 'theme', 'year_contest']
     ordering_fields = ['rating']
     ordering = ['rating']
     pagination_class = StandardResultsSetPagination
+
+
 
 
 class NominationVPAPIView(ListAPIView):

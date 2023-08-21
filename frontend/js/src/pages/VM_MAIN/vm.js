@@ -76,7 +76,6 @@ const BoxButtonLink = (props) => {
 
 const VM = (props) => {
 
-    // setBackgroundStyle()
     setTextureStyle()
 
 
