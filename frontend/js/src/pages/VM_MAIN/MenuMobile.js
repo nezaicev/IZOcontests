@@ -6,7 +6,7 @@ const fontSize = 4
 
 const MenuMobile = () => {
     return (
-        <svg width='103%' height="105%" viewBox="38 -100 220 330">
+        <svg width='103%' height="105%" viewBox="38 -60 220 330">
 <g transform="scale(1.4)">
             <line id="line-1" x1="49.836937" y1="10.921608" x2="165.38988" y2="10.921608"
                   stroke={"#3C3C3B"} strokeWidth={0.8}/>
