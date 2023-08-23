@@ -40,7 +40,7 @@ function VideoListPage() {
                 setData((prevTitles) => {
                     return [...new Set([...prevTitles, ...res.data.results.map((b) => b)])];
                 });
-                res.data.next!==null ? setPage((prevPageNumber) => prevPageNumber + 1) : setPage(1);
+                setPage((prevPageNumber) => prevPageNumber + 1);
                 setHasMore(!!res.data.next);
                 setIsFetching(false);
             })
