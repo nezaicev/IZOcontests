@@ -22,9 +22,9 @@ function VideoListPage() {
     const [value, setValue] = React.useState(0);
     const [isFetching, setIsFetching] = useState(false);
     const [HasMore, setHasMore] = useState(true);
+    const [changeCategory, setChangeCategory]=useState(false)
 
-
-    function loadMoreItems(dataInitial) {
+    function loadMoreItems(dataInitial, pageInitial) {
 
         setIsFetching(true);
         axios({
@@ -33,7 +33,7 @@ function VideoListPage() {
             params: {
                 page_size: 3,
                 category: dataInitial ? dataInitial[valueHorizontalTabs] : categories[valueHorizontalTabs],
-                page: page,
+                page: pageInitial ? 1 : page,
             },
         })
             .then((res) => {
@@ -55,8 +55,7 @@ function VideoListPage() {
         isFetching
     );
 
-    useEffect(()=>{setPage(1)}, [valueHorizontalTabs])
-    // useEffect(()=>{setPage(1)}, [categories])
+    // useEffect(()=>{setPage(1); console.log(valueHorizontalTabs)}, [valueHorizontalTabs])
 
     useEffect(() => {
         setIsFetching(true);
@@ -70,13 +69,19 @@ function VideoListPage() {
 
 
     useEffect(() => {
+        setPage(1)
         setData([])
-
-        if (categories.length > 0) {
-            loadMoreItems()
+            if (categories.length > 0) {
+            loadMoreItems(null,1)
         }
 
+
     }, [valueHorizontalTabs])
+
+
+    // useEffect(()=>{
+    //     setPage(1)
+    // }, [changeCategory])
 
 
     return (
