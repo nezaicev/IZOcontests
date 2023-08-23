@@ -40,7 +40,7 @@ function VideoListPage() {
                 setData((prevTitles) => {
                     return [...new Set([...prevTitles, ...res.data.results.map((b) => b)])];
                 });
-                res.data.next ? setPage((prevPageNumber) => prevPageNumber + 1) : setPage(1);
+                res.data.next!==null ? setPage((prevPageNumber) => prevPageNumber + 1) : setPage(1);
                 setHasMore(!!res.data.next);
                 setIsFetching(false);
             })
@@ -56,7 +56,7 @@ function VideoListPage() {
     );
 
     useEffect(()=>{setPage(1)}, [valueHorizontalTabs])
-    useEffect(()=>{setPage(1)}, [categories])
+    // useEffect(()=>{setPage(1)}, [categories])
 
     useEffect(() => {
         setIsFetching(true);
