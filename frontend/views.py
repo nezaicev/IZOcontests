@@ -257,9 +257,10 @@ class ThemeContestAPIView(APIView):
                                    publish=True,
                                    contest_name=contest_name,
                                    year_contest=year).values_list(
-                'theme', flat=True).order_by('theme', 'level').distinct('theme')
+                'theme', flat=True).order_by('level')
 
-        themes = list(themes)
+        themes = list(dict.fromkeys(themes))
+
         # themes.sort(reverse=True)
         return Response(themes)
 
