@@ -7,10 +7,9 @@ from django.views.decorators.csrf import csrf_exempt
 urlpatterns = [
 
     path('api/auth/',views.AuthView.as_view()),
-    path('api/archive/',
-         views.ArchiveAPIView.as_view({'get': 'list', 'post': 'create'})),
-    path('api/archive/art_challenge/',
-         views.ArtChallengeAPIView.as_view({'get': 'list', 'post': 'create'})),
+    path('api/archive/',views.ArchiveAPIView.as_view({'get': 'list', 'post': 'create'})),
+
+    path('api/archive/art_challenge/',views.ArtChallengeAPIView.as_view({'get': 'list', 'post': 'create'})),
 
     path('api/archive/design/', views.DesignArchiveView.as_view({'get': 'list'})),
     path('api/archive/nominationvp/', views.NominationVPAPIView.as_view()),
