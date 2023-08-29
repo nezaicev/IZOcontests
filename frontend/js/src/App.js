@@ -27,6 +27,7 @@ import {
     ArtChallengeListPage,
     GalleryArtChallenge
 } from "./pages/ART_CHALLENGE/ArtChallengeListPage";
+import {CherezIskusstvoListPage} from "./pages/CHEREZ_ISKUSSTVO/CherezIskusstvoListPage";
 
 
 const host = process.env.REACT_APP_HOST_NAME
@@ -45,6 +46,7 @@ const App = () => {
                         {'name': 'Мероприятия', 'link': '/events'},
                         {'name': 'Вебинары', 'link': '/broadcasts'},
                         {'name': 'Выставки', 'link': '/expositions/main'},
+
                         // {'name': 'Виртуальный музей', 'link': 'http://shkola-nemenskogo.ru/'}
 
                     ]}/>}>
@@ -240,6 +242,19 @@ const App = () => {
                             urlContent={`${host}/frontend/api/archive/art_challenge/`}/>}
                         />
                     </Route>
+
+                    {/*'_______Через искусство к жизни________'*/}
+                    <Route path='/' element={<Layout tabs={[
+                        {'name': 'ЧЕРЕЗ ИСКУССТВО – К ЖИЗНИ', 'link': '/cherez_iskusstvo'},
+                    ]}/>}>
+                        <Route path='cherez_iskusstvo' element={<CherezIskusstvoListPage
+                            urlVerticalTabs={`${host}/frontend/api/archive/contest/years/`}
+                            urlHorizontalTabs={`${host}/frontend/api/archive/contest/thems/`}
+                            urlContent={`${host}/frontend/api/archive/`}/>}
+                        />
+                    </Route>
+
+
 
 
                 </Routes>
