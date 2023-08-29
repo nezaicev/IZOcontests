@@ -36,6 +36,7 @@ def upload_data_from_file(path_file_data, api_url):
     for item in data:
         result = session.post(api_url, item)
         print(item)
+        print(result)
         if result:
             count_uploaded_files += 1
 
