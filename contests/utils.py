@@ -80,6 +80,7 @@ def authenticate_user(username, password):
                          os.path.join(os.getenv('HOSTNAME'), 'users/login'))
     session = requests.session()
     r = session.get(url)
+    r.raise_for_status()
     token = r.cookies['csrftoken']
     data = {'username': username,
             'password': password,
