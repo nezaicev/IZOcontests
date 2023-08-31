@@ -88,7 +88,7 @@ def simple_send_mail(id, class_name, subject):
 @shared_task
 def send_mail_for_subscribers(emails, theme, content):
     from_email = settings.DEFAULT_FROM_EMAIL
-    list_emails = emails
+    list_emails = list(set(emails))
     context = {
         'link': 'http://konkurs.shkola-nemenskogo.ru/mailing/unsubscribe/'
     }
