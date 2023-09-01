@@ -77,9 +77,8 @@ export default function VisibleBoxImages(props) {
 
                         {items.map((item, index) => (
 
-                            <ImageListItem key={index}
+                            <ImageListItem key={item.reg_number}
                                            sx={{marginTop: '25px'}}>
-
                                 <Card sx={{border: 7, borderColor: '#fff', boxShadow: 0}}
                                       key={index}
                                       ref={(items.length === index + 1) ? lastElementRef : null}>
