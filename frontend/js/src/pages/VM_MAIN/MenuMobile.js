@@ -40,7 +40,7 @@ const MenuMobile = () => {
                     rx={0.5}
                 />
 
-                <text x="69.5" y="27" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
+                <text x="69.5" y="25.5" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
 
                     <tspan>АРТАКИАДА</tspan>
                     <tspan x="69.5" dy="1.5em">«ИЗОБРАЖЕНИЕ</tspan>
@@ -118,11 +118,6 @@ const MenuMobile = () => {
             </BoxButtonLink>
 
 
-
-
-
-
-
              <BoxButtonLink active={true} href='video' color={'rgba(198,200,240,0.76)'}>
                 <rect
 
@@ -192,7 +187,7 @@ const MenuMobile = () => {
                       textAnchor="middle">
                     <tspan>КОНКУРС</tspan>
                     <tspan x="144.5" dy="1.5em">«ЧЕРЕЗ</tspan>
-                    <tspan x="144.5" dy="1.5em">ИССКУСТВО</tspan>
+                    <tspan x="144.5" dy="1.5em">ИСКУССТВО</tspan>
                     <tspan x="144.5" dy="1.5em">К ЖИЗНИ»</tspan>
 
                 </text>
@@ -276,7 +271,7 @@ const MenuMobile = () => {
                 <text x="69" y="98" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
 
                     <tspan>СКАЗКИ</tspan>
-                    <tspan x="69" dy="1.5em">НОРОДОВ МИРА</tspan>
+                    <tspan x="69" dy="1.5em">НАРОДОВ МИРА</tspan>
                     <tspan x="69" dy="1.5em">ГЛАЗАМИ ДЕТЕЙ</tspan>
                 </text>
             </BoxButtonLink>
@@ -290,10 +285,9 @@ const MenuMobile = () => {
                     y="85.967056"
                     rx={0.5}
                 />
-                <text x="105" y="98" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
+                <text x="105" y="100" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
                     <tspan>КОНКУРС</tspan>
-                    <tspan x="105" dy="1.5em">«АРТ</tspan>
-                    <tspan x="105" dy="1.5em">ПРОЕКТ»</tspan>
+                    <tspan x="105" dy="1.5em">«АРТ-ПРОЕКТ»</tspan>
                 </text>
             </BoxButtonLink>
 
