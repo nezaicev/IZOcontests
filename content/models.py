@@ -29,7 +29,7 @@ class Video(models.Model):
     link = models.URLField('Ссылка', blank=False, null=False)
     categories = models.ManyToManyField('Category', related_name='categories',
                                         verbose_name='Категория', )
-    order = models.IntegerField('Порядковый номер', null=True, blank=True)
+    order = models.IntegerField('Порядковый номер', null=True, blank=True, default=1)
 
     def save(self, *args, **kwargs):
         if not self.pk:
