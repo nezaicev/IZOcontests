@@ -158,7 +158,7 @@ export function ExpandMoreCollapse(props) {
                                           key={props.index}/>
 
 
-                            {props.item.videos.length > 0 ?
+                            {(props.item.videos.length > 0) && (props.item.videos.includes('youtu')) ?
                                 <React.Fragment><Tooltip title="Видео">
                                     <IconButton>
                                         <OndemandVideoIcon sx={{
