@@ -43,7 +43,7 @@ class ParseDataToArchive:
             item_db.save()
             print(item_db.reg_number, item_db.fio, item_db.image)
 
-    def _parse_page(self, url, start_order_num=0):
+    def _parse_page(self, url, start_order_num=0, max_rating=0):
         result = []
         if not start_order_num:
             soup = get_page_site(url)
@@ -70,10 +70,10 @@ class ParseDataToArchive:
                     'age': age,
                     'reg_number': bs(str(reg_numbers[n]), 'html.parser').span.text.split('№')[
                         1].strip(),
-                    'order': abs(n - (start_order_num+50)),
+                    'order': abs(n - max_rating),
                 })
         self.parse_data = result
 
-    def upload_to_archive(self, url, page):
-        self._parse_page(url, page)
+    def upload_to_archive(self, url, page, max_rating):
+        self._parse_page(url, page, max_rating)
         self._save_data()
