@@ -70,7 +70,7 @@ class ParseDataToArchive:
                     'age': age,
                     'reg_number': bs(str(reg_numbers[n]), 'html.parser').span.text.split('№')[
                         1].strip(),
-                    'order': n + start_order_num,
+                    'order': abs(n - start_order_num),
                 })
         self.parse_data = result
 
