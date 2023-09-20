@@ -174,7 +174,7 @@ const MenuMobile = () => {
                 </BoxButtonLink>
 
 
-                <BoxButtonLink href='#' color={'rgba(207,183,167,0.76)'}>
+                <BoxButtonLink active={true} href='cherez_iskusstvo' color={'rgba(207,183,167,0.76)'}>
                     <rect
                         id="rect4433-5-5"
                         width="35.522415"
