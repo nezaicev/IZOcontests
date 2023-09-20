@@ -131,6 +131,33 @@ const App = () => {
 
                     </Route>
 
+
+                      {/*'_______Через искусство к жизни________'*/}
+                    <Route path='/cherez_iskusstvo' element={<Layout tabs={[
+                        {'name': 'ЧЕРЕЗ ИСКУССТВО – К ЖИЗНИ', 'link': '/cherez_iskusstvo'},
+                        {'name': 'Положение', 'link': '/cherez_iskusstvo/statute'},
+                        {'name': 'Галерея', 'link': '/cherez_iskusstvo/gallery'}
+
+                    ]}/>}>
+                        <Route index
+                               element={<TextContent
+                                   link={'/frontend/api/page/cherez_iskusstvo_base_info/'}/>}/>
+
+                        <Route path='statute'
+                               element={<TextContent
+                                   link={'/frontend/api/page/cherez_iskusstvo_pologenie/'}/>}/>
+
+
+                        <Route path='gallery' element={<CherezIskusstvoListPage
+                            urlVerticalTabs={`${host}/frontend/api/archive/contest/years/`}
+                            urlHorizontalTabs={`${host}/frontend/api/archive/contest/thems/`}
+                            urlContent={`${host}/frontend/api/archive/`}/>}
+                        />
+                    </Route>
+
+
+
+
                     {/*'______Н.Рушева____'*/}
                     <Route path='/nrusheva' element={<Layout tabs={[
                         {'name': 'Конкурс им. Нади Рушевой', 'link': '/nrusheva'},
@@ -243,16 +270,7 @@ const App = () => {
                         />
                     </Route>
 
-                    {/*'_______Через искусство к жизни________'*/}
-                    <Route path='/' element={<Layout tabs={[
-                        {'name': 'ЧЕРЕЗ ИСКУССТВО – К ЖИЗНИ', 'link': '/cherez_iskusstvo'},
-                    ]}/>}>
-                        <Route path='cherez_iskusstvo' element={<CherezIskusstvoListPage
-                            urlVerticalTabs={`${host}/frontend/api/archive/contest/years/`}
-                            urlHorizontalTabs={`${host}/frontend/api/archive/contest/thems/`}
-                            urlContent={`${host}/frontend/api/archive/`}/>}
-                        />
-                    </Route>
+
 
 
 

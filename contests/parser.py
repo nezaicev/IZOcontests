@@ -4,6 +4,14 @@ from contests.utils import upload_file_by_link
 from contests.models import Archive
 
 
+# how use
+# -- example --
+# p=ParseDataToArchive('Через искусство к жизни', '2022-2023 год', 'Каждый город имеет особое лицо', 'all_contests')
+# p.upload_to_archive('https://art-teacher.ru/gallery/84',0,300)
+# 0 - start_page_parse; 300 - max rating
+# p.upload_to_archive('https://art-teacher.ru/gallery/84/50',50,250)
+
+
 def get_page_site(url):
     page = requests.get(url)
     soup = bs(page.content, 'lxml')
