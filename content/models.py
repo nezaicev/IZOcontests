@@ -29,6 +29,7 @@ class Video(models.Model):
     link = models.URLField('Ссылка', blank=False, null=False)
     categories = models.ManyToManyField('Category', related_name='categories',
                                         verbose_name='Категория', )
+    section = models.CharField('Раздел', max_length=255, blank=False, null=False)
     order = models.IntegerField('Порядковый номер', null=True, blank=True, default=1)
 
     def save(self, *args, **kwargs):

@@ -195,8 +195,6 @@ class ArtChallengeAPIView(ModelViewSet):
     pagination_class = StandardResultsSetPagination
 
 
-
-
 class NominationVPAPIView(ListAPIView):
     queryset = NominationVP.objects.all()
     serializer_class = NominationVPSerializer
@@ -495,8 +493,11 @@ class VideoAPIView(ListAPIView):
     def get_queryset(self):
         queryset = Video.objects.all()
         category = self.request.query_params.get('category')
+        section = self.request.query_params.get('section')
         if category is not None:
             queryset = queryset.filter(categories__name__contains=category)
+        if section is not None:
+            queryset = queryset.filter(section=section)
         return queryset
 
 

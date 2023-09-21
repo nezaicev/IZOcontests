@@ -28,6 +28,7 @@ import {
     GalleryArtChallenge
 } from "./pages/ART_CHALLENGE/ArtChallengeListPage";
 import {CherezIskusstvoListPage} from "./pages/CHEREZ_ISKUSSTVO/CherezIskusstvoListPage";
+import {VideoGallery} from "./components/Video/VideoGallery";
 
 
 const host = process.env.REACT_APP_HOST_NAME
@@ -111,6 +112,7 @@ const App = () => {
                         {'name': 'АРТакиада', 'link': '/artakiada'},
                         {'name': 'Положение', 'link': '/artakiada/statute'},
                         {'name': 'Галерея', 'link': '/artakiada/gallery'},
+                        {'name': 'Видео', 'link': '/artakiada/video'},
 
                     ]}/>}>
                         <Route index
@@ -128,6 +130,12 @@ const App = () => {
                                 urlContent={`${host}/frontend/api/archive/`}>
                             </GalleryArtakiada>
                         }/>
+
+                        <Route path='video' element={
+                            <VideoGallery section={'artakiada'}/>
+                        }/>
+
+
 
                     </Route>
 
