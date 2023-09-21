@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from contests.models import PageContest, Message, ModxDbimgMuz, Artakiada, \
-    NRusheva
+    NRusheva, Archive
 from .serializers import ModxDbimgMuzSerializer
 from contests import tasks
 from contests.forms import SubscribeShowEventForm
@@ -145,3 +145,6 @@ class RotateModelImageArtakiada(RotateImageBase):
 
 class RotateModelImageNRusheva(RotateImageBase):
     model = NRusheva
+
+class RotateModelImageArchive(RotateImageBase):
+    model = Archive

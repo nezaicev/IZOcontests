@@ -41,6 +41,21 @@ class Levels(object):
         return str(value)
 
 
+class RotateImageButton(admin.ModelAdmin):
+    class Media:
+        css = {'all': ('/static/dadata/css/suggestions.min.css',
+                       "https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css",
+                       )}
+        js = [
+            'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js',
+            'https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/js/jquery.suggestions.min.js',
+            "https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js",
+            "https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js",
+            '/static/admin/js/JQueryRotate.js',
+            '/static/admin/js/custom/editImage.js',
+        ]
+
+
 class RegionsListFilter(admin.SimpleListFilter):
     title = ('Россия')
     parameter_name = 'russia'
@@ -192,9 +207,6 @@ class ArchiveInterface:
 
             values_for_record = {
 
-
-
-
                 'status': utils.get_dependent_data_for_obj(obj, 'status'),
 
             }
@@ -311,7 +323,6 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
             if 'send_vm' in actions:
                 del actions['send_vm']
 
-
         if not request.user.groups.filter(
                 name='Manager').exists():
             if 'archived' in actions:
@@ -379,21 +390,21 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
         obj.save()
         return super().response_change(request, obj)
 
-    class Media:
-        css = {'all': ('/static/dadata/css/suggestions.min.css',
-                       "https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css",
-                       )}
-        js = [
-            'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js',
-            'https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/js/jquery.suggestions.min.js',
-            "https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js",
-            "https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js",
-            '/static/admin/js/JQueryRotate.js',
-            '/static/admin/js/custom/editImage.js',
-        ]
+    # class Media:
+    #     css = {'all': ('/static/dadata/css/suggestions.min.css',
+    #                    "https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css",
+    #                    )}
+    #     js = [
+    #         'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js',
+    #         'https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/js/jquery.suggestions.min.js',
+    #         "https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js",
+    #         "https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js",
+    #         '/static/admin/js/JQueryRotate.js',
+    #         '/static/admin/js/custom/editImage.js',
+    #     ]
 
 
-class ArtakiadaAdmin(BaseAdmin):
+class ArtakiadaAdmin(BaseAdmin, RotateImageButton):
     name = 'artakiada'
     list_per_page = 25
     search_fields = ('reg_number', 'fio', 'fio_teacher', 'school')
@@ -454,7 +465,7 @@ class ArtakiadaAdmin(BaseAdmin):
     #         return super().get_list_display(request)
 
 
-class NRushevaAdmin(BaseAdmin):
+class NRushevaAdmin(BaseAdmin, RotateImageButton):
     name = 'nrusheva'
     list_per_page = 25
     list_filter = ('level', 'status', 'district', 'region', 'theme')
@@ -563,9 +574,7 @@ class MymoskvichiAdmin(BaseAdmin):
 
         return super().response_change(request, obj)
 
-
-
-# Веменная функция для закрытия основных номинаций Мы москвичи
+    # Веменная функция для закрытия основных номинаций Мы москвичи
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'nomination':
@@ -621,7 +630,7 @@ class VPAdmin(BaseAdmin):
                VideoVPInline, FileVPInline]
 
     actions = ['export_list_info', 'export_as_xls',
-               'archived', 'download_archive_files','update_status_archive']
+               'archived', 'download_archive_files', 'update_status_archive']
     fieldsets = (
 
         ('Организация', {
@@ -825,8 +834,8 @@ CONTESTS_NAME = [('Дизайн детям', 'Дизайн детям')]
 NOMINATION_DESIGN = [('Motion-design', 'Motion-design'),
                      ('Графический дизайн', 'Графический дизайн'),
                      ('Линогравюра', 'Линогравюра'),
-                     ('Книжная графика','Книжная графика'),
-                     ('Иллюстрации','Иллюстрации'),
+                     ('Книжная графика', 'Книжная графика'),
+                     ('Иллюстрации', 'Иллюстрации'),
                      ('Дизайн малых форм', 'Дизайн малых форм'),
                      ('Промышленный дизайн', 'Промышленный дизайн'),
                      ('Макетирование', 'Макетирование'), ('Дизайн костюма', 'Дизайн костюма'),
@@ -846,17 +855,17 @@ class DesignArchiveAdmin(admin.ModelAdmin):
     # inlines = [ImageExtraArchiveInline, VideoArchiveInline, FileArchiveInline]
     model = Archive
     list_editable = ['publish']
-    list_display = ['author_name','fio', 'contest_name','publish',
+    list_display = ['author_name', 'fio', 'contest_name', 'publish',
                     'fio_teacher',
                     'rating', 'status', 'year_contest']
-    list_filter = ('contest_name', 'publish', 'year_contest', )
+    list_filter = ('contest_name', 'publish', 'year_contest',)
 
     search_fields = ('fio', 'fio_teacher')
 
     exclude = (
         'info', 'reg_number', 'barcode', 'content', 'participants', 'teacher', 'date_reg',
-        'district','region','status', 'direction','theme',
-         'format', 'link', 'crop_orientation_img','description','program', 'material')
+        'district', 'region', 'status', 'direction', 'theme',
+        'format', 'link', 'crop_orientation_img', 'description', 'program', 'material')
 
     def formfield_for_dbfield(self, db_field, **kwargs):
         if db_field.name == 'contest_name':
@@ -864,7 +873,7 @@ class DesignArchiveAdmin(admin.ModelAdmin):
         if db_field.name == 'nomination':
             kwargs['widget'] = Select(choices=NOMINATION_DESIGN)
         if db_field.name == 'year_contest':
-            kwargs['widget'] = TextInput(attrs={'value':utils.generate_year()})
+            kwargs['widget'] = TextInput(attrs={'value': utils.generate_year()})
         return super().formfield_for_dbfield(db_field, **kwargs)
 
     def get_queryset(self, request):
@@ -874,7 +883,7 @@ class DesignArchiveAdmin(admin.ModelAdmin):
             return qs.filter(contest_name=CONTESTS_NAME[0][0])
 
 
-class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
+class ArchiveAdmin(RotateImageButton, ArchiveInterface, SendEmail):
     list_per_page = 50
     inlines = [ImageExtraArchiveInline, VideoArchiveInline, FileArchiveInline]
     model = Archive
@@ -884,7 +893,8 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     list_display = ['reg_number', 'certificate', 'contest_name',
                     'fio_teacher',
                     'teacher',
-                    'rating', 'status', 'year_contest', 'image','fio', 'theme','author_name','publish', 'age', 'level']
+                    'rating', 'status', 'year_contest', 'image_tag', 'image', 'fio', 'theme',
+                    'author_name', 'publish', 'age', 'level']
     list_filter = ('contest_name', 'publish', 'year_contest', 'status')
 
     search_fields = ('reg_number', 'fio', 'fio_teacher')
@@ -911,7 +921,7 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     def get_list_display(self, request):
         if request.user.is_superuser or request.user.groups.filter(
                 name='Manager').exists():
-            self.list_editable = ('publish', 'rating','image')
+            self.list_editable = ('publish', 'rating', 'image')
             self.list_filter = self.__class__.list_filter
             return self.__class__.list_display
         else:
@@ -941,12 +951,12 @@ class ArchiveAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
                                          path_local_file))
 
                 tasks.upload_data_from_file.delay(path_local_file,
-                                                        os.path.join(
-                                                            '{}{}'.format(
-                                                                settings.PROTOCOL,
-                                                                os.getenv(
-                                                                    'HOSTNAME')),
-                                                            'frontend/api/archive/'))
+                                                  os.path.join(
+                                                      '{}{}'.format(
+                                                          settings.PROTOCOL,
+                                                          os.getenv(
+                                                              'HOSTNAME')),
+                                                      'frontend/api/archive/'))
 
                 return HttpResponseRedirect('/admin/contests/archive/')
             else:

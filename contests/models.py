@@ -713,6 +713,33 @@ class Archive(models.Model):
             self.reg_number = '{}-{}'.format(round(random.random()*10000),str(int(time.time())))
         super().save(*args, **kwargs)
 
+    def image_tag(self):
+        if self.image:
+            context = {
+                'reg_number': self.reg_number,
+                'fio': self.fio,
+                'age': self.age,
+                'image_url': self.image.url,
+                'thumb_image': get_thumbnail(self.image.url, '75x75',
+                                             crop='center', quality=99).url,
+
+                'api_url': 'http://{}/contests/api/rotate_image_archive/'.format(
+                    os.getenv('HOSTNAME'))
+            }
+
+            return mark_safe(
+
+                render_to_string('buttons/rotate_image.html', context=context)
+
+            )
+        else:
+            return 'No Image Found'
+
+    image_tag.short_description = 'Image'
+
+
+
+
     class Meta:
         verbose_name = 'Архив'
         verbose_name_plural = 'Архив'
@@ -725,6 +752,9 @@ class Archive(models.Model):
 
     def __str__(self):
         return self.reg_number
+
+
+
 
     def certificate(self):
         try:
