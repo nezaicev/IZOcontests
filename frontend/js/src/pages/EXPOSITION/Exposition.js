@@ -105,25 +105,7 @@ function Exposition(props) {
                             </Box>
                         </SRLWrapper>
                     </SimpleReactLightbox>
-
-
-                </Box>
-
-            </Box> : <Box sx={{
-                justifyContent: 'center',
-                height: '600',
-                display: 'flex',
-                marginTop: ' 20px'
-            }}>
-                <CircularProgress sx={{
-                    color: '#d26666'
-                }}/>
-            </Box>
-            }
-
-        </Box>
-
-        <Box sx={{marginBottom:25}}>
+                 <Box sx={{marginBottom:25}}>
             {(fetchAll && (data.comments.length>0))?<Box sx={{
                         display: 'flex'
                     }}>
@@ -133,7 +115,6 @@ function Exposition(props) {
                                     gutterBottom>
                             Отзывы:
                         </Typography>
-                {console.log(data.comments.length, data.comments)}
                     </Box>: null}
 
 
@@ -161,6 +142,24 @@ function Exposition(props) {
 
 
         </Box>
+
+                </Box>
+
+            </Box> : <Box sx={{
+                justifyContent: 'center',
+                height: '600',
+                display: 'flex',
+                marginTop: ' 20px'
+            }}>
+                <CircularProgress sx={{
+                    color: '#d26666'
+                }}/>
+            </Box>
+            }
+
+        </Box>
+
+
 
         </>
 

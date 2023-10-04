@@ -4,6 +4,7 @@ import {Outlet, useLocation, useResolvedPath} from "react-router-dom"
 import useAuth from "../hooks/useAuth";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
+import {host} from "../utils/consts";
 
 const Layout = (props) => {
     const auth = useAuth()
@@ -19,6 +20,7 @@ const Layout = (props) => {
                     auth={auth}
                     pages={props.tabs}
                     startPage={props.tabs.findIndex((p)=>{return p.link===location.pathname})}
+                    mainLink={props.mainLink}
                 />
 
             </header>

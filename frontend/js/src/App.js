@@ -243,7 +243,7 @@ const App = () => {
                     {/*'_______Выставка________'*/}
                     <Route path='exposition/' element={<Layout tabs={[
                         {'name': 'Выставка', 'link': '/exposition'},
-                    ]}/>}>
+                    ]} mainLink={`${process.env.REACT_APP_HOST_NAME}/frontend/expositions/`}/>}>
                         <Route path=':id/' element={<Exposition/>}/>
                     </Route>
 

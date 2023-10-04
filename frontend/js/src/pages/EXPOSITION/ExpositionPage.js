@@ -40,11 +40,11 @@ function ExpositionPage(props) {
 
     return (
         <Box sx={{fontFamily: 'Roboto', height: 'auto'}}>
-            <Header pages={pages}
-                    activePage={(newValue) => (setValue(newValue))}
-                    auth={auth}
-                    mainLink={`${host}/frontend/expositions/`}
-            />
+            {/*<Header pages={pages}*/}
+            {/*        activePage={(newValue) => (setValue(newValue))}*/}
+            {/*        auth={auth}*/}
+            {/*        mainLink={`${host}/frontend/expositions/`}*/}
+            {/*/>*/}
             <Container sx={{
                 fontFamily: 'Roboto',
                 mt: '20px',
