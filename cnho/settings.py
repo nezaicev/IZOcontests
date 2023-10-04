@@ -37,6 +37,12 @@ ALLOWED_HOSTS = ['*']
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 # Application definition
 
+
+
+
+
+
+
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 INSTALLED_APPS = [
@@ -64,7 +70,9 @@ INSTALLED_APPS = [
     'django_static_fontawesome',
     'django_changelist_toolbar_admin',
     'django_simple_export_admin',
-    'phonenumber_field'
+    'phonenumber_field',
+    'file_resubmit',
+    'behaviors.apps.BehaviorsConfig',
 
 ]
 
@@ -106,6 +114,19 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'cnho.wsgi.application'
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+    "file_resubmit": {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        "LOCATION": '/tmp/file_resubmit/'
+    }}
+
+
+
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -310,3 +331,4 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 100,
 
 }
+

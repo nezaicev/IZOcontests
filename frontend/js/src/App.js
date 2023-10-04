@@ -29,6 +29,7 @@ import {
 } from "./pages/ART_CHALLENGE/ArtChallengeListPage";
 import {CherezIskusstvoListPage} from "./pages/CHEREZ_ISKUSSTVO/CherezIskusstvoListPage";
 import {VideoGallery} from "./components/Video/VideoGallery";
+import {Comment, CreateCommentPage} from "./pages/EXPOSITION/CreateCommentPage";
 
 
 const host = process.env.REACT_APP_HOST_NAME
@@ -279,6 +280,11 @@ const App = () => {
                     </Route>
 
 
+
+                    {/*'_______Отзыв о выставке________'*/}
+                     <Route path='comment/:exposition_id' element={<CreateCommentPage/>}>
+
+                    </Route>
 
 
 

@@ -3,12 +3,12 @@ from rest_framework import filters, status
 from rest_framework.filters import OrderingFilter
 import django_filters
 
-from rest_framework.permissions import BasePermission, SAFE_METHODS
+from rest_framework.permissions import BasePermission, SAFE_METHODS, AllowAny
 
 from contests import models
-from exposition.models import Exposition
+from exposition.models import Exposition, Comment
 from exposition.serializers import ExpositionSerializer, \
-    ExpositionListSerializer
+    ExpositionListSerializer, CommentSerializer
 from frontend.apps import StandardResultsSetPagination, DesignPagination
 from django.shortcuts import render
 from contests.models import Archive, NominationVP, DirectionVP, ThemeART, \
@@ -193,6 +193,25 @@ class ArtChallengeAPIView(ModelViewSet):
     ordering_fields = ['rating']
     ordering = ['rating']
     pagination_class = StandardResultsSetPagination
+
+
+class CommentViewSet(ModelViewSet):
+    authentication_classes = [CsrfExemptSessionAuthentication,
+                              BasicAuthentication]
+    permission_classes = (AllowAny,)
+    queryset = None
+    # queryset = Comment.objects.filter(publication_status='p')
+    serializer_class = CommentSerializer
+
+    # def get_queryset(self, *args, **kwargs):
+    #     queryset = self.queryset
+    #     query_set = queryset.filter(publication_status='p')
+    #     return query_set
+
+
+
+
+
 
 
 class NominationVPAPIView(ListAPIView):
@@ -526,3 +545,7 @@ class PublicationYearsAPIView(APIView):
     def get(self, request):
         years = list(Publication.objects.order_by('-year').values_list('year', flat=True).distinct('year'))
         return Response(years)
+
+
+
+

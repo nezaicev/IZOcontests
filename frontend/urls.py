@@ -3,6 +3,7 @@ from django.urls import path, re_path
 from . import views
 from django.views.decorators.csrf import csrf_exempt
 
+from .views import CommentViewSet
 
 urlpatterns = [
 
@@ -38,7 +39,8 @@ urlpatterns = [
     path('api/video/', views.VideoAPIView.as_view()),
     path('api/video/categories/', views.CategoryAPIView.as_view()),
     path('api/publication/', views.PublicationAPIView.as_view()),
-    path('api/publication_years/', views.PublicationYearsAPIView.as_view())
+    path('api/publication_years/', views.PublicationYearsAPIView.as_view()),
+    path('api/exposition/comment/', views.CommentViewSet.as_view({'post': 'create'})),
 
 
 

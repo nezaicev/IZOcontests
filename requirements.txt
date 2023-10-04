@@ -15,9 +15,11 @@ commonmark==0.9.1
 decorator==5.1.1
 dictop==0.2.1
 Django==3.2
+django-behaviors==0.5.1
 django-changelist-toolbar-admin==0.4.0
 django-ckeditor==6.0.0
 django-cors-headers==3.11.0
+django-file-resubmit==0.5.2
 django-filter==2.4.0
 django-js-asset==1.2.2
 django-model-utils==4.0.0
@@ -57,12 +59,14 @@ pyasn1==0.4.8
 pycryptodome==3.15.0
 Pygments==2.8.1
 pypinyin==0.47.1
+pypng==0.20220715.0
 python-barcode==0.13.1
 python-docx==0.8.10
 python-dotenv==0.15.0
 pytz==2022.2.1
 PyWavelets==1.4.1
 PyYAML==6.0
+qrcode==7.4.2
 redis==3.5.3
 reportlab==3.5.55
 requests==2.24.0

@@ -9,7 +9,7 @@ import Card from "@mui/material/Card";
 import {host} from "../../components/utils/consts";
 import {useParams} from "react-router-dom";
 import dataFetch from "../../components/utils/dataFetch";
-
+import GradeIcon from '@mui/icons-material/Grade';
 
 
 
@@ -27,7 +27,7 @@ function Exposition(props) {
     }, [])
 
 
-    return (
+    return (<>
         <Box>
             {fetchAll ? <Box>
                 <Box sx={{
@@ -122,6 +122,47 @@ function Exposition(props) {
             }
 
         </Box>
+
+        <Box sx={{marginBottom:25}}>
+            {(fetchAll && (data.comments.length>0))?<Box sx={{
+                        display: 'flex'
+                    }}>
+                        <GradeIcon
+                            sx={{color: 'rgb(245,208,135)'}}/>
+                        <Typography sx={{fontSize: [10, 12, 14]}} variant="overline" display="block"
+                                    gutterBottom>
+                            Отзывы:
+                        </Typography>
+                {console.log(data.comments.length, data.comments)}
+                    </Box>: null}
+
+
+
+
+                {(fetchAll && data.comments.length>0) ? data.comments.map((item, index) => (
+                <Paper elevation={0} key={index} sx={{
+                        boxShadow: 0,
+                        maxHeight: 600,
+                        overflow: 'auto',
+                        padding: ['3px', '8px'],
+                        marginBottom: ['3px', '8px']
+                    }}>
+                    <Typography>
+                        {item.content}
+                    </Typography>
+                    <Box sx={{justifyContent: 'right', display:'flex'}}>
+                        <Typography variant="body2" gutterBottom>
+                            {item.author}
+                    </Typography>
+                    </Box>
+
+                </Paper>)):null
+                }
+
+
+        </Box>
+
+        </>
 
     )
 }

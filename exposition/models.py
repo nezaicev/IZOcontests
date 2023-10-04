@@ -7,6 +7,20 @@ from sorl.thumbnail import get_thumbnail
 
 from contests.models import CROP_ORIENTATION
 from contests.utils import PathAndRename
+from behaviors.behaviors import Timestamped, Published
+
+
+class Comment(Timestamped, Published):
+    exposition = models.ForeignKey('Exposition',related_name='comments', verbose_name='Выставка', on_delete=models.CASCADE)
+    author = models.CharField('Автор', max_length=355)
+    content = models.TextField('Контент')
+
+    def __str__(self):
+        return self.author
+
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
 
 
 class Exposition(models.Model):
@@ -28,7 +42,7 @@ class Exposition(models.Model):
         return self.title
 
     class Meta:
-        ordering = ['-start_date', ]
+        # ordering = ['-start_date', ]
         verbose_name = 'Выставка'
         verbose_name_plural = 'Выставки'
 

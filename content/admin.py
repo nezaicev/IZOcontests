@@ -1,5 +1,6 @@
 from django.contrib import admin
 from content.models import Page, Video, Category, Publication
+
 from content.forms import  ContentCreateForm
 # Register your models here.
 
