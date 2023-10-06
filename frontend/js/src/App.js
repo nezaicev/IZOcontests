@@ -66,6 +66,9 @@ const App = () => {
 
                     ]}/>}>
                         <Route path='events' element={<Events/>}/>
+                          <Route path='contests' element={<Navigate to='/'/>}>
+
+                          </Route>
                         <Route path='broadcasts' element={<Broadcasts/>}/>
 
                     </Route>

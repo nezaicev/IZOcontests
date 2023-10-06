@@ -435,7 +435,7 @@ class ArtakiadaAdmin(BaseAdmin, CustomAdminFields):
         ('Данные для ГИР (https://талантыроссии.рф/)', {
 
             'fields': ('email', 'birthday', 'snils_gir', 'phone_gir',
-                       'address_school_gir')
+                       'address_school_gir', 'consent_personal_data')
         }),
     )
 
@@ -493,7 +493,7 @@ class NRushevaAdmin(BaseAdmin, CustomAdminFields):
         ('Данные для ГИР (https://талантыроссии.рф/)', {
             'fields': (
                 'email', 'birthday', 'snils_gir', 'phone_gir',
-                'address_school_gir')
+                'address_school_gir', 'consent_personal_data')
         }),
     )
 
@@ -546,7 +546,7 @@ class MymoskvichiAdmin(BaseAdmin):
 
         ('Данные для ГИР (https://талантыроссии.рф/)', {
             'fields': ('email',
-                       'phone_gir', 'address_school_gir')
+                       'phone_gir', 'address_school_gir', 'consent_personal_data')
         }),
     )
     inlines = [ParticipantMymoskvichiInline, TeacherExtraMymoskvichiInline]
@@ -641,7 +641,7 @@ class VPAdmin(BaseAdmin):
                 'author_name', 'direction', 'nomination', 'level', 'ovz')
         }),
         ('Контактные данные', {
-            'fields': ('email', 'phone_gir')
+            'fields': ('email', 'phone_gir', 'consent_personal_data')
         }
 
          )

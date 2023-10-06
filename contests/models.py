@@ -103,6 +103,7 @@ class Select(models.Model):
 
 class BaseContest(models.Model):
     objects = InheritanceManager()
+    consent_personal_data=models.BooleanField('Согласие на обработку персональных данных', default=True)
     info = models.ForeignKey('PageContest', verbose_name='Информация',
                              blank=False, on_delete=models.PROTECT, null=True)
     reg_number = models.CharField(max_length=20, blank=False, null=False,
