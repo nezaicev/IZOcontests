@@ -41,7 +41,7 @@ class Levels(object):
         return str(value)
 
 
-class RotateImageButton(admin.ModelAdmin):
+class CustomAdminFields(admin.ModelAdmin):
     class Media:
         css = {'all': ('/static/dadata/css/suggestions.min.css',
                        "https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css",
@@ -51,8 +51,11 @@ class RotateImageButton(admin.ModelAdmin):
             'https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/js/jquery.suggestions.min.js',
             "https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js",
             "https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js",
+            # "https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js",
+            "https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js",
             '/static/admin/js/JQueryRotate.js',
             '/static/admin/js/custom/editImage.js',
+            '/static/admin/js/maskFieldsActivate.js'
         ]
 
 
@@ -390,21 +393,18 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
         obj.save()
         return super().response_change(request, obj)
 
-    # class Media:
-    #     css = {'all': ('/static/dadata/css/suggestions.min.css',
-    #                    "https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css",
-    #                    )}
-    #     js = [
-    #         'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js',
-    #         'https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/js/jquery.suggestions.min.js',
-    #         "https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js",
-    #         "https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js",
-    #         '/static/admin/js/JQueryRotate.js',
-    #         '/static/admin/js/custom/editImage.js',
-    #     ]
+    def render_change_form(self, request, context, *args, **kwargs):
+        form_instance = context['adminform'].form
+        form_instance.fields['fio'].widget.attrs['placeholder'] = 'Иванов Иван Иванович'
+        form_instance.fields['fio'].widget.attrs['data-mask'] = 'S-S-S'
+        form_instance.fields['snils_gir'].widget.attrs['data-mask'] = "000-000-000 00"
+        form_instance.fields['phone_gir'].widget.attrs['data-mask']="+7(000) 000-0000"
+        form_instance.fields['birthday'].widget.attrs['data-mask'] = "00.00.0000"
+
+        return super().render_change_form(request, context, *args, **kwargs)
 
 
-class ArtakiadaAdmin(BaseAdmin, RotateImageButton):
+class ArtakiadaAdmin(BaseAdmin, CustomAdminFields):
     name = 'artakiada'
     list_per_page = 25
     search_fields = ('reg_number', 'fio', 'fio_teacher', 'school')
@@ -465,7 +465,7 @@ class ArtakiadaAdmin(BaseAdmin, RotateImageButton):
     #         return super().get_list_display(request)
 
 
-class NRushevaAdmin(BaseAdmin, RotateImageButton):
+class NRushevaAdmin(BaseAdmin, CustomAdminFields):
     name = 'nrusheva'
     list_per_page = 25
     list_filter = ('level', 'status', 'district', 'region', 'theme')
@@ -883,7 +883,7 @@ class DesignArchiveAdmin(admin.ModelAdmin):
             return qs.filter(contest_name=CONTESTS_NAME[0][0])
 
 
-class ArchiveAdmin(RotateImageButton, ArchiveInterface, SendEmail):
+class ArchiveAdmin(CustomAdminFields, ArchiveInterface, SendEmail):
     list_per_page = 50
     inlines = [ImageExtraArchiveInline, VideoArchiveInline, FileArchiveInline]
     model = Archive

@@ -139,6 +139,8 @@ class BaseContest(models.Model):
     class Meta:
         abstract = True
 
+
+
     def get_fields_for_pdf(self, attrs_obj=None):
         if not attrs_obj:
             attrs_obj = []
@@ -226,7 +228,7 @@ class Artakiada(BaseContest):
                               max_length=200, verbose_name='Изображение')
     material = models.ForeignKey(Material, verbose_name='Материал',
                                  on_delete=models.SET_NULL, null=True)
-    level = models.ForeignKey(Level, verbose_name='Класс',
+    level = models.ForeignKey(Level, verbose_name='Класс общеобразовательной школы',
                               on_delete=models.SET_NULL, null=True)
     theme = models.ForeignKey(ThemeART, verbose_name='Тема',
                               on_delete=models.SET_NULL, null=True)
@@ -243,6 +245,7 @@ class Artakiada(BaseContest):
 
     def __str__(self):
         return str(self.reg_number)
+
 
     def image_tag(self):
         if self.image:
@@ -269,8 +272,8 @@ class Artakiada(BaseContest):
     image_tag.short_description = 'Image'
 
     class Meta:
-        verbose_name = 'АРТакиада (участник)'
-        verbose_name_plural = 'АРТакиада (участники)'
+        verbose_name = 'Конкурс АРТакиада'
+        verbose_name_plural = 'Конкурс АРТакиада'
 
 
 class NRusheva(BaseContest):
@@ -344,8 +347,8 @@ class NRusheva(BaseContest):
     image_tag.short_description = 'Image'
 
     class Meta:
-        verbose_name = 'Конкурс им. Нади Рушевой (участник)'
-        verbose_name_plural = 'Конкурс им. Нади Рушевой (участники)'
+        verbose_name = 'Конкурс им. Нади Рушевой'
+        verbose_name_plural = 'Конкурс им. Нади Рушевой'
 
 
 class MultiParticipants:
@@ -401,8 +404,8 @@ class VP(BaseContest, MultiParticipants):
         return str(self.reg_number)
 
     class Meta:
-        verbose_name = 'Конкурс Художественных проектов (участники)'
-        verbose_name_plural = 'Конкурс Художественных проектов (участники)'
+        verbose_name = 'Конкурс АРТ-проект'
+        verbose_name_plural = 'Конкурс АРТ-проект'
         permissions = [
             ("export_participants", "Выгрузить список участников"),
         ]
@@ -519,8 +522,8 @@ class Mymoskvichi(BaseContest, MultiParticipants):
         return str(self.reg_number)
 
     class Meta:
-        verbose_name = 'Конкурс Мы Москвичи (участники)'
-        verbose_name_plural = 'Конкурс Мы Москвичи (участники)'
+        verbose_name = 'Конкурс Мы Москвичи'
+        verbose_name_plural = 'Конкурс Мы Москвичи'
 
     @classmethod
     def get_stat_data(cls):

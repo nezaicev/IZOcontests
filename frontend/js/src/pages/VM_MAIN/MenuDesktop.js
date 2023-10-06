@@ -6,13 +6,18 @@ const fontSize = 4
 
 const MenuDesktop =()=>{
     return(
-        <svg width='73%' height="85%" viewBox="-14 8 250 150">
+        <>
 
+        <svg width='93%' height="95%" viewBox="-14 0 250 150">
+
+
+                <line id="line-0" x1="106" y1="0" x2="106" y2="11"
+                      stroke={"#3C3C3B"} strokeWidth={0.6}/>
                 <line id="line-1" x1="49.836937" y1="5.921608" x2="49.836937" y2="125.71623"
                       stroke={"#3C3C3B"} strokeWidth={0.8}/>
-                <line id="line-2" x1="87.534067" y1="4.921608" x2="87.534067" y2="133.71623"
+                <line id="line-2" x1="87.534067" y1="10.921608" x2="87.534067" y2="133.71623"
                       stroke={"#3C3C3B"} strokeWidth={0.75}/>
-                <line id="line-3" x1="124.69011" y1="6.0827985" x2="124.69011" y2="133.40666"
+                <line id="line-3" x1="124.69011" y1="11.0827985" x2="124.69011" y2="133.40666"
                       stroke={"#3C3C3B"} strokeWidth={0.75}/>
                 <line id="line-4" x1="162.38988" y1="7.3414125" x2="162.38988" y2="122.51492"
                       stroke={"#3C3C3B"} strokeWidth={0.75}/>
@@ -20,6 +25,54 @@ const MenuDesktop =()=>{
                       strokeWidth={0.65}/>
                 <line id="line-6" x1="2" y1="84.5" x2="205.38988" y2="84.5" stroke={"#3C3C3B"}
                       strokeWidth={0.65}/>
+                <line id="line-7" x1="2" y1="11" x2="205.38988" y2="11" stroke={"#3C3C3B"}
+                      strokeWidth={0.65}/>
+
+
+
+
+                <BoxButtonLink active={true} href='events' color={'rgb(212, 212, 210)'}>
+                    <rect
+                        id="rect4433-5-4-1"
+                        width="53.522415"
+                        height="10"
+                        x="51.5"
+                        y="0"
+                        rx={0.5}
+                    />
+
+                    <text x="79" y="6.5" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
+
+                        <tspan>МЕРОПРИЯТИЯ</tspan>
+                        {/*<tspan x="69.5" dy="1.5em">«ИЗОБРАЖЕНИЕ</tspan>*/}
+                        {/*<tspan x="69.5" dy="1.5em">И СЛОВО»</tspan>*/}
+
+                    </text>
+                </BoxButtonLink>
+
+             <BoxButtonLink active={true} href='admin' color={'rgb(212, 212, 210)'}>
+                    <rect
+                        id="rect4433-8"
+                        width="53.522415"
+                        height="10"
+                        x="107"
+                        y="0"
+                        rx={0.5}
+                    />
+
+                    <text x="134.5" y="6.5" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
+
+                        <tspan>ЛИЧНЫЙ КАБИНЕТ</tspan>
+                        {/*<tspan x="69.5" dy="1.5em">«ИЗОБРАЖЕНИЕ</tspan>*/}
+                        {/*<tspan x="69.5" dy="1.5em">И СЛОВО»</tspan>*/}
+
+                    </text>
+                </BoxButtonLink>
+
+
+
+
+
 
 
                 <BoxButtonLink active={true} href='artakiada' color={'rgba(64,157,170,0.76)'}>
@@ -122,7 +175,7 @@ const MenuDesktop =()=>{
                 </BoxButtonLink>
 
 
-                <BoxButtonLink active={true} href='contests' color={'rgba(197,100,100,0.76)'}>
+                <BoxButtonLink active={true} href='museum' color={'rgba(197,100,100,0.76)'}>
                     <rect
                         id="rect4433"
                         width="35.522415"
@@ -292,7 +345,10 @@ const MenuDesktop =()=>{
                 </BoxButtonLink>
 
             </svg>
-
+        {/*    <svg width='73%' height="85%" viewBox="100 0 250 150">*/}
+        {/*    <circle cx="60" cy="60" r="50"/>*/}
+        {/*</svg>*/}
+</>
     )
 
 

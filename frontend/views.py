@@ -2,6 +2,8 @@ from django.http import Http404
 from rest_framework import filters, status
 from rest_framework.filters import OrderingFilter
 import django_filters
+from django.views.decorators import cache
+from django.utils.decorators import method_decorator
 
 from rest_framework.permissions import BasePermission, SAFE_METHODS, AllowAny
 
@@ -451,6 +453,7 @@ class ExpositionDetailAPIView(APIView):
         except Event.DoesNotExist:
             raise Http404
 
+    @method_decorator(cache.cache_page(60 * 60 * 2))
     def get(self, request, pk):
         exposition = self.get_object(pk)
         serializer = ExpositionSerializer(exposition)
@@ -464,6 +467,7 @@ class PageDetailAPIView(APIView):
         except Event.DoesNotExist:
             raise Http404
 
+    @method_decorator(cache.cache_page(60 * 60 * 2))
     def get(self, request, slug):
         page = self.get_object(slug)
         serializer = PageSerializer(page)
@@ -472,6 +476,7 @@ class PageDetailAPIView(APIView):
 
 class PageContestAPIView(APIView):
 
+    @method_decorator(cache.cache_page(60 * 60 * 2))
     def get(self, request):
         contests = PageContest.objects.all()
         serializer = PageContestSerializer(contests, many=True)
@@ -480,6 +485,7 @@ class PageContestAPIView(APIView):
 
 class YearExpositionsArchiveAPIView(APIView):
 
+    @method_decorator(cache.cache_page(60 * 60 * 2))
     def get(self, request):
         years = []
         if request.query_params.get('is_archive'):
@@ -508,6 +514,7 @@ class YearExpositionsArchiveAPIView(APIView):
 class VideoAPIView(ListAPIView):
     serializer_class = VideoSerializer
     pagination_class = StandardResultsSetPagination
+
 
     def get_queryset(self):
         queryset = Video.objects.all()

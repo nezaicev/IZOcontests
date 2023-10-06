@@ -44,21 +44,37 @@ const App = () => {
                     <Route index element={<VM/>}/>
                     {/*'_______Главная________'*/}
                     <Route path='/' element={<Layout tabs={[
-                        {'name': 'Конкурсы', 'link': '/contests'},
+                        {'name': 'Музей', 'link': '/museum'},
+                        {'name': 'Б.М. Неменский', 'link': '/nemenskiy'},
+
+
+                    ]}/>}>
+                        <Route path='museum' element={<TextContent
+                            link={'/frontend/api/page/museum_base_info/'}/>}/>
+                        <Route path='nemenskiy' element={<TextContent
+                            link={'/frontend/api/page/nemenskiy_base_info/'}/>}/>
+
+                    </Route>
+
+
+                    {/*___________Мероприятия___________________*/}
+
+                      <Route path='/' element={<Layout tabs={[
                         {'name': 'Мероприятия', 'link': '/events'},
                         {'name': 'Вебинары', 'link': '/broadcasts'},
                         {'name': 'Выставки', 'link': '/expositions/main'},
 
-                        // {'name': 'Виртуальный музей', 'link': 'http://shkola-nemenskogo.ru/'}
-
                     ]}/>}>
-                        {/*<Route index element={<Contests/>}/>*/}
-
-                        <Route path='contests' element={<Contests/>}/>
                         <Route path='events' element={<Events/>}/>
                         <Route path='broadcasts' element={<Broadcasts/>}/>
 
                     </Route>
+
+
+
+
+
+
 
                     {/*'____Выставки______'*/}
                     <Route path='/expositions' element={<Layout tabs={[
@@ -137,11 +153,10 @@ const App = () => {
                         }/>
 
 
-
                     </Route>
 
 
-                      {/*'_______Через искусство к жизни________'*/}
+                    {/*'_______Через искусство к жизни________'*/}
                     <Route path='/cherez_iskusstvo' element={<Layout tabs={[
                         {'name': 'ЧЕРЕЗ ИСКУССТВО – К ЖИЗНИ', 'link': '/cherez_iskusstvo'},
                         {'name': 'Положение', 'link': '/cherez_iskusstvo/statute'},
@@ -163,8 +178,6 @@ const App = () => {
                             urlContent={`${host}/frontend/api/archive/`}/>}
                         />
                     </Route>
-
-
 
 
                     {/*'______Н.Рушева____'*/}
@@ -280,13 +293,10 @@ const App = () => {
                     </Route>
 
 
-
                     {/*'_______Отзыв о выставке________'*/}
-                     <Route path='comment/:exposition_id' element={<CreateCommentPage/>}>
+                    <Route path='comment/:exposition_id' element={<CreateCommentPage/>}>
 
                     </Route>
-
-
 
 
                 </Routes>
