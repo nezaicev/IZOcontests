@@ -57,7 +57,7 @@ const App = () => {
                     <Route path='/' element={<Layout tabs={[
                         {'name': 'Музей', 'link': '/museum'},
                         {'name': 'Б.М. Неменский', 'link': '/nemenskiy'},
-                        {'name': 'УНХО', 'link': '/сnho'},
+                        // {'name': 'УНХО', 'link': '/сnho'},
 
 
                     ]}/>}>
