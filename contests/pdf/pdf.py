@@ -15,6 +15,21 @@ import barcode
 from django.conf import settings
 
 
+def add_second_theme_for_registration_list_artakiada(func):
+    def wrapper(*args, **kwargs):
+        if args[3] == 'artakiada':
+            fields = list(args[1])
+            fields.append(('Тема 2 тур', ''))
+            tmp_args = list(args)
+            tmp_args[1] = fields
+            args = tuple(tmp_args)
+            print(args)
+        result = func(*args, **kwargs)
+        return result
+
+    return wrapper
+
+
 def generate_barcode(reg_number):
     if not os.path.exists(settings.BARCODE_MEDIA_ROOT):
         os.makedirs(settings.BARCODE_MEDIA_ROOT)
@@ -53,8 +68,8 @@ class Pdf(object):
         x, y = x * unit, self.height - y * unit
         return x, y
 
+    @add_second_theme_for_registration_list_artakiada
     def run(self, fields, contest_name, alias, reg_number):
-
         if not os.path.exists(os.path.join(settings.MEDIA_ROOT, 'pdf', alias)):
             os.mkdir(os.path.join(settings.MEDIA_ROOT, 'pdf', alias))
 

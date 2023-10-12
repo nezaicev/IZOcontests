@@ -213,7 +213,7 @@ class Artakiada(BaseContest):
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school', 'level',
         'age',
         'region', 'city',
-        'district', 'nomination', 'material', 'author_name','theme')
+        'district', 'nomination', 'material', 'author_name', 'theme')
     author_name = models.CharField(max_length=50, blank=False,
                                    verbose_name='Авторское название')
     birthday = models.DateField(verbose_name='Дата рождения', blank=True,
@@ -230,8 +230,9 @@ class Artakiada(BaseContest):
                                  on_delete=models.SET_NULL, null=True)
     level = models.ForeignKey(Level, verbose_name='Класс общеобразовательной школы',
                               on_delete=models.SET_NULL, null=True)
-    theme = models.ForeignKey(ThemeART, verbose_name='Тема',
+    theme = models.ForeignKey(ThemeART, verbose_name='Тема 1 тур',
                               on_delete=models.SET_NULL, null=True)
+
     nomination = models.ForeignKey(NominationART, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
 
@@ -274,6 +275,7 @@ class Artakiada(BaseContest):
     image_tag.short_description = 'Image'
 
     class Meta:
+        unique_together=('fio','level','age','theme','fio_teacher')
         verbose_name = 'Заявка(у) на участие'
         verbose_name_plural = 'Конкурс АРТакиада «Изображение и слово»'
 
