@@ -1,5 +1,5 @@
 import './App.css';
-import React from "react";
+import React, {useEffect} from "react";
 import {Router, Route, Routes, BrowserRouter, Navigate, Link} from 'react-router-dom'
 
 import {Contests} from "./pages/MAIN/Contests";
@@ -33,6 +33,17 @@ import {Comment, CreateCommentPage} from "./pages/EXPOSITION/CreateCommentPage";
 
 
 const host = process.env.REACT_APP_HOST_NAME
+const RedirectUrl = ({ url }) => {
+  useEffect(() => {
+    window.location.href = url;
+  }, [url]);
+
+  return <h5>Redirecting...</h5>;
+};
+
+
+
+
 
 const App = () => {
     return (
@@ -46,6 +57,7 @@ const App = () => {
                     <Route path='/' element={<Layout tabs={[
                         {'name': 'Музей', 'link': '/museum'},
                         {'name': 'Б.М. Неменский', 'link': '/nemenskiy'},
+                        {'name': 'УНХО', 'link': '/сnho'},
 
 
                     ]}/>}>
@@ -53,30 +65,30 @@ const App = () => {
                             link={'/frontend/api/page/museum_base_info/'}/>}/>
                         <Route path='nemenskiy' element={<TextContent
                             link={'/frontend/api/page/nemenskiy_base_info/'}/>}/>
+                        {/*<Route path='cnho'*/}
+                        {/*       element={<RedirectUrl url="https://google.com" />}*/}
+                        {/*>*/}
+
+                        {/*</Route>*/}
 
                     </Route>
 
 
                     {/*___________Мероприятия___________________*/}
 
-                      <Route path='/' element={<Layout tabs={[
+                    <Route path='/' element={<Layout tabs={[
                         {'name': 'Мероприятия', 'link': '/events'},
                         {'name': 'Вебинары', 'link': '/broadcasts'},
                         {'name': 'Выставки', 'link': '/expositions/main'},
 
                     ]}/>}>
                         <Route path='events' element={<Events/>}/>
-                          <Route path='contests' element={<Navigate to='/'/>}>
+                        <Route path='contests' element={<Navigate to='/'/>}>
 
-                          </Route>
+                        </Route>
                         <Route path='broadcasts' element={<Broadcasts/>}/>
 
                     </Route>
-
-
-
-
-
 
 
                     {/*'____Выставки______'*/}

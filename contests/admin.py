@@ -51,11 +51,12 @@ class CustomAdminFields(admin.ModelAdmin):
             'https://cdn.jsdelivr.net/npm/suggestions-jquery@20.3.0/dist/js/jquery.suggestions.min.js',
             "https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js",
             "https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js",
-            # "https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js",
             "https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js",
             '/static/admin/js/JQueryRotate.js',
             '/static/admin/js/custom/editImage.js',
-            '/static/admin/js/maskFieldsActivate.js'
+            '/static/admin/js/maskFieldsActivate.js',
+            '/static/admin/js/hideDistrictField.js',
+            '/static/admin/js/unionFIO.js'
         ]
 
 
@@ -246,30 +247,6 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
         'reg_number', 'teacher', 'barcode', 'status', 'info', 'year_contest',
         'extraImage', 'status_change')
 
-    # def create_thumbs(self, request, queryset):
-    #     config = {}
-    #     if 'apply' in request.POST:
-    #         form = ConfStorageForm(request.POST)
-    #         if form.is_valid():
-    #             config = {'USERNAME': form.cleaned_data['username'],
-    #                       'PASSWORD': form.cleaned_data['password'],
-    #                       'CONTAINER': form.cleaned_data['container']
-    #                       }
-    #         urls_levels = [{'url': obj.image.url, 'level': obj.level.name} for
-    #                        obj in queryset]
-    #         tasks.celery_create_thumbs.delay(urls_levels, config=config)
-    #         return None
-    #     form = ConfStorageForm(
-    #         initial={'_selected_action': queryset.values_list('id', flat=True),
-    #                  'username': os.getenv('USERNAME_SELECTEL'),
-    #                  'password': os.getenv('PASSWORD_SELECTEL'),
-    #                  'container': os.getenv('CONTAINER_SELECTEL')
-    #                  })
-    #     return TemplateResponse(request, "admin/set_thumb_config.html",
-    #                             {'items': queryset, 'form': form})
-    #
-    # create_thumbs.short_description = 'Создать превью'
-
     def export_list_info(self, request, queryset):
         meta = self.model._meta
         reg_number = queryset[0].reg_number
@@ -282,8 +259,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
                                queryset[0].info.name,
                                queryset[0].info.alias,
                                queryset[0].reg_number)
-            # response = FileResponse(open(file_location, 'rb'))
-            # return response
+
             response = HttpResponse(
                 open(file_location, 'rb').read())
             response[
@@ -395,17 +371,23 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
 
     def render_change_form(self, request, context, *args, **kwargs):
         form_instance = context['adminform'].form
-        form_instance.fields['fio'].widget.attrs['placeholder'] = 'Иванов Иван Иванович'
-        form_instance.fields['fio'].widget.attrs['data-mask'] = 'S-S-S'
-        form_instance.fields['snils_gir'].widget.attrs['data-mask'] = "000-000-000 00"
-        form_instance.fields['phone_gir'].widget.attrs['data-mask']="+7(000) 000-0000"
-        form_instance.fields['birthday'].widget.attrs['data-mask'] = "00.00.0000"
+        if form_instance.fields.get('fio'):
+            form_instance.fields.get('fio').widget.attrs['hidden'] = 'true'
+        if form_instance.fields.get('city'):
+            form_instance.fields.get('city').widget.attrs['placeholder'] = 'г. Москва'
+        if form_instance.fields.get('snils_gir'):
+            form_instance.fields['snils_gir'].widget.attrs['data-mask'] = "000-000-000 00"
+        if form_instance.fields.get('phone_gir'):
+            form_instance.fields['phone_gir'].widget.attrs['data-mask'] = "+7(000) 000-0000"
+        if form_instance.fields.get('birthday'):
+            form_instance.fields['birthday'].widget.attrs['data-mask'] = "00.00.0000"
 
         return super().render_change_form(request, context, *args, **kwargs)
 
 
 class ArtakiadaAdmin(BaseAdmin, CustomAdminFields):
     name = 'artakiada'
+    # readonly_fields=['fio']
     list_per_page = 25
     search_fields = ('reg_number', 'fio', 'fio_teacher', 'school')
     list_filter = (
@@ -419,8 +401,8 @@ class ArtakiadaAdmin(BaseAdmin, CustomAdminFields):
         'district',
         'fio_teacher')
     fieldsets = (
-        ('Участник', {
-            'fields': ('fio', 'age', 'level')
+        ('', {
+            'fields': ('fio','last_name', 'first_name', 'sur_name', 'age', 'level',)
         }),
         ('Педагог', {
             'fields': ('fio_teacher',)
@@ -432,7 +414,7 @@ class ArtakiadaAdmin(BaseAdmin, CustomAdminFields):
             'fields': (
                 'author_name', 'image', 'material', 'theme', 'nomination')
         }),
-        ('Данные для ГИР (https://талантыроссии.рф/)', {
+        ('Данные для ГИР участника (https://талантыроссии.рф/)', {
 
             'fields': ('email', 'birthday', 'snils_gir', 'phone_gir',
                        'address_school_gir', 'consent_personal_data')

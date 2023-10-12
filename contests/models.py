@@ -103,7 +103,8 @@ class Select(models.Model):
 
 class BaseContest(models.Model):
     objects = InheritanceManager()
-    consent_personal_data=models.BooleanField('Согласие на обработку персональных данных', default=True)
+    consent_personal_data = models.BooleanField(
+        'Согласие на обработку персональных данных участника(ов)', default=True)
     info = models.ForeignKey('PageContest', verbose_name='Информация',
                              blank=False, on_delete=models.PROTECT, null=True)
     reg_number = models.CharField(max_length=20, blank=False, null=False,
@@ -139,8 +140,6 @@ class BaseContest(models.Model):
 
     class Meta:
         abstract = True
-
-
 
     def get_fields_for_pdf(self, attrs_obj=None):
         if not attrs_obj:
@@ -214,7 +213,7 @@ class Artakiada(BaseContest):
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school', 'level',
         'age',
         'region', 'city',
-        'district', 'nomination', 'material', 'author_name')
+        'district', 'nomination', 'material', 'author_name','theme')
     author_name = models.CharField(max_length=50, blank=False,
                                    verbose_name='Авторское название')
     birthday = models.DateField(verbose_name='Дата рождения', blank=True,
@@ -243,10 +242,12 @@ class Artakiada(BaseContest):
     address_school_gir = models.CharField(verbose_name='Адрес организации',
                                           null=True, blank=True,
                                           max_length=200)
+    last_name = models.CharField(max_length=20, verbose_name='Фамилия')
+    first_name = models.CharField(max_length=20, verbose_name='Имя')
+    sur_name = models.CharField(max_length=20, verbose_name='Отчество')
 
     def __str__(self):
         return str(self.reg_number)
-
 
     def image_tag(self):
         if self.image:
@@ -273,8 +274,8 @@ class Artakiada(BaseContest):
     image_tag.short_description = 'Image'
 
     class Meta:
-        verbose_name = 'Конкурс АРТакиада'
-        verbose_name_plural = 'Конкурс АРТакиада'
+        verbose_name = 'Заявка(у) на участие'
+        verbose_name_plural = 'Конкурс АРТакиада «Изображение и слово»'
 
 
 class NRusheva(BaseContest):
@@ -451,7 +452,6 @@ class ParticipantVP(models.Model):
                                  null=True, blank=True)
     participants = models.ForeignKey(VP, verbose_name='Участники',
                                      on_delete=models.CASCADE)
-
 
     def __str__(self):
         return str(self.fio)
@@ -714,7 +714,7 @@ class Archive(models.Model):
 
     def save(self, *args, **kwargs):
         if self.reg_number == '':
-            self.reg_number = '{}-{}'.format(round(random.random()*10000),str(int(time.time())))
+            self.reg_number = '{}-{}'.format(round(random.random() * 10000), str(int(time.time())))
         super().save(*args, **kwargs)
 
     def image_tag(self):
@@ -741,9 +741,6 @@ class Archive(models.Model):
 
     image_tag.short_description = 'Image'
 
-
-
-
     class Meta:
         verbose_name = 'Архив'
         verbose_name_plural = 'Архив'
@@ -756,9 +753,6 @@ class Archive(models.Model):
 
     def __str__(self):
         return self.reg_number
-
-
-
 
     def certificate(self):
         try:
