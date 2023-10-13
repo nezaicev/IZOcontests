@@ -243,9 +243,7 @@ class Artakiada(BaseContest):
     address_school_gir = models.CharField(verbose_name='Адрес организации',
                                           null=True, blank=True,
                                           max_length=200)
-    last_name = models.CharField(max_length=20, verbose_name='Фамилия')
-    first_name = models.CharField(max_length=20, verbose_name='Имя')
-    sur_name = models.CharField(max_length=20, verbose_name='Отчество')
+
 
     def __str__(self):
         return str(self.reg_number)

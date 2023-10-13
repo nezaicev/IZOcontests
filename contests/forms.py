@@ -1,16 +1,19 @@
 from django import forms
+from django.forms import MultiValueField, CharField, MultiWidget, TextInput
+from django.core.validators import RegexValidator
+
 from contests.models import PageContest, Events, CreativeTack
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 
 class InputFile(forms.Form):
     _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
-    data_file=forms.FileField(widget=forms.FileInput)
+    data_file = forms.FileField(widget=forms.FileInput)
 
 
 class SubscribeShowEventForm(forms.Form):
-    teacher=forms.CharField(max_length=20)
-    page_contest=forms.CharField(max_length=20)
+    teacher = forms.CharField(max_length=20)
+    page_contest = forms.CharField(max_length=20)
 
 
 class ConfStorageForm(forms.Form):
@@ -29,7 +32,8 @@ class PageContestsFrom(forms.ModelForm):
     letter = forms.CharField(widget=CKEditorUploadingWidget(), label='Информационное письмо')
 
     class Meta:
-        fields = ('hide','order','name','alias', 'email','logo', 'content','letter', 'start_date', )
+        fields = (
+            'hide', 'order', 'name', 'alias', 'email', 'logo', 'content', 'letter', 'start_date',)
         model = PageContest
 
 
@@ -38,20 +42,47 @@ class CreativeTackAdminForm(forms.ModelForm):
                               label='Контент')
 
     class Meta:
-        fields= ('contest_name', 'year_contest', 'theme')
-        model= CreativeTack
-
-
-
+        fields = ('contest_name', 'year_contest', 'theme')
+        model = CreativeTack
 
 
 def get_my_choices(model, field):
     choices_list = tuple((i, i) for i in
-                         model.objects.filter(field=field,access=True).values_list('data',
-                                                                       flat=True))
+                         model.objects.filter(field=field, access=True).values_list('data',
+                                                                                    flat=True))
     return choices_list
 
 
+class FIOWidget(MultiWidget):
+    def __init__(self, attrs=None):
+        if attrs is None:
+            attrs = {'label': 'ФИО'}
+        widgets = [TextInput(attrs={'placeholder': 'Фамилия', 'required': 'true'}),
+                   TextInput(attrs={'placeholder': 'Имя', 'required': 'true'}),
+                   TextInput(attrs={'placeholder': 'Отчество', 'required': 'required'})
+                   ]
+        super(FIOWidget, self).__init__(widgets, attrs)
+
+    def decompress(self, value):
+        if value:
+            values = value.split(' ')
+            return [values[0], values[1], values[2]]
+        else:
+            return ['', '', '']
 
 
+class FIOField(MultiValueField):
+    def __init__(self, *args, **kwargs):
+        list_fields = [CharField(),
+                       CharField(),
+                       CharField()
+                       ]
+        super(FIOField, self).__init__(list_fields, widget=FIOWidget(), *args, **kwargs)
 
+    def compress(self, values):
+        return values[0].replace(" ", "") + ' ' + values[1].replace(" ", "") + ' ' + values[
+            2].replace(" ", "")
+
+
+class FIOForm(forms.ModelForm):
+    fio = FIOField(label='ФИО участника')

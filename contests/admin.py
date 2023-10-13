@@ -23,7 +23,7 @@ from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm, Select, TextInput
 from django.conf import settings
 from contests.forms import PageContestsFrom, ConfStorageForm, \
-    CreativeTackAdminForm, InputFile
+    CreativeTackAdminForm, InputFile, FIOForm
 from contests.models import PageContest, Message, ModxDbimgMuz, Events
 from contests import utils
 from contests.pdf import pdf
@@ -56,7 +56,7 @@ class CustomAdminFields(admin.ModelAdmin):
             '/static/admin/js/custom/editImage.js',
             '/static/admin/js/maskFieldsActivate.js',
             '/static/admin/js/hideDistrictField.js',
-            '/static/admin/js/unionFIO.js'
+            # '/static/admin/js/unionFIO.js'
         ]
 
 
@@ -371,8 +371,8 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
 
     def render_change_form(self, request, context, *args, **kwargs):
         form_instance = context['adminform'].form
-        if form_instance.fields.get('fio'):
-            form_instance.fields.get('fio').widget.attrs['hidden'] = 'true'
+        # if form_instance.fields.get('fio'):
+        #     form_instance.fields.get('fio').widget.attrs['hidden'] = 'true'
         if form_instance.fields.get('city'):
             form_instance.fields.get('city').widget.attrs['placeholder'] = 'г. Москва'
         if form_instance.fields.get('snils_gir'):
@@ -386,8 +386,8 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
 
 
 class ArtakiadaAdmin(BaseAdmin, CustomAdminFields):
+    form = FIOForm
     name = 'artakiada'
-    # readonly_fields=['fio']
     list_per_page = 25
     search_fields = ('reg_number', 'fio', 'fio_teacher', 'school')
     list_filter = (
@@ -402,7 +402,7 @@ class ArtakiadaAdmin(BaseAdmin, CustomAdminFields):
         'fio_teacher')
     fieldsets = (
         ('', {
-            'fields': ('fio','last_name', 'first_name', 'sur_name', 'age', 'level',)
+            'fields': ('fio', 'age', 'level',)
         }),
         ('Педагог', {
             'fields': ('fio_teacher',)
@@ -575,9 +575,11 @@ class NominationMYMSKChoiceField(forms.ModelChoiceField):
 
 
 class ParticipantVPInline(admin.StackedInline):
+
     formset = InlineFormset
     model = ParticipantVP
     extra = 1
+    form = FIOForm
 
 
 class TeacherExtraVPInline(admin.StackedInline):
