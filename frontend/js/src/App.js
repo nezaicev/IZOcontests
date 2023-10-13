@@ -33,16 +33,13 @@ import {Comment, CreateCommentPage} from "./pages/EXPOSITION/CreateCommentPage";
 
 
 const host = process.env.REACT_APP_HOST_NAME
-const RedirectUrl = ({ url }) => {
-  useEffect(() => {
-    window.location.href = url;
-  }, [url]);
+const RedirectUrl = ({url}) => {
+    useEffect(() => {
+        window.location.href = url;
+    }, [url]);
 
-  return <h5>Redirecting...</h5>;
+    return <h5>Redirecting...</h5>;
 };
-
-
-
 
 
 const App = () => {
@@ -250,6 +247,19 @@ const App = () => {
                         }/>
 
                     </Route>
+
+
+                    {/*___________АРТ-ПРОЕКТ____________*/}
+
+                    <Route path='/art_project' element={<Layout tabs={[
+                        {'name': 'Положение', 'link': '/art_project/statute'},
+
+                    ]}/>}>
+                        <Route index
+                               element={<TextContent
+                                   link={'/frontend/api/page/art_project_pologenie/'}/>}/>
+                    </Route>
+
 
                     {/*'_______Мероприятие________'*/}
                     <Route path='/' element={<Layout tabs={[

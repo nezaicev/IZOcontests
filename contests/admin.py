@@ -23,7 +23,7 @@ from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm, Select, TextInput
 from django.conf import settings
 from contests.forms import PageContestsFrom, ConfStorageForm, \
-    CreativeTackAdminForm, InputFile, FIOForm
+    CreativeTackAdminForm, InputFile, FIOForm, FormParticipantsVP
 from contests.models import PageContest, Message, ModxDbimgMuz, Events
 from contests import utils
 from contests.pdf import pdf
@@ -579,7 +579,18 @@ class ParticipantVPInline(admin.StackedInline):
     formset = InlineFormset
     model = ParticipantVP
     extra = 1
-    form = FIOForm
+    form = FormParticipantsVP
+
+    # def render_change_form(self, request, context, *args, **kwargs):
+    #     form_instance = context['adminform'].form
+    #
+    #     if form_instance.fields.get('snils_gir'):
+    #         form_instance.fields['snils_gir'].widget.attrs['data-mask'] = "000-000-000 00"
+    #
+    #     if form_instance.fields.get('birthday'):
+    #         form_instance.fields['birthday'].widget.attrs['data-mask'] = "00.00.0000"
+    #
+    #     return super().render_change_form(request, context, *args, **kwargs)
 
 
 class TeacherExtraVPInline(admin.StackedInline):
@@ -605,7 +616,7 @@ class FileVPInline(admin.StackedInline):
     extra = 0
 
 
-class VPAdmin(BaseAdmin):
+class VPAdmin(BaseAdmin, CustomAdminFields):
     list_per_page = 50
     model = VP
     name = 'vp'

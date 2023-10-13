@@ -406,7 +406,7 @@ class VP(BaseContest, MultiParticipants):
         return str(self.reg_number)
 
     class Meta:
-        verbose_name = 'Конкурс АРТ-проект'
+        verbose_name = 'Заявка(у) на участие'
         verbose_name_plural = 'Конкурс АРТ-проект'
         permissions = [
             ("export_participants", "Выгрузить список участников"),
