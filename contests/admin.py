@@ -615,6 +615,14 @@ class VPAdmin(BaseAdmin, CustomAdminFields):
     inlines = [ParticipantVPInline, TeacherExtraVPInline, ImageExtraVPInline,
                VideoVPInline, FileVPInline]
 
+    list_display = (
+        'reg_number', 'fio', 'status', 'status_change',
+        'school',
+        'region',
+        # 'district',
+        'fio_teacher'
+    )
+
     actions = ['export_list_info', 'export_as_xls',
                'archived', 'download_archive_files', 'update_status_archive']
     fieldsets = (

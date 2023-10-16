@@ -103,7 +103,7 @@ class FormParticipantsVP(forms.ModelForm):
                 },),
             'level': forms.TextInput(
                 attrs={
-                    'data-mask': '0-AA',
+                    'data-mask': '00-AAААА',
                     'placeholder': '2-Б'
                 }, ),
             'birthday': forms.DateInput(
