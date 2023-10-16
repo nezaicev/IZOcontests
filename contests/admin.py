@@ -624,7 +624,7 @@ class VPAdmin(BaseAdmin, CustomAdminFields):
         }),
         ('Работа', {
             'fields': (
-                'author_name', 'direction', 'organization_form','nomination', 'level', 'ovz')
+                'author_name','nomination' ,'organization_form','direction', 'level', 'ovz')
         }),
         ('Контактные данные', {
             'fields': ('email', 'phone_gir', 'consent_personal_data')

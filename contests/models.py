@@ -410,7 +410,7 @@ class VP(BaseContest, MultiParticipants):
 
     class Meta:
         verbose_name = 'Заявка(у) на участие'
-        verbose_name_plural = 'Конкурс АРТ-проект'
+        verbose_name_plural = 'Конкурс «Арт-проект»'
         permissions = [
             ("export_participants", "Выгрузить список участников"),
         ]
