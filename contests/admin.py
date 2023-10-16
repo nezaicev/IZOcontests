@@ -400,7 +400,7 @@ class ArtakiadaAdmin(BaseAdmin, CustomAdminFields):
         'reg_number', 'image_tag', 'fio', 'level', 'status', 'status_change',
         'school',
         'region',
-        'district',
+        # 'district',
         'fio_teacher')
     fieldsets = (
         ('', {
