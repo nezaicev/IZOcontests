@@ -252,7 +252,7 @@ const App = () => {
                     {/*___________АРТ-ПРОЕКТ____________*/}
 
                     <Route path='/art_project' element={<Layout tabs={[
-                        {'name': 'Положение', 'link': '/art_project/statute'},
+                        {'name': 'АРТ-ПРОЕКТ', 'link': '/art_project/statute'},
 
                     ]}/>}>
                         <Route index
