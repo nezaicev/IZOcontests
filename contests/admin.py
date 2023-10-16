@@ -371,16 +371,18 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
 
     def render_change_form(self, request, context, *args, **kwargs):
         form_instance = context['adminform'].form
-        # if form_instance.fields.get('fio'):
-        #     form_instance.fields.get('fio').widget.attrs['hidden'] = 'true'
+
         if form_instance.fields.get('city'):
             form_instance.fields.get('city').widget.attrs['placeholder'] = 'г. Москва'
         if form_instance.fields.get('snils_gir'):
             form_instance.fields['snils_gir'].widget.attrs['data-mask'] = "000-000-000 00"
+            form_instance.fields['snils_gir'].widget.attrs['placeholder'] = "000-000-000 00"
         if form_instance.fields.get('phone_gir'):
             form_instance.fields['phone_gir'].widget.attrs['data-mask'] = "+7(000) 000-0000"
+            form_instance.fields['phone_gir'].widget.attrs['placeholder'] = "+7(000) 000-0000"
         if form_instance.fields.get('birthday'):
             form_instance.fields['birthday'].widget.attrs['data-mask'] = "00.00.0000"
+            form_instance.fields['birthday'].widget.attrs['placeholder'] = "23.03.1990"
 
         return super().render_change_form(request, context, *args, **kwargs)
 
@@ -580,17 +582,6 @@ class ParticipantVPInline(admin.StackedInline):
     model = ParticipantVP
     extra = 1
     form = FormParticipantsVP
-
-    # def render_change_form(self, request, context, *args, **kwargs):
-    #     form_instance = context['adminform'].form
-    #
-    #     if form_instance.fields.get('snils_gir'):
-    #         form_instance.fields['snils_gir'].widget.attrs['data-mask'] = "000-000-000 00"
-    #
-    #     if form_instance.fields.get('birthday'):
-    #         form_instance.fields['birthday'].widget.attrs['data-mask'] = "00.00.0000"
-    #
-    #     return super().render_change_form(request, context, *args, **kwargs)
 
 
 class TeacherExtraVPInline(admin.StackedInline):

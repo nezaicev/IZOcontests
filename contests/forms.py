@@ -98,11 +98,18 @@ class FormParticipantsVP(forms.ModelForm):
             'snils_gir': forms.TextInput(
                 attrs={
                     'data-mask': '000-000-000 00',
-                }
-            ),
+                    'placeholder': '000-000-000 00',
+
+                },),
+            'level': forms.TextInput(
+                attrs={
+                    'data-mask': '0-AA',
+                    'placeholder': '2-Б'
+                }, ),
             'birthday': forms.DateInput(
                 attrs={
                     'data-mask': '00.00.0000',
+                    'placeholder': '23.03.1990'
                 }
             )
         }
