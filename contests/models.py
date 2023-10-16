@@ -244,7 +244,6 @@ class Artakiada(BaseContest):
                                           null=True, blank=True,
                                           max_length=200)
 
-
     def __str__(self):
         return str(self.reg_number)
 
@@ -273,7 +272,7 @@ class Artakiada(BaseContest):
     image_tag.short_description = 'Image'
 
     class Meta:
-        unique_together=('fio','level','age','theme','fio_teacher')
+        unique_together = ('fio', 'level', 'age', 'theme', 'fio_teacher')
         verbose_name = 'Заявка(у) на участие'
         verbose_name_plural = 'Конкурс АРТакиада «Изображение и слово»'
 
@@ -388,8 +387,12 @@ class VP(BaseContest, MultiParticipants):
     author_name = models.CharField(max_length=200, blank=False,
                                    verbose_name='Авторское название')
     direction = models.ForeignKey(DirectionVP, on_delete=models.SET_NULL,
-                                  verbose_name='Форма организации', null=True)
-
+                                  verbose_name='Направление', null=True)
+    organization_form = models.CharField(max_length=100,
+                                         verbose_name='Форма организации',
+                                         choices=(('Индивидуальный', 'Индивидуальный'),
+                                                  ('Коллективный', 'Коллективный')),
+                                         )
     nomination = models.ForeignKey(NominationVP, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
     level = models.ManyToManyField(LevelVP, related_name='levels',
