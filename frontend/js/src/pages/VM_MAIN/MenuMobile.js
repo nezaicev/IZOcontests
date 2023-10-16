@@ -8,9 +8,10 @@ const MenuMobile = () => {
     return (
         <svg width='103%' height="105%" viewBox="38 -60 220 330">
             <g transform="scale(1.4)">
+                <line id="line-0" x1="106" y1="-35" x2="106" y2="-26.5"
+                      stroke={"#3C3C3B"} strokeWidth={0.6}/>
                 <line id="line-1" x1="49.836937" y1="10.921608" x2="165.38988" y2="10.921608"
                       stroke={"#3C3C3B"} strokeWidth={0.8}/>
-
                 <line id="line-2" x1="87.534067" y1="10.921608" x2="87.534067" y2="123"
                       stroke={"#3C3C3B"} strokeWidth={0.75}/>
                 <line id="line-3" x1="124.69011" y1="11.0827985" x2="124.69011" y2="123"
@@ -21,14 +22,62 @@ const MenuMobile = () => {
                       strokeWidth={0.65}/>
                 <line id="line-6" x1="46" y1="84.5" x2="164.38988" y2="84.5" stroke={"#3C3C3B"}
                       strokeWidth={0.65}/>
-                <line id="line-7" x1="84.5" y1="10.921608" x2="84.5" y2="-26.921608"
+                <line id="line-7" x1="84.5" y1="10.921608" x2="84.5" y2="-26.5"
                       stroke={"#3C3C3B"} strokeWidth={0.8}/>
-                <line id="line-8" x1="128" y1="10.921608" x2="128" y2="-26.921608"
+                <line id="line-8" x1="128" y1="10.921608" x2="128" y2="-26.5"
                       stroke={"#3C3C3B"} strokeWidth={0.8}/>
                 <line id="line-9" x1="84.5" y1="122.51492" x2="84.5" y2="162.51492"
                       stroke={"#3C3C3B"} strokeWidth={0.8}/>
                 <line id="line-10" x1="128" y1="122.51492" x2="128" y2="162.51492"
                       stroke={"#3C3C3B"} strokeWidth={0.8}/>
+
+                <line id="line-11" x1="40" y1="-26.6" x2="172" y2="-26.5" stroke={"#3C3C3B"}
+                      strokeWidth={0.65}/>
+
+
+
+
+
+
+                <BoxButtonLink active={true} href='events' color={'rgb(212, 212, 210)'}>
+                    <rect
+                        id="rect4433-5-4-1"
+                        width="53.522415"
+                        height="10"
+                        x="51.5"
+                        y="-38"
+                        rx={0.5}
+                    />
+
+                    <text x="79" y="-31.5" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
+
+                        <tspan>МЕРОПРИЯТИЯ</tspan>
+
+
+                    </text>
+                </BoxButtonLink>
+
+
+                <BoxButtonLink active={true} href='admin' color={'rgb(212, 212, 210)'}>
+                    <rect
+                        id="rect4433-8"
+                        width="53.522415"
+                        height="10"
+                        x="107"
+                        y="-38"
+                        rx={0.5}
+                    />
+
+                    <text x="134.5" y="-31.5" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
+
+                        <tspan>ЛИЧНЫЙ КАБИНЕТ</tspan>
+
+                    </text>
+                </BoxButtonLink>
+
+
+
+
 
                 <BoxButtonLink active={true} href='artakiada' color={'rgba(64,157,170,0.76)'}>
                     <rect

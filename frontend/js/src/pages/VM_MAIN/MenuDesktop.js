@@ -31,6 +31,7 @@ const MenuDesktop =()=>{
 
 
 
+
                 <BoxButtonLink active={true} href='events' color={'rgb(212, 212, 210)'}>
                     <rect
                         id="rect4433-5-4-1"
@@ -44,8 +45,7 @@ const MenuDesktop =()=>{
                     <text x="79" y="6.5" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
 
                         <tspan>МЕРОПРИЯТИЯ</tspan>
-                        {/*<tspan x="69.5" dy="1.5em">«ИЗОБРАЖЕНИЕ</tspan>*/}
-                        {/*<tspan x="69.5" dy="1.5em">И СЛОВО»</tspan>*/}
+
 
                     </text>
                 </BoxButtonLink>
@@ -63,8 +63,6 @@ const MenuDesktop =()=>{
                     <text x="134.5" y="6.5" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
 
                         <tspan>ЛИЧНЫЙ КАБИНЕТ</tspan>
-                        {/*<tspan x="69.5" dy="1.5em">«ИЗОБРАЖЕНИЕ</tspan>*/}
-                        {/*<tspan x="69.5" dy="1.5em">И СЛОВО»</tspan>*/}
 
                     </text>
                 </BoxButtonLink>
