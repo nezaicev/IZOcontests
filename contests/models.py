@@ -380,7 +380,7 @@ class VP(BaseContest, MultiParticipants):
     fields = (
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school',
         'region', 'city', 'district', 'author_name', 'nomination',
-        'direction', 'ovz',
+        'direction', 'organization_form', 'ovz',
     )
     info = models.ForeignKey('PageContest', on_delete=models.SET_NULL,
                              null=True, default=get_info_contests('vp'))
