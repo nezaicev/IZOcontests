@@ -1,5 +1,5 @@
 # IZOcontests
-Веб-сайт, ресурс [shkola-nemenskogo.ru/](shkola-nemenskogo.ru/)
+Веб-сайт, ресурс [shkola-nemenskogo.ru](http://shkola-nemenskogo.ru/)
 ## Возможности
 - Прием заявок на участие в художественных конкурсах и мероприятиях
 - Генерация листов регистрации
