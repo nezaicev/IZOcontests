@@ -450,13 +450,13 @@ class ArtakiadaAdmin(BaseAdmin, CustomAdminFields):
 
 
 class NRushevaAdmin(BaseAdmin, CustomAdminFields):
+    form = FIOForm
     name = 'nrusheva'
     list_per_page = 25
     list_filter = ('level', 'status', 'district', 'region', 'theme')
     list_display = (
         'reg_number', 'image_tag', 'fio', 'status', 'status_change', 'school',
         'region',
-        'district',
         'fio_teacher')
 
     fieldsets = (

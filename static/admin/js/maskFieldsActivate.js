@@ -15,7 +15,7 @@ $(document).ready(function(){
     '#': {pattern: /\d/, recursive: true},
     'A': {pattern: /[а-яА-Я0-9]/},
     'S': {pattern: /[а-яА-Я]*/},
-    'N': {pattern: /1|2|10/}
+    'N': {pattern: /(\s*[1-9])/}
   }
 };
   $.applyDataMask();

@@ -30,6 +30,8 @@ import {
 import {CherezIskusstvoListPage} from "./pages/CHEREZ_ISKUSSTVO/CherezIskusstvoListPage";
 import {VideoGallery} from "./components/Video/VideoGallery";
 import {Comment, CreateCommentPage} from "./pages/EXPOSITION/CreateCommentPage";
+import GallaryPageNRusheva from "./pages/NRUSHEVA/GallaryPageNRusheva";
+import {GalleryPageSkazki} from "./pages/SKAZKI/GallaryPageSkazki";
 
 
 const host = process.env.REACT_APP_HOST_NAME
@@ -84,6 +86,20 @@ const App = () => {
 
                         </Route>
                         <Route path='broadcasts' element={<Broadcasts/>}/>
+
+                    </Route>
+                    {/*_______________Сказки__________________________*/}
+
+                    <Route path='/skazki' element={<Layout tabs={[
+                        {'name': 'СКАЗКИ НАРОДОВ МИРА ГЛАЗАМИ ДЕТЕЙ', 'link': '/info'},
+                        {'name': 'Галерея', 'link': '/gallery'},
+
+
+                    ]}/>}>
+                        <Route path='gallery' element={<GalleryPageSkazki
+                            urlHorizontalTabs={`${host}/frontend/api/archive/contest/nominations/`}
+                            urlContent={`${host}/frontend/api/archive/`}
+                        />}/>
 
                     </Route>
 

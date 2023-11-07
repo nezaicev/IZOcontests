@@ -295,7 +295,7 @@ class NRusheva(BaseContest):
     birthday = models.DateField(verbose_name='Дата рождения', blank=True,
                                 null=True,
                                 )
-    level = models.ForeignKey(Level, verbose_name='Класс',
+    level = models.ForeignKey(Level, verbose_name='Класс общеобразовательной школы',
                               on_delete=models.SET_NULL, null=True)
     age = models.ForeignKey(AgeRUSH, verbose_name='Возраст',
                             on_delete=models.SET_NULL, null=True)
@@ -348,7 +348,8 @@ class NRusheva(BaseContest):
     image_tag.short_description = 'Image'
 
     class Meta:
-        verbose_name = 'Конкурс им. Нади Рушевой'
+        unique_together = ('fio', 'level', 'age', 'theme', 'fio_teacher')
+        verbose_name = 'Заявка(у) на участие'
         verbose_name_plural = 'Конкурс им. Нади Рушевой'
 
 
@@ -759,8 +760,7 @@ class Archive(models.Model):
 
     def certificate(self):
         try:
-            contest = Events.objects.get(
-                event=PageContest.objects.get(name=self.contest_name).id)
+            contest = Events.objects.get(event=PageContest.objects.get(name=self.contest_name).id)
             blank = Cert.objects.get(contest=contest.id, status=self.status,
                                      year_contest=self.year_contest)
             if blank:
