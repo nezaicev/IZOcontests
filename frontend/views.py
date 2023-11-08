@@ -272,11 +272,19 @@ class ThemeContestAPIView(APIView):
     def get(self, request):
         contest_name = request.query_params.get('contest_name')
         year = request.query_params.get('year_contest')
-        themes = Archive.objects.filter(theme__gt='', theme__isnull=False,
-                                   publish=True,
-                                   contest_name=contest_name,
-                                   year_contest=year).values_list(
+        if year:
+            themes = Archive.objects.filter(theme__gt='', theme__isnull=False,
+                                       publish=True,
+                                       contest_name=contest_name,
+                                       year_contest=year).values_list(
+                    'theme', flat=True).order_by('level')
+        else:
+            themes = Archive.objects.filter(theme__gt='', theme__isnull=False,
+                                            publish=True,
+                                            contest_name=contest_name,
+                                            ).values_list(
                 'theme', flat=True).order_by('level')
+
 
         themes = list(dict.fromkeys(themes))
 

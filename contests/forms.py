@@ -4,7 +4,7 @@ from django.core.validators import RegexValidator
 
 from contests.models import PageContest, Events, CreativeTack
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
-from contests.models import ParticipantVP
+from contests.models import ParticipantVP, ParticipantMymoskvichi
 
 class InputFile(forms.Form):
     _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
@@ -93,6 +93,33 @@ class FormParticipantsVP(forms.ModelForm):
 
     class Meta:
         model = ParticipantVP
+        fields = ('fio', 'snils_gir','birthday', 'level')
+        widgets = {
+            'snils_gir': forms.TextInput(
+                attrs={
+                    'data-mask': '000-000-000 00',
+                    'placeholder': '000-000-000 00',
+
+                },),
+            'level': forms.TextInput(
+                attrs={
+                    'data-mask': 'SSSSS',
+                    'placeholder': '2-Б'
+                }, ),
+            'birthday': forms.DateInput(
+                attrs={
+                    'data-mask': '00.00.0000',
+                    'placeholder': '23.03.1990'
+                }
+            )
+        }
+
+
+class FormParticipantsMymoskvichi(forms.ModelForm):
+    fio = FIOField(label='ФИО участника')
+
+    class Meta:
+        model = ParticipantMymoskvichi
         fields = ('fio', 'snils_gir','birthday', 'level')
         widgets = {
             'snils_gir': forms.TextInput(

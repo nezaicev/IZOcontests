@@ -23,7 +23,7 @@ from contests.directory import NominationART, NominationMYMSK, ThemeART, \
     NominationVP, AgeVP, LevelVP, NominationNR, DirectionVP, AgeART
 from contests.validators import validate_file_extension
 from phonenumber_field.modelfields import PhoneNumberField
-
+from contests.directory import LEVELS
 
 class PageContest(models.Model):
     TYPE_CONTESTS = {'1': 'Конкурс',
@@ -527,7 +527,7 @@ class Mymoskvichi(BaseContest, MultiParticipants):
         return str(self.reg_number)
 
     class Meta:
-        verbose_name = 'Конкурс Мы Москвичи'
+        verbose_name = 'Заявка(у) на участие'
         verbose_name_plural = 'Конкурс Мы Москвичи'
 
     @classmethod
@@ -548,6 +548,8 @@ class Mymoskvichi(BaseContest, MultiParticipants):
 class ParticipantMymoskvichi(models.Model):
     fio = models.CharField(max_length=50, verbose_name='Фамилия Имя Отчество',
                            blank=False)
+    level = models.CharField(max_length=30, verbose_name='Класс',
+                             blank=True, null=True)
     participants = models.ForeignKey(Mymoskvichi, verbose_name='Участники',
                                      on_delete=models.CASCADE)
     birthday = models.DateField(verbose_name='Дата Рождения', blank=True,

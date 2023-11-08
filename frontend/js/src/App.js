@@ -91,13 +91,18 @@ const App = () => {
                     {/*_______________Сказки__________________________*/}
 
                     <Route path='/skazki' element={<Layout tabs={[
-                        {'name': 'СКАЗКИ НАРОДОВ МИРА ГЛАЗАМИ ДЕТЕЙ', 'link': '/info'},
-                        {'name': 'Галерея', 'link': '/gallery'},
+                        {'name': 'СКАЗКИ НАРОДОВ МИРА ГЛАЗАМИ ДЕТЕЙ', 'link': '/skazki'},
+                        {'name': 'Галерея', 'link': '/skazki/gallery'},
 
 
                     ]}/>}>
+
+                        <Route index
+                               element={<TextContent
+                                   link={'/frontend/api/page/skazki_base_info/'}/>}/>
+                        />}/>
                         <Route path='gallery' element={<GalleryPageSkazki
-                            urlHorizontalTabs={`${host}/frontend/api/archive/contest/nominations/`}
+                            urlHorizontalTabs={`${host}/frontend/api/archive/contest/thems/`}
                             urlContent={`${host}/frontend/api/archive/`}
                         />}/>
 

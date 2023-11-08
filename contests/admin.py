@@ -23,7 +23,7 @@ from django.contrib.auth.models import Group, Permission
 from django.forms import ModelForm, Select, TextInput
 from django.conf import settings
 from contests.forms import PageContestsFrom, ConfStorageForm, \
-    CreativeTackAdminForm, InputFile, FIOForm, FormParticipantsVP
+    CreativeTackAdminForm, InputFile, FIOForm, FormParticipantsVP, FormParticipantsMymoskvichi
 from contests.models import PageContest, Message, ModxDbimgMuz, Events
 from contests import utils
 from contests.pdf import pdf
@@ -504,6 +504,7 @@ class ParticipantMymoskvichiInline(admin.StackedInline):
     formset = InlineFormset
     model = ParticipantMymoskvichi
     extra = 1
+    form = FormParticipantsMymoskvichi
 
 
 class TeacherExtraMymoskvichiInline(admin.StackedInline):
