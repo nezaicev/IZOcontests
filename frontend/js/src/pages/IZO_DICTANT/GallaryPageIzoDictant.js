@@ -8,13 +8,11 @@ import VisibleBoxImages from "../../components/Gallary/VisibleBoxImages";
 
 
 
-const excludeYears = ['2023-2024 год']
-const contestName=process.env.REACT_APP_CHEREZ_ISKUSSTVO
+const excludeYears = []
+const contestName=process.env.REACT_APP_SKAZKI
 
 
-function CherezIskusstvoListPage(props) {
-    const [dataVerticalTabs, setDataVerticalTabs] = React.useState([])
-    const [valueVerticalTabs, setValueVerticalTabs] = React.useState('')
+function GalleryPageIzoDictant(props) {
     const [dataHorizontalTabs, setDataHorizontalTabs] = React.useState([])
     const [valueHorizontalTabs, setValueHorizontalTabs] = React.useState(0)
     // const [valueCreativeTack, setValueCreativeTack] = React.useState('')
@@ -23,26 +21,17 @@ function CherezIskusstvoListPage(props) {
 
 
     useEffect(() => {
-        dataFetch(props.urlVerticalTabs, params, (data) => {
-            setDataVerticalTabs(getExcludeData(data, excludeYears), [setValueVerticalTabs(0)]);
-        })
-    }, [])
 
-    useEffect(() => {
-        params['year_contest'] = dataVerticalTabs[valueVerticalTabs]
         dataFetch(props.urlHorizontalTabs, params, (data) => {
             setDataHorizontalTabs(data, [setValueHorizontalTabs(0)])
             setPage(1)
         })
-    }, [valueVerticalTabs])
+    }, [])
 
     useEffect(() => {
-        params['year_contest'] = dataVerticalTabs[valueVerticalTabs]
-        params['theme'] = dataHorizontalTabs[valueHorizontalTabs]
-        // dataFetch(props.urlCreativeTack, params, (data) => {
-        //     setValueCreativeTack(data)
-        // })
+        params['year_contest'] = dataHorizontalTabs[valueHorizontalTabs]
     }, [dataHorizontalTabs, valueHorizontalTabs])
+
 
     return (<React.Fragment>
             <Box sx={{
@@ -55,14 +44,10 @@ function CherezIskusstvoListPage(props) {
                 <HorizontalTabs contestName={contestName}
                                 data={dataHorizontalTabs}
                                 setValueHorizontalTabs={(newValue) => (setValueHorizontalTabs((newValue), [setPage(1)]))}
-                                valueVerticalTabs={valueVerticalTabs}
-                />
-
-                <VerticalTabs contestName={contestName}
-                              data={dataVerticalTabs}
-                              setValueVerticalTabs={(newValue) => (setValueVerticalTabs(newValue, [setPage(1)]))}
 
                 />
+
+
             </Box>
 
             {/*<CreativeTack data={valueCreativeTack}/>*/}
@@ -72,7 +57,7 @@ function CherezIskusstvoListPage(props) {
                 <VisibleBoxImages
                     url={props.urlContent}
                     contestName={contestName}
-                    theme={dataHorizontalTabs[valueHorizontalTabs]}
+                    year={dataHorizontalTabs[valueHorizontalTabs]}
                     page={page}
                     ordering={'rating'}
                     setPage={(newValue) => {
@@ -87,4 +72,4 @@ function CherezIskusstvoListPage(props) {
 
 
 
-export {CherezIskusstvoListPage}
+export {GalleryPageIzoDictant}

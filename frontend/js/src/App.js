@@ -108,6 +108,28 @@ const App = () => {
 
                     </Route>
 
+                    {/*_______________Диктант__________________________*/}
+
+                    <Route path='/izo_dictant' element={<Layout tabs={[
+                        {'name': 'Изобразительный диктант', 'link': '/izo_dictant'},
+                        {'name': 'Галерея', 'link': '/izo_dictant/gallery'},
+
+
+                    ]}/>}>
+
+                        <Route index
+                               element={<TextContent
+                                   link={'/frontend/api/page/izo_dictant_base_info/'}/>}/>
+                        />}/>
+                        <Route path='gallery' element={
+                            <GalleryPageSkazki
+                            urlHorizontalTabs={`${host}/frontend/api/archive/contest/thems/`}
+                            urlContent={`${host}/frontend/api/archive/`}/>
+                        }/>
+
+                    </Route>
+
+
 
                     {/*'____Выставки______'*/}
                     <Route path='/expositions' element={<Layout tabs={[
