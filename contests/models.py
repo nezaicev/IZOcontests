@@ -272,7 +272,7 @@ class Artakiada(BaseContest):
     image_tag.short_description = 'Image'
 
     class Meta:
-        unique_together = ('fio', 'level', 'age', 'theme', 'fio_teacher')
+        # unique_together = ('fio', 'level', 'age', 'theme', 'fio_teacher')
         verbose_name = 'Заявка(у) на участие'
         verbose_name_plural = 'Конкурс АРТакиада «Изображение и слово»'
 
@@ -348,7 +348,7 @@ class NRusheva(BaseContest):
     image_tag.short_description = 'Image'
 
     class Meta:
-        unique_together = ('fio', 'level', 'age', 'theme', 'fio_teacher')
+        # unique_together = ('fio', 'level', 'age', 'theme', 'fio_teacher')
         verbose_name = 'Заявка(у) на участие'
         verbose_name_plural = 'Конкурс им. Нади Рушевой'
 
