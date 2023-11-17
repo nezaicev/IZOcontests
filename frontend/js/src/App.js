@@ -32,6 +32,7 @@ import {VideoGallery} from "./components/Video/VideoGallery";
 import {Comment, CreateCommentPage} from "./pages/EXPOSITION/CreateCommentPage";
 import GallaryPageNRusheva from "./pages/NRUSHEVA/GallaryPageNRusheva";
 import {GalleryPageSkazki} from "./pages/SKAZKI/GallaryPageSkazki";
+import {GalleryPageIzoDictant} from "./pages/IZO_DICTANT/GallaryPageIzoDictant";
 
 
 const host = process.env.REACT_APP_HOST_NAME
@@ -122,8 +123,8 @@ const App = () => {
                                    link={'/frontend/api/page/izo_dictant_base_info/'}/>}/>
                         />}/>
                         <Route path='gallery' element={
-                            <GalleryPageSkazki
-                            urlHorizontalTabs={`${host}/frontend/api/archive/contest/thems/`}
+                            <GalleryPageIzoDictant
+                            urlHorizontalTabs={`${host}/frontend/api/archive/contest/years/`}
                             urlContent={`${host}/frontend/api/archive/`}/>
                         }/>
 

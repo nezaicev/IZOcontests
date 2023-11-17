@@ -9,7 +9,7 @@ import VisibleBoxImages from "../../components/Gallary/VisibleBoxImages";
 
 
 const excludeYears = []
-const contestName=process.env.REACT_APP_SKAZKI
+const contestName=process.env.REACT_APP_IZO_DICTANT
 
 
 function GalleryPageIzoDictant(props) {

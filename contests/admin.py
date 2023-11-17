@@ -562,9 +562,9 @@ class MymoskvichiAdmin(BaseAdmin):
     # Веменная функция для закрытия основных номинаций Мы москвичи
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'nomination':
-            return NominationMYMSKChoiceField(queryset=NominationMYMSK.objects.filter(
-                name='Мультчеллендж «Год педагога и наставника»'))
+        # if db_field.name == 'nomination':
+        #     return NominationMYMSKChoiceField(queryset=NominationMYMSK.objects.filter(
+        #         name='Мультчеллендж «Год педагога и наставника»'))
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
