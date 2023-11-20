@@ -513,7 +513,7 @@ class TeacherExtraMymoskvichiInline(admin.StackedInline):
     extra = 1
 
 
-class MymoskvichiAdmin(BaseAdmin):
+class MymoskvichiAdmin(BaseAdmin, CustomAdminFields):
     list_per_page = 50
     model = Mymoskvichi
     name = 'mymoskvichi'

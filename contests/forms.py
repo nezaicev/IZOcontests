@@ -6,6 +6,7 @@ from contests.models import PageContest, Events, CreativeTack
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from contests.models import ParticipantVP, ParticipantMymoskvichi
 
+
 class InputFile(forms.Form):
     _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
     data_file = forms.FileField(widget=forms.FileInput)
@@ -120,7 +121,7 @@ class FormParticipantsMymoskvichi(forms.ModelForm):
 
     class Meta:
         model = ParticipantMymoskvichi
-        fields = ('fio', 'snils_gir','birthday', 'level')
+        fields = ('fio', 'snils_gir', 'birthday', 'level')
         widgets = {
             'snils_gir': forms.TextInput(
                 attrs={
