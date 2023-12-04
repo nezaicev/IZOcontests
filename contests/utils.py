@@ -396,4 +396,14 @@ def download_file_by_url(url, path_name_extension_save):
         return None
 
 
+class RenderFIO(object):
+    def __init__(self, format=0, empty_value="-"):
+        self.format = format
+        self.empty_value = empty_value
+
+    def __call__(self, value):
+        if not value:
+            return self.empty_value
+        else:
+            return value.split(' ')[self.format]
 

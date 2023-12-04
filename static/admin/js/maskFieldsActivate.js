@@ -19,4 +19,7 @@ $(document).ready(function(){
   }
 };
   $.applyDataMask();
+  $('.add-row').on('click', function(event){
+  $.applyDataMask()
+})
 })

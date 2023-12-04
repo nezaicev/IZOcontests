@@ -211,11 +211,6 @@ class CommentViewSet(ModelViewSet):
     #     return query_set
 
 
-
-
-
-
-
 class NominationVPAPIView(ListAPIView):
     queryset = NominationVP.objects.all()
     serializer_class = NominationVPSerializer
@@ -245,8 +240,7 @@ class YearContestAPIView(APIView):
 
     def get(self, request):
         contest_name = request.query_params.get('contest_name')
-        years = set(Archive.objects.filter(contest_name=contest_name).values_list('year_contest',
-                                                                                  flat=True))
+        years = set(Archive.objects.filter(contest_name=contest_name).values_list('year_contest', flat=True))
         years = list(years)
         years.sort(reverse=True)
         return Response(years)
@@ -274,17 +268,16 @@ class ThemeContestAPIView(APIView):
         year = request.query_params.get('year_contest')
         if year:
             themes = Archive.objects.filter(theme__gt='', theme__isnull=False,
-                                       publish=True,
-                                       contest_name=contest_name,
-                                       year_contest=year).values_list(
-                    'theme', flat=True).order_by('level')
+                                            publish=True,
+                                            contest_name=contest_name,
+                                            year_contest=year).values_list(
+                'theme', flat=True).order_by('level')
         else:
             themes = Archive.objects.filter(theme__gt='', theme__isnull=False,
                                             publish=True,
                                             contest_name=contest_name,
                                             ).values_list(
                 'theme', flat=True).order_by('level')
-
 
         themes = list(dict.fromkeys(themes))
 
@@ -424,12 +417,16 @@ class ExpositionListAPIView(APIView):
         if is_archive is None:
             expositions = Exposition.objects.filter(publicate=True)
             if year:
+                year = year[0:4]
                 expositions_1 = Exposition.objects.filter(start_date__year=year,
-                                                          start_date__month__lt=9, publicate=True)
+                                                          start_date__month__lt=9,
+                                                          publicate=True
+                                                          )
                 year = str(int(year) - 1)
                 expositions_2 = Exposition.objects.filter(start_date__year=year,
                                                           start_date__month__in=[9, 10, 11, 12],
-                                                          publicate=True)
+                                                          publicate=True
+                                                          )
                 expositions = expositions_1.union(expositions_2).order_by('-start_date')
 
             else:
@@ -438,6 +435,7 @@ class ExpositionListAPIView(APIView):
         else:
             expositions = Exposition.objects.filter(archive=is_archive, publicate=True)
             if year:
+                year=year[0:4]
                 expositions_1 = Exposition.objects.filter(archive=is_archive, start_date__year=year,
                                                           start_date__month__lt=9, publicate=True)
                 year = str(int(year) - 1)
@@ -499,12 +497,10 @@ class YearExpositionsArchiveAPIView(APIView):
         if request.query_params.get('is_archive'):
             dates = Exposition.objects.filter(
                 archive=request.query_params.get('is_archive'),
-                publicate=True).values_list('start_date',
-                                            flat=True)
+                publicate=True).values_list('start_date', flat=True)
         else:
             dates = Exposition.objects.filter(
-                publicate=True).values_list('start_date',
-                                            flat=True)
+                publicate=True).values_list('start_date', flat=True)
 
         for date in dates:
             if date.month in [9, 10, 11, 12]:
@@ -514,6 +510,7 @@ class YearExpositionsArchiveAPIView(APIView):
         if years:
             years.sort(reverse=True)
             years = list(dict.fromkeys(years))
+            years = ['{}-{} год'.format(str(year), year - 1) for year in years]
             return Response(years)
         else:
             return Response([])
@@ -522,7 +519,6 @@ class YearExpositionsArchiveAPIView(APIView):
 class VideoAPIView(ListAPIView):
     serializer_class = VideoSerializer
     pagination_class = StandardResultsSetPagination
-
 
     def get_queryset(self):
         queryset = Video.objects.all()
@@ -558,9 +554,6 @@ class PublicationAPIView(ListAPIView):
 class PublicationYearsAPIView(APIView):
 
     def get(self, request):
-        years = list(Publication.objects.order_by('-year').values_list('year', flat=True).distinct('year'))
+        years = list(
+            Publication.objects.order_by('-year').values_list('year', flat=True).distinct('year'))
         return Response(years)
-
-
-
-

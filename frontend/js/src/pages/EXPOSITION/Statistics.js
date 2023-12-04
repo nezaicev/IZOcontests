@@ -27,10 +27,12 @@ const Statistics = (props) => {
         setData([])
         setFetchAll(false)
         if (years.length > 0) {
-            dataFetch(`${process.env.REACT_APP_HOST_NAME}${apiLink}`, {
-                year: years[valueHorizontalTabs],
-                // is_archive: 0
-            }, (data) => {
+            dataFetch(`${process.env.REACT_APP_HOST_NAME}${apiLink}`,
+            {
+                year: searchParams.get('year') ? searchParams.get('year') : years[valueHorizontalTabs],
+                is_archive: props.isArchive
+            },
+                (data) => {
                 setData(data)
                 setFetchAll(true)
             })

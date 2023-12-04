@@ -454,7 +454,7 @@ class ParticipantVP(models.Model):
                              blank=True, null=True)
     snils_gir = models.CharField(max_length=20, verbose_name='СНИЛС',
                                  null=True, blank=True)
-    participants = models.ForeignKey(VP, verbose_name='Участники',
+    participants = models.ForeignKey(VP, related_name='participants', verbose_name='Участники',
                                      on_delete=models.CASCADE)
 
     def __str__(self):
@@ -550,7 +550,7 @@ class ParticipantMymoskvichi(models.Model):
                            blank=False)
     level = models.CharField(max_length=30, verbose_name='Класс',
                              blank=True, null=True)
-    participants = models.ForeignKey(Mymoskvichi, verbose_name='Участники',
+    participants = models.ForeignKey(Mymoskvichi, related_name='participants', verbose_name='Участники',
                                      on_delete=models.CASCADE)
     birthday = models.DateField(verbose_name='Дата Рождения', blank=True,
                                 null=True
