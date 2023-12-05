@@ -387,7 +387,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
         return super().render_change_form(request, context, *args, **kwargs)
 
 
-class ArtakiadaAdmin(BaseAdmin, CustomAdminFields):
+class ArtakiadaAdmin(DjangoSimpleExportAdmin, BaseAdmin, CustomAdminFields):
     form = FIOForm
     name = 'artakiada'
     list_per_page = 25
@@ -422,6 +422,34 @@ class ArtakiadaAdmin(BaseAdmin, CustomAdminFields):
                        'address_school_gir', 'consent_personal_data')
         }),
     )
+
+    django_simple_export_admin_exports = {
+        "filtered-participant": {
+            "label": "Выгрузить список",
+            "icon": "fas fa-book",
+            "fields": [
+                {"field": "reg_number", "label": "Регистрационный номер"},
+                {"field": "fio", "label": "Фамилия", "render": utils.RenderFIO(format=0)},
+                {"field": "fio", "label": "Имя", "render": utils.RenderFIO(format=1)},
+                {"field": "fio", "label": "Отчество", "render": utils.RenderFIO(format=2)},
+                {"field": "age__name", "label": "Возраст"},
+                {"field": "birthday", "label": "Дата рождения",
+                 "render": DateRender(format="%m.%d.%Y")},
+                {"field": "snils_gir", "label": "СНИЛС"},
+                {"field": "region__name", "label": "Регион"},
+                {"field": "city", "label": "Город"},
+                {"field": "school", "label": "Образовательная организация"},
+                {"field": "address_school_gir", "label": "Адрес организация"},
+                {"field": "status__name", "label": "Достижения"},
+                {"field": "phone_gir", "label": "Контактный телефон"},
+                {"field": "email", "label": "Email"},
+                {"field": "teacher__phone", "label": "Телефон педагога"},
+            ],
+            "export-filtered": True,
+            "permissions": [
+                "event.export_participants"],
+        }
+    }
 
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.groups.filter(
@@ -528,6 +556,7 @@ class InlineFormset(forms.models.BaseInlineFormSet):
                 'Должен быть хотябы один участник и один педагог')
 
 
+
 class ParticipantMymoskvichiInline(admin.StackedInline):
     formset = InlineFormset
     model = ParticipantMymoskvichi
@@ -546,7 +575,7 @@ class ParticipantMymoskvichiAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
                 {"field": "fio", "label": "Фамилия", "render": utils.RenderFIO(format=0)},
                 {"field": "fio", "label": "Имя", "render": utils.RenderFIO(format=1)},
                 {"field": "fio", "label": "Отчество", "render": utils.RenderFIO(format=2)},
-                {"field": "level__name", "label": "Возраст"},
+                {"field": "level", "label": "Класс"},
                 {"field": "birthday", "label": "Дата рождения",
                  "render": DateRender(format="%m.%d.%Y")},
                 {"field": "snils_gir", "label": "СНИЛС"},
@@ -643,6 +672,39 @@ class ParticipantVPInline(admin.StackedInline):
     form = FormParticipantsVP
 
 
+class ParticipantVPAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
+    model = ParticipantVP
+    django_simple_export_admin_exports = {
+        "filtered-participant": {
+            "label": "Выгрузить список",
+            "icon": "fas fa-book",
+            "fields": [
+                {"field": "participants__reg_number", "label": "Регистрационный номер"},
+                {"field": "fio", "label": "Фамилия", "render": utils.RenderFIO(format=0)},
+                {"field": "fio", "label": "Имя", "render": utils.RenderFIO(format=1)},
+                {"field": "fio", "label": "Отчество", "render": utils.RenderFIO(format=2)},
+                {"field": "level", "label": "Класс"},
+                {"field": "birthday", "label": "Дата рождения",
+                 "render": DateRender(format="%m.%d.%Y")},
+                {"field": "snils_gir", "label": "СНИЛС"},
+                {"field": "participants__region__name", "label": "Регион"},
+                {"field": "participants__city", "label": "Город"},
+                {"field": "participants__school", "label": "Образовательная организация"},
+                {"field": "participants__address_school_gir", "label": "Адрес организация"},
+                {"field": "participants__status__name", "label": "Достижения"},
+                {"field": "participants__phone_gir__as_international", "label": "Контактный телефон"},
+                {"field": "participants__email", "label": "Email"},
+                {"field": "participants__teacher__phone", "label": "Телефон педагога"},
+            ],
+            "export-filtered": True,
+            "permissions": [
+                "event.export_participants"],
+        }
+    }
+
+
+
+
 class TeacherExtraVPInline(admin.StackedInline):
     formset = InlineFormset
     model = TeacherExtraVP
@@ -666,7 +728,7 @@ class FileVPInline(admin.StackedInline):
     extra = 0
 
 
-class VPAdmin(BaseAdmin, CustomAdminFields):
+class VPAdmin(DjangoSimpleExportAdmin, BaseAdmin, CustomAdminFields):
     list_per_page = 50
     model = VP
     name = 'vp'
@@ -1109,4 +1171,5 @@ admin.site.register(DirectionVP)
 admin.site.register(AgeART)
 admin.site.register(CreativeTack, CreativeTackAdmin)
 admin.site.register(ArchiveProxy, DesignArchiveAdmin)
-admin.site.register(ParticipantMymoskvichi, ParticipantMymoskvichiAdmin)
+# admin.site.register(ParticipantMymoskvichi, ParticipantMymoskvichiAdmin)
+# admin.site.register(ParticipantVP, ParticipantVPAdmin)
