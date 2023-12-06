@@ -3,6 +3,7 @@ import os
 from django.contrib import admin
 from django.conf import settings
 from django.http import FileResponse, HttpResponse, HttpResponseRedirect
+from django_simple_export_admin.admin import DjangoSimpleExportAdmin, DateRender
 from file_resubmit.admin import AdminResubmitMixin
 import qrcode
 import qrcode.image.svg
@@ -23,7 +24,7 @@ class ImageExpositionAdmin(AdminResubmitMixin, admin.ModelAdmin):
     list_display = ['image_tag', 'images']
 
 
-class ExpositionAdmin(admin.ModelAdmin):
+class ExpositionAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
     form = PageModelForm
     actions = ['generate_qrcode_for_comments', ]
     inlines = [ImageExpositionInline]
@@ -32,9 +33,9 @@ class ExpositionAdmin(admin.ModelAdmin):
     list_editable = ['end_date', 'count_exp', 'count_participants']
     search_fields = ('title',)
 
-    def generate_qrcode_for_comments(self, request,queryset):
-        id_exposition=queryset[0].id
-        file_location = os.path.join(settings.MEDIA_ROOT, 'tmp',f'{id_exposition}.svg')
+    def generate_qrcode_for_comments(self, request, queryset):
+        id_exposition = queryset[0].id
+        file_location = os.path.join(settings.MEDIA_ROOT, 'tmp', f'{id_exposition}.svg')
         url = 'http://{}/comment/{}'.format(os.getenv('HOSTNAME'), id_exposition)
         img = qrcode.make(url, image_factory=qrcode.image.svg.SvgImage)
         img.save(file_location)
@@ -54,6 +55,27 @@ class ExpositionAdmin(admin.ModelAdmin):
             return HttpResponseRedirect(request.get_full_path())
 
     generate_qrcode_for_comments.short_description = 'QR-код для отзывов'
+
+    django_simple_export_admin_exports = {
+        "filtered-books": {
+            "label": "Выгрузить список",
+            "icon": "fas fa-book",
+            "fields": [
+                {"field": "title", "label": "Выставка"},
+                {"field": "start_date", "label": "Начало экспонирования",
+                 "render": DateRender(format="%m.%d.%Y")},
+                {"field": "end_date", "label": "Конец экспонирования",
+                 "render": DateRender(format="%m.%d.%Y")},
+                {"field": "address", "label": "Адрес"},
+                {"field": "count_participants", "label": "Посетители"},
+                {"field": "count_exp", "label": "Единицы экспонирования"},
+
+            ],
+            "export-filtered": True,
+            "permissions": [
+                "contests.export_participants"],
+        }
+    }
 
 
 class CommentAdmin(admin.ModelAdmin):
