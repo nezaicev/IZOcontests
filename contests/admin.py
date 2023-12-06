@@ -556,7 +556,6 @@ class InlineFormset(forms.models.BaseInlineFormSet):
                 'Должен быть хотябы один участник и один педагог')
 
 
-
 class ParticipantMymoskvichiInline(admin.StackedInline):
     formset = InlineFormset
     model = ParticipantMymoskvichi
@@ -663,6 +662,7 @@ class NominationMYMSKChoiceField(forms.ModelChoiceField):
 
     def label_from_instance(self, obj):
         return obj.name
+
 
 
 class ParticipantVPInline(admin.StackedInline):

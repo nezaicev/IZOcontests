@@ -27,9 +27,9 @@ class ExpositionAdmin(admin.ModelAdmin):
     form = PageModelForm
     actions = ['generate_qrcode_for_comments', ]
     inlines = [ImageExpositionInline]
-    list_display = ['title', 'start_date', 'end_date']
+    list_display = ['title', 'start_date', 'end_date', 'count_exp', 'count_participants']
     list_filter = ('archive',)
-    list_editable = ['end_date']
+    list_editable = ['end_date', 'count_exp', 'count_participants']
     search_fields = ('title',)
 
     def generate_qrcode_for_comments(self, request,queryset):
