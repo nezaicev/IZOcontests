@@ -583,7 +583,8 @@ class ParticipantMymoskvichiAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
                 {"field": "participants__school", "label": "Образовательная организация"},
                 {"field": "participants__address_school_gir", "label": "Адрес организация"},
                 {"field": "participants__status__name", "label": "Достижения"},
-                {"field": "participants__phone_gir__as_international", "label": "Контактный телефон"},
+                {"field": "participants__phone_gir__as_international",
+                 "label": "Контактный телефон"},
                 {"field": "participants__email", "label": "Email"},
                 {"field": "participants__teacher__phone", "label": "Телефон педагога"},
             ],
@@ -592,6 +593,13 @@ class ParticipantMymoskvichiAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
                 "event.export_participants"],
         }
     }
+
+    def has_module_permission(self, request):
+        if request.user.is_superuser or request.user.groups.filter(
+                name='Manager').exists():
+            return True
+        else:
+            return False
 
 
 class TeacherExtraMymoskvichiInline(admin.StackedInline):
@@ -664,7 +672,6 @@ class NominationMYMSKChoiceField(forms.ModelChoiceField):
         return obj.name
 
 
-
 class ParticipantVPInline(admin.StackedInline):
     formset = InlineFormset
     model = ParticipantVP
@@ -692,7 +699,8 @@ class ParticipantVPAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
                 {"field": "participants__school", "label": "Образовательная организация"},
                 {"field": "participants__address_school_gir", "label": "Адрес организация"},
                 {"field": "participants__status__name", "label": "Достижения"},
-                {"field": "participants__phone_gir__as_international", "label": "Контактный телефон"},
+                {"field": "participants__phone_gir__as_international",
+                 "label": "Контактный телефон"},
                 {"field": "participants__email", "label": "Email"},
                 {"field": "participants__teacher__phone", "label": "Телефон педагога"},
             ],
@@ -702,7 +710,11 @@ class ParticipantVPAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
         }
     }
 
-
+    def has_module_permission(self, request):
+        if request.user.is_superuser or request.user.groups.filter(name='Manager').exists():
+            return True
+        else:
+            return False
 
 
 class TeacherExtraVPInline(admin.StackedInline):
@@ -1171,5 +1183,5 @@ admin.site.register(DirectionVP)
 admin.site.register(AgeART)
 admin.site.register(CreativeTack, CreativeTackAdmin)
 admin.site.register(ArchiveProxy, DesignArchiveAdmin)
-# admin.site.register(ParticipantMymoskvichi, ParticipantMymoskvichiAdmin)
-# admin.site.register(ParticipantVP, ParticipantVPAdmin)
+admin.site.register(ParticipantMymoskvichi, ParticipantMymoskvichiAdmin)
+admin.site.register(ParticipantVP, ParticipantVPAdmin)
