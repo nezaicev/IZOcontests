@@ -124,7 +124,7 @@ const App = () => {
                         />}/>
                         <Route path='gallery' element={
                             <GalleryPageIzoDictant
-                            urlHorizontalTabs={`${host}/frontend/api/archive/contest/years/`}
+                            urlHorizontalTabs={`${host}/frontend/api/archive/contest/thems/`}
                             urlContent={`${host}/frontend/api/archive/`}/>
                         }/>
 

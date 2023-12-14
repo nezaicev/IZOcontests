@@ -15,7 +15,6 @@ const contestName=process.env.REACT_APP_IZO_DICTANT
 function GalleryPageIzoDictant(props) {
     const [dataHorizontalTabs, setDataHorizontalTabs] = React.useState([])
     const [valueHorizontalTabs, setValueHorizontalTabs] = React.useState(0)
-    // const [valueCreativeTack, setValueCreativeTack] = React.useState('')
     const [params, setParams] = React.useState({contest_name: contestName})
     const [page, setPage] = useState(1)
 
@@ -29,7 +28,9 @@ function GalleryPageIzoDictant(props) {
     }, [])
 
     useEffect(() => {
-        params['year_contest'] = dataHorizontalTabs[valueHorizontalTabs]
+        params['theme'] = dataHorizontalTabs[valueHorizontalTabs]
+
+
     }, [dataHorizontalTabs, valueHorizontalTabs])
 
 
@@ -57,7 +58,7 @@ function GalleryPageIzoDictant(props) {
                 <VisibleBoxImages
                     url={props.urlContent}
                     contestName={contestName}
-                    year={dataHorizontalTabs[valueHorizontalTabs]}
+                    theme={dataHorizontalTabs[valueHorizontalTabs]}
                     page={page}
                     ordering={'rating'}
                     setPage={(newValue) => {
