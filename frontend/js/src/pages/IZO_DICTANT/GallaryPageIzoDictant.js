@@ -28,7 +28,7 @@ function GalleryPageIzoDictant(props) {
     }, [])
 
     useEffect(() => {
-        params['theme'] = dataHorizontalTabs[valueHorizontalTabs]
+        params['year_contest'] = dataHorizontalTabs[valueHorizontalTabs]
 
 
     }, [dataHorizontalTabs, valueHorizontalTabs])
@@ -58,7 +58,7 @@ function GalleryPageIzoDictant(props) {
                 <VisibleBoxImages
                     url={props.urlContent}
                     contestName={contestName}
-                    theme={dataHorizontalTabs[valueHorizontalTabs]}
+                    year={dataHorizontalTabs[valueHorizontalTabs]}
                     page={page}
                     ordering={'rating'}
                     setPage={(newValue) => {

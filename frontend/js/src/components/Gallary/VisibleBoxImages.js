@@ -28,6 +28,15 @@ export default function VisibleBoxImages(props) {
             props.setPage(1, loadMoreItems())
 
         }
+
+        if (!props.theme && props.year ) {
+            setItems([])
+            props.setPage(1, loadMoreItems())
+
+        }
+
+
+
     }, [props.theme, props.year])
 
 

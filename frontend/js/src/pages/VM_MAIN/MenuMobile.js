@@ -118,7 +118,7 @@ const MenuMobile = () => {
                 </BoxButtonLink>
 
 
-                <BoxButtonLink href='#' color={'rgba(165,202,221,0.76)'}>
+                <BoxButtonLink href='izo_dictant' active={true} color={'rgba(165,202,221,0.76)'}>
                     <rect
 
                         id="rect4433-5-5-1"

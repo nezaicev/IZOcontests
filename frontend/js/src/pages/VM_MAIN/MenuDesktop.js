@@ -153,7 +153,7 @@ const MenuDesktop =()=>{
                 </BoxButtonLink>
 
 
-                <BoxButtonLink href='#' color={'rgba(165,202,221,0.76)'}>
+                <BoxButtonLink active={true} href='izo_dictant' color={'rgba(165,202,221,0.76)'}>
                     <rect
 
                         id="rect4433-5-5-1"
