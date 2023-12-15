@@ -459,7 +459,7 @@ class ExpositionDetailAPIView(APIView):
         except Event.DoesNotExist:
             raise Http404
 
-    @method_decorator(cache.cache_page(60 * 60 * 2))
+    # @method_decorator(cache.cache_page(60 * 60 * 2))
     def get(self, request, pk):
         exposition = self.get_object(pk)
         serializer = ExpositionSerializer(exposition)
@@ -473,7 +473,7 @@ class PageDetailAPIView(APIView):
         except Event.DoesNotExist:
             raise Http404
 
-    @method_decorator(cache.cache_page(60 * 60 * 2))
+    # @method_decorator(cache.cache_page(60 * 60 * 2))
     def get(self, request, slug):
         page = self.get_object(slug)
         serializer = PageSerializer(page)
@@ -482,7 +482,7 @@ class PageDetailAPIView(APIView):
 
 class PageContestAPIView(APIView):
 
-    @method_decorator(cache.cache_page(60 * 60 * 2))
+    # @method_decorator(cache.cache_page(60 * 60 * 2))
     def get(self, request):
         contests = PageContest.objects.all()
         serializer = PageContestSerializer(contests, many=True)
