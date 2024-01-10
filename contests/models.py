@@ -11,7 +11,9 @@ from django.utils.safestring import mark_safe
 from model_utils.managers import InheritanceManager
 from ckeditor.fields import RichTextField
 from sorl.thumbnail import get_thumbnail
+from PIL import Image, ImageFile
 
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 import contests.directory
 
 from contests.utils import PathAndRename
