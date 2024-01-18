@@ -13,6 +13,7 @@ const contestName=process.env.REACT_APP_CHEREZ_ISKUSSTVO
 
 
 function CherezIskusstvoListPage(props) {
+    // const [isFetch, setIsFetch]=React.useState(false)
     const [dataVerticalTabs, setDataVerticalTabs] = React.useState([])
     const [valueVerticalTabs, setValueVerticalTabs] = React.useState('')
     const [dataHorizontalTabs, setDataHorizontalTabs] = React.useState([])
@@ -23,25 +24,27 @@ function CherezIskusstvoListPage(props) {
 
 
     useEffect(() => {
+
         dataFetch(props.urlVerticalTabs, params, (data) => {
             setDataVerticalTabs(getExcludeData(data, excludeYears), [setValueVerticalTabs(0)]);
+
         })
     }, [])
 
     useEffect(() => {
+
         params['year_contest'] = dataVerticalTabs[valueVerticalTabs]
+        if (params['year_contest']){
         dataFetch(props.urlHorizontalTabs, params, (data) => {
             setDataHorizontalTabs(data, [setValueHorizontalTabs(0)])
             setPage(1)
-        })
-    }, [valueVerticalTabs])
+        })}
+    }, [valueVerticalTabs, dataVerticalTabs])
 
     useEffect(() => {
         params['year_contest'] = dataVerticalTabs[valueVerticalTabs]
         params['theme'] = dataHorizontalTabs[valueHorizontalTabs]
-        // dataFetch(props.urlCreativeTack, params, (data) => {
-        //     setValueCreativeTack(data)
-        // })
+
     }, [dataHorizontalTabs, valueHorizontalTabs])
 
     return (<React.Fragment>
