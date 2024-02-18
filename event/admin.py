@@ -8,7 +8,7 @@ from contests import tasks
 from event.models import ParticipantEvent, Event
 from mailing.forms import SelectLetterForm
 from mailing.models import Email
-
+from contests import utils
 
 class EventAdmin(admin.ModelAdmin):
     model = Event
@@ -18,10 +18,11 @@ class EventAdmin(admin.ModelAdmin):
 class ParticipantEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
     model = ParticipantEvent
     list_display = ['reg_number', 'get_fio_participant',
-                    'certificate','event']
+                    'certificate','presence','event']
     list_filter=['event',]
     exclude = ['reg_number',]
     actions = ['send_selected_letter',]
+    list_editable = ['presence']
     search_fields = ('reg_number', 'participant__fio', 'participant__email')
 
     django_simple_export_admin_exports = {
@@ -90,6 +91,21 @@ class ParticipantEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
         return '{} - {}'.format(obj.participant.fio, obj.participant.email)
 
     get_fio_participant.short_description = 'Участник'
+
+    def get_list_display(self, request):
+        if request.user.is_superuser or request.user.groups.filter(
+                name='Manager').exists():
+            self.list_editable = ('presence',)
+            self.list_filter = self.__class__.list_filter
+            return self.__class__.list_display
+        else:
+            self.list_display = utils.remove_field_in_list(
+                self.list_display, 'presence')
+            self.list_filter = ()
+            self.list_editable = ()
+
+            return self.list_display
+
 
 
 admin.site.register(Event, EventAdmin)

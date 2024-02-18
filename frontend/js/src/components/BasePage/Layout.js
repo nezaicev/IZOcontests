@@ -10,7 +10,7 @@ const Layout = (props) => {
     const auth = useAuth()
     // const resolver= useResolvedPath()
     const location = useLocation();
-    // console.log(resolver, location)
+    // console.log(resolver, location)export {Layout}
     // console.log(props.tabs)
     // console.log(props.tabs.findIndex((p)=>{return p.link===resolver.pathname}))
     return (

@@ -16,14 +16,14 @@ URL_EVENT = '{}/event/'.format(os.environ.get('HOSTNAME'))
 
 class Event(models.Model):
     TYPE_CONTESTS = (
-        ('Мероприятие', 'Мероприятие'),
-        ('Анонс', 'Анонс'))
+        ('Очное', 'Очное'),
+        ('Дистанционное', 'Дистанционное'))
     name = models.CharField(verbose_name='Название мероприятия',
                             max_length=350,
                             blank=False)
     type = models.CharField(verbose_name='Тип',
                             choices=TYPE_CONTESTS,
-                            default='Мероприятие', max_length=20)
+                            default='Дистанционное', max_length=20)
     start_date = models.DateTimeField(verbose_name='Начало мероприятия',
                                       blank=False, null=True)
     logo = models.ImageField(verbose_name='Изображение',
@@ -74,12 +74,22 @@ class ParticipantEvent(models.Model):
                                on_delete=models.PROTECT, blank=True, null=True,
                                default=Status.objects.get(name='Участник').id)
 
+    presence = models.BooleanField(verbose_name='Присутствие', default=False)
+
     def save(self, *args, **kwargs):
         if not self.pk:
             self.reg_number = str(int(time.time())) + str(self.participant.id)
         super(ParticipantEvent, self).save(*args, **kwargs)
 
     def certificate(self):
+        if self.event.type == 'Очное':
+            if self.event.certificate and self.presence:
+                return mark_safe(
+                    '<a target="_blank" href="/certs/confirmation/event/?reg_number={}">Сертификат</a>'.format(
+                        self.reg_number)
+                )
+            else:
+                return '-'
         if self.event.certificate:
             return mark_safe(
                 '<a target="_blank" href="/certs/confirmation/event/?reg_number={}">Сертификат</a>'.format(
