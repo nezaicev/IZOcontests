@@ -106,4 +106,5 @@ def slice_list_email(list_emails, count):
     for i in range(math.ceil(len(list_emails) / count)):
         emails.append(list_emails[step:step + count])
         step += count
-    return emails
+    unic_list_email=set(emails)
+    return list(unic_list_email)
