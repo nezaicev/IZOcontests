@@ -15,7 +15,7 @@ class SelectLetterForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        MYQUERY = Email.objects.all().values_list('id','theme')
+        MYQUERY = Email.objects.all().values_list('id','data')
         self.fields['letters'] = forms.ChoiceField(choices=(*MYQUERY,),label='Письмо')
 
 
