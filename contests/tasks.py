@@ -102,9 +102,9 @@ def send_mail_for_subscribers(emails, theme, content):
 
 def slice_list_email(list_emails, count):
     step = 0
-    emails = []
+    unic_emails = []
     for i in range(math.ceil(len(list_emails) / count)):
-        emails.append(list_emails[step:step + count])
+        unic_emails.append(list_emails[step:step + count])
         step += count
-    unic_list_email=set(emails)
-    return list(unic_list_email)
+
+    return unic_emails
