@@ -398,7 +398,7 @@ class ArtakiadaAdmin(DjangoSimpleExportAdmin, BaseAdmin, CustomAdminFields):
         'region',
     )
     list_display = (
-        'reg_number', 'image_tag', 'fio', 'level', 'status', 'status_change',
+        'reg_number', 'image_tag', 'fio', 'level', 'status',
         'school',
         'region',
         # 'district',
