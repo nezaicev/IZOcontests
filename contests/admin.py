@@ -237,7 +237,7 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     form = ModelForm
     search_fields = ('reg_number', 'fio', 'fio_teacher')
     list_display = (
-        'reg_number', 'fio', 'status', 'status_change', 'school', 'region',
+        'reg_number', 'fio', 'status', 'school', 'region',
         'district',
         'fio_teacher')
     list_filter = ('status', 'district', 'region')
