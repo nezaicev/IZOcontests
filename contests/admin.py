@@ -279,9 +279,9 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
     def get_actions(self, request):
         actions = super().get_actions(request)
 
-        if not request.user.is_superuser:
-            if 'send_selected_letter' in actions:
-                del actions['send_selected_letter']
+        # if not request.user.is_superuser:
+        #     if 'send_selected_letter' in actions:
+        #         del actions['send_selected_letter']
 
         if not request.user.is_superuser:
             if 'create_thumbs' in actions:
