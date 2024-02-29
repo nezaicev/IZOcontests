@@ -17,7 +17,7 @@ frontend/node_modules/
 static/frontend/main.js/main.js
 static/frontend/main.js/main.js.map
 
-./venv
+venv/
 #mailing/migrations
 #users/migrations
 #map/migrations
