@@ -40,7 +40,7 @@ class SendEmail():
                                 {'items': queryset, 'form': form})
 
     send_selected_letter.short_description = 'Отправить выбранное письмо'
-    send_selected_letter.allowed_permissions = ('execution_all_actions','send_selected_letter_to_participant_event')
+    send_selected_letter.allowed_permissions = ('execution_all_actions',)
 
     def has_execution_all_actions_permission(self, request):
         """Does the user have the publish permission?"""
