@@ -13,6 +13,7 @@ from contests import tasks
 
 
 class SendEmail():
+    @admin.action(permissions=['send_selected_letter_to_participant_event'])
     def send_selected_letter(self, request, queryset):
 
         if 'apply' in request.POST:
@@ -20,7 +21,7 @@ class SendEmail():
             if form.is_valid():
                 letter = Email.objects.get(id=form.cleaned_data['letters'])
                 recipients = list(
-                    queryset.values_list('teacher_id__email', flat=True))
+                    queryset.values_list('participant_id__email', flat=True))
                 if recipients:
                     tasks.send_mail_for_subscribers.delay(recipients,
                                                           letter.theme,
@@ -41,11 +42,35 @@ class SendEmail():
 
     send_selected_letter.short_description = 'Отправить выбранное письмо'
 
-    def get_action(self, request):
-        actions = super().get_actions(request)
-        if not request.user.has_perm('send_selected_letter_to_participant_event'):
-            del actions['send_selected_letter']
-        return actions
+    def has_send_selected_letter_to_participant_event_permission(self, request):
+        return request.user.has_perm('event.send_selected_letter_to_participant_event')
+    # def send_selected_letter(self, request, queryset):
+    #
+    #     if 'apply' in request.POST:
+    #         form = SelectLetterForm(request.POST)
+    #         if form.is_valid():
+    #             letter = Email.objects.get(id=form.cleaned_data['letters'])
+    #             recipients = list(
+    #                 queryset.values_list('teacher_id__email', flat=True))
+    #             if recipients:
+    #                 tasks.send_mail_for_subscribers.delay(recipients,
+    #                                                       letter.theme,
+    #                                                       letter.content)
+    #                 messages.add_message(request, messages.INFO,
+    #                                      'Письмо {}_{}, отправлено - {} '.format(
+    #                                          letter.date,
+    #                                          letter.theme,
+    #                                          len(recipients)))
+    #         return None
+    #
+    #     form = SelectLetterForm(
+    #         initial={
+    #             '_selected_action': queryset.values_list('id',
+    #                                                      flat=True), })
+    #     return TemplateResponse(request, "admin/select_letter.html",
+    #                             {'items': queryset, 'form': form})
+    #
+    # send_selected_letter.short_description = 'Отправить выбранное письмо'
     # send_selected_letter.allowed_permissions = ('execution_all_actions',)
     #
     # def has_execution_all_actions_permission(self, request):
@@ -121,7 +146,7 @@ class FileXlsAdmin(admin.ModelAdmin):
             if form.is_valid():
 
                 for obj in queryset:
-                    new_subscribers = parse_xls(obj.file.url[1:], form.cleaned_data['recipients'])
+                    new_subscribers = parse_xls(obj.file.url[1:],form.cleaned_data['recipients'])
                     for new_subscriber in new_subscribers:
                         subscriber, created = Subscriber.objects.get_or_create(
                             email=new_subscriber['email'],
@@ -146,6 +171,8 @@ class FileXlsAdmin(admin.ModelAdmin):
                                                          flat=True), })
         return TemplateResponse(request, "admin/insert_subscribers.html",
                                 {'items': queryset, 'form': form})
+
+
 
     insert_xls.short_description = 'Загрузить данные'
 
