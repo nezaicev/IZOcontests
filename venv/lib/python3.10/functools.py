@@ -1,0 +1,1 @@
+/home/nezaicev/.pyenv/versions/3.10.0/lib/python3.10/functools.py
