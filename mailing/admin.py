@@ -40,13 +40,19 @@ class SendEmail():
                                 {'items': queryset, 'form': form})
 
     send_selected_letter.short_description = 'Отправить выбранное письмо'
-    send_selected_letter.allowed_permissions = ('execution_all_actions',)
 
-    def has_execution_all_actions_permission(self, request):
-        """Does the user have the publish permission?"""
-        opts = self.opts
-        codename = get_permission_codename('execution_all_actions', opts)
-        return request.user.has_perm('%s.%s' % (opts.app_label, codename))
+    def get_action(self, request):
+        actions = super().get_actions(request)
+        if not request.user.has_perm('send_selected_letter_to_participant_event'):
+            del actions['send_selected_letter']
+        return actions
+    # send_selected_letter.allowed_permissions = ('execution_all_actions',)
+    #
+    # def has_execution_all_actions_permission(self, request):
+    #     """Does the user have the publish permission?"""
+    #     opts = self.opts
+    #     codename = get_permission_codename('execution_all_actions', opts)
+    #     return request.user.has_perm('%s.%s' % (opts.app_label, codename))
 
 
 class EmailAdmin(admin.ModelAdmin):
@@ -115,7 +121,7 @@ class FileXlsAdmin(admin.ModelAdmin):
             if form.is_valid():
 
                 for obj in queryset:
-                    new_subscribers = parse_xls(obj.file.url[1:],form.cleaned_data['recipients'])
+                    new_subscribers = parse_xls(obj.file.url[1:], form.cleaned_data['recipients'])
                     for new_subscriber in new_subscribers:
                         subscriber, created = Subscriber.objects.get_or_create(
                             email=new_subscriber['email'],
@@ -140,8 +146,6 @@ class FileXlsAdmin(admin.ModelAdmin):
                                                          flat=True), })
         return TemplateResponse(request, "admin/insert_subscribers.html",
                                 {'items': queryset, 'form': form})
-
-
 
     insert_xls.short_description = 'Загрузить данные'
 
