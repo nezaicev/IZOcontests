@@ -21,7 +21,7 @@ class SendEmail():
             if form.is_valid():
                 letter = Email.objects.get(id=form.cleaned_data['letters'])
                 recipients = list(
-                    queryset.values_list('participant_id__email', flat=True))
+                    queryset.values_list('teacher_id__email', flat=True))
                 if recipients:
                     tasks.send_mail_for_subscribers.delay(recipients,
                                                           letter.theme,
