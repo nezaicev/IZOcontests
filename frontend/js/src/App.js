@@ -33,6 +33,7 @@ import {Comment, CreateCommentPage} from "./pages/EXPOSITION/CreateCommentPage";
 import GallaryPageNRusheva from "./pages/NRUSHEVA/GallaryPageNRusheva";
 import {GalleryPageSkazki} from "./pages/SKAZKI/GallaryPageSkazki";
 import {GalleryPageIzoDictant} from "./pages/IZO_DICTANT/GallaryPageIzoDictant";
+import GalleryPageArtProject from "./pages/ART_PROJECT/GalleryPageArtProject";
 
 
 const host = process.env.REACT_APP_HOST_NAME
@@ -297,11 +298,24 @@ const App = () => {
 
                     <Route path='/art_project' element={<Layout tabs={[
                         {'name': 'АРТ-ПРОЕКТ', 'link': '/art_project/statute'},
+                        {'name': 'Галерея', 'link': '/art_project/gallery'},
 
                     ]}/>}>
-                        <Route index
+                        <Route path='statute'
                                element={<TextContent
                                    link={'/frontend/api/page/art_project_pologenie/'}/>}/>
+
+                          <Route path='gallery' element={
+
+                            <GalleryPageArtProject
+                                contestName={process.env.REACT_APP_ART_PROJECT}
+                                urlVerticalTabs={`${host}/frontend/api/archive/contest/years/`}
+                                urlHorizontalTabs={`${host}/frontend/api/archive/contest/nominations/`}
+                                urlContent={`${host}/frontend/api/archive/`}>
+                            </GalleryPageArtProject>
+                        }/>
+
+
                     </Route>
 
 
