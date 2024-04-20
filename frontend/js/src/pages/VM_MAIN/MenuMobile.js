@@ -317,7 +317,7 @@ const MenuMobile = () => {
                     </text>
                 </BoxButtonLink>
 
-                <BoxButtonLink href='#' color={'rgba(156,189,227,0.76)'}>
+                <BoxButtonLink href='art_project/statute' color={'rgba(156,189,227,0.76)'}>
                     <rect
                         id="rect4433-5-5-46"
                         width="35.522415"

@@ -296,7 +296,7 @@ const MenuDesktop =()=>{
                     </text>
                 </BoxButtonLink>
 
-                <BoxButtonLink href='art_project' active={true} color={'rgba(156,189,227,0.76)'}>
+                <BoxButtonLink href='art_project/statute' active={true} color={'rgba(156,189,227,0.76)'}>
                     <rect
                         id="rect4433-5-5-46"
                         width="35.522415"
