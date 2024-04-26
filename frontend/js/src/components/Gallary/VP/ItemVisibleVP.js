@@ -158,7 +158,7 @@ export function ExpandMoreCollapse(props) {
                                           key={props.index}/>
 
 
-                            {(props.item.videos.length > 0) && (props.item.videos.includes('youtu')) ?
+                            {(props.item.videos.length > 0) && (props.item.videos[0]['link'].includes('youtu'))  ?
                                 <React.Fragment><Tooltip title="Видео">
                                     <IconButton>
                                         <OndemandVideoIcon sx={{
@@ -169,9 +169,10 @@ export function ExpandMoreCollapse(props) {
                                     </IconButton>
                                 </Tooltip> <DividerStyled/>
                                     {props.item.videos.map((item, index) => (
-                                    <VideoItem name={item.name}
+                                     <VideoItem name={item.name}
                                                url={item.link}
-                                               key={index}/>))}
+                                               key={index}/>
+                                    ))}
                                 </React.Fragment> : ''}
 
                             {/*{*/}
