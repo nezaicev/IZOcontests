@@ -21,23 +21,22 @@ export default function VisibleBoxImages(props) {
         },
         isFetching
     );
+
+
     useEffect(() => {
-
-        if (props.theme) {
+        if (props.theme!==undefined && props.year!==undefined )
+        {
             setItems([])
             props.setPage(1, loadMoreItems())
-
         }
-
-        if (!props.theme && props.year ) {
-            setItems([])
-            props.setPage(1, loadMoreItems())
-
-        }
+        console.log(props.year)
+        console.log(props.theme===undefined)
+    },[props.theme, props.year])
 
 
 
-    }, [props.theme, props.year])
+
+
 
 
     function loadMoreItems() {
