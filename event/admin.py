@@ -10,16 +10,36 @@ from mailing.forms import SelectLetterForm
 from mailing.models import Email
 from contests import utils
 
+
+class ArchivedEventFilter(admin.SimpleListFilter):
+    title = 'Мероприятие'  # Название фильтра
+    parameter_name = 'event'  # Параметр для URL
+
+    def lookups(self, request, model_admin):
+        # Возвращаем только мероприятия, которые не архивные
+        events = Event.objects.filter(hide=False)
+        return [(event.id, event.name) for event in events]
+
+    def queryset(self, request, queryset):
+        # Если фильтр применён, возвращаем отфильтрованные объекты
+        if self.value():
+            return queryset.filter(event__id=self.value())
+        return queryset
+
+
+
+
 class EventAdmin(admin.ModelAdmin):
     model = Event
     readonly_fields = ['event_url']
-
+    list_display = ['name', 'start_date','hide', ]
+    list_editable= ['hide',]
 
 class ParticipantEventAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
     model = ParticipantEvent
     list_display = ['reg_number', 'get_fio_participant',
                     'certificate','presence','event']
-    list_filter=['event',]
+    list_filter=[ArchivedEventFilter]
     exclude = ['reg_number',]
     actions = ['send_selected_letter',]
     list_editable = ['presence']
