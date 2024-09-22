@@ -58,6 +58,7 @@ export default function GalleryVP(props) {
                     contestName={props.contestName}
                     year={dataVerticalTabs[valueVerticalTabs]}
                     nomination={dataHorizontalTabs[valueHorizontalTabs]}
+                    theme={null}
                     page={page}
                     setPage={(newValue) => {
                         setPage(newValue)

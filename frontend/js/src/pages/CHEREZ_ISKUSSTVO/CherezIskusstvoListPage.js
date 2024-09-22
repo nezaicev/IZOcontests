@@ -75,6 +75,7 @@ function CherezIskusstvoListPage(props) {
                 <VisibleBoxImages
                     url={props.urlContent}
                     contestName={contestName}
+                    year={null}
                     theme={dataHorizontalTabs[valueHorizontalTabs]}
                     page={page}
                     ordering={'rating'}

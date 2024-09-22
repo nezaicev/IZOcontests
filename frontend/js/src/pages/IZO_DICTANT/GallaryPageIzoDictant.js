@@ -59,6 +59,7 @@ function GalleryPageIzoDictant(props) {
                     url={props.urlContent}
                     contestName={contestName}
                     year={dataHorizontalTabs[valueHorizontalTabs]}
+                    theme={null}
                     page={page}
                     ordering={'rating'}
                     setPage={(newValue) => {

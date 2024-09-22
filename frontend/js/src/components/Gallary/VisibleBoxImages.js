@@ -29,8 +29,7 @@ export default function VisibleBoxImages(props) {
             setItems([])
             props.setPage(1, loadMoreItems())
         }
-        console.log(props.year)
-        console.log(props.theme===undefined)
+
     },[props.theme, props.year])
 
 
