@@ -105,8 +105,8 @@ class Select(models.Model):
 
 class BaseContest(models.Model):
     objects = InheritanceManager()
-    consent_personal_data = models.BooleanField(
-        'Согласие на обработку персональных данных участника(ов)', default=True)
+    # consent_personal_data = models.BooleanField(
+    #     'Согласие на обработку персональных данных участника(ов)', default=True)
     info = models.ForeignKey('PageContest', verbose_name='Информация',
                              blank=False, on_delete=models.PROTECT, null=True)
     reg_number = models.CharField(max_length=20, blank=False, null=False,
@@ -458,6 +458,11 @@ class ParticipantVP(models.Model):
                                  null=True, blank=True)
     participants = models.ForeignKey(VP, related_name='participants', verbose_name='Участники',
                                      on_delete=models.CASCADE)
+    agent_participant_phone=models.CharField(verbose_name='Телефон родителя/законного представителя', null=True,
+                                 blank=True, max_length=50)
+    agent_participant_email=models.EmailField(verbose_name='E-mail родителя/законного представителя', null=True, blank=True)
+    consent_personal_data = models.BooleanField(
+        'Согласие на обработку персональных данных участника', default=True)
 
     def __str__(self):
         return str(self.fio)

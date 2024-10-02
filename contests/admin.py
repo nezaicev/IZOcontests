@@ -769,7 +769,7 @@ class VPAdmin(DjangoSimpleExportAdmin, BaseAdmin, CustomAdminFields):
                 'author_name', 'nomination', 'organization_form', 'direction', 'level', 'ovz')
         }),
         ('Контактные данные', {
-            'fields': ('email', 'phone_gir', 'consent_personal_data')
+            'fields': ('email', 'phone_gir')
         }
 
          )

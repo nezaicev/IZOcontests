@@ -94,14 +94,15 @@ class FormParticipantsVP(forms.ModelForm):
 
     class Meta:
         model = ParticipantVP
-        fields = ('fio', 'snils_gir','birthday', 'level')
+        fields = ('fio', 'snils_gir', 'birthday', 'level', 'agent_participant_phone',
+                  'agent_participant_email','consent_personal_data')
         widgets = {
             'snils_gir': forms.TextInput(
                 attrs={
                     'data-mask': '000-000-000 00',
                     'placeholder': '000-000-000 00',
 
-                },),
+                }, ),
             'level': forms.TextInput(
                 attrs={
                     'data-mask': 'SSSSS',
@@ -112,7 +113,23 @@ class FormParticipantsVP(forms.ModelForm):
                     'data-mask': '00.00.0000',
                     'placeholder': '23.03.1990'
                 }
-            )
+            ),
+            'agent_participant_phone': forms.TextInput(
+                attrs={
+                    'data-mask': '+0000-000-00-00',
+                    'placeholder': '+7915-000-00-00'
+                }
+            ),
+            'agent_participant_email': forms.TextInput(
+                attrs={
+                    'placeholder': 'test@mail.ru'
+                }
+            ),
+            'consent_personal_data':forms.CheckboxInput(attrs={
+
+            })
+
+
         }
 
 
@@ -128,7 +145,7 @@ class FormParticipantsMymoskvichi(forms.ModelForm):
                     'data-mask': '000-000-000 00',
                     'placeholder': '000-000-000 00',
 
-                },),
+                }, ),
             'level': forms.TextInput(
                 attrs={
                     'data-mask': 'SSSSS',
