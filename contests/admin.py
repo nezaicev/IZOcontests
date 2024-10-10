@@ -381,6 +381,9 @@ class BaseAdmin(admin.ModelAdmin, ArchiveInterface, SendEmail):
         if form_instance.fields.get('phone_gir'):
             form_instance.fields['phone_gir'].widget.attrs['data-mask'] = "+7(000) 000-0000"
             form_instance.fields['phone_gir'].widget.attrs['placeholder'] = "+7(000) 000-0000"
+        if form_instance.fields.get('phone_parent_gir'):
+            form_instance.fields['phone_parent_gir'].widget.attrs['data-mask'] = "+7(000) 000-0000"
+            form_instance.fields['phone_parent_gir'].widget.attrs['placeholder'] = "+7(000) 000-0000"
         if form_instance.fields.get('birthday'):
             form_instance.fields['birthday'].widget.attrs['data-mask'] = "00.00.0000"
             form_instance.fields['birthday'].widget.attrs['placeholder'] = "23.03.1990"
@@ -419,7 +422,7 @@ class ArtakiadaAdmin(DjangoSimpleExportAdmin, BaseAdmin, CustomAdminFields):
         }),
         ('Данные для ГИР участника (https://талантыроссии.рф/)', {
 
-            'fields': ('email', 'birthday', 'snils_gir', 'phone_gir',
+            'fields': ('email', 'birthday', 'snils_gir', 'phone_gir','phone_parent_gir',
                        'address_school_gir', 'consent_personal_data')
         }),
     )

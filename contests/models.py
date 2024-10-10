@@ -240,11 +240,16 @@ class Artakiada(BaseContest):
 
     snils_gir = models.CharField(max_length=20, verbose_name='СНИЛС',
                                  null=True, blank=True)
-    phone_gir = models.CharField(verbose_name='Контактный телефон', null=True,
+    phone_gir = models.CharField(verbose_name='Контактный телефон педагога', null=True,
                                  blank=True, max_length=50)
+    phone_parent_gir = models.CharField(verbose_name='Контактный телефон родителя', null=True,
+                                 blank=True, max_length=50)
+
     address_school_gir = models.CharField(verbose_name='Адрес организации',
                                           null=True, blank=True,
                                           max_length=200)
+    consent_personal_data = models.BooleanField(
+        'Согласие на обработку персональных данных', default=True)
 
     def __str__(self):
         return str(self.reg_number)

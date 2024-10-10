@@ -60,7 +60,7 @@ class FIOWidget(MultiWidget):
             attrs = {'label': 'ФИО'}
         widgets = [TextInput(attrs={'placeholder': 'Фамилия', 'required': 'true'}),
                    TextInput(attrs={'placeholder': 'Имя', 'required': 'true'}),
-                   TextInput(attrs={'placeholder': 'Отчество', 'required': 'required'})
+                   TextInput(attrs={'placeholder': 'Отчество', 'required': 'true'})
                    ]
         super(FIOWidget, self).__init__(widgets, attrs)
 
