@@ -509,6 +509,7 @@ class NRushevaAdmin(DjangoSimpleExportAdmin, BaseAdmin, CustomAdminFields):
         ('Данные для ГИР (https://талантыроссии.рф/)', {
             'fields': (
                 'email', 'birthday', 'snils_gir', 'phone_gir',
+                'phone_parent_gir',
                 'address_school_gir', 'consent_personal_data')
         }),
     )
