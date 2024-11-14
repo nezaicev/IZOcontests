@@ -625,13 +625,13 @@ class MymoskvichiAdmin(BaseAdmin, CustomAdminFields):
         ('Работа', {
             'fields': (
                 'author_name', 'nomination',
-                'program', 'link', 'age', 'description_file', 'duration',
-                'ovz')
+                'program', 'link', 'age', 'description_file'
+                )
         }),
 
         ('Данные для ГИР (https://талантыроссии.рф/)', {
             'fields': ('email',
-                       'phone_gir', 'address_school_gir', 'consent_personal_data')
+                       'phone_gir', 'address_school_gir')
         }),
     )
     inlines = [ParticipantMymoskvichiInline, TeacherExtraMymoskvichiInline]

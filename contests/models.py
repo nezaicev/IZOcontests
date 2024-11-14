@@ -525,19 +525,14 @@ class Mymoskvichi(BaseContest, MultiParticipants):
     address_school_gir = models.CharField(verbose_name='Адрес организации',
                                           null=True, blank=True,
                                           max_length=200)
-    duration = models.CharField(verbose_name='Длительность', default='3:30',
-                                max_length=100, null=True)
 
     description_file = models.FileField(upload_to=PathAndRename('file/'),
                                         validators=[validate_file_extension],
                                         max_length=200,
-                                        verbose_name='Описание и сценарий',
+                                        verbose_name='ПРЕСС-КИТ',
                                         null=True
                                         )
-    ovz = models.CharField(verbose_name='Проект, выполнен детьми с ОВЗ',
-                           blank=False, default='Нет',
-                           choices=(('Нет', 'Нет'), ('Да', 'Да')),
-                           max_length=10)
+
 
     def __str__(self):
         return str(self.reg_number)
@@ -574,6 +569,14 @@ class ParticipantMymoskvichi(models.Model):
                                 )
     snils_gir = models.CharField(max_length=20, verbose_name='СНИЛС',
                                  null=True, blank=True)
+
+    agent_participant_phone = models.CharField(
+        verbose_name='Телефон родителя/законного представителя', null=True,
+        blank=True, max_length=50)
+    agent_participant_email = models.EmailField(
+        verbose_name='E-mail родителя/законного представителя', null=True, blank=True)
+    consent_personal_data = models.BooleanField(
+        'Согласие на обработку персональных данных участника', default=True)
 
     def __str__(self):
         return str(self.fio)
