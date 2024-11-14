@@ -129,7 +129,7 @@ class BaseContest(models.Model):
     district = models.ForeignKey(District, verbose_name='Округ',
                                  on_delete=models.PROTECT, null=True,
                                  blank=True)
-    email = models.EmailField(verbose_name='Электронная почта', null=True)
+    email = models.EmailField(verbose_name='Электронная почта педагога/руководителя', null=True)
     status_change = models.BooleanField(verbose_name='Статус изменения',
                                         default=False)
 
@@ -240,7 +240,7 @@ class Artakiada(BaseContest):
 
     snils_gir = models.CharField(max_length=20, verbose_name='СНИЛС',
                                  null=True, blank=True)
-    phone_gir = models.CharField(verbose_name='Контактный телефон педагога', null=True,
+    phone_gir = models.CharField(verbose_name='Контактный телефон педагога/руководителя', null=True,
                                  blank=True, max_length=50)
     phone_parent_gir = models.CharField(verbose_name='Контактный телефон родителя', null=True,
                                  blank=True, max_length=50)
@@ -321,7 +321,7 @@ class NRusheva(BaseContest):
 
     snils_gir = models.CharField(max_length=20, verbose_name='СНИЛС',
                                  null=True, blank=True)
-    phone_gir = models.CharField(verbose_name='Контактный телефон педагога', null=True,
+    phone_gir = models.CharField(verbose_name='Контактный телефон педагога/руководителя', null=True,
                                  blank=True, max_length=50)
     phone_parent_gir = models.CharField(verbose_name='Контактный телефон родителя', null=True,
                                         blank=True, max_length=50)
@@ -414,7 +414,7 @@ class VP(BaseContest, MultiParticipants):
                            blank=False, default='Нет',
                            choices=(('Нет', 'Нет'), ('Да', 'Да')),
                            max_length=10)
-    phone_gir = models.CharField(verbose_name='Контактный телефон', null=True,
+    phone_gir = models.CharField(verbose_name='Контактный телефон педагога/руководителя', null=True,
                                  blank=True, max_length=50)
 
     def __str__(self):
@@ -519,7 +519,7 @@ class Mymoskvichi(BaseContest, MultiParticipants):
                             verbose_name='Ссылка на файл (облако)',
                             null=True)
 
-    phone_gir = PhoneNumberField(verbose_name='Контактный телефон', null=True,
+    phone_gir = PhoneNumberField(verbose_name='Контактный телефон педагога/руководителя', null=True,
                                  default='+7'
                                  )
     address_school_gir = models.CharField(verbose_name='Адрес организации',
