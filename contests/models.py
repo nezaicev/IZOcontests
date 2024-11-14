@@ -506,6 +506,10 @@ class Mymoskvichi(BaseContest, MultiParticipants):
 
     nomination = models.ForeignKey(NominationMYMSK, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
+    format = models.CharField(max_length=35, choices=(
+        ('ФИЛЬМ', 'ФИЛЬМ'), ('МУЛЬТИПЛИКАЦИЯ (АНИМАЦИЯ)', 'МУЛЬТИПЛИКАЦИЯ (АНИМАЦИЯ)'), ('ПРЕЗЕНТАЦИЯ', 'ПРЕЗЕНТАЦИЯ')), blank=False,
+                              verbose_name='Формат работы')
+
 
     author_name = models.CharField(max_length=700, blank=False,
                                    verbose_name='Авторское название')
