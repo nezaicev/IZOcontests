@@ -382,6 +382,29 @@ const App = () => {
                     </Route>
 
 
+                    {/*'______Дизайн детям____'*/}
+                    <Route path='/design' element={<Layout tabs={[
+                        {'name': 'Проект «Дизайн детям»', 'link': '/design'},
+                        // {'name': 'Положение', 'link': '/nrusheva/statute'},
+                        {'name': 'Каталоги', 'link': '/design/catalogs'},
+
+                    ]}/>}>
+                        <Route index
+                               element={<TextContent
+                                   link={'/frontend/api/page/design_base_info/'}/>}/>
+                        <Route path='catalogs' element={
+                            <PublicationListPage contestName={'Дизайн детям'}/>
+
+                        }/>
+
+                    </Route>
+
+
+
+
+
+
+
                 </Routes>
 
 

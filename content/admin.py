@@ -17,7 +17,7 @@ class VideoAdmin(admin.ModelAdmin):
 
 
 class PublicationAdmin(admin.ModelAdmin):
-    list_display = ('title','year','order')
+    list_display = ('title','year', 'contest_name', 'order')
     list_editable = ('order',)
     search_fields = ('title','year')
 

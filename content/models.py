@@ -60,6 +60,7 @@ class Category(models.Model):
 class Publication(models.Model):
     title = models.CharField('Название', max_length=100)
     link = models.URLField('Ссылка', max_length=400)
+    contest_name=models.CharField('Конкурс', blank=True, null=True, max_length=20)
     poster = models.ImageField(verbose_name='Обложка',
                                upload_to=PathAndRename('publication/posters/'))
     order = models.IntegerField('Порядковый номер')

@@ -12,11 +12,11 @@ import HorizontalTabs from "../../components/Gallary/HorizontalTabs";
 
 const host = process.env.REACT_APP_HOST_NAME
 
-const PublicationListPage = (props) => {
+const DesignCatalogListPage = () => {
 
     const [page, setPage] = React.useState(1)
     const [years, setYears] = React.useState([]);
-    const [contestName, setContestName] = React.useState(props.contestName);
+    const [contestName, setContestName]=React.useState([]);
     const [valueHorizontalTabs, setValueHorizontalTabs] = React.useState(0)
     const [data, setData] = React.useState([])
     const [isFetching, setIsFetching] = useState(false);
@@ -33,7 +33,6 @@ const PublicationListPage = (props) => {
                 page_size: 3,
                 page: page,
                 year: dataInitial ? dataInitial[valueHorizontalTabs] : years[valueHorizontalTabs],
-                contest_name: contestName ? contestName : '',
             },
         })
             .then((res) => {
@@ -56,9 +55,9 @@ const PublicationListPage = (props) => {
     );
 
 
-    useEffect(() => {
+   useEffect(() => {
         setIsFetching(true);
-        dataFetch(`${process.env.REACT_APP_HOST_NAME}/frontend/api/publication_years/`, {contest_name: contestName ? contestName : ''}, (data) => {
+        dataFetch(`${process.env.REACT_APP_HOST_NAME}/frontend/api/publication_years/`, {}, (data) => {
             setYears(data, [function () {
                 loadMoreItems(data)
                 setIsFetching(false)
@@ -66,7 +65,7 @@ const PublicationListPage = (props) => {
         })
     }, [])
 
-    useEffect(() => {
+     useEffect(() => {
         setData([])
 
         if (years.length > 0) {
@@ -91,8 +90,8 @@ const PublicationListPage = (props) => {
                 marginBottom: '10px'
             }}>
                 <HorizontalTabs
-                    data={years}
-                    setValueHorizontalTabs={(newValue) => (setValueHorizontalTabs((newValue)))}
+                                data={years}
+                                setValueHorizontalTabs={(newValue) => (setValueHorizontalTabs((newValue)))}
                 />
             </Box>
             <Box sx={{display: 'flex'}}>
@@ -126,4 +125,4 @@ const PublicationListPage = (props) => {
     )
 }
 
-export {PublicationListPage}
+export {DesignCatalogListPage}

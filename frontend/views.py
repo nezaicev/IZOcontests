@@ -546,14 +546,24 @@ class PublicationAPIView(ListAPIView):
     def get_queryset(self):
         queryset = Publication.objects.all()
         year = self.request.query_params.get('year')
-        if year is not None:
-            queryset = queryset.filter(year=year)
-        return queryset
+        contest_name=self.request.query_params.get('contest_name')
+        if contest_name and year:
+            queryset = queryset.filter(year=year,contest_name=contest_name)
+            return queryset
+        else:
+            if year is not None:
+                queryset = queryset.filter(year=year)
+                return queryset
 
 
 class PublicationYearsAPIView(APIView):
 
     def get(self, request):
-        years = list(
+        contest_name = request.query_params.get('contest_name')
+        if contest_name:
+            years=list(Publication.objects.filter(contest_name=contest_name).order_by('-year').values_list('year', flat=True).distinct('year'))
+            return Response(years)
+        else:
+            years = list(
             Publication.objects.order_by('-year').values_list('year', flat=True).distinct('year'))
-        return Response(years)
+            return Response(years)
