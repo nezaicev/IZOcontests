@@ -4,6 +4,7 @@ from zipfile import ZipFile
 import shutil
 from django import forms
 from django.contrib import messages
+from django.db.models import Q
 from django.template.response import TemplateResponse
 from django.contrib import admin
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
@@ -456,6 +457,15 @@ class ArtakiadaAdmin(DjangoSimpleExportAdmin, BaseAdmin, CustomAdminFields):
     }
 
     def get_queryset(self, request):
+
+        if request.user.groups.filter(name='artakiada_region_jury').exists():
+            qs = super(BaseAdmin, self).get_queryset(request)
+            return qs.filter(
+    ~Q(region__name__icontains="Москва") & ~Q(region__name__icontains="Московская область")
+)
+        if request.user.groups.filter(name='artakiada_district_jury').exists():
+            qs = super(BaseAdmin, self).get_queryset(request)
+            return qs.filter(district__name=request.user.district, region__name=request.user.region)
         if request.user.is_superuser or request.user.groups.filter(
                 name='Manager').exists() or request.user.groups.filter(
             name='Jury').exists():
@@ -464,21 +474,6 @@ class ArtakiadaAdmin(DjangoSimpleExportAdmin, BaseAdmin, CustomAdminFields):
             qs = super(BaseAdmin, self).get_queryset(request)
             return qs.filter(teacher=request.user)
 
-    # def get_list_display(self, request):
-    #     if request.user.groups.filter(
-    #             name='Jury').exists():
-    #         self.list_display = utils.remove_field_in_list(self.list_display,
-    #                                                        'status')
-    #         self.list_filter = utils.remove_field_in_list(self.list_filter,
-    #                                                       'status')
-    #         self.list_filter = self.__class__.list_filter
-    #         self.list_display = utils.remove_field_in_list(self.list_display,
-    #                                                        'status')
-    #         self.list_filter = utils.remove_field_in_list(self.list_filter,
-    #                                                       'status')
-    #         return self.list_display
-    #     else:
-    #         return super().get_list_display(request)
 
 
 class NRushevaAdmin(DjangoSimpleExportAdmin, BaseAdmin, CustomAdminFields):
