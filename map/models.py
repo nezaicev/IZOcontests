@@ -24,6 +24,7 @@ class Placemark(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk:
+            print('save')
             self.set_poster_video()
         super(Placemark,self).save(*args, **kwargs)
 

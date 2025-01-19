@@ -1,52 +1,50 @@
-
 ymaps.ready(function () {
+    var myMap = new ymaps.Map('map', {
+        center: [55.751574, 37.573856],
+        zoom: 11
+    }, {
+        searchControlProvider: 'yandex#search'
+    });
 
-
-        var myMap = new ymaps.Map('map', {
-            center: [55.751574, 37.573856],
-            zoom: 11
-        },
-        {
-            searchControlProvider: 'yandex#search'
-        });
-        // Создаём макет содержимого.
-        MyIconContentLayout = ymaps.templateLayoutFactory.createClass(
-            '<div style="color: #FFFFFF; font-weight: bold;">$[properties.iconContent]</div>'
-        );
-
-        $.get("/map/placemarks/", function (placemarks) {
-             placemarks['placemarks'].forEach(function (placemark){
-                myPlacemark=createPlacemark(placemark.title,placemark.coordinates,placemark.video_url,placemark.image_url)
+    // Загрузка данных меток
+    $.get("/map/placemarks/", function (placemarks) {
+        if (placemarks && placemarks['placemarks']) {
+            placemarks['placemarks'].forEach(function (placemark) {
+                let myPlacemark = createPlacemark(
+                    placemark.title,
+                    placemark.coordinates,
+                    placemark.video_url,
+                    placemark.image_url
+                );
                 myMap.geoObjects.add(myPlacemark);
-        });
             });
-
+        } else {
+            console.error("Ошибка: данные меток пусты или неверного формата");
+        }
+    });
 });
 
-
-function createPlacemark(title,coord, url, imageUrl){
-    obj = new ymaps.Placemark(
+function createPlacemark(title, coord, url, imageUrl) {
+    // Создание метки
+    let obj = new ymaps.Placemark(
         coord,
-        { hintContent: title},
         {
-            url: url,
+            hintContent: title,
+            url: url // Храним URL видео в свойствах
+        },
+        {
             iconLayout: 'default#image',
             iconImageHref: imageUrl,
             iconImageSize: [50, 50],
-            // iconImageClipRect:[[100],[200]],
-            iconPointOverlay:'default#circle'
-        });
-    let urlVideo=obj.options.get('url');
-    obj.events.add(['click'], function () {
-        $.fancybox.open({src: urlVideo});
-    });
-return obj
-}
-// "/map/placemarks/"
-function  getDataPlacemarks(url){
+            iconPointOverlay: 'default#circle'
+        }
+    );
 
-    $.get(url, function (data) {
-       window.placemarks=data
-            });
-    console.log(window.placemarks)
+    // Обработчик клика
+    obj.events.add('click', function () {
+        let urlVideo = obj.properties.get('url');
+        $.fancybox.open({ src: urlVideo });
+    });
+
+    return obj;
 }

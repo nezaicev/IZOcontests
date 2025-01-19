@@ -6,7 +6,13 @@ from django.conf import settings
 
 
 def download_poster_video(url_video: str) -> str:
-    url_poster = get_url_poster(url_video)
+    print(url_video)
+    url_poster=''
+    if 'rutube' in url_video:
+        url_poster = get_url_poster_rutube(url_video)
+        print(url_poster,'rutube')
+    else:
+        url_poster = get_url_poster(url_video)
     r = requests.get(url_poster)
     r.raise_for_status()
     path_image=settings.BASE_DIR / settings.MEDIA_ROOT / settings.POSTER_DIR / settings.POSTER_TMP_NAME
@@ -21,6 +27,14 @@ def get_url_poster(url: str) -> str:
     url_poster = settings.YOUTUBE_POSTER
     id_video = url.split('/')[-1]
     return url_poster.format(id_video)
+
+
+def get_url_poster_rutube(url_video):
+    url_format_rutube='https://rutube.ru/api/video/{}/thumbnail/'
+    video_id=url_video.split('/')[4]
+    r=requests.get(url_format_rutube.format(video_id))
+    return r.json()['url']
+
 
 
 def crop_center(pil_img, crop_width: int, crop_height: int) -> Image:
