@@ -32,7 +32,11 @@ class Placemark(models.Model):
         path_image=download_poster_video(self.video_url)
         storage = SelectelStorage()
         with open(path_image, 'rb') as image:
-            selectel_img_url=storage._save(os.path.join('map',self.video_url.split('/')[-1]+'.png'), image.read())
+            if 'rutube' in self.video_url:
+                selectel_img_url=storage._save(os.path.join('map',self.video_url.split('/')[4]+'.png'), image.read())
+            else:
+                selectel_img_url = storage._save(
+                    os.path.join('map', self.video_url.split('/')[-1] + '.png'), image.read())
         if storage.container.exists(selectel_img_url):
             self.image_url=storage.url(selectel_img_url)
         else:

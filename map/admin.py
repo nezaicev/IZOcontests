@@ -4,6 +4,8 @@ from map.models import Placemark
 
 
 class PlacemarkAdmin(admin.ModelAdmin):
+    list_display = ('title', 'video_url','coordinates')
+    search_fields = ('title','video_url','coordinates')
     exclude = ('image_url',)
 
 
