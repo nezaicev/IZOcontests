@@ -461,8 +461,11 @@ class ArtakiadaAdmin(DjangoSimpleExportAdmin, BaseAdmin, CustomAdminFields):
         if request.user.groups.filter(name='artakiada_region_jury').exists():
             qs = super(BaseAdmin, self).get_queryset(request)
             return qs.filter(
-    ~Q(region__name__icontains="Москва") & ~Q(region__name__icontains="Московская область")
-)
+    ~Q(region__name__icontains="Москва") & ~Q(region__name__icontains="Московская область"))
+        if request.user.groups.filter(name='artakiada_digital_jury').exists():
+            qs = super(BaseAdmin, self).get_queryset(request)
+            return qs.filter(
+                    nomination__name="Иллюстрация, выполненная на компьютере")
         if request.user.groups.filter(name='artakiada_district_jury').exists():
             qs = super(BaseAdmin, self).get_queryset(request)
             return qs.filter(district__name=request.user.district, region__name=request.user.region)
