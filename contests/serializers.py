@@ -187,7 +187,7 @@ class RegNumber(serializers.Field):
 
 class ArchiveSerializer(serializers.ModelSerializer):
     reg_number = serializers.CharField(required=False)
-    image = serializers.ImageField(required=False)
+    image = CustomImageField(required=False)
     images = ImagesSerializer(many=True, read_only=True)
     videos = VideosSerializer(many=True, read_only=True)
     files = FilesSerializer(many=True, read_only=True)
@@ -208,12 +208,13 @@ class ArchiveSerializer(serializers.ModelSerializer):
 
         # Проверяем, есть ли ссылка и содержит ли она "rutube"
         link = data.get("link", "")
-        if "rutube" in link:
-            video_id = self.extract_rutube_id(link)
-            if video_id:
-                poster_url = self.get_rutube_thumbnail(video_id)
-                if poster_url:
-                    data["poster"] = poster_url  # Добавляем в вывод
+        if link:
+            if "rutube" in link:
+                video_id = self.extract_rutube_id(link)
+                if video_id:
+                    poster_url = self.get_rutube_thumbnail(video_id)
+                    if poster_url:
+                        data["poster"] = poster_url  # Добавляем в вывод
 
         return data
 
