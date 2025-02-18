@@ -400,11 +400,6 @@ const App = () => {
                     </Route>
 
 
-
-
-
-
-
                 </Routes>
 
 

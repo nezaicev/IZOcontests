@@ -1,6 +1,7 @@
 import os.path
 import random
 import time
+import requests
 
 from sorl.thumbnail import get_thumbnail
 from django.conf import settings
@@ -184,10 +185,9 @@ class RegNumber(serializers.Field):
         print(data, 'data')
         return data
 
-
 class ArchiveSerializer(serializers.ModelSerializer):
     reg_number = serializers.CharField(required=False)
-    image = CustomImageField(required=False)
+    image = serializers.ImageField(required=False)
     images = ImagesSerializer(many=True, read_only=True)
     videos = VideosSerializer(many=True, read_only=True)
     files = FilesSerializer(many=True, read_only=True)
@@ -202,6 +202,38 @@ class ArchiveSerializer(serializers.ModelSerializer):
                   'description', 'theme',
                   'direction', 'images', 'videos', 'files', 'region', 'city',
                   'rating', 'year_contest')
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+
+        # Проверяем, есть ли ссылка и содержит ли она "rutube"
+        link = data.get("link", "")
+        if "rutube" in link:
+            video_id = self.extract_rutube_id(link)
+            if video_id:
+                poster_url = self.get_rutube_thumbnail(video_id)
+                if poster_url:
+                    data["poster"] = poster_url  # Добавляем в вывод
+
+        return data
+
+    def extract_rutube_id(self, link):
+        """Извлекает ID видео из ссылки Rutube"""
+        import re
+        match = re.search(r"video/([a-f0-9]+)/", link)
+        return match.group(1) if match else None
+
+    def get_rutube_thumbnail(self, video_id):
+        """Получает ссылку на превью видео с Rutube API"""
+        api_url = f"https://rutube.ru/api/video/{video_id}/thumbnail/"
+        try:
+            response = requests.get(api_url, timeout=5)
+            response.raise_for_status()
+            data = response.json()
+            return data.get("url")  # Вернет ссылку на картинку
+        except requests.RequestException as e:
+            print(f"Ошибка при получении превью Rutube: {e}")
+            return None
 
     def create(self, validated_data):
         return Archive.objects.create(**validated_data)

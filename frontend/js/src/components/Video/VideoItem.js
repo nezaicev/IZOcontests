@@ -2,6 +2,7 @@ import * as React from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import ReactPlayer from "react-player/youtube"
+import {RutubePlayer} from "./RutubePlayer";
 import IconButton from "@mui/material/IconButton";
 import {Cancel} from "@mui/icons-material";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
@@ -127,7 +128,8 @@ export default function VideoItem(props) {
                     <div className='player-wrapper'>
 
 
-                        <ReactPlayer
+
+                            <ReactPlayer
                             className='react-player'
                             width='100%'
                             height='100%'
@@ -135,6 +137,7 @@ export default function VideoItem(props) {
                             url={props.link}
                         >
                         </ReactPlayer>
+
                     </div>
 
 

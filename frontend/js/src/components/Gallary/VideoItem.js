@@ -15,6 +15,7 @@ import Card from "@mui/material/Card";
 import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import {ButtonCollapse, ImageButton} from "../styled";
 import FieldTitle from "./FieldTitle";
+import {RutubePlayer} from "../Video/RutubePlayer";
 
 const style = {
 
@@ -45,6 +46,38 @@ const CardVideo = styled(Card)(() => ({
     width: '340px',
     height: 'fit-content'
 }))
+
+
+function convertRutubeUrl(url) {
+    let match = url.match(/video\/([a-f0-9]+)\//);
+    console.log(match ? `https://rutube.ru/play/embed/${match[1]}` : null)
+    return match ? `https://rutube.ru/play/embed/${match[1]}` : null;
+}
+
+async function getRutubeThumbnailFromUrl(videoUrl) {
+    // Извлекаем videoId из URL
+    let match = videoUrl.match(/video\/([a-f0-9]+)\//);
+    if (!match) {
+        console.error("Некорректная ссылка на видео.");
+        return null;
+    }
+
+    let videoId = match[1]; // ID видео
+    let apiUrl = `https://rutube.ru/api/video/${videoId}/thumbnail/`;
+
+    try {
+        let response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`Ошибка запроса: ${response.status}`);
+        }
+
+        let data = await response.json();
+        return data.url; // Ссылка на превью
+    } catch (error) {
+        console.error("Ошибка получения превью:", error);
+        return null;
+    }
+}
 
 
 function getThumbYoutube(url, quality) {
@@ -82,8 +115,10 @@ export default function VideoItem(props) {
                         <Box>
                             <a href='#'>
                                 <img
-                                    src={getThumbYoutube(props.url, 'mqdefault')}
+                                    src={props.poster?props.poster:getThumbYoutube(props.url, 'mqdefault')}
                                     alt={props.item && props.item.author_name }
+                                    width="320"
+                                    height="180"
                                     loading="lazy"/>
                             </a>
 
@@ -194,14 +229,20 @@ export default function VideoItem(props) {
                     <div className='player-wrapper'>
 
 
-                        <ReactPlayer
+                        {props.url.includes('rutube')?
+                        <RutubePlayer
+                            url={convertRutubeUrl(props.url)}
+                            title={props.title}
+                        />
+                            :<ReactPlayer
                             className='react-player'
                             width='100%'
                             height='100%'
                             controls={true}
                             url={props.url}
                         >
-                        </ReactPlayer>
+                        </ReactPlayer>}
+
                     </div>
 
 

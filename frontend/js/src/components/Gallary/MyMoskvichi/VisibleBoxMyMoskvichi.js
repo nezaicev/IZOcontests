@@ -83,6 +83,7 @@ export default function VisibleBoxMyMoskvichi(props) {
                                 <VideoItem
                                     item={item}
                                     url={item.link}
+                                    poster={item.poster?item.poster:null}
                                     key={index}/>
 
                             </Grid>
