@@ -17,7 +17,7 @@ const BaseInfo = () => {
         }}>
 
             <Button onClick={() => {
-                window.location.href = 'http://konkurs.shkola-nemenskogo.ru/map/'
+                window.location.href = 'https://shkola-nemenskogo.ru/map/'
             }}>
                 <Box sx={{margin: '10px'}}>
                     <Map sx={{fontSize: 70}}/>
