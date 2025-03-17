@@ -485,7 +485,7 @@ class NRushevaAdmin(DjangoSimpleExportAdmin, BaseAdmin, CustomAdminFields):
     list_per_page = 25
     list_filter = ('level', 'status', 'district', 'region', 'theme')
     list_display = (
-        'reg_number', 'image_tag', 'fio', 'status', 'status_change', 'school',
+        'reg_number', 'image_tag', 'fio', 'status', 'school',
         'region',
         'fio_teacher')
 
