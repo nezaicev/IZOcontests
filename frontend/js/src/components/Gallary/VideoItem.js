@@ -127,7 +127,8 @@ export default function VideoItem(props) {
                                 sx={{
                                     backgroundColor: "rgb(129 110 110 / 76%)"
                                 }}
-                                title={props.item && props.item.author_name.toUpperCase()}
+                                // title={props.item && props.item.author_name.toUpperCase()}
+                                title={props.item?.author_name?.toUpperCase() ?? props.title.toUpperCase()}
                                 actionIcon={
                                     <Tooltip title="Видео">
                                         <IconButton>

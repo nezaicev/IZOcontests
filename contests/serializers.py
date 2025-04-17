@@ -103,9 +103,23 @@ class VideosSerializer(serializers.RelatedField):
         model = VideoArchive
 
     def to_representation(self, value):
-        return {'link': value.video,
+        data={'link': value.video,
                 'name': value.name,
                 'orderNumber': value.order_number}
+        link = data.get("link", "")
+        if link:
+            if "rutube" in link:
+                video_id = extract_rutube_id(link)
+                if video_id:
+                    poster_url = get_rutube_thumbnail(video_id)
+                    if poster_url:
+                        data["poster"] = poster_url  # Добавляем в вывод
+
+        return data
+
+
+
+
 
 
 class FilesSerializer(serializers.RelatedField):
@@ -210,31 +224,31 @@ class ArchiveSerializer(serializers.ModelSerializer):
         link = data.get("link", "")
         if link:
             if "rutube" in link:
-                video_id = self.extract_rutube_id(link)
+                video_id = extract_rutube_id(link)
                 if video_id:
-                    poster_url = self.get_rutube_thumbnail(video_id)
+                    poster_url = get_rutube_thumbnail(video_id)
                     if poster_url:
                         data["poster"] = poster_url  # Добавляем в вывод
 
         return data
 
-    def extract_rutube_id(self, link):
-        """Извлекает ID видео из ссылки Rutube"""
-        import re
-        match = re.search(r"video/([a-f0-9]+)/", link)
-        return match.group(1) if match else None
+def extract_rutube_id(link):
+    """Извлекает ID видео из ссылки Rutube"""
+    import re
+    match = re.search(r"video/([a-f0-9]+)/", link)
+    return match.group(1) if match else None
 
-    def get_rutube_thumbnail(self, video_id):
-        """Получает ссылку на превью видео с Rutube API"""
-        api_url = f"https://rutube.ru/api/video/{video_id}/thumbnail/"
-        try:
-            response = requests.get(api_url, timeout=5)
-            response.raise_for_status()
-            data = response.json()
-            return data.get("url")  # Вернет ссылку на картинку
-        except requests.RequestException as e:
-            print(f"Ошибка при получении превью Rutube: {e}")
-            return None
+def get_rutube_thumbnail(video_id):
+    """Получает ссылку на превью видео с Rutube API"""
+    api_url = f"https://rutube.ru/api/video/{video_id}/thumbnail/"
+    try:
+        response = requests.get(api_url, timeout=5)
+        response.raise_for_status()
+        data = response.json()
+        return data.get("url")  # Вернет ссылку на картинку
+    except requests.RequestException as e:
+        print(f"Ошибка при получении превью Rutube: {e}")
+        return None
 
     def create(self, validated_data):
         return Archive.objects.create(**validated_data)
