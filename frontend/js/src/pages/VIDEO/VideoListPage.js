@@ -106,6 +106,7 @@ function VideoListPage() {
                             <Grid item xs="auto" key={index}
                                   ref={(data.length === index + 1) ? lastElementRef : null}>
                                 <VideoItem link={item['link']} title={item['title']}
+                                           poster={item.poster?item.poster:null}
                                            description={item['description']}/>
                             </Grid> : ''
                     ))}

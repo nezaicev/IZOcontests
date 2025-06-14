@@ -15,7 +15,7 @@ import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import {
     getThumbYoutube,
     deleteYoutubeLogo,
-    getFormattedDate
+    getFormattedDate, convertRutubeUrl
 } from "../utils/utils";
 import Typography from "@mui/material/Typography";
 
@@ -60,8 +60,10 @@ export default function VideoItem(props) {
                         <Box>
                             <a href='#'>
                                 <img
-                                    src={getThumbYoutube(props.link, 'mqdefault')}
+                                     src={props.poster?props.poster:getThumbYoutube(props.link, 'mqdefault')}
                                     alt={props.title}
+                                     width="320"
+                                    height="180"
                                     loading="lazy"/>
                             </a>
 
@@ -129,14 +131,19 @@ export default function VideoItem(props) {
 
 
 
-                            <ReactPlayer
+                                 {props.link.includes('rutube')?
+                        <RutubePlayer
+                            url={convertRutubeUrl(props.link)}
+                            title={props.title}
+                        />
+                            :<ReactPlayer
                             className='react-player'
                             width='100%'
                             height='100%'
                             controls={true}
-                            url={props.link}
+                            url={props.url}
                         >
-                        </ReactPlayer>
+                        </ReactPlayer>}
 
                     </div>
 

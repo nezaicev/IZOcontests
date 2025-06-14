@@ -10,7 +10,7 @@ from .models import ModxDbimgMuz, Archive, Level, ExtraImageArchive, \
     NominationVP, DirectionVP, VideoArchive, FileArchive, Region, ThemeART, \
     ThemeRUSH, NominationMYMSK, PageContest
 from contests.utils import upload_file, parse_path_file, download_file
-
+from utils import get_rutube_thumbnail, extract_rutube_id
 
 class ModxDbimgMuzSerializer(serializers.ModelSerializer):
     class Meta:
@@ -232,23 +232,6 @@ class ArchiveSerializer(serializers.ModelSerializer):
 
         return data
 
-def extract_rutube_id(link):
-    """Извлекает ID видео из ссылки Rutube"""
-    import re
-    match = re.search(r"video/([a-f0-9]+)/", link)
-    return match.group(1) if match else None
-
-def get_rutube_thumbnail(video_id):
-    """Получает ссылку на превью видео с Rutube API"""
-    api_url = f"https://rutube.ru/api/video/{video_id}/thumbnail/"
-    try:
-        response = requests.get(api_url, timeout=5)
-        response.raise_for_status()
-        data = response.json()
-        return data.get("url")  # Вернет ссылку на картинку
-    except requests.RequestException as e:
-        print(f"Ошибка при получении превью Rutube: {e}")
-        return None
 
     def create(self, validated_data):
         return Archive.objects.create(**validated_data)

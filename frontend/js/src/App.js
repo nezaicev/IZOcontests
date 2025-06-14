@@ -102,7 +102,7 @@ const App = () => {
                         <Route index
                                element={<TextContent
                                    link={'/frontend/api/page/skazki_base_info/'}/>}/>
-                        />}/>
+                        {/*/>}/>*/}
                         <Route path='gallery' element={<GalleryPageSkazki
                             urlHorizontalTabs={`${host}/frontend/api/archive/contest/thems/`}
                             urlContent={`${host}/frontend/api/archive/`}
@@ -122,7 +122,7 @@ const App = () => {
                         <Route index
                                element={<TextContent
                                    link={'/frontend/api/page/izo_dictant_base_info/'}/>}/>
-                        />}/>
+                        {/*/>}/>*/}
                         <Route path='gallery' element={
                             <GalleryPageIzoDictant
                             urlHorizontalTabs={`${host}/frontend/api/archive/contest/years/`}
@@ -268,7 +268,8 @@ const App = () => {
                         {'name': 'Мы Москвичи', 'link': '/mymoskvichi'},
                         {'name': 'Положение', 'link': '/mymoskvichi/statute'},
                         {'name': 'Галерея', 'link': '/mymoskvichi/gallery'},
-                        {'name': 'Жюри', 'link': '/mymoskvichi/mymoskvichi_gury'}
+                        {'name': 'Жюри', 'link': '/mymoskvichi/mymoskvichi_gury'},
+                        {'name': 'Мастер-классы', 'link': '/mymoskvichi/video'}
 
                     ]}/>}>
                         <Route index
@@ -280,6 +281,10 @@ const App = () => {
                         <Route path='mymoskvichi_gury'
                                element={<TextContent
                                    link={'/frontend/api/page/mymoskvichi_gury/'}/>}/>
+
+                        <Route path='video' element={
+                            <VideoGallery section={'mymoskvichi'}/>
+                        }/>
 
                         <Route path='gallery' element={
 

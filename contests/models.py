@@ -725,7 +725,7 @@ class Archive(models.Model):
     author_name = models.CharField(max_length=250, blank=True, null=True,
                                    verbose_name='Авторское название',
                                    )
-    format = models.CharField(max_length=2, choices=(
+    format = models.CharField(max_length=50, choices=(
         ('A1', 'A1'), ('A2', 'A2'), ('A3', 'A3')), blank=True, null=True,
                               verbose_name='Формат работы')
     description = models.TextField(max_length=500, blank=True, null=True,

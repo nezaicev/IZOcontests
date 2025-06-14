@@ -14,9 +14,10 @@ import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import {
     getThumbYoutube,
     deleteYoutubeLogo,
-    getFormattedDate
+    getFormattedDate, convertRutubeUrl
 } from "../utils/utils";
 import Typography from "@mui/material/Typography";
+import {RutubePlayer} from "../Video/RutubePlayer";
 
 const style = {
 
@@ -85,8 +86,10 @@ export default function ItemBroadcast(props) {
                         <Box>
                             <a href='#'>
                                 <img
-                                    src={getThumbYoutube(props.data['broadcast_url'], 'mqdefault')}
+                                    src={props.data.poster?props.data.poster:getThumbYoutube(props.data['broadcast_url'], 'mqdefault')}
                                     alt={props.data['name']}
+                                      width="320"
+                                    height="180"
                                     loading="lazy"/>
                             </a>
 
@@ -150,16 +153,23 @@ export default function ItemBroadcast(props) {
                         </IconButton>
                     </Box>
                     <div className='player-wrapper'>
+                            {props.data['broadcast_url'].includes('rutube')?
+                        <RutubePlayer
+                            url={convertRutubeUrl(props.data['broadcast_url'])}
 
-
-                        <ReactPlayer
+                        />
+                            :<ReactPlayer
                             className='react-player'
                             width='100%'
                             height='100%'
                             controls={true}
                             url={props.data['broadcast_url']}
                         >
-                        </ReactPlayer>
+                        </ReactPlayer>}
+
+
+
+
                     </div>
 
 

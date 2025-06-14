@@ -4,8 +4,8 @@ import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import Box from "@mui/material/Box";
 import HorizontalTabs from "../Gallary/HorizontalTabs";
 import {CircularProgress, Grid} from "@mui/material";
-import VideoItem from "./VideoItem";
-
+// import VideoItem from "./VideoItem";
+import VideoItem from '../Gallary/VideoItem'
 
 function VideoGallery(props) {
     const [page, setPage] = React.useState(1)
@@ -62,8 +62,19 @@ function VideoGallery(props) {
                         item['link'] ?
                             <Grid item xs="auto" key={index}
                                   ref={(data.length === index + 1) ? lastElementRef : null}>
-                                <VideoItem link={item['link']} title={item['title']}
-                                           description={item['description']}/>
+                                {/*<VideoItem link={item['link']} title={item['title']}*/}
+                                {/*           description={item['description']}/>*/}
+
+                                   <VideoItem
+                                    item={item}
+                                    url={item.link}
+                                    title={item.name}
+                                    poster={item.poster?item.poster:null}
+                                    description={item.description}
+                                    key={index}/>
+
+
+
                             </Grid> : ''
                     ))}
 

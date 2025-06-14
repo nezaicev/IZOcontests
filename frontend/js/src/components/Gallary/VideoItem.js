@@ -16,6 +16,7 @@ import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import {ButtonCollapse, ImageButton} from "../styled";
 import FieldTitle from "./FieldTitle";
 import {RutubePlayer} from "../Video/RutubePlayer";
+import {getThumbYoutube,convertRutubeUrl, getRutubeThumbnailFromUrl} from "../utils/utils";
 
 const style = {
 
@@ -48,45 +49,6 @@ const CardVideo = styled(Card)(() => ({
 }))
 
 
-function convertRutubeUrl(url) {
-    let match = url.match(/video\/([a-f0-9]+)\//);
-    console.log(match ? `https://rutube.ru/play/embed/${match[1]}` : null)
-    return match ? `https://rutube.ru/play/embed/${match[1]}` : null;
-}
-
-async function getRutubeThumbnailFromUrl(videoUrl) {
-    // Извлекаем videoId из URL
-    let match = videoUrl.match(/video\/([a-f0-9]+)\//);
-    if (!match) {
-        console.error("Некорректная ссылка на видео.");
-        return null;
-    }
-
-    let videoId = match[1]; // ID видео
-    let apiUrl = `https://rutube.ru/api/video/${videoId}/thumbnail/`;
-
-    try {
-        let response = await fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error(`Ошибка запроса: ${response.status}`);
-        }
-
-        let data = await response.json();
-        return data.url; // Ссылка на превью
-    } catch (error) {
-        console.error("Ошибка получения превью:", error);
-        return null;
-    }
-}
-
-
-function getThumbYoutube(url, quality) {
-    let thumbUrl;
-    let idVideo = new URL(url)
-    idVideo = idVideo.pathname.substr(1, 12).split('&').join('')
-    thumbUrl = `http://img.youtube.com/vi/${idVideo}/${quality}.jpg`;
-    return thumbUrl
-}
 
 export default function VideoItem(props) {
     const [open, setOpen] = React.useState(false);
@@ -127,8 +89,8 @@ export default function VideoItem(props) {
                                 sx={{
                                     backgroundColor: "rgb(129 110 110 / 76%)"
                                 }}
-                                // title={props.item && props.item.author_name.toUpperCase()}
-                                title={props.item?.author_name?.toUpperCase() ?? props.title.toUpperCase()}
+
+                                title={props.item && props.item.author_name ? props.item.author_name?.toUpperCase() : props.title.toUpperCase()}
                                 actionIcon={
                                     <Tooltip title="Видео">
                                         <IconButton>

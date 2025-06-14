@@ -88,6 +88,49 @@ export function getThumbYoutube(url, quality) {
     thumbUrl = `http://img.youtube.com/vi/${idVideo}/${quality}.jpg`;
     return thumbUrl
 }
+// function getThumbYoutube(url, quality) {
+//     let thumbUrl;
+//     let idVideo = new URL(url)
+//     idVideo = idVideo.pathname.substr(1, 12).split('&').join('')
+//     thumbUrl = `http://img.youtube.com/vi/${idVideo}/${quality}.jpg`;
+//     return thumbUrl
+// }
+
+
+
+export function convertRutubeUrl(url) {
+    let match = url.match(/video\/([a-f0-9]+)\//);
+    console.log(match ? `https://rutube.ru/play/embed/${match[1]}` : null)
+    return match ? `https://rutube.ru/play/embed/${match[1]}` : null;
+}
+
+export async function getRutubeThumbnailFromUrl(videoUrl) {
+    // Извлекаем videoId из URL
+    let match = videoUrl.match(/video\/([a-f0-9]+)\//);
+    if (!match) {
+        console.error("Некорректная ссылка на видео.");
+        return null;
+    }
+
+    let videoId = match[1]; // ID видео
+    let apiUrl = `https://rutube.ru/api/video/${videoId}/thumbnail/`;
+
+    try {
+        let response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`Ошибка запроса: ${response.status}`);
+        }
+
+        let data = await response.json();
+        return data.url; // Ссылка на превью
+    } catch (error) {
+        console.error("Ошибка получения превью:", error);
+        return null;
+    }
+}
+
+
+
 
 
 export function deleteYoutubeLogo() {

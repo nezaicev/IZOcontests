@@ -24,12 +24,18 @@ class Page(models.Model):
 
 
 class Video(models.Model):
+    SECTION_CHOICES = [
+        ('all', 'Общий'),
+        ('artakiada', 'Артакиада'),
+        ('mymoskvichi', 'Мы Москвичи'),
+    ]
+
     title = models.CharField('Название', max_length=200, null=False, blank=False)
-    description = models.CharField('Описание', max_length=300, null=True, blank=True)
+    description = models.CharField('Описание', max_length=500, null=True, blank=True)
     link = models.URLField('Ссылка', blank=False, null=False)
     categories = models.ManyToManyField('Category', related_name='categories',
                                         verbose_name='Категория', )
-    section = models.CharField('Раздел', max_length=255, blank=False, null=False)
+    section = models.CharField('Раздел',choices=SECTION_CHOICES, max_length=255,default='all', blank=False, null=False)
     order = models.IntegerField('Порядковый номер', null=True, blank=True, default=1)
 
     def save(self, *args, **kwargs):
