@@ -10,7 +10,8 @@ from contests.models import Archive
 # p.upload_to_archive('https://art-teacher.ru/gallery/84',0,300)
 # 0 - start_page_parse; 300 - max rating
 # p.upload_to_archive('https://art-teacher.ru/gallery/84/50',50,250)
-
+# Иногда может быть так (https://art-teacher.ru/gallery/119/51) тогда выподает что работа уже загружена
+#  p.upload_to_archive('https://art-teacher.ru/gallery/119/255',255,45)
 
 def get_page_site(url):
     page = requests.get(url)

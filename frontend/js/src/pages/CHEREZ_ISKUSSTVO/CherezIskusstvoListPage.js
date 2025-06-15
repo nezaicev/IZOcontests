@@ -8,7 +8,7 @@ import VisibleBoxImages from "../../components/Gallary/VisibleBoxImages";
 
 
 
-const excludeYears = ['2023-2024 год']
+const excludeYears = []
 const contestName=process.env.REACT_APP_CHEREZ_ISKUSSTVO
 
 
