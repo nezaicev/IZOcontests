@@ -34,6 +34,7 @@ import GallaryPageNRusheva from "./pages/NRUSHEVA/GallaryPageNRusheva";
 import {GalleryPageSkazki} from "./pages/SKAZKI/GallaryPageSkazki";
 import {GalleryPageIzoDictant} from "./pages/IZO_DICTANT/GallaryPageIzoDictant";
 import GalleryPageArtProject from "./pages/ART_PROJECT/GalleryPageArtProject";
+import {GalleryPageKultNas} from "./pages/KULTURNOE_NASLEDIE/GalleryPageKultNas";
 
 
 const host = process.env.REACT_APP_HOST_NAME
@@ -130,6 +131,34 @@ const App = () => {
                         }/>
 
                     </Route>
+
+
+
+                    {/*_______________Культурное наследие__________________________*/}
+
+                    <Route path='/kulturnoe_nasledie' element={<Layout tabs={[
+                        {'name': 'Культурное наследие', 'link': '/kulturnoe_nasledie'},
+                        {'name': 'Галерея', 'link': '/kulturnoe_nasledie/gallery'},
+
+
+                    ]}/>}>
+
+                        <Route index
+                               element={<TextContent
+                                   link={'/frontend/api/page/kulturnoe_nasledie_base_info/'}/>}/>
+                        {/*/>}/>*/}
+                        <Route path='gallery' element={
+                            <GalleryPageKultNas
+                            urlHorizontalTabs={`${host}/frontend/api/archive/contest/years/`}
+                            urlContent={`${host}/frontend/api/archive/`}/>
+                        }/>
+
+                    </Route>
+
+
+
+
+
 
 
 

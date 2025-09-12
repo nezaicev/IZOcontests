@@ -961,7 +961,7 @@ class FileArchiveInline(admin.StackedInline):
     extra = 0
 
 
-CONTESTS_NAME = [('Дизайн детям', 'Дизайн детям')]
+CONTESTS_NAME = [('Дизайн детям', 'Дизайн детям'), ('Культурное наследие', 'Культурное наследие')]
 NOMINATION_DESIGN = [('Motion-design', 'Motion-design'),
                      ('Графический дизайн', 'Графический дизайн'),
                      ('Линогравюра', 'Линогравюра'),
@@ -1034,23 +1034,30 @@ class KultNasArchiveAdmin(admin.ModelAdmin):
 
     exclude = (
         'info', 'reg_number', 'barcode', 'content', 'participants', 'teacher', 'date_reg',
-        'district', 'region', 'status', 'direction', 'theme',
-        'format', 'link', 'crop_orientation_img', 'description', 'program', 'material')
+        'district', 'region', 'status', 'direction', 'theme', 'nomination',
+        'format', 'link', 'crop_orientation_img', 'description', 'program', 'level', 'material')
 
     def formfield_for_dbfield(self, db_field, **kwargs):
-        # if db_field.name == 'contest_name':
-        #     kwargs['widget'] = Select(choices=CONTESTS_NAME)
+        if db_field.name == 'contest_name':
+            kwargs['widget'] = TextInput(attrs={'value': CONTESTS_NAME[1][0]})
+        if db_field.name == 'publish':
+            kwargs['initial'] = True
+            # kwargs['widget'] = Select(choices=CONTESTS_NAME)
         # if db_field.name == 'nomination':
         #     kwargs['widget'] = Select(choices=NOMINATION_DESIGN)
-        # if db_field.name == 'year_contest':
-        #     kwargs['widget'] = TextInput(attrs={'value': utils.generate_year()})
+
+        if db_field.name == 'year_contest':
+            years = Archive.objects.values_list("year_contest", flat=True).distinct().order_by("-year_contest")
+            choices = [(y, y) for y in years if y]  # делаем список кортежей (value, label)
+            kwargs["widget"] = Select(choices=choices)
+            # kwargs['widget'] = TextInput(attrs={'value': utils.generate_year()})
         return super().formfield_for_dbfield(db_field, **kwargs)
 
     def get_queryset(self, request):
         if request.user.is_superuser or request.user.groups.filter(
                 name='Manager').exists():
             qs = super(admin.ModelAdmin, self).get_queryset(request)
-            return qs.filter(contest_name=CONTESTS_NAME[0][0])
+            return qs.filter(contest_name=CONTESTS_NAME[1][0])
 
 
 class ArchiveAdmin(CustomAdminFields, ArchiveInterface, SendEmail):

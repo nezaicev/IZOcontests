@@ -184,7 +184,7 @@ const MenuMobile = () => {
                     </text>
                 </BoxButtonLink>
 
-                <BoxButtonLink href='#' color={'rgba(140,188,243,0.76)'}>
+                <BoxButtonLink active={true} href='kulturnoe_nasledie' color={'rgba(140,188,243,0.76)'}>
                     <rect
                         id="rect4433-7"
                         width="41.522415"
@@ -193,10 +193,10 @@ const MenuMobile = () => {
                         y="-25.008327"
                         rx={0.5}
                     />
-                    <text x="149" y="-12" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
-                        <tspan>ПЕДАГОГИЧЕСКИЕ</tspan>
-                        <tspan x="149" dy="1.5em">МЕТОДИЧЕСКИЕ</tspan>
-                        <tspan x="149" dy="1.5em">КОЛЛЕКЦИИ</tspan>
+                    <text x="149" y="-9" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
+                        <tspan>КУЛЬТУРНОЕ</tspan>
+                        <tspan x="149" dy="1.5em">НАСЛЕДИЕ</tspan>
+
 
                     </text>
                 </BoxButtonLink>

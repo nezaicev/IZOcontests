@@ -261,7 +261,7 @@ const MenuDesktop =()=>{
                     </text>
                 </BoxButtonLink>
 
-                <BoxButtonLink href='#' color={'rgba(140,188,243,0.76)'}>
+                <BoxButtonLink active={true} href='kulturnoe_nasledie' color={'rgba(140,188,243,0.76)'}>
                     <rect
                         id="rect4433-7"
                         width="41.522415"
@@ -270,10 +270,10 @@ const MenuDesktop =()=>{
                         y="86.219551"
                         rx={0.5}
                     />
-                    <text x="29" y="98" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
-                        <tspan>ПЕДАГОГИЧЕСКИЕ</tspan>
-                        <tspan x="29" dy="1.5em">МЕТОДИЧЕСКИЕ</tspan>
-                        <tspan x="29" dy="1.5em">КОЛЛЕКЦИИ</tspan>
+                    <text x="29" y="100" fill={"#3C3C3B"} fontSize={fontSize} textAnchor="middle">
+                        <tspan>КУЛЬТУРНОЕ</tspan>
+                        <tspan x="29" dy="1.5em">НАСЛЕДИЕ</tspan>
+                        {/*<tspan x="29" dy="1.5em">КОЛЛЕКЦИИ</tspan>*/}
 
                     </text>
                 </BoxButtonLink>
