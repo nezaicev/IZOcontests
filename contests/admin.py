@@ -974,7 +974,7 @@ NOMINATION_DESIGN = [('Motion-design', 'Motion-design'),
                      ('Дизайн персонажа', 'Дизайн персонажа'), ('Другое', 'Другое')]
 
 
-class ArchiveProxy(Archive):
+class DesignArchiveProxy(Archive):
     class Meta:
         verbose_name = 'Проект "Дизайн детям"'
         verbose_name_plural = 'проекты "Дизайн детям"'
@@ -984,7 +984,7 @@ class ArchiveProxy(Archive):
 class DesignArchiveAdmin(admin.ModelAdmin):
     list_per_page = 50
     # inlines = [ImageExtraArchiveInline, VideoArchiveInline, FileArchiveInline]
-    model = Archive
+    # model = Archive
     list_editable = ['publish']
     list_display = ['author_name', 'fio', 'contest_name', 'publish',
                     'fio_teacher',
@@ -1005,6 +1005,45 @@ class DesignArchiveAdmin(admin.ModelAdmin):
             kwargs['widget'] = Select(choices=NOMINATION_DESIGN)
         if db_field.name == 'year_contest':
             kwargs['widget'] = TextInput(attrs={'value': utils.generate_year()})
+        return super().formfield_for_dbfield(db_field, **kwargs)
+
+    def get_queryset(self, request):
+        if request.user.is_superuser or request.user.groups.filter(
+                name='Manager').exists():
+            qs = super(admin.ModelAdmin, self).get_queryset(request)
+            return qs.filter(contest_name=CONTESTS_NAME[0][0])
+
+
+
+class KultNasArchiveProxy(Archive):
+    class Meta:
+        verbose_name = 'Культурное наследие'
+        verbose_name_plural = 'Культурное наследие'
+        proxy = True
+
+
+class KultNasArchiveAdmin(admin.ModelAdmin):
+    list_per_page = 50
+    list_editable = ['publish']
+    list_display = ['author_name', 'fio', 'contest_name', 'publish',
+                    'fio_teacher',
+                    'rating', 'status', 'year_contest']
+    list_filter = ('contest_name', 'publish', 'year_contest',)
+
+    search_fields = ('fio', 'fio_teacher')
+
+    exclude = (
+        'info', 'reg_number', 'barcode', 'content', 'participants', 'teacher', 'date_reg',
+        'district', 'region', 'status', 'direction', 'theme',
+        'format', 'link', 'crop_orientation_img', 'description', 'program', 'material')
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        # if db_field.name == 'contest_name':
+        #     kwargs['widget'] = Select(choices=CONTESTS_NAME)
+        # if db_field.name == 'nomination':
+        #     kwargs['widget'] = Select(choices=NOMINATION_DESIGN)
+        # if db_field.name == 'year_contest':
+        #     kwargs['widget'] = TextInput(attrs={'value': utils.generate_year()})
         return super().formfield_for_dbfield(db_field, **kwargs)
 
     def get_queryset(self, request):
@@ -1185,6 +1224,7 @@ admin.site.register(NominationNR)
 admin.site.register(DirectionVP)
 admin.site.register(AgeART)
 admin.site.register(CreativeTack, CreativeTackAdmin)
-admin.site.register(ArchiveProxy, DesignArchiveAdmin)
+admin.site.register(DesignArchiveProxy, DesignArchiveAdmin)
+admin.site.register(KultNasArchiveProxy, KultNasArchiveAdmin)
 admin.site.register(ParticipantMymoskvichi, ParticipantMymoskvichiAdmin)
 admin.site.register(ParticipantVP, ParticipantVPAdmin)
