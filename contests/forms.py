@@ -94,15 +94,16 @@ class FormParticipantsVP(forms.ModelForm):
 
     class Meta:
         model = ParticipantVP
-        fields = ('fio', 'snils_gir', 'birthday', 'level', 'agent_participant_phone',
-                  'agent_participant_email','consent_personal_data')
+        fields = ('fio', 'birthday', 'level', 'agent_participant_phone',
+                  'agent_participant_email','consent_personal_data', 'file_consent_personal_data',
+                  'consent_non_commercial_use', 'file_consent_non_commercial_use')
         widgets = {
-            'snils_gir': forms.TextInput(
-                attrs={
-                    'data-mask': '000-000-000 00',
-                    'placeholder': '000-000-000 00',
-
-                }, ),
+            # 'snils_gir': forms.TextInput(
+            #     attrs={
+            #         'data-mask': '000-000-000 00',
+            #         'placeholder': '000-000-000 00',
+            #
+            #     }, ),
             'level': forms.TextInput(
                 attrs={
                     'data-mask': 'SSSSS',
@@ -125,9 +126,20 @@ class FormParticipantsVP(forms.ModelForm):
                     'placeholder': 'test@mail.ru'
                 }
             ),
-            'consent_personal_data':forms.CheckboxInput(attrs={
-
-            })
+            'consent_personal_data':forms.CheckboxInput(attrs={}),
+            'file_consent_personal_data': forms.ClearableFileInput(
+                attrs={
+                    'accept': '.pdf,.jpg,.png',  # допустимые типы файлов
+                    'class': 'form-control-file',
+                }
+            ),
+            'consent_non_commercial_use': forms.CheckboxInput(attrs={}),
+            'file_consent_non_commercial_use':forms.ClearableFileInput(
+                attrs={
+                    'accept': '.pdf,.jpg,.png',  # допустимые типы файлов
+                    'class': 'form-control-file',
+                }
+            ),
 
 
         }

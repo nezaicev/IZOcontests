@@ -463,7 +463,7 @@ class ParticipantVP(models.Model):
                                 )
     level = models.CharField(max_length=30, verbose_name='Класс',
                              blank=True, null=True)
-    snils_gir = models.CharField(max_length=20, verbose_name='СНИЛС',
+    snils_gir = models.CharField(max_length=20, verbose_name='СНИЛС', #fixme убрано из заполнения
                                  null=True, blank=True)
     participants = models.ForeignKey(VP, related_name='participants', verbose_name='Участники',
                                      on_delete=models.CASCADE)
@@ -472,6 +472,14 @@ class ParticipantVP(models.Model):
     agent_participant_email=models.EmailField(verbose_name='E-mail родителя/законного представителя', null=True, blank=True)
     consent_personal_data = models.BooleanField(
         'Согласие на обработку персональных данных участника', default=True)
+    file_consent_personal_data = models.FileField(upload_to=PathAndRename('file/'),
+                            validators=[validate_file_extension],
+                            max_length=200, verbose_name='Файл (Согласие 1)',null=True, blank=True)
+    consent_non_commercial_use = models.BooleanField(
+        'Согласие на некоммерческое использование конкурсной работы', default=True)
+    file_consent_non_commercial_use = models.FileField(upload_to=PathAndRename('file/'),
+                                                  validators=[validate_file_extension],
+                                                  max_length=200, verbose_name='Файл (Согласие 2)', null=True, blank=True)
 
     def __str__(self):
         return str(self.fio)

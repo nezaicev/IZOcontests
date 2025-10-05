@@ -684,6 +684,7 @@ class ParticipantVPInline(admin.StackedInline):
 
 class ParticipantVPAdmin(DjangoSimpleExportAdmin, admin.ModelAdmin):
     model = ParticipantVP
+    # exclude = ('snils_gir',)
     django_simple_export_admin_exports = {
         "filtered-participant": {
             "label": "Выгрузить список",
