@@ -15,6 +15,7 @@ from contests.models import Archive
 
 def get_page_site(url):
     page = requests.get(url)
+    page.raise_for_status()
     soup = bs(page.content, 'lxml')
     return soup
 

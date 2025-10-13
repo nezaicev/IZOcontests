@@ -149,8 +149,12 @@ const App = () => {
                         {/*/>}/>*/}
                         <Route path='gallery' element={
                             <GalleryPageKultNas
-                            urlHorizontalTabs={`${host}/frontend/api/archive/contest/years/`}
-                            urlContent={`${host}/frontend/api/archive/`}/>
+                             urlVerticalTabs={`${host}/frontend/api/archive/contest/years/`}
+                                urlHorizontalTabs={`${host}/frontend/api/archive/contest/thems/`}
+                                urlCreativeTack={`${host}/frontend/api/contest/creative_tack/`}
+                                urlContent={`${host}/frontend/api/archive/`}
+                                contestName={process.env.REACT_APP_KULT_NAS}
+                            />
                         }/>
 
                     </Route>

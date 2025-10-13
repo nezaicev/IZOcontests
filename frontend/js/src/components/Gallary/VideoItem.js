@@ -16,7 +16,7 @@ import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import {ButtonCollapse, ImageButton} from "../styled";
 import FieldTitle from "./FieldTitle";
 import {RutubePlayer} from "../Video/RutubePlayer";
-import {getThumbYoutube,convertRutubeUrl, getRutubeThumbnailFromUrl} from "../utils/utils";
+import {getThumbYoutube, convertRutubeUrl, getRutubeThumbnailFromUrl} from "../utils/utils";
 
 const style = {
 
@@ -49,7 +49,6 @@ const CardVideo = styled(Card)(() => ({
 }))
 
 
-
 export default function VideoItem(props) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -77,8 +76,8 @@ export default function VideoItem(props) {
                         <Box>
                             <a href='#'>
                                 <img
-                                    src={props.poster?props.poster:getThumbYoutube(props.url, 'mqdefault')}
-                                    alt={props.item && props.item.author_name }
+                                    src={props.poster ? props.poster : getThumbYoutube(props.url, 'mqdefault')}
+                                    alt={props.item && props.item.author_name}
                                     width="320"
                                     height="180"
                                     loading="lazy"/>
@@ -90,7 +89,9 @@ export default function VideoItem(props) {
                                     backgroundColor: "rgb(129 110 110 / 76%)"
                                 }}
 
-                                title={props.item && props.item.author_name ? props.item.author_name?.toUpperCase() : props.title.toUpperCase()}
+                                title={props.item && props.item.author_name
+                                    ? props.item.author_name.toUpperCase()
+                                    : props.title.toUpperCase()}
                                 actionIcon={
                                     <Tooltip title="Видео">
                                         <IconButton>
@@ -115,16 +116,16 @@ export default function VideoItem(props) {
                     <Box>
 
                         <Box sx={{padding: '10px'}}>
-                            <Box sx={{ display: expanded ? 'none' : 'block'}}>
+                            <Box sx={{display: expanded ? 'none' : 'block'}}>
                                 {props.item.fio_teacher && <FieldTitle
-                                title={props.item.fio_teacher.search(',') > 0 ? 'Педагоги: ' : 'Педагог: '}
-                                content={props.item.fio_teacher}/>}
+                                    title={props.item.fio_teacher.search(',') > 0 ? 'Педагоги: ' : 'Педагог: '}
+                                    content={props.item.fio_teacher}/>}
 
-                                {props.item.region &&  <FieldTitle title={"Регион/город: "}
-                                        content={props.item.region + (props.item.city && (props.item.city !== props.item.region) ? ", " + props.item.city : '')}/>}
-                            <FieldTitle title={'Образовательное уч.: '}
-                                        content={props.item.school}/>
-                                </Box>
+                                {props.item.region && <FieldTitle title={"Регион/город: "}
+                                                                  content={props.item.region + (props.item.city && (props.item.city !== props.item.region) ? ", " + props.item.city : '')}/>}
+                                <FieldTitle title={'Образовательное уч.: '}
+                                            content={props.item.school}/>
+                            </Box>
                             <Box sx={{
                                 textAlign: 'right',
                                 marginRight: '-10px',
@@ -142,7 +143,7 @@ export default function VideoItem(props) {
 
                         </Box>
                         <Collapse in={expanded} timeout="auto" unmountOnExit>
-                            <CardContent sx={{padding:'8px'}}>
+                            <CardContent sx={{padding: '8px'}}>
                                 <FieldTitle title={'Номер: '}
                                             content={props.item.reg_number}/>
                                 <FieldTitle title={'Название: '}
@@ -152,16 +153,16 @@ export default function VideoItem(props) {
                                     title={props.item.fio_teacher.search(',') > 0 ? 'Педагоги: ' : 'Педагог: '}
                                     content={props.item.fio_teacher}/>}
 
-                                {props.item.region &&  <FieldTitle title={"Регион/город: "}
-                                            content={props.item.region + (props.item.city && (props.item.city !== props.item.region) ? ", " + props.item.city : '')}/>}
+                                {props.item.region && <FieldTitle title={"Регион/город: "}
+                                                                  content={props.item.region + (props.item.city && (props.item.city !== props.item.region) ? ", " + props.item.city : '')}/>}
                                 <FieldTitle title={'Образовательное уч.: '}
                                             content={props.item.school}/>
-                                {props.item.age ?<FieldTitle title={'Возраст: '}
-                                            content={props.item.age }/>:''}
+                                {props.item.age ? <FieldTitle title={'Возраст: '}
+                                                              content={props.item.age}/> : ''}
                                 {
                                     props.item.description ?
                                         <FieldTitle title={'Описание: '}
-                                            content={props.item.description}/>: ''
+                                                    content={props.item.description}/> : ''
 
                                 }
 
@@ -192,19 +193,19 @@ export default function VideoItem(props) {
                     <div className='player-wrapper'>
 
 
-                        {props.url.includes('rutube')?
-                        <RutubePlayer
-                            url={convertRutubeUrl(props.url)}
-                            title={props.title}
-                        />
-                            :<ReactPlayer
-                            className='react-player'
-                            width='100%'
-                            height='100%'
-                            controls={true}
-                            url={props.url}
-                        >
-                        </ReactPlayer>}
+                        {props.url.includes('rutube') ?
+                            <RutubePlayer
+                                url={convertRutubeUrl(props.url)}
+                                title={props.title}
+                            />
+                            : <ReactPlayer
+                                className='react-player'
+                                width='100%'
+                                height='100%'
+                                controls={true}
+                                url={props.url}
+                            >
+                            </ReactPlayer>}
 
                     </div>
 
