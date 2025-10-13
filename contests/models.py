@@ -506,7 +506,7 @@ class Mymoskvichi(BaseContest, MultiParticipants):
     fields = (
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school',
         'region', 'city', 'district', 'age', 'author_name', 'nomination',
-        'program',
+        'program', 'theme'
     )
     info = models.ForeignKey('PageContest', on_delete=models.SET_NULL,
                              null=True,
@@ -514,6 +514,10 @@ class Mymoskvichi(BaseContest, MultiParticipants):
 
     nomination = models.ForeignKey(NominationMYMSK, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
+
+    theme = models.ForeignKey(ThemeMYMSK, verbose_name='Тема',
+                                   on_delete=models.SET_NULL, null=True)
+
     format = models.CharField(max_length=35, choices=(
         ('ФИЛЬМ', 'ФИЛЬМ'), ('МУЛЬТИПЛИКАЦИЯ (АНИМАЦИЯ)', 'МУЛЬТИПЛИКАЦИЯ (АНИМАЦИЯ)'), ('ПРЕЗЕНТАЦИЯ', 'ПРЕЗЕНТАЦИЯ')), blank=False,
                               verbose_name='Формат работы')

@@ -622,7 +622,7 @@ class MymoskvichiAdmin(BaseAdmin, CustomAdminFields):
         }),
         ('Работа', {
             'fields': (
-                'author_name', 'nomination','format',
+                'author_name', 'nomination','theme','format',
                 'program', 'link', 'age', 'description_file'
                 )
         }),
