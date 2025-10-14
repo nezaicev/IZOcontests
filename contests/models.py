@@ -408,7 +408,7 @@ class VP(BaseContest, MultiParticipants):
     nomination = models.ForeignKey(NominationVP, verbose_name='Номинация',
                                    on_delete=models.SET_NULL, null=True)
     level = models.ManyToManyField(LevelVP, related_name='levels',
-                                   verbose_name='Класс',
+                                   verbose_name='Возрастная категория',
                                    )
     ovz = models.CharField(verbose_name='Проект, выполнен детьми с ОВЗ',
                            blank=False, default='Нет',
