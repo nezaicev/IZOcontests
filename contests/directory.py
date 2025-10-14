@@ -46,7 +46,7 @@ class AgeVP(models.Model):
 
 
 class LevelVP(models.Model):
-    name = models.CharField('Класс', max_length=100)
+    name = models.CharField('Возрастная категория', max_length=100)
 
     class Meta:
         verbose_name = 'Класс(Выставочные проекты)'
