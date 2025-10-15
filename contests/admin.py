@@ -1035,7 +1035,7 @@ class KultNasArchiveAdmin(admin.ModelAdmin):
 
     exclude = (
         'info', 'reg_number', 'barcode', 'content', 'participants', 'teacher', 'date_reg',
-        'district', 'region', 'status', 'direction', 'theme', 'nomination',
+        'district', 'region', 'status', 'direction', 'nomination',
         'format', 'link', 'crop_orientation_img', 'description', 'program', 'level', 'material')
 
     def formfield_for_dbfield(self, db_field, **kwargs):
