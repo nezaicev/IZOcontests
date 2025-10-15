@@ -1051,6 +1051,14 @@ class KultNasArchiveAdmin(admin.ModelAdmin):
             years = Archive.objects.values_list("year_contest", flat=True).distinct().order_by("-year_contest")
             choices = [(y, y) for y in years if y]  # делаем список кортежей (value, label)
             kwargs["widget"] = Select(choices=choices)
+        if db_field.name == 'theme':
+
+            choices = [
+                ('Парк «Зарядье»', 'Парк «Зарядье»'),
+                ('Усадьба «Измайлово»','Усадьба «Измайлово»'),
+                ('ВДНХ','ВДНХ'),('Новоспасский монастырь','Новоспасский монастырь')
+            ]
+            kwargs["widget"] = Select(choices=choices)
             # kwargs['widget'] = TextInput(attrs={'value': utils.generate_year()})
         return super().formfield_for_dbfield(db_field, **kwargs)
 
