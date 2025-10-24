@@ -225,7 +225,7 @@ class Artakiada(BaseContest):
                              choices=(
                                  ('spread', ' Разворот книги'),
                                  ('illustration', 'Иллюстрация'),
-                                 ))
+                                 ), default='spread')
 
     birthday = models.DateField(verbose_name='Дата рождения', blank=True,
                                 null=True,
