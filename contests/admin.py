@@ -419,7 +419,7 @@ class ArtakiadaAdmin(DjangoSimpleExportAdmin, BaseAdmin, CustomAdminFields):
         }),
         ('Работа', {
             'fields': (
-                'author_name', 'image', 'material', 'theme', 'nomination')
+                'description', 'image', 'material', 'theme', 'nomination','type_book_illustration')
         }),
         ('Данные для ГИР участника (https://талантыроссии.рф/)', {
 

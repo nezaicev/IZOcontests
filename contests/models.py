@@ -126,7 +126,7 @@ class BaseContest(models.Model):
     region = models.ForeignKey(Region, verbose_name='Регион',
                                on_delete=models.PROTECT, null=True)
     date_reg = models.DateTimeField(auto_now=True, blank=True)
-    district = models.ForeignKey(District, verbose_name='Округ',
+    district = models.ForeignKey(District, verbose_name='Округ (г. Москва)',
                                  on_delete=models.PROTECT, null=True,
                                  blank=True)
     email = models.EmailField(verbose_name='Электронная почта педагога/руководителя', null=True)
@@ -215,9 +215,18 @@ class Artakiada(BaseContest):
         'year_contest', 'reg_number', 'fio', 'fio_teacher', 'school', 'level',
         'age',
         'region', 'city',
-        'district', 'nomination', 'material', 'author_name', 'theme')
-    author_name = models.CharField(max_length=50, blank=False,
+        'district', 'nomination', 'material', 'description', 'theme')
+    author_name = models.CharField(max_length=150, blank=False,
                                    verbose_name='Авторское название')
+    description = models.TextField(max_length=500, blank=False, null=True,
+                                   verbose_name='Описание работы')
+
+    type_book_illustration= models.CharField('Тип книжной иллюстрации', max_length=20,
+                             choices=(
+                                 ('spread', ' Разворот книги'),
+                                 ('illustration', 'Иллюстрация'),
+                                 ))
+
     birthday = models.DateField(verbose_name='Дата рождения', blank=True,
                                 null=True,
                                 )
