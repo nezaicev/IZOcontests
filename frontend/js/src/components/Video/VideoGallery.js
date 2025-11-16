@@ -56,11 +56,11 @@ function VideoGallery(props) {
         <>
 
             <Box>
-                <Grid container spacing={2}
+                <Grid container spacing={3}
                       sx={{justifyContent: 'space-between'}}>
                     {data.map((item, index) => (
                         item['link'] ?
-                            <Grid item xs="auto" key={index}
+                            <Grid item  xs={12} sm={6} md={4} key={index}
                                   ref={(data.length === index + 1) ? lastElementRef : null}>
                                 {/*<VideoItem link={item['link']} title={item['title']}*/}
                                 {/*           description={item['description']}/>*/}
@@ -71,6 +71,7 @@ function VideoGallery(props) {
                                     title={item.name}
                                     poster={item.poster?item.poster:null}
                                     description={item.description}
+                                    expected={true}
                                     key={index}/>
 
 

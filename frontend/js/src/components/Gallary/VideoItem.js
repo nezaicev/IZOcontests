@@ -53,7 +53,7 @@ export default function VideoItem(props) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [expanded, setExpanded] = React.useState(false);
+    const [expanded, setExpanded] = React.useState(!!props.expected);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -89,9 +89,13 @@ export default function VideoItem(props) {
                                     backgroundColor: "rgb(129 110 110 / 76%)"
                                 }}
 
-                                title={props.item && props.item.author_name
-                                    ? props.item.author_name.toUpperCase()
-                                    : props.title.toUpperCase()}
+                                // title={props.item && props.item.author_name
+                                //     ? props.item.author_name.toUpperCase()
+                                //     : props.title.toUpperCase()}
+                                title={ ((props.item && props.item.author_name)
+        ? props.item.author_name
+        : props.title
+       ).toUpperCase()}
                                 actionIcon={
                                     <Tooltip title="Видео">
                                         <IconButton>
@@ -115,7 +119,7 @@ export default function VideoItem(props) {
                 {props.item ?
                     <Box>
 
-                        <Box sx={{padding: '10px'}}>
+                        <Box sx={{padding: '7px'}}>
                             <Box sx={{display: expanded ? 'none' : 'block'}}>
                                 {props.item.fio_teacher && <FieldTitle
                                     title={props.item.fio_teacher.search(',') > 0 ? 'Педагоги: ' : 'Педагог: '}
