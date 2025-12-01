@@ -218,6 +218,7 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
 EMAIL_HOST_USER = os.getenv('EMAIL_USER')
 EMAIL_PORT = os.getenv("EMAIL_PORT", 587)
 EMAIL_USE_TLS = True
+EMAIL_TIMEOUT = 20
 DEFAULT_FROM_EMAIL = os.getenv('EMAIL_FROM', 'webmaster@localhost')
 EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
 

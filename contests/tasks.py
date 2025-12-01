@@ -2,10 +2,11 @@ import os
 import json
 import math
 import logging
+from time import sleep
 from contests import utils
 
 from django.conf import settings
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, get_connection
 from django.template.loader import render_to_string
 from celery import shared_task
 from django_selectel_storage.storage import SelectelStorage, Container
@@ -85,20 +86,65 @@ def simple_send_mail(id, class_name, subject):
     msg.send()
 
 
-@shared_task
-def send_mail_for_subscribers(emails, theme, content):
-    from_email = settings.DEFAULT_FROM_EMAIL
-    list_emails = list(set(emails))
-    context = {
-        'link': 'http://konkurs.shkola-nemenskogo.ru/mailing/unsubscribe/'
-    }
-    content += render_to_string('mailing/footer_message.html', context)
-    list_emails_sliced = slice_list_email(list_emails, 1)
-    for slice_emails in list_emails_sliced:
-        msg = EmailMultiAlternatives(theme, content, from_email, slice_emails)
-        msg.content_subtype = "html"
-        msg.send()
+# @shared_task
+# def send_mail_for_subscribers(emails, theme, content):
+#     from_email = settings.DEFAULT_FROM_EMAIL
+#     list_emails = list(set(emails))
+#     context = {
+#         'link': 'http://konkurs.shkola-nemenskogo.ru/mailing/unsubscribe/'
+#     }
+#     content += render_to_string('mailing/footer_message.html', context)
+#     list_emails_sliced = slice_list_email(list_emails, 1)
+#     for slice_emails in list_emails_sliced:
+#         msg = EmailMultiAlternatives(theme, content, from_email, slice_emails)
+#         msg.content_subtype = "html"
+#         msg.send()
+# SES limits (пример)
+SES_EMAILS_PER_SECOND = 14
+CHUNK_SIZE = 50               # SES нормально переваривает
+DELAY_BETWEEN_BATCHES = 1     # 1 секунда паузы
 
+
+@shared_task(bind=True, max_retries=5, rate_limit='700/m')
+def send_mail_for_subscribers(self, emails, theme, content):
+    try:
+        unique_emails = list(set(emails))
+
+        content += render_to_string(
+            'mailing/footer_message.html',
+            {'link': 'http://konkurs.shkola-nemenskogo.ru/mailing/unsubscribe/'}
+        )
+
+        for batch_start in range(0, len(unique_emails), CHUNK_SIZE):
+            batch = unique_emails[batch_start:batch_start + CHUNK_SIZE]
+
+            # SES требует короткие SMTP-сессии
+            connection = get_connection(
+                timeout=20,
+                fail_silently=False
+            )
+            connection.open()
+
+            messages = []
+            for email in batch:
+                msg = EmailMultiAlternatives(
+                    theme, content, settings.DEFAULT_FROM_EMAIL, [email],
+                    connection=connection
+                )
+                msg.content_subtype = "html"
+                messages.append(msg)
+
+            connection.send_messages(messages)
+            connection.close()
+
+            # Respect SES send rate
+            batch_size = len(batch)
+            delay_needed = max(DELAY_BETWEEN_BATCHES,
+                               batch_size / SES_EMAILS_PER_SECOND)
+            sleep(delay_needed)
+
+    except Exception as exc:
+        raise self.retry(exc=exc, countdown=10)
 
 def slice_list_email(list_emails, count):
     step = 0
