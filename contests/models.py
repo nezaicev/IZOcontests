@@ -525,7 +525,7 @@ class Mymoskvichi(BaseContest, MultiParticipants):
                                    on_delete=models.SET_NULL, null=True)
 
     theme = models.ForeignKey(ThemeMYMSK, verbose_name='Тема',
-                                   on_delete=models.SET_NULL, null=True)
+                                   on_delete=models.SET_NULL, null=True, blank=True)
 
     format = models.CharField(max_length=35, choices=(
         ('ФИЛЬМ', 'ФИЛЬМ'), ('МУЛЬТИПЛИКАЦИЯ (АНИМАЦИЯ)', 'МУЛЬТИПЛИКАЦИЯ (АНИМАЦИЯ)'), ('ПРЕЗЕНТАЦИЯ', 'ПРЕЗЕНТАЦИЯ')), blank=False,
