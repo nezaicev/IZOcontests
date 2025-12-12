@@ -46,6 +46,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('mailing/', include('mailing.urls')),
     path('contests/', include('contests.urls')),
+    path('urao/', include('urao.urls')),
     path('users/', include('django.contrib.auth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 

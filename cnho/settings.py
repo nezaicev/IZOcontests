@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'event.apps.EventConfig',
     'exposition.apps.ExpositionConfig',
     'content.apps.ContentConfig',
+    'urao.apps.UraoConfig',
     'ckeditor',
     'ckeditor_uploader',
     'multiselectfield',
