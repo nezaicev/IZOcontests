@@ -49,7 +49,9 @@ class ProfileURAO(models.Model):
     bio = models.TextField('О себе', blank=True)
     year_graduation = models.PositiveSmallIntegerField(
         choices=year_choices(),
-        verbose_name='Год выпуска'
+        verbose_name='Год выпуска',
+    blank = True,
+    null = True
     )
 
     class Meta:
