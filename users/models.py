@@ -101,9 +101,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         try:
             if self.status.name == 'Студент УРАО':
                 group = Group.objects.get(name='Студент УРАО')
-                self.groups.add(group)
+            else:
+                group = Group.objects.get(name=self.default_group_teacher)
+            self.groups.add(group)
         except ObjectDoesNotExist:
-            print('Group "Студент УРАО" не существует')
+            print('Group not found!!!')
 
         # создаём профиль только если пользователь — "Студент УРАО" и профиля ещё нет
         if is_new and self.status.name == 'Студент УРАО':
