@@ -469,6 +469,9 @@ class ArtakiadaAdmin(DjangoSimpleExportAdmin, BaseAdmin, CustomAdminFields):
         if request.user.groups.filter(name='artakiada_district_jury').exists():
             qs = super(BaseAdmin, self).get_queryset(request)
             return qs.filter(district__name=request.user.district, region__name=request.user.region)
+        if request.user.groups.filter(name='artakiada_level_jury').exists():
+            qs = super(BaseAdmin, self).get_queryset(request)
+            return qs.filter(level__name=request.user.fio, region__name=request.user.region)
         if request.user.is_superuser or request.user.groups.filter(
                 name='Manager').exists() or request.user.groups.filter(
             name='Jury').exists():
