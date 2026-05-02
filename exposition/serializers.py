@@ -83,7 +83,7 @@ class ExpositionListSerializer(serializers.ModelSerializer):
         model = Exposition
         fields = (
             'id', 'title', 'poster', 'start_date', 'end_date', 'address', 'count_participants',
-            'count_exp', 'publicate', 'virtual')
+            'count_exp', 'publicate', 'virtual', 'type')
 
 
 class YearExpositionField(serializers.Field):

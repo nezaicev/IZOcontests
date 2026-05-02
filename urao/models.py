@@ -3,7 +3,7 @@ from django.db import models
 from contests.utils import PathAndRename
 from contests.directory import Material
 from django.conf import settings
-
+from ckeditor.fields import RichTextField
 SIZE_CHOICES = [
     ('30x20', '30 × 20'),
     ('40x30', '40 × 30'),
@@ -46,7 +46,7 @@ class ProfileURAO(models.Model):
         blank=True,
         null=True
     )
-    bio = models.TextField('О себе', blank=True)
+    bio = RichTextField('О себе', blank=True)
     year_graduation = models.PositiveSmallIntegerField(
         choices=year_choices(),
         verbose_name='Год выпуска',

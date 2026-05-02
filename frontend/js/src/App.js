@@ -9,6 +9,7 @@ import {Broadcasts} from "./pages/BROADCAST/Broadcasts";
 import {Expositions} from "./pages/EXPOSITION/Expositions";
 import {Archive} from "./pages/EXPOSITION/Archive";
 import {Statistics} from './pages/EXPOSITION/Statistics'
+import {ExpositionURAO} from "./pages/EXPOSITION/ExpositionURAO";
 import {TextContent} from "./components/TextContent";
 import GalleryVP from "./components/Gallary/VP/GalleryVP";
 import GalleryArtakiada from "./components/Gallary/Artakiada/GalleryArtakiada";
@@ -23,6 +24,7 @@ import {Exposition} from "./pages/EXPOSITION/Exposition";
 import {VM} from "./pages/VM_MAIN/vm";
 import {VideoListPage} from "./pages/VIDEO/VideoListPage"
 import {PublicationListPage} from "./pages/PUBLICATION/PublicationListPage";
+import ProfileURAO from "./pages/EXPOSITION/ProfileURAO";
 import {
     ArtChallengeListPage,
     GalleryArtChallenge
@@ -180,6 +182,29 @@ const App = () => {
                         <Route path='statistics' element={<Statistics/>}/>
 
                     </Route>
+
+
+
+                       {/*'_______Выставка________'*/}
+                    <Route path='exposition/' element={<Layout tabs={[
+                        {'name': 'Выставка', 'link': '/exposition'},
+                    ]} mainLink={`${process.env.REACT_APP_HOST_NAME}/frontend/expositions/`}/>}>
+                        <Route path=':id/' element={<Exposition/>}/>
+                    </Route>
+
+                    {/*'_______УРАО список________'*/}
+                    <Route path='urao/' element={<Layout tabs={[
+                        {'name': 'УРАО', 'link': '/urao'},
+                    ]}/>}>
+                        <Route index element={<ExpositionURAO/>}/>
+                    </Route>
+
+                    {/*'_______Профиль УРАО________'*/}
+                    <Route path='urao/profile/:profileId/' element={<ProfileURAO/>}/>
+
+
+
+
 
                     {/*'______Временные редиректы______'*/}
                     <Route path="frontend/vp/" element={<Navigate to="/vp/gallery"/>}/>
@@ -374,12 +399,7 @@ const App = () => {
                                element={<Navigate to="/broadcasts"/>}/>
                     </Route>
 
-                    {/*'_______Выставка________'*/}
-                    <Route path='exposition/' element={<Layout tabs={[
-                        {'name': 'Выставка', 'link': '/exposition'},
-                    ]} mainLink={`${process.env.REACT_APP_HOST_NAME}/frontend/expositions/`}/>}>
-                        <Route path=':id/' element={<Exposition/>}/>
-                    </Route>
+
 
                     {/*'_______Статистика________'*/}
                     <Route path='/' element={<Layout tabs={[

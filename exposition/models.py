@@ -9,6 +9,11 @@ from contests.models import CROP_ORIENTATION
 from contests.utils import PathAndRename
 from behaviors.behaviors import Timestamped, Published
 
+EXPOSITION_TYPE_CHOICES = (
+    (1, 'Обычная выставка'),
+    (2, 'УРАО'),
+)
+
 
 class Comment(Timestamped, Published):
     exposition = models.ForeignKey('Exposition',related_name='comments', verbose_name='Выставка', on_delete=models.CASCADE)
@@ -37,6 +42,7 @@ class Exposition(models.Model):
         verbose_name='Количество участников')
     virtual = models.BooleanField(verbose_name='Виртуальная', default=False)
     publicate = models.BooleanField(verbose_name='Опубликовать', default=True)
+    type = models.IntegerField(verbose_name='Тип выставки', choices=EXPOSITION_TYPE_CHOICES, default=1)
 
     def __str__(self):
         return self.title

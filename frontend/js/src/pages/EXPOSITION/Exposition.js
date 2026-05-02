@@ -10,7 +10,7 @@ import {host} from "../../components/utils/consts";
 import {useParams} from "react-router-dom";
 import dataFetch from "../../components/utils/dataFetch";
 import GradeIcon from '@mui/icons-material/Grade';
-
+import {ExpositionURAO} from "./ExpositionURAO";
 
 
 function Exposition(props) {
@@ -26,6 +26,11 @@ function Exposition(props) {
         })
     }, [])
 
+    // If exposition type is URAO (type === 2), show URAO page
+    if (fetchAll && data.type === 2) {
+        console.log(data)
+        return <ExpositionURAO expositionData={data} />;
+    }
 
     return (<>
         <Box>

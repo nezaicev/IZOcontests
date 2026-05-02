@@ -31,7 +31,7 @@ class ProfileURAOAdmin(admin.ModelAdmin):
     search_fields = ('user__email', 'user__fio')
     exclude = ('user',)
     inlines = [ImageInline]
-
+    list_display = ('user_fio', 'user_email')
     readonly_fields = ('user_fio', 'user_email')
 
     fieldsets = (
