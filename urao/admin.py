@@ -34,14 +34,37 @@ class ProfileURAOAdmin(admin.ModelAdmin):
     list_display = ('user_fio', 'user_email')
     readonly_fields = ('user_fio', 'user_email')
 
-    fieldsets = (
-        ('Пользователь', {
-            'fields': ('user_fio', 'user_email'),
-        }),
-        ('Профиль', {
-            'fields': ('bio', 'avatar'),
-        }),
-    )
+    # fieldsets = (
+    #     ('Пользователь', {
+    #         'fields': ('user_fio', 'user_email'),
+    #     }),
+    #     ('Профиль', {
+    #         'fields': ('bio', 'avatar'),
+    #     }),
+    #
+    # )
+
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = [
+            ('Пользователь', {
+                'fields': ('user_fio', 'user_email'),
+            }),
+            ('Профиль', {
+                'fields': ('bio', 'avatar'),
+            }),
+        ]
+
+        # поле order — только для менеджеров и суперпользователей
+        # if is_manager_or_superuser(request.user):
+        if request.user.is_superuser or request.user.groups.filter(
+                name='Manager').exists():
+            fieldsets.append(
+                ('Настройки отображения', {
+                    'fields': ('order',),
+                })
+            )
+
+        return fieldsets
 
     def user_fio(self, obj):
         return obj.user.fio if obj and obj.user else '—'

@@ -89,7 +89,7 @@ function ExpositionURAO(props) {
                         {profiles.map((profile, index) => (
                             <Grid item xs={12} sm={6} md={4} key={index}>
                                 <Card sx={{
-                                    height: '100%',
+                                    // height: '80%%',
                                     display: 'flex',
                                     flexDirection: 'column'
                                 }}>
@@ -111,7 +111,10 @@ function ExpositionURAO(props) {
                                         </Box>
                                         <CardContent>
                                             <Typography gutterBottom variant="h6" component="div"
-                                                        sx={{textAlign: 'center'}}>
+                                                        sx={{
+                                                            textAlign: 'center',
+                                                            fontSize: {xs: '0.7rem', sm: '0.9rem', md: '1rem'}
+                                                        }}>
                                                 {profile.full_name}
                                             </Typography>
                                             {profile.year_graduation && (

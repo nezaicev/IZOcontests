@@ -39,6 +39,10 @@ class ProfileURAO(models.Model):
         on_delete=models.CASCADE,
         related_name='profile'
     )
+    order=models.PositiveSmallIntegerField(
+        verbose_name='Порядок',
+        null=True,
+    )
 
     avatar = models.ImageField(
         'Фото',
@@ -55,6 +59,7 @@ class ProfileURAO(models.Model):
     )
 
     class Meta:
+        ordering = ['order']
         verbose_name = 'Информация'
         verbose_name_plural = 'Информация'
 
