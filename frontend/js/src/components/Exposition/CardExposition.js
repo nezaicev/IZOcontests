@@ -25,7 +25,7 @@ function CardExposition(props) {
     };
     return (
 
-        <ImageListItem >
+        <ImageListItem>
 
             <Paper>
                 <Link to={`/exposition/${props.data.id}`}>
@@ -33,36 +33,48 @@ function CardExposition(props) {
                         src={props.data.poster['thumb']}
                         alt={props.data.title}
                         loading="lazy"
-                        onLoad={()=>{setIsFetching(false)}}
+                        onLoad={() => {
+                            setIsFetching(false)
+                        }}
                     />
                 </Link>
 
-                {isFetching?'':
-                <ImageListItemBar
-                    sx={{
-                        backgroundColor: "rgba(138, 119, 119, 0.89)"
-                    }}
-                    title={
-                        props.data['virtual'] ? 'Виртуальная выставка' :
-                            getFormattedDate(props.data['start_date'], optionsDate) + ' - ' +
-                            getFormattedDate(props.data['end_date'], optionsDate)
-                    }
-                    actionIcon={
-
-                        <IconButton>
-                            <EventNoteIcon sx={{
+                {isFetching ? '' :
+                    <ImageListItemBar
+                        sx={{
+                            backgroundColor: "rgba(138, 119, 119, 0.89)",
+                            "& .MuiImageListItemBar-title": {
+                                paddingLeft: "8px", // отступ слева
                                 color: "#fff",
-                                p: '5px'
-                            }}/>
-                        </IconButton>
+                            },
 
-                    }/>
-}
+
+                            "& .MuiImageListItemBar-subtitle": {
+                                color: "#fff",
+                            },
+                        }}
+                        position="below"
+
+                        title={
+                            props.data['virtual'] ? 'Виртуальная выставка' :
+                                getFormattedDate(props.data['start_date'], optionsDate) + ' - ' +
+                                getFormattedDate(props.data['end_date'], optionsDate)
+                        }
+                        actionIcon={
+
+                            <IconButton>
+                                <EventNoteIcon sx={{
+                                    color: "#fff",
+                                    p: '5px'
+                                }}/>
+                            </IconButton>
+
+                        }/>
+                }
 
             </Paper>
 
         </ImageListItem>
-
 
 
     )
