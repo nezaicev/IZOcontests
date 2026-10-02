@@ -96,6 +96,7 @@ class FormParticipantsVP(forms.ModelForm):
         model = ParticipantVP
         fields = ('fio', 'birthday', 'level', 'agent_participant_phone',
                   'agent_participant_email','consent_personal_data', 'file_consent_personal_data',
+                  'file_consent_personal_data_2',
                   'consent_non_commercial_use', 'file_consent_non_commercial_use')
         widgets = {
             # 'snils_gir': forms.TextInput(
@@ -129,14 +130,20 @@ class FormParticipantsVP(forms.ModelForm):
             'consent_personal_data':forms.CheckboxInput(attrs={}),
             'file_consent_personal_data': forms.ClearableFileInput(
                 attrs={
-                    'accept': '.pdf,.jpg,.png',  # допустимые типы файлов
+                    'accept': '.pdf,.doc,.docx,.jpg,.jpeg,.png',  # допустимые типы файлов
+                    'class': 'form-control-file',
+                }
+            ),
+            'file_consent_personal_data_2': forms.ClearableFileInput(
+                attrs={
+                    'accept': '.pdf,.doc,.docx,.jpg,.jpeg,.png',
                     'class': 'form-control-file',
                 }
             ),
             'consent_non_commercial_use': forms.CheckboxInput(attrs={}),
             'file_consent_non_commercial_use':forms.ClearableFileInput(
                 attrs={
-                    'accept': '.pdf,.jpg,.png',  # допустимые типы файлов
+                    'accept': '.pdf,.doc,.docx,.jpg,.jpeg,.png',  # допустимые типы файлов
                     'class': 'form-control-file',
                 }
             ),

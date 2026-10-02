@@ -23,7 +23,8 @@ from contests import utils
 from contests.directory import NominationART, NominationMYMSK, ThemeART, \
     ThemeRUSH, ThemeMYMSK, AgeRUSH, AgeMYMSK, Status, Level, Material, \
     NominationVP, AgeVP, LevelVP, NominationNR, DirectionVP, AgeART
-from contests.validators import validate_file_extension
+from contests.validators import validate_file_extension, \
+    validate_consent_file_extension
 from phonenumber_field.modelfields import PhoneNumberField
 from contests.directory import LEVELS
 
@@ -482,12 +483,15 @@ class ParticipantVP(models.Model):
     consent_personal_data = models.BooleanField(
         'Согласие на обработку персональных данных участника', default=True)
     file_consent_personal_data = models.FileField(upload_to=PathAndRename('file/'),
-                            validators=[validate_file_extension],
-                            max_length=200, verbose_name='Файл (Согласие 1)',null=True, blank=True)
+                            validators=[validate_consent_file_extension],
+                            max_length=200, verbose_name='Файл (Согласие 1, стр. 1)',null=True, blank=True)
+    file_consent_personal_data_2 = models.FileField(upload_to=PathAndRename('file/'),
+                            validators=[validate_consent_file_extension],
+                            max_length=200, verbose_name='Файл (Согласие 1, стр. 2)',null=True, blank=True)
     consent_non_commercial_use = models.BooleanField(
         'Согласие на некоммерческое использование конкурсной работы', default=True)
     file_consent_non_commercial_use = models.FileField(upload_to=PathAndRename('file/'),
-                                                  validators=[validate_file_extension],
+                                                  validators=[validate_consent_file_extension],
                                                   max_length=200, verbose_name='Файл (Согласие 2)', null=True, blank=True)
 
     def __str__(self):
