@@ -841,6 +841,22 @@ class VPAdmin(DjangoSimpleExportAdmin, BaseAdmin, CustomAdminFields):
                                              url.split('/')[-1])
                     utils.download_file_by_url(url, path_save)
 
+            consent_fields = (
+                ('file_consent_personal_data', 'soglasie1_str1'),
+                ('file_consent_personal_data_2', 'soglasie1_str2'),
+                ('file_consent_non_commercial_use', 'soglasie2'),
+            )
+            consents_dir = os.path.join(tmp_dir, 'consents')
+            for num, participant in enumerate(obj.participants.all(), 1):
+                for field_name, label in consent_fields:
+                    file_field = getattr(participant, field_name)
+                    if not file_field or not os.path.exists(file_field.path):
+                        continue
+                    os.makedirs(consents_dir, exist_ok=True)
+                    ext = os.path.splitext(file_field.name)[1]
+                    shutil.copy(file_field.path, os.path.join(
+                        consents_dir, '{}_{}{}'.format(num, label, ext)))
+
             # if os.path.exists(os.path.join(tmp_dir, 'images')) or os.path.exists(os.path.join(tmp_dir, 'files')):
             shutil.make_archive(tmp_dir, 'zip', tmp_dir)
             if os.path.exists('{}.zip'.format(tmp_dir)):
