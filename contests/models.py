@@ -459,7 +459,7 @@ class VP(BaseContest, MultiParticipants):
                            self.level.values_list('name')]).replace("'",
                                                                     '').replace(
             "]", '').replace("[", '')
-        list_fields.append(('Класс',
+        list_fields.append(('Возрастная категория',
                             value_level))
 
         return tuple(list_fields)
