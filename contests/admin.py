@@ -850,12 +850,20 @@ class VPAdmin(DjangoSimpleExportAdmin, BaseAdmin, CustomAdminFields):
             for num, participant in enumerate(obj.participants.all(), 1):
                 for field_name, label in consent_fields:
                     file_field = getattr(participant, field_name)
-                    if not file_field or not os.path.exists(file_field.path):
+                    if not file_field:
                         continue
-                    os.makedirs(consents_dir, exist_ok=True)
                     ext = os.path.splitext(file_field.name)[1]
-                    shutil.copy(file_field.path, os.path.join(
-                        consents_dir, '{}_{}{}'.format(num, label, ext)))
+                    try:
+                        with file_field.storage.open(file_field.name,
+                                                     'rb') as src:
+                            os.makedirs(consents_dir, exist_ok=True)
+                            with open(os.path.join(
+                                    consents_dir,
+                                    '{}_{}{}'.format(num, label, ext)),
+                                    'wb') as dst:
+                                shutil.copyfileobj(src, dst)
+                    except (OSError, NotImplementedError):
+                        continue
 
             # if os.path.exists(os.path.join(tmp_dir, 'images')) or os.path.exists(os.path.join(tmp_dir, 'files')):
             shutil.make_archive(tmp_dir, 'zip', tmp_dir)
